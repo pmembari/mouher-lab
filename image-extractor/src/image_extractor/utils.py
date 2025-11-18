@@ -1,18 +1,12 @@
-from loguru import logger
 import pandas as pd
-import numpy as np
 import rasterio
-import os
-from datetime import datetime
 from pathlib import Path
 from rasterio.errors import RasterioIOError
 from tqdm.auto import tqdm
 
 
-
 def sort_group(df):
     return df.sort_values(by="position", ascending=True)
-
 
 
 def save_images_and_adjust_path_in_csv(df, base_dir="data/images"):
@@ -34,14 +28,12 @@ def save_images_and_adjust_path_in_csv(df, base_dir="data/images"):
     base_dir = Path(base_dir)
     base_dir.mkdir(parents=True, exist_ok=True)
 
-    new_paths = []   # store updated local image paths
+    new_paths = []  # store updated local image paths
 
     for row in tqdm(df.itertuples(index=False), total=len(df), desc="Saving images"):
-
         url = row.path
         product_id = str(row.product_id)
-        
-        
+
         # Clean formatted date
         try:
             date_str = pd.to_datetime(row.updated_at_y).strftime("%Y_%m_%d")
@@ -50,7 +42,7 @@ def save_images_and_adjust_path_in_csv(df, base_dir="data/images"):
             continue
 
         # Directory for this product
-        
+
         product_dir = base_dir / product_id
         product_dir.mkdir(parents=True, exist_ok=True)
 

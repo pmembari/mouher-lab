@@ -1056,7 +1056,8 @@ img {
   margin: 0 auto;
 
   padding:
-    26px 48px 100px;
+    26px 48px
+    100px;
 }
 
 .product-page-topbar {
@@ -1106,13 +1107,16 @@ img {
   display: grid;
 
   grid-template-columns:
-    minmax(0, 1.42fr) minmax(370px, 0.72fr);
+    minmax(0, 1.42fr)
+    minmax(370px, 0.72fr);
 
   align-items: start;
 
-  gap: clamp(38px,
-      5vw,
-      78px);
+  gap: clamp(
+    38px,
+    5vw,
+    78px
+  );
 }
 
 /* ---------- gallery ---------- */
@@ -1177,10 +1181,12 @@ img {
   border-radius: 50%;
 
   background:
-    rgba(247,
+    rgba(
+      247,
       244,
       237,
-      0.92);
+      0.92
+    );
 
   font-size: 23px;
 
@@ -1202,8 +1208,10 @@ img {
   display: grid;
 
   grid-template-columns:
-    repeat(5,
-      minmax(0, 1fr));
+    repeat(
+      5,
+      minmax(0, 1fr)
+    );
 
   gap: 8px;
 
@@ -1220,7 +1228,8 @@ img {
   background: var(--surface);
 
   border:
-    1px solid transparent;
+    1px solid
+    transparent;
 
   opacity: 0.72;
 
@@ -1263,7 +1272,8 @@ img {
   padding-bottom: 24px;
 
   border-bottom:
-    1px solid var(--border);
+    1px solid
+    var(--border);
 }
 
 .pdp-title-block h1 {
@@ -1276,9 +1286,11 @@ img {
     var(--serif);
 
   font-size:
-    clamp(36px,
+    clamp(
+      36px,
       3.3vw,
-      54px);
+      54px
+    );
 
   line-height: 1;
 
@@ -1288,7 +1300,8 @@ img {
     -0.025em;
 }
 
-.site-farsi .pdp-title-block h1 {
+.site-farsi
+  .pdp-title-block h1 {
   font-family:
     var(--farsi);
 
@@ -1360,7 +1373,8 @@ img {
   padding: 21px 0;
 
   border-top:
-    1px solid var(--border);
+    1px solid
+    var(--border);
 }
 
 .pdp-option-heading {
@@ -1415,7 +1429,8 @@ img {
   border-radius: 50%;
 
   border:
-    1px solid transparent;
+    1px solid
+    transparent;
 }
 
 .pdp-color-button span {
@@ -1425,10 +1440,13 @@ img {
   border-radius: 50%;
 
   border:
-    1px solid rgba(23,
+    1px solid
+    rgba(
+      23,
       23,
       21,
-      0.2);
+      0.2
+    );
 }
 
 .pdp-color-button:hover,
@@ -1446,7 +1464,8 @@ img {
     transparent;
 
   border-bottom:
-    1px solid currentColor;
+    1px solid
+    currentColor;
 
   color: var(--muted);
 
@@ -1457,9 +1476,13 @@ img {
   display: grid;
 
   grid-template-columns:
-    repeat(4,
-      minmax(55px,
-        1fr));
+    repeat(
+      4,
+      minmax(
+        55px,
+        1fr
+      )
+    );
 
   gap: 7px;
 }
@@ -1474,7 +1497,8 @@ img {
     transparent;
 
   border:
-    1px solid var(--border);
+    1px solid
+    var(--border);
 
   font-size: 10px;
 
@@ -1594,7 +1618,8 @@ img {
   font-size: 10px;
 
   border-top:
-    1px solid var(--border);
+    1px solid
+    var(--border);
 }
 
 /* ---------- benefits ---------- */
@@ -1603,16 +1628,20 @@ img {
   display: grid;
 
   grid-template-columns:
-    repeat(2,
-      minmax(0, 1fr));
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
 
   margin-top: 26px;
 
   border-top:
-    1px solid var(--border);
+    1px solid
+    var(--border);
 
   border-bottom:
-    1px solid var(--border);
+    1px solid
+    var(--border);
 }
 
 .pdp-benefits div {
@@ -1620,25 +1649,29 @@ img {
     16px 12px 17px 0;
 }
 
-.pdp-benefits div+div {
+.pdp-benefits div + div {
   padding-left: 16px;
 
   border-left:
-    1px solid var(--border);
+    1px solid
+    var(--border);
 }
 
-.site-farsi .pdp-benefits div {
+.site-farsi
+  .pdp-benefits div {
   padding:
     16px 0 17px 12px;
 }
 
-.site-farsi .pdp-benefits div+div {
+.site-farsi
+  .pdp-benefits div + div {
   padding-right: 16px;
 
   padding-left: 0;
 
   border-right:
-    1px solid var(--border);
+    1px solid
+    var(--border);
 
   border-left: 0;
 }
@@ -1672,7 +1705,8 @@ img {
 
 .pdp-accordions details {
   border-bottom:
-    1px solid var(--border);
+    1px solid
+    var(--border);
 }
 
 .pdp-accordions summary {
@@ -1711,16 +1745,22 @@ img {
   font-weight: 300;
 }
 
-.pdp-accordions details[open] summary::after {
+.pdp-accordions
+  details[open]
+  summary::after {
   content: "−";
 }
 
-.site-farsi .pdp-accordions summary {
+.site-farsi
+  .pdp-accordions
+  summary {
   padding:
     19px 0 19px 28px;
 }
 
-.site-farsi .pdp-accordions summary::after {
+.site-farsi
+  .pdp-accordions
+  summary::after {
   right: auto;
 
   left: 3px;
@@ -1777,16 +1817,19 @@ img {
     var(--serif);
 
   font-size:
-    clamp(36px,
+    clamp(
+      36px,
       4vw,
-      58px);
+      58px
+    );
 
   line-height: 1;
 
   font-weight: 400;
 }
 
-.site-farsi .product-related-heading h2 {
+.site-farsi
+  .product-related-heading h2 {
   font-family:
     var(--farsi);
 }
@@ -1803,7 +1846,8 @@ img {
 
   .pdp-layout {
     grid-template-columns:
-      minmax(0, 1.15fr) minmax(330px, 0.85fr);
+      minmax(0, 1.15fr)
+      minmax(330px, 0.85fr);
 
     gap: 34px;
   }
@@ -1814,8 +1858,10 @@ img {
 
   .pdp-thumbnail-list {
     grid-template-columns:
-      repeat(4,
-        1fr);
+      repeat(
+        4,
+        1fr
+      );
   }
 }
 
@@ -1910,8 +1956,10 @@ img {
 
   .pdp-size-list {
     grid-template-columns:
-      repeat(4,
-        1fr);
+      repeat(
+        4,
+        1fr
+      );
   }
 
   .pdp-add-button {
@@ -1932,18 +1980,21 @@ img {
       15px 0;
   }
 
-  .pdp-benefits div+div {
+  .pdp-benefits div + div {
     padding:
       15px 0;
 
     border-top:
-      1px solid var(--border);
+      1px solid
+      var(--border);
 
     border-left: 0;
   }
 
-  .site-farsi .pdp-benefits div,
-  .site-farsi .pdp-benefits div+div {
+  .site-farsi
+    .pdp-benefits div,
+  .site-farsi
+    .pdp-benefits div + div {
     padding:
       15px 0;
 
@@ -3583,5 +3634,135 @@ img {
 
   .category-content h3 {
     font-size: 24px;
+  }
+}
+.owner-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.owner-alert-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.owner-alert {
+  min-height: 110px;
+  padding: 20px;
+  background: #fff;
+  border: 1px solid var(--border);
+}
+
+.owner-alert strong {
+  display: block;
+  margin-bottom: 14px;
+  font-family: var(--serif);
+  font-size: 34px;
+  font-weight: 400;
+}
+
+.owner-alert span {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.owner-alert-danger {
+  border-color: rgba(156, 75, 75, 0.45);
+  background: rgba(156, 75, 75, 0.05);
+}
+
+.owner-alert-warning {
+  border-color: rgba(180, 135, 50, 0.45);
+  background: rgba(180, 135, 50, 0.05);
+}
+
+.owner-dashboard-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(280px, 0.45fr);
+  gap: 28px;
+}
+
+.owner-value-list {
+  display: grid;
+  gap: 8px;
+}
+
+.owner-value-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+
+  min-height: 68px;
+  padding: 12px 0;
+
+  border-bottom: 1px solid var(--border);
+}
+
+.owner-value-row strong {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 12px;
+}
+
+.owner-value-row span {
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.owner-value-row b {
+  font-size: 10px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.inventory-status {
+  display: inline-flex;
+  align-items: center;
+
+  min-height: 24px;
+  padding: 0 8px;
+
+  border: 1px solid var(--border);
+
+  font-size: 9px;
+}
+
+.inventory-status-critical,
+.inventory-status-out,
+.inventory-status-ناموجود,
+.inventory-status-بحرانی {
+  border-color: rgba(156, 75, 75, 0.4);
+  color: #934646;
+}
+
+.inventory-status-low,
+.inventory-status-کم {
+  border-color: rgba(180, 135, 50, 0.4);
+  color: #8e6b22;
+}
+
+@media (max-width: 1000px) {
+  .owner-kpi-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .owner-alert-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .owner-dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+
+  .owner-kpi-grid,
+  .owner-alert-grid {
+    grid-template-columns: 1fr;
   }
 }

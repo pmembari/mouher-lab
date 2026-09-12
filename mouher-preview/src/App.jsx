@@ -1571,121 +1571,508 @@ function ProductPage({
 function OwnerDashboardPage({ catalog, language, labels }) {
   const isFarsi = language === "farsi";
   const metrics = catalogMetrics(catalog);
-  const moduleRows = medusaFeatureRows(metrics, labels);
+
+  const products = metrics.products || [];
+
+  const outOfStockProducts = products.filter((product) => {
+    const stock = Number(product.stockCount);
+    return product.inStock === false || stock <= 0;
+  });
+
+  const criticalStockProducts = products
+    .filter((product) => {
+      const stock = Number(product.stockCount);
+
+      return (
+        Number.isFinite(stock) &&
+        stock > 0 &&
+        stock <= 3
+      );
+    })
+    .sort(
+      (a, b) =>
+        Number(a.stockCount) -
+        Number(b.stockCount)
+    );
+
+  const lowStockProducts = products
+    .filter((product) => {
+      const stock = Number(product.stockCount);
+
+      return (
+        Number.isFinite(stock) &&
+        stock > 3 &&
+        stock <= 8
+      );
+    })
+    .sort(
+      (a, b) =>
+        Number(a.stockCount) -
+        Number(b.stockCount)
+    );
+
+  const highestValueProducts = [...products]
+    .filter((product) => {
+      const stock = Number(product.stockCount);
+      const price = Number(product.priceAmount);
+
+      return (
+        Number.isFinite(stock) &&
+        Number.isFinite(price) &&
+        stock > 0
+      );
+    })
+    .sort((a, b) => {
+      const aValue =
+        Number(a.stockCount) *
+        Number(a.priceAmount);
+
+      const bValue =
+        Number(b.stockCount) *
+        Number(b.priceAmount);
+
+      return bValue - aValue;
+    })
+    .slice(0, 8);
+
   const priorityProducts = uniqueProducts([
-    ...metrics.lowStockProducts,
+    ...outOfStockProducts,
+    ...criticalStockProducts,
+    ...lowStockProducts,
     ...metrics.saleProducts,
-    ...metrics.products,
-  ]).slice(0, 9);
+    ...products,
+  ]).slice(0, 12);
+
+  const inventoryHealth = products.length
+    ? Math.round(
+      ((products.length -
+        outOfStockProducts.length -
+        criticalStockProducts.length) /
+        products.length) *
+      100
+    )
+    : 100;
 
   return (
-    <div className="dashboard-page">
+    <div className="dashboard-page owner-dashboard-page">
       <section className="dashboard-shell">
+
         <div className="dashboard-heading">
           <div>
-            <span className="eyebrow">{labels.ownerEyebrow}</span>
-            <h1>{labels.ownerTitle}</h1>
-            <p>{labels.ownerDescription}</p>
+            <span className="eyebrow">
+              {labels.ownerEyebrow}
+            </span>
+
+            <h1>
+              {isFarsi
+                ? "مرکز کنترل موهر"
+                : "Mouher control center"}
+            </h1>
+
+            <p>
+              {isFarsi
+                ? "نمایش وضعیت موجودی، ارزش کالا، محصولات کم‌موجود و هشدارهای عملیاتی."
+                : "Monitor inventory health, stock value, low-stock products and operational alerts."}
+            </p>
           </div>
 
           <div className="dashboard-heading-actions">
-            <a href="#products" className="button button-outline">
+            <a
+              href="#products"
+              className="button button-outline"
+            >
               {labels.viewStore}
               <ArrowRight />
             </a>
-            <a href="#/assist" className="button button-dark">
+
+            <a
+              href="#/assist"
+              className="button button-dark"
+            >
               {labels.websiteAssist}
               <ArrowRight />
             </a>
           </div>
         </div>
 
-        <div className="metric-grid">
-          <MetricCard label={labels.products} value={metrics.totalProducts} />
-          <MetricCard label={labels.inStock} value={metrics.inStockProducts} />
-          <MetricCard label={labels.lowStock} value={metrics.lowStockProducts.length} />
-          <MetricCard label={labels.sale} value={metrics.saleProducts.length} />
+        <div className="owner-kpi-grid">
+
           <MetricCard
-            label={labels.inventoryValue}
-            value={formatCompactAmount(metrics.inventoryValue)}
+            label={
+              isFarsi
+                ? "ارزش موجودی"
+                : "Inventory value"
+            }
+            value={formatCompactAmount(
+              metrics.inventoryValue
+            )}
           />
+
+          <MetricCard
+            label={
+              isFarsi
+                ? "واحد موجود"
+                : "Units in stock"
+            }
+            value={metrics.inventoryUnits}
+          />
+
+          <MetricCard
+            label={
+              isFarsi
+                ? "موجودی بحرانی"
+                : "Critical stock"
+            }
+            value={
+              criticalStockProducts.length
+            }
+          />
+
+          <MetricCard
+            label={
+              isFarsi
+                ? "ناموجود"
+                : "Out of stock"
+            }
+            value={
+              outOfStockProducts.length
+            }
+          />
+
+          <MetricCard
+            label={
+              isFarsi
+                ? "سلامت موجودی"
+                : "Inventory health"
+            }
+            value={`${inventoryHealth}%`}
+          />
+
         </div>
 
-        <section className="dashboard-panel dashboard-panel-wide">
+        <section className="dashboard-panel dashboard-panel-wide owner-alert-panel">
+
           <div className="dashboard-panel-header">
-            <h2>{labels.operations}</h2>
-            <span>{catalog.source}</span>
+            <h2>
+              {isFarsi
+                ? "هشدارهای کسب‌وکار"
+                : "Business alerts"}
+            </h2>
+
+            <span>
+              {catalog.source}
+            </span>
           </div>
 
-          <div className="module-grid">
-            {moduleRows.map((feature) => (
-              <article className="module-card" key={feature.id}>
-                <div>
-                  <span>{feature.status}</span>
-                  <strong>{isFarsi ? feature.titleFa : feature.title}</strong>
-                </div>
-                <p>{isFarsi ? feature.detailFa : feature.detail}</p>
-                <b>{feature.metric}</b>
-              </article>
-            ))}
+          <div className="owner-alert-grid">
+
+            <article
+              className={`owner-alert ${outOfStockProducts.length
+                  ? "owner-alert-danger"
+                  : ""
+                }`}
+            >
+              <strong>
+                {outOfStockProducts.length}
+              </strong>
+
+              <span>
+                {isFarsi
+                  ? "محصول ناموجود"
+                  : "products out of stock"}
+              </span>
+            </article>
+
+            <article
+              className={`owner-alert ${criticalStockProducts.length
+                  ? "owner-alert-danger"
+                  : ""
+                }`}
+            >
+              <strong>
+                {criticalStockProducts.length}
+              </strong>
+
+              <span>
+                {isFarsi
+                  ? "موجودی بحرانی"
+                  : "critical stock products"}
+              </span>
+            </article>
+
+            <article
+              className={`owner-alert ${lowStockProducts.length
+                  ? "owner-alert-warning"
+                  : ""
+                }`}
+            >
+              <strong>
+                {lowStockProducts.length}
+              </strong>
+
+              <span>
+                {isFarsi
+                  ? "محصول کم‌موجود"
+                  : "low-stock products"}
+              </span>
+            </article>
+
+            <article className="owner-alert">
+              <strong>
+                {metrics.saleProducts.length}
+              </strong>
+
+              <span>
+                {isFarsi
+                  ? "محصول تخفیف‌دار"
+                  : "products on sale"}
+              </span>
+            </article>
+
           </div>
         </section>
 
-        <div className="dashboard-grid">
-          <section className="dashboard-panel dashboard-panel-wide">
+        <div className="owner-dashboard-grid">
+
+          <section className="dashboard-panel">
+
             <div className="dashboard-panel-header">
-              <h2>{labels.priorityProducts}</h2>
-              <a href="#products">{labels.open}</a>
+              <h2>
+                {isFarsi
+                  ? "موجودی نیازمند توجه"
+                  : "Inventory requiring attention"}
+              </h2>
+
+              <span>
+                {priorityProducts.length}
+              </span>
             </div>
 
             <div className="dashboard-table-wrap">
-              <table className="dashboard-table">
+              <table className="dashboard-table owner-inventory-table">
+
                 <thead>
                   <tr>
-                    <th>{labels.name}</th>
-                    <th>{labels.price}</th>
-                    <th>{labels.status}</th>
-                    <th>{labels.badge}</th>
-                    <th>{labels.action}</th>
+                    <th>
+                      {labels.name}
+                    </th>
+
+                    <th>
+                      {isFarsi
+                        ? "موجودی"
+                        : "Stock"}
+                    </th>
+
+                    <th>
+                      {labels.price}
+                    </th>
+
+                    <th>
+                      {isFarsi
+                        ? "ارزش موجودی"
+                        : "Stock value"}
+                    </th>
+
+                    <th>
+                      {labels.status}
+                    </th>
                   </tr>
                 </thead>
+
                 <tbody>
-                  {priorityProducts.map((product) => (
-                    <tr key={product.id}>
-                      <td>
-                        <a href={productPageHref(product)}>
-                          {productDisplayName(product, isFarsi)}
-                        </a>
-                        <span>{productCategoryName(product, isFarsi)}</span>
-                      </td>
-                      <td>{product.price}</td>
-                      <td>{productStockLabel(product, labels)}</td>
-                      <td>{product.badge || labels.ready}</td>
-                      <td>
-                        <a href={productPageHref(product)}>{labels.open}</a>
-                      </td>
-                    </tr>
-                  ))}
+                  {priorityProducts.map(
+                    (product) => {
+                      const stock =
+                        Number(
+                          product.stockCount
+                        ) || 0;
+
+                      const price =
+                        Number(
+                          product.priceAmount
+                        ) || 0;
+
+                      const stockValue =
+                        stock * price;
+
+                      let stockStatus =
+                        isFarsi
+                          ? "سالم"
+                          : "Healthy";
+
+                      if (
+                        product.inStock ===
+                        false ||
+                        stock <= 0
+                      ) {
+                        stockStatus =
+                          isFarsi
+                            ? "ناموجود"
+                            : "Out";
+                      } else if (
+                        stock <= 3
+                      ) {
+                        stockStatus =
+                          isFarsi
+                            ? "بحرانی"
+                            : "Critical";
+                      } else if (
+                        stock <= 8
+                      ) {
+                        stockStatus =
+                          isFarsi
+                            ? "کم"
+                            : "Low";
+                      }
+
+                      return (
+                        <tr
+                          key={product.id}
+                        >
+                          <td>
+                            <a
+                              href={productPageHref(
+                                product
+                              )}
+                            >
+                              {productDisplayName(
+                                product,
+                                isFarsi
+                              )}
+                            </a>
+
+                            <span>
+                              {productCategoryName(
+                                product,
+                                isFarsi
+                              )}
+                            </span>
+                          </td>
+
+                          <td>
+                            {stock}
+                          </td>
+
+                          <td>
+                            {product.price}
+                          </td>
+
+                          <td>
+                            {formatCompactAmount(
+                              stockValue
+                            )}
+                          </td>
+
+                          <td>
+                            <span
+                              className={`inventory-status inventory-status-${stockStatus
+                                .toLowerCase()
+                                .replace(
+                                  /\s+/g,
+                                  "-"
+                                )}`}
+                            >
+                              {stockStatus}
+                            </span>
+                          </td>
+                        </tr>
+                      );
+                    }
+                  )}
                 </tbody>
               </table>
             </div>
           </section>
 
           <aside className="dashboard-panel">
+
             <div className="dashboard-panel-header">
-              <h2>{labels.categoryMix}</h2>
+              <h2>
+                {isFarsi
+                  ? "ارزش موجودی بالا"
+                  : "Highest inventory value"}
+              </h2>
             </div>
 
-            <div className="category-mix">
-              {(catalog.categories || []).map((category) => (
-                <div key={category.slug}>
-                  <span>{isFarsi ? category.nameFa : category.name}</span>
-                  <strong>{category.count}</strong>
-                </div>
-              ))}
+            <div className="owner-value-list">
+              {highestValueProducts.map(
+                (product) => {
+                  const value =
+                    Number(
+                      product.stockCount
+                    ) *
+                    Number(
+                      product.priceAmount
+                    );
+
+                  return (
+                    <a
+                      href={productPageHref(
+                        product
+                      )}
+                      key={product.id}
+                      className="owner-value-row"
+                    >
+                      <div>
+                        <strong>
+                          {productDisplayName(
+                            product,
+                            isFarsi
+                          )}
+                        </strong>
+
+                        <span>
+                          {
+                            product.stockCount
+                          }{" "}
+                          {isFarsi
+                            ? "عدد"
+                            : "units"}
+                        </span>
+                      </div>
+
+                      <b>
+                        {formatCompactAmount(
+                          value
+                        )}
+                      </b>
+                    </a>
+                  );
+                }
+              )}
             </div>
+
           </aside>
         </div>
+
+        <section className="dashboard-panel dashboard-panel-wide">
+
+          <div className="dashboard-panel-header">
+            <h2>
+              {labels.categoryMix}
+            </h2>
+          </div>
+
+          <div className="category-mix">
+            {(catalog.categories || []).map(
+              (category) => (
+                <div key={category.slug}>
+                  <span>
+                    {isFarsi
+                      ? category.nameFa
+                      : category.name}
+                  </span>
+
+                  <strong>
+                    {category.count}
+                  </strong>
+                </div>
+              )
+            )}
+          </div>
+
+        </section>
+
       </section>
     </div>
   );

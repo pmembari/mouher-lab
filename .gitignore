@@ -165,7 +165,7 @@ venv.bak/
 
 # mkdocs documentation
 /site
-
+Mouher_Data/
 # mypy
 .mypy_cache/
 .dmypy.json

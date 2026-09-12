@@ -1,62 +1,217 @@
-import { useEffect, useState } from "react";
-import { getMouherImages } from "./mouherImages";
+import { useEffect, useMemo, useState } from "react";
 
-/* =========================================================
-   CONTENT
-========================================================= */
+import {
+  addProductToCart,
+  isMedusaConfigured,
+  loadCatalog,
+  medusaConfig,
+} from "./lib/catalog";
+import {
+  mouherApiConfig,
+  requestLoyaltyPushSubscription,
+  supportsBrowserPush,
+} from "./lib/notifications";
 
 const content = {
   pinglish: {
-    announcement: "Ersal رایگان baraye sefaresh-haye بالای €150",
-
+    announcement: "Ersal رایگان baraye sefaresh-haye balaye €150",
     nav: {
-      newIn: "Collection-e Jadid",
-      collections: "Collection-ha",
+      newIn: "New edit",
+      collections: "Collections",
       shop: "Shop",
+      owner: "Owner",
+      developer: "Developer",
+      assist: "Assist",
     },
-
     hero: {
-      eyebrow: "Payiz / Zemestan 2026",
+      eyebrow: "Mouher Studio",
       title: "Mouher\nWhat you wear",
       description:
-        "Lebas-haye modern ba focus bar rooye quality, form va details.",
-      button: "Boro be Collection ha",
+        "Modern clothing for daily movement, built as a commerce storefront with Medusa catalog, cart and checkout foundations.",
+      button: "Shop collection",
     },
-
     products: {
-      eyebrow: "Collection-e Jadid",
-      title: "Collection-e Jadid",
-      shopAll: "Boro be Hame",
+      eyebrow: "Live catalog",
+      title: "New arrivals",
+      shopAll: "All products",
+      empty: "No products match this search.",
+      sourceDemo: "Demo catalog",
+      sourceLive: "Mouher.com products",
+      sourceMedusa: "Medusa catalog",
+      loading: "Loading catalog",
+      viewLive: "View live product",
     },
-
+    productPage: {
+      back: "Back to shop",
+      details: "Product details",
+      category: "Category",
+      collection: "Edit",
+      sizes: "Sizes",
+      colors: "Colors",
+      stock: "Stock",
+      related: "Related products",
+      openLive: "Open on mouher.com",
+      loading: "Loading product",
+      notFoundTitle: "Product not found",
+      notFoundDescription: "This product is not available in the current catalog snapshot.",
+    },
+    dashboard: {
+      ownerEyebrow: "Owner dashboard",
+      ownerTitle: "Business overview",
+      ownerDescription:
+        "Current catalog, stock, category and merchandising signals from the Mouher products snapshot.",
+      assistEyebrow: "Website assist",
+      assistTitle: "Client support desk",
+      assistDescription:
+        "Fast product answers, storefront checks and content tasks for the website assistant.",
+      viewStore: "View store",
+      websiteAssist: "Website assist",
+      owner: "Owner dashboard",
+      products: "Products",
+      inventory: "Inventory",
+      inStock: "In stock",
+      lowStock: "Low stock",
+      sale: "Sale",
+      inventoryValue: "Inventory value",
+      categoryMix: "Category mix",
+      priorityProducts: "Priority products",
+      operations: "Operations",
+      name: "Product",
+      price: "Price",
+      status: "Status",
+      badge: "Badge",
+      action: "Action",
+      open: "Open",
+      live: "Live",
+      ready: "Ready",
+      needsApi: "Needs API",
+      developerEyebrow: "Developer workspace",
+      developerTitle: "Commerce implementation",
+      developerDescription:
+        "Protected Medusa Admin proxy, Store API checkout, and browser push delivery status.",
+      accountEyebrow: "Customer workspace",
+      accountTitle: "Account and loyalty",
+      accountDescription:
+        "Loyalty rewards are delivered through browser notifications when the customer opts in.",
+      apiSurface: "API surface",
+      implementationQueue: "Implementation queue",
+      medusaDomains: "Medusa domains",
+      storefront: "Storefront",
+      backend: "Backend",
+      protected: "Protected",
+      public: "Public",
+      browserPush: "Browser push",
+      chromeSafari: "Chrome / Safari",
+      search: "Search products or client questions",
+      suggestedReply: "Suggested reply",
+      productMatches: "Product matches",
+      contentQueue: "Content queue",
+      missingPhoto: "Missing product photo",
+      missingColor: "Missing color data",
+      missingSize: "Missing size data",
+      saleBadge: "Sale badge",
+      noTasks: "No urgent website tasks.",
+      outOfStock: "Out of stock",
+    },
+    account: {
+      browserPush: "Browser push",
+      browserSupported: "Supported in this browser",
+      browserUnsupported: "Unavailable in this browser",
+      customerId: "Customer ID",
+      customerPlaceholder: "cus_...",
+      enable: "Enable loyalty notifications",
+      enabling: "Enabling",
+      active: "Loyalty notifications are active in this browser.",
+      blocked: "Notifications are blocked in this browser.",
+      notConfigured: "Web Push keys are not configured in Django yet.",
+      notGranted: "Notification permission was not granted.",
+      unsupported: "This browser cannot receive Web Push notifications here.",
+      failed: "Could not enable loyalty notifications.",
+      noPaidChannels: "No email, SMS, WhatsApp, or paid messaging service.",
+    },
+    categories: {
+      eyebrow: "Shop by category",
+      title: "Explore Mouher",
+      all: "All",
+      shop: "Shop",
+    },
+    collections: {
+      eyebrow: "Collections",
+      title: "Shop the edit",
+      all: "All edits",
+    },
+    cart: {
+      quickAdd: "Quick add",
+      viewDetails: "View details",
+      adding: "Adding",
+      previewAdded: "Added to preview bag.",
+      medusaAdded: "Added to bag.",
+      unavailable: "Cart is not available. Check Medusa cart settings.",
+      noVariant: "Variant needed",
+      bag: "Shopping bag",
+      checkout: "Checkout",
+      subtotal: "Subtotal",
+      empty: "Your bag is empty.",
+      quantity: "Quantity",
+      increase: "Increase quantity",
+      decrease: "Decrease quantity",
+      remove: "Remove",
+      close: "Close cart",
+      account: "Account",
+      wishlist: "Add to wishlist",
+      stockLow: "Last pieces",
+      inStock: "In stock",
+      snapPay: "SnapPay installment option prepared for checkout.",
+    },
+    checkout: {
+      title: "Ready for checkout",
+      description:
+        "Medusa will own cart, inventory, shipping, tax and checkout. SnapPay activation needs merchant credentials and production keys.",
+      customer: "Customer",
+      delivery: "Delivery",
+      payment: "Payment",
+      snapPay: "SnapPay installments",
+      card: "Card / local payment provider",
+      continue: "Continue checkout",
+    },
+    trust: {
+      shipping: "Free shipping threshold ready",
+      returns: "Returns policy block ready",
+      support: "Instagram support workflow ready",
+    },
+    search: {
+      open: "Search",
+      title: "Search Mouher",
+      placeholder: "Search products, categories...",
+      submit: "Search",
+      close: "Close search",
+    },
     philosophy: {
       eyebrow: "Mouher",
-      title: "What you wear.",
+      title: "Made for daily rhythm.",
       description:
-        "Lebas-haye modern baraye har rooz; sade, precise va ba identity.",
-      button: "Darbare-ye Mouher",
+        "The storefront keeps the visual language minimal and lets Medusa own the catalog, inventory, cart and pricing logic.",
+      button: "About Mouher",
     },
-
     newsletter: {
-      eyebrow: "Ba Mouher bemoon",
+      eyebrow: "Mouher updates",
       title: "Latest from Mouher.",
-      description:
-        "Collection-haye jadid, story-haye studio va news-haye Mouher.",
-      placeholder: "Email شما",
+      description: "Collection notes, studio news and private launch updates.",
+      placeholder: "Email address",
       button: "Join",
+      thanks: "Mamnoon ke be Mouher peyvasti.",
     },
-
     footer: {
       shop: "Shop",
-      information: "Ettelaat",
+      information: "Information",
       follow: "Follow",
-      newIn: "Collection-e Jadid",
-      collections: "Collection-ha",
-      allClothing: "Hame-ye Products",
-      shipping: "Ersal",
+      newIn: "New edit",
+      collections: "Collections",
+      allClothing: "All clothing",
+      shipping: "Shipping",
       returns: "Returns",
-      sizeGuide: "Size Guide",
-      contact: "Tamas",
+      sizeGuide: "Size guide",
+      contact: "Contact",
       instagram: "Instagram",
       pinterest: "Pinterest",
       tiktok: "TikTok",
@@ -65,47 +220,194 @@ const content = {
       terms: "Terms",
     },
   },
-
   farsi: {
     announcement: "ارسال رایگان برای سفارش‌های بالای €150",
-
     nav: {
       newIn: "کالکشن جدید",
       collections: "کالکشن‌ها",
       shop: "فروشگاه",
+      owner: "مالک",
+      developer: "توسعه",
+      assist: "دستیار",
     },
-
     hero: {
-      eyebrow: "پاییز / زمستان ۱۴۰۵",
+      eyebrow: "استودیو موهر",
       title: "موهر\nآنچه می‌پوشی",
       description:
-        "لباس‌های مدرن با تمرکز بر کیفیت، فرم و جزئیات.",
+        "فروشگاه پوشاک مدرن با پایه مدوسا برای کاتالوگ، سبد خرید و مسیر پرداخت واقعی.",
       button: "دیدن کالکشن",
     },
-
     products: {
-      eyebrow: "کالکشن جدید",
-      title: "کالکشن جدید",
-      shopAll: "مشاهده همه",
+      eyebrow: "کاتالوگ زنده",
+      title: "تازه‌ها",
+      shopAll: "همه محصولات",
+      empty: "محصولی برای این جستجو پیدا نشد.",
+      sourceDemo: "کاتالوگ آزمایشی",
+      sourceLive: "محصولات mouher.com",
+      sourceMedusa: "کاتالوگ مدوسا",
+      loading: "در حال بارگذاری",
+      viewLive: "دیدن محصول در سایت",
     },
-
+    productPage: {
+      back: "بازگشت به فروشگاه",
+      details: "جزئیات محصول",
+      category: "دسته‌بندی",
+      collection: "ادیت",
+      sizes: "سایزها",
+      colors: "رنگ‌ها",
+      stock: "موجودی",
+      related: "محصولات مرتبط",
+      openLive: "باز کردن در mouher.com",
+      loading: "در حال بارگذاری محصول",
+      notFoundTitle: "محصول پیدا نشد",
+      notFoundDescription: "این محصول در اسنپ‌شات فعلی کاتالوگ موجود نیست.",
+    },
+    dashboard: {
+      ownerEyebrow: "داشبورد مالک",
+      ownerTitle: "نمای کلی کسب‌وکار",
+      ownerDescription:
+        "سیگنال‌های کاتالوگ، موجودی، دسته‌بندی و مرچندایزینگ از اسنپ‌شات محصولات موهر.",
+      assistEyebrow: "دستیار سایت",
+      assistTitle: "میز پاسخ به مشتری",
+      assistDescription:
+        "پاسخ سریع محصول، بررسی ویترین و کارهای محتوایی برای دستیار وب‌سایت.",
+      viewStore: "دیدن فروشگاه",
+      websiteAssist: "دستیار سایت",
+      owner: "داشبورد مالک",
+      products: "محصولات",
+      inventory: "موجودی",
+      inStock: "موجود",
+      lowStock: "موجودی کم",
+      sale: "تخفیف‌دار",
+      inventoryValue: "ارزش موجودی",
+      categoryMix: "ترکیب دسته‌ها",
+      priorityProducts: "محصولات اولویت‌دار",
+      operations: "عملیات",
+      name: "محصول",
+      price: "قیمت",
+      status: "وضعیت",
+      badge: "برچسب",
+      action: "عملیات",
+      open: "باز کردن",
+      live: "سایت اصلی",
+      ready: "آماده",
+      needsApi: "نیازمند API",
+      developerEyebrow: "فضای توسعه",
+      developerTitle: "پیاده‌سازی کامرس",
+      developerDescription:
+        "وضعیت پروکسی محافظت‌شده ادمین مدوسا، چک‌اوت Store API و ارسال پوش مرورگر.",
+      accountEyebrow: "فضای مشتری",
+      accountTitle: "حساب و وفاداری",
+      accountDescription:
+        "پاداش‌های وفاداری با اجازه مشتری از طریق اعلان مرورگر ارسال می‌شوند.",
+      apiSurface: "سطح API",
+      implementationQueue: "صف پیاده‌سازی",
+      medusaDomains: "دامنه‌های مدوسا",
+      storefront: "ویترین",
+      backend: "بک‌اند",
+      protected: "محافظت‌شده",
+      public: "عمومی",
+      browserPush: "پوش مرورگر",
+      chromeSafari: "کروم / سافاری",
+      search: "جستجوی محصول یا سوال مشتری",
+      suggestedReply: "پاسخ پیشنهادی",
+      productMatches: "نتایج محصول",
+      contentQueue: "صف محتوا",
+      missingPhoto: "عکس محصول ندارد",
+      missingColor: "داده رنگ ندارد",
+      missingSize: "داده سایز ندارد",
+      saleBadge: "برچسب تخفیف",
+      noTasks: "کار فوری برای سایت وجود ندارد.",
+      outOfStock: "ناموجود",
+    },
+    account: {
+      browserPush: "پوش مرورگر",
+      browserSupported: "در این مرورگر پشتیبانی می‌شود",
+      browserUnsupported: "در این مرورگر در دسترس نیست",
+      customerId: "شناسه مشتری",
+      customerPlaceholder: "cus_...",
+      enable: "فعال‌سازی اعلان وفاداری",
+      enabling: "در حال فعال‌سازی",
+      active: "اعلان‌های وفاداری در این مرورگر فعال است.",
+      blocked: "اعلان‌ها در این مرورگر مسدود شده‌اند.",
+      notConfigured: "کلیدهای Web Push هنوز در جنگو تنظیم نشده‌اند.",
+      notGranted: "اجازه اعلان داده نشد.",
+      unsupported: "این مرورگر اینجا نمی‌تواند Web Push دریافت کند.",
+      failed: "فعال‌سازی اعلان وفاداری ممکن نشد.",
+      noPaidChannels: "بدون ایمیل، پیامک، واتساپ یا سرویس پیام‌رسان پولی.",
+    },
+    categories: {
+      eyebrow: "دسته‌بندی",
+      title: "موهر را کشف کن",
+      all: "همه",
+      shop: "مشاهده",
+    },
+    collections: {
+      eyebrow: "کالکشن‌ها",
+      title: "انتخاب کالکشن",
+      all: "همه کالکشن‌ها",
+    },
+    cart: {
+      quickAdd: "افزودن سریع",
+      viewDetails: "جزئیات",
+      adding: "در حال افزودن",
+      previewAdded: "به سبد آزمایشی اضافه شد.",
+      medusaAdded: "به سبد خرید اضافه شد.",
+      unavailable: "سبد خرید در دسترس نیست. تنظیمات مدوسا را بررسی کن.",
+      noVariant: "نیاز به وریانت",
+      bag: "سبد خرید",
+      checkout: "پرداخت",
+      subtotal: "جمع سبد",
+      empty: "سبد خرید خالی است.",
+      quantity: "تعداد",
+      increase: "افزایش تعداد",
+      decrease: "کاهش تعداد",
+      remove: "حذف",
+      close: "بستن سبد خرید",
+      account: "حساب کاربری",
+      wishlist: "افزودن به علاقه‌مندی‌ها",
+      stockLow: "آخرین موجودی",
+      inStock: "موجود",
+      snapPay: "گزینه پرداخت اقساطی SnapPay برای چک‌اوت آماده شده است.",
+    },
+    checkout: {
+      title: "آماده مسیر پرداخت",
+      description:
+        "مدوسا مسئول سبد، موجودی، ارسال، مالیات و پرداخت است. فعال‌سازی SnapPay به اطلاعات پذیرنده و کلیدهای پروداکشن نیاز دارد.",
+      customer: "مشتری",
+      delivery: "ارسال",
+      payment: "پرداخت",
+      snapPay: "اقساط SnapPay",
+      card: "کارت / درگاه محلی",
+      continue: "ادامه پرداخت",
+    },
+    trust: {
+      shipping: "آستانه ارسال رایگان آماده",
+      returns: "بخش قوانین مرجوعی آماده",
+      support: "فرآیند پشتیبانی اینستاگرام آماده",
+    },
+    search: {
+      open: "جستجو",
+      title: "جستجو در موهر",
+      placeholder: "جستجوی محصول یا دسته‌بندی...",
+      submit: "جستجو",
+      close: "بستن جستجو",
+    },
     philosophy: {
       eyebrow: "موهر",
-      title: "آنچه می‌پوشی.",
+      title: "برای ریتم روزمره.",
       description:
-        "لباس‌های مدرن برای هر روز؛ ساده، دقیق و با هویت.",
+        "ظاهر سایت ساده می‌ماند و مدوسا مسئول کاتالوگ، موجودی، قیمت‌گذاری و سبد خرید است.",
       button: "درباره موهر",
     },
-
     newsletter: {
-      eyebrow: "با موهر همراه باش",
+      eyebrow: "خبرهای موهر",
       title: "تازه‌های موهر.",
-      description:
-        "کالکشن‌های جدید، داستان‌های استودیو و خبرهای موهر.",
+      description: "یادداشت‌های کالکشن، خبرهای استودیو و لانچ‌های خصوصی.",
       placeholder: "ایمیل شما",
       button: "عضویت",
+      thanks: "ممنون که به موهر پیوستی.",
     },
-
     footer: {
       shop: "فروشگاه",
       information: "اطلاعات",
@@ -126,82 +428,6 @@ const content = {
     },
   },
 };
-
-/* =========================================================
-   PRODUCT DATA
-========================================================= */
-
-const products = [
-  {
-    id: 1,
-    name: "Structured Linen Coat",
-    nameFa: "کت لینن حمالی برای بدبختا",
-    category: "Outerwear",
-    categoryFa: "لباس رویی",
-    price: "€240",
-    fallbackImage:
-      "https://images.unsplash.com/photo-1539533113208-f6df8cc8b543?auto=format&fit=crop&w=1200&q=90",
-    badge: "NEW",
-  },
-  {
-    id: 2,
-    name: "Relaxed Cotton Shirt",
-    nameFa: " پیراهن نخی آزاد برای ازادی های یواشکی",
-    category: "Shirts",
-    categoryFa: "پیراهن",
-    price: "€95",
-    fallbackImage:
-      "https://images.unsplash.com/photo-1596755389378-c31d21fd1273?auto=format&fit=crop&w=1200&q=90",
-    badge: "NEW",
-  },
-  {
-    id: 3,
-    name: "Wide Pleated Trouser",
-    nameFa: "شلوار پلیسه واید برا چوسی زیاد",
-    category: "Trousers",
-    categoryFa: "شلوار",
-    price: "€135",
-    fallbackImage:
-      "https://images.unsplash.com/photo-1506629905607-d9c297d3d5f7?auto=format&fit=crop&w=1200&q=90",
-    badge: "",
-  },
-  {
-    id: 4,
-    name: "Oversized Wool Blazer",
-    nameFa: "بلیزر پشمی اورسایز مخصوص پوشاندن چربی ها",
-    category: "Outerwear",
-    categoryFa: "لباس رویی",
-    price: "€280",
-    fallbackImage:
-      "https://images.unsplash.com/photo-1598808503746-f34c53b9323e?auto=format&fit=crop&w=1200&q=90",
-    badge: "NEW",
-  },
-];
-
-const categories = [
-  {
-    name: "Outerwear",
-    nameFa: "لباس رویی",
-    image:
-      "https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?auto=format&fit=crop&w=1200&q=85",
-  },
-  {
-    name: "Shirts",
-    nameFa: "پیراهن",
-    image:
-      "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&w=1200&q=85",
-  },
-  {
-    name: "Trousers",
-    nameFa: "شلوار",
-    image:
-      "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&w=1200&q=85",
-  },
-];
-
-/* =========================================================
-   ICONS
-========================================================= */
 
 function SearchIcon() {
   return (
@@ -323,22 +549,18 @@ function ArrowUpRight() {
   );
 }
 
-
-function ProductImage({ image, fallbackImage, alt, className }) {
-  const sources = Array.isArray(image)
-    ? image.filter(Boolean)
-    : image
-      ? [image]
-      : [];
-
-  const allSources = [...sources, fallbackImage].filter(
-    (src, index, list) =>
-      src && list.indexOf(src) === index
-  );
-
+function ProductImage({ image, alt, className }) {
+  const sources = Array.isArray(image) ? image.filter(Boolean) : [image].filter(Boolean);
   const [sourceIndex, setSourceIndex] = useState(0);
+  const src = sources[sourceIndex] || "";
 
-  const src = allSources[sourceIndex] || fallbackImage;
+  useEffect(() => {
+    setSourceIndex(0);
+  }, [sources.join("|")]);
+
+  if (!src) {
+    return <div className={`${className} product-image-empty`} aria-label={alt} />;
+  }
 
   return (
     <img
@@ -348,7 +570,7 @@ function ProductImage({ image, fallbackImage, alt, className }) {
       loading="lazy"
       decoding="async"
       onError={() => {
-        if (sourceIndex < allSources.length - 1) {
+        if (sourceIndex < sources.length - 1) {
           setSourceIndex((current) => current + 1);
         }
       }}
@@ -356,162 +578,1321 @@ function ProductImage({ image, fallbackImage, alt, className }) {
   );
 }
 
-/* =========================================================
-   PRODUCT CARD
-========================================================= */
-
-function ProductCard({ product, image, language, onAdd }) {
+function ColorSwatches({ colors, language }) {
+  const visibleColors = Array.isArray(colors) ? colors.slice(0, 5) : [];
   const isFarsi = language === "farsi";
+
+  if (!visibleColors.length) return null;
+
+  return (
+    <div className="color-swatches" aria-label={isFarsi ? "رنگ‌ها" : "Colors"}>
+      {visibleColors.map((color) => (
+        <span
+          key={`${color.label}-${color.hex}`}
+          className="color-swatch"
+          title={isFarsi ? color.labelFa || color.label : color.label}
+          style={{ background: color.hex || "#b9b5aa" }}
+        />
+      ))}
+    </div>
+  );
+}
+
+function ProductCard({ product, language, labels, onAdd, isAdding }) {
+  const isFarsi = language === "farsi";
+  const name = productDisplayName(product, isFarsi);
+  const category = productCategoryName(product, isFarsi);
+  const canAdd = product.source !== "medusa" || product.variantId;
+  const href = productPageHref(product);
+  const lowStock =
+    Number.isFinite(Number(product.stockCount)) && Number(product.stockCount) > 0 && Number(product.stockCount) <= 5;
 
   return (
     <article className="product-card">
       <div className="product-image-wrap">
-        {product.badge && (
-          <span className="product-badge">
-            {isFarsi ? "جدید" : product.badge}
-          </span>
-        )}
+        {product.badge && <span className="product-badge">{product.badge}</span>}
 
         <button
           type="button"
           className="wishlist-button"
-          aria-label={isFarsi ? "افزودن به علاقه‌مندی‌ها" : "Add to wishlist"}
+          aria-label={labels.wishlist}
         >
           <span aria-hidden="true">♡</span>
         </button>
 
-        <ProductImage
-          image={image}
-          fallbackImage={product.fallbackImage}
-          alt={isFarsi ? product.nameFa : product.name}
-          className="product-image"
-        />
+        <ProductImage image={product.imageUrls} alt={name} className="product-image" />
 
         <button
           type="button"
           className="quick-add"
           onClick={() => onAdd(product)}
+          disabled={!canAdd || isAdding}
         >
-          <span>{isFarsi ? "افزودن سریع" : "Quick add"}</span>
+          <span>
+            {isAdding ? labels.adding : canAdd ? labels.quickAdd : labels.noVariant}
+          </span>
           <ArrowRight />
         </button>
       </div>
 
       <div className="product-info">
         <div>
-          <h3>{isFarsi ? product.nameFa : product.name}</h3>
-          <p>{isFarsi ? product.categoryFa : product.category}</p>
+          <h3>
+            <a href={href}>{name}</a>
+          </h3>
+          <p>{category}</p>
+          <ColorSwatches colors={product.colors} language={language} />
         </div>
 
-        <span className="product-price">{product.price}</span>
+        <div className="product-commerce">
+          {product.compareAtPrice && (
+            <span className="compare-price">{product.compareAtPrice}</span>
+          )}
+          <span className="product-price">{product.price}</span>
+        </div>
       </div>
+
+      <div className="product-card-footer">
+        <span>{lowStock ? labels.stockLow : labels.inStock}</span>
+        <a href={href}>
+          {labels.viewDetails}
+        </a>
+      </div>
+
+      {product.installment && (
+        <p className="installment-note">{product.installment}</p>
+      )}
     </article>
   );
 }
 
-/* =========================================================
-   CATEGORY CARD
-========================================================= */
-
-function CategoryCard({ category, language }) {
+function CategoryCard({ category, language, labels, active, onSelect }) {
   const isFarsi = language === "farsi";
 
   return (
-    <a href="#products" className="category-card">
+    <button
+      type="button"
+      className={`category-card ${active ? "category-card-active" : ""}`}
+      onClick={() => onSelect(category.slug)}
+    >
       <div className="category-image-wrap">
-        <img
-          src={category.image}
+        <ProductImage
+          image={category.imageUrl}
           alt={isFarsi ? category.nameFa : category.name}
           className="category-image"
-          loading="lazy"
-          decoding="async"
         />
-
         <div className="category-overlay" />
 
         <div className="category-content">
           <h3>{isFarsi ? category.nameFa : category.name}</h3>
 
           <span>
-            {isFarsi ? "مشاهده" : "Shop"}
+            {labels.shop}
             <ArrowUpRight />
           </span>
         </div>
       </div>
-    </a>
+    </button>
   );
 }
 
-/* =========================================================
-   APP
-========================================================= */
+function sumCartItems(items) {
+  return items.reduce((total, item) => total + item.quantity, 0);
+}
+
+function sumCartSubtotal(items) {
+  return items.reduce(
+    (total, item) => total + (Number(item.product.priceAmount) || 0) * item.quantity,
+    0
+  );
+}
+
+function formatDemoMoney(amount) {
+  if (!Number.isFinite(Number(amount))) return "Preview";
+
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "EUR",
+    maximumFractionDigits: 0,
+  }).format(Number(amount));
+}
+
+function slugify(value) {
+  return String(value || "")
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+function getRouteFromHash() {
+  const hash = typeof window === "undefined" ? "" : window.location.hash;
+  const value = hash.replace(/^#\/?/, "");
+
+  if (value.startsWith("products/")) {
+    return {
+      type: "product",
+      handle: decodeRoutePart(value.replace(/^products\//, "").split(/[?#]/)[0]),
+    };
+  }
+
+  if (value === "owner") return { type: "owner" };
+  if (value === "developer") return { type: "developer" };
+  if (value === "assist") return { type: "assist" };
+  if (value === "account") return { type: "account" };
+
+  return { type: "home", section: value.replace(/^#/, "") || "new" };
+}
+
+function decodeRoutePart(value) {
+  try {
+    return decodeURIComponent(value);
+  } catch {
+    return value;
+  }
+}
+
+function productPageHref(product) {
+  return `#/products/${encodeURIComponent(product.handle || product.id)}`;
+}
+
+function productDisplayName(product, isFarsi) {
+  return isFarsi ? product.nameFa || product.name : product.name || product.nameFa;
+}
+
+function productCategoryName(product, isFarsi) {
+  return isFarsi
+    ? product.categoryFa || product.category
+    : product.category || product.categoryFa;
+}
+
+function productCollectionName(product, isFarsi) {
+  return isFarsi
+    ? product.collectionFa || product.collection
+    : product.collection || product.collectionFa;
+}
+
+function productStockLabel(product, labels) {
+  const stock = Number(product.stockCount);
+
+  if (product.inStock === false || stock <= 0) return labels.outOfStock;
+  if (Number.isFinite(stock) && stock <= 5) return labels.lowStock;
+  return labels.inStock;
+}
+
+function formatCompactAmount(amount) {
+  const value = Number(amount);
+
+  if (!Number.isFinite(value) || value <= 0) return "Preview";
+  if (value >= 1_000_000_000) return `${(value / 1_000_000_000).toFixed(1)}B IRR`;
+  if (value >= 1_000_000) return `${(value / 1_000_000).toFixed(1)}M IRR`;
+
+  return `${Math.round(value).toLocaleString("en-US")} IRR`;
+}
+
+function catalogMetrics(catalog) {
+  const products = catalog.products || [];
+  const lowStockProducts = products.filter((product) => {
+    const stock = Number(product.stockCount);
+    return Number.isFinite(stock) && stock > 0 && stock <= 5;
+  });
+  const saleProducts = products.filter(
+    (product) => Number(product.compareAtAmount) > Number(product.priceAmount)
+  );
+  const inventoryUnits = products.reduce((total, product) => {
+    const stock = Number(product.stockCount);
+    return Number.isFinite(stock) && stock > 0 ? total + stock : total;
+  }, 0);
+  const inventoryValue = products.reduce((total, product) => {
+    const stock = Number(product.stockCount);
+    const price = Number(product.priceAmount);
+    return Number.isFinite(stock) && stock > 0 && Number.isFinite(price)
+      ? total + stock * price
+      : total;
+  }, 0);
+
+  return {
+    products,
+    totalProducts: products.length,
+    inStockProducts: products.filter((product) => product.inStock !== false).length,
+    lowStockProducts,
+    saleProducts,
+    inventoryUnits,
+    inventoryValue,
+  };
+}
+
+function medusaFeatureRows(metrics, labels) {
+  return [
+    {
+      id: "orders",
+      title: "Orders",
+      titleFa: "سفارش‌ها",
+      metric: "0",
+      detail: "Payment, fulfillment, returns, exchanges",
+      detailFa: "پرداخت، ارسال، مرجوعی و تعویض",
+    },
+    {
+      id: "products",
+      title: "Products",
+      titleFa: "محصولات",
+      metric: String(metrics.totalProducts),
+      detail: "Variants, categories, collections, product options",
+      detailFa: "وریانت، دسته‌بندی، کالکشن و گزینه‌های محصول",
+    },
+    {
+      id: "inventory",
+      title: "Inventory",
+      titleFa: "موجودی",
+      metric: String(metrics.inventoryUnits),
+      detail: "Stock locations, availability, reservations",
+      detailFa: "مکان‌های انبار، دسترسی و رزرو موجودی",
+    },
+    {
+      id: "customers",
+      title: "Customers",
+      titleFa: "مشتریان",
+      metric: "0",
+      detail: "Accounts, guest customers, customer groups",
+      detailFa: "حساب‌ها، مشتری مهمان و گروه‌های مشتری",
+    },
+    {
+      id: "promotions",
+      title: "Promotions",
+      titleFa: "پروموشن‌ها",
+      metric: String(metrics.saleProducts.length),
+      detail: "Coupons, automatic discounts, campaign budgets",
+      detailFa: "کد تخفیف، تخفیف خودکار و بودجه کمپین",
+    },
+    {
+      id: "price-lists",
+      title: "Price Lists",
+      titleFa: "لیست قیمت",
+      metric: "1",
+      detail: "Sale prices and group-specific price overrides",
+      detailFa: "قیمت تخفیفی و قیمت اختصاصی گروه مشتری",
+    },
+    {
+      id: "loyalty",
+      title: "Loyalty",
+      titleFa: "وفاداری",
+      metric: "Web Push",
+      detail: "Reward notices sent through opted-in Chrome and Safari browsers",
+      detailFa: "اعلان پاداش از طریق مرورگرهای کروم و سافاری با اجازه مشتری",
+    },
+  ].map((feature) => ({
+    ...feature,
+    status: feature.metric === "0" ? labels.needsApi : labels.ready,
+  }));
+}
+
+function uniqueProducts(products) {
+  const seen = new Set();
+
+  return products.filter((product) => {
+    if (seen.has(product.id)) return false;
+
+    seen.add(product.id);
+    return true;
+  });
+}
+
+function QuickView({
+  product,
+  language,
+  labels,
+  productLabels,
+  onAdd,
+  onClose,
+  isAdding,
+}) {
+  if (!product) return null;
+
+  const isFarsi = language === "farsi";
+  const name = isFarsi ? product.nameFa : product.name;
+  const description = isFarsi
+    ? product.descriptionFa || product.description
+    : product.description;
+  const canAdd = product.source !== "medusa" || product.variantId;
+
+  return (
+    <div className="quick-view-overlay" role="dialog" aria-modal="true">
+      <div className="quick-view">
+        <button
+          type="button"
+          className="icon-button quick-view-close"
+          onClick={onClose}
+          aria-label={isFarsi ? "بستن" : "Close"}
+        >
+          <CloseIcon />
+        </button>
+
+        <div className="quick-view-media">
+          <ProductImage image={product.imageUrls} alt={name} className="product-image" />
+        </div>
+
+        <div className="quick-view-content">
+          <span className="eyebrow">{isFarsi ? product.categoryFa : product.category}</span>
+          <h2>{name}</h2>
+          <p>{description}</p>
+
+          <div className="detail-price-row">
+            {product.compareAtPrice && (
+              <span className="compare-price">{product.compareAtPrice}</span>
+            )}
+            <span className="product-price">{product.price}</span>
+          </div>
+
+          <ColorSwatches colors={product.colors} language={language} />
+
+          {Array.isArray(product.sizes) && product.sizes.length > 0 && (
+            <div className="size-list">
+              {product.sizes.map((size) => (
+                <span key={size}>{size}</span>
+              ))}
+            </div>
+          )}
+
+          {product.installment && (
+            <p className="installment-note strong">{product.installment}</p>
+          )}
+
+          <div className="quick-view-actions">
+            <button
+              type="button"
+              className="button button-dark"
+              onClick={() => onAdd(product)}
+              disabled={!canAdd || isAdding}
+            >
+              {isAdding ? labels.adding : canAdd ? labels.quickAdd : labels.noVariant}
+              <ArrowRight />
+            </button>
+
+            {product.externalUrl && (
+              <a
+                href={product.externalUrl}
+                className="button button-outline"
+                target="_blank"
+                rel="noreferrer"
+              >
+                {productLabels.viewLive}
+                <ArrowUpRight />
+              </a>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function CartDrawer({
+  open,
+  items,
+  labels,
+  checkoutLabels,
+  language,
+  onClose,
+  onCheckout,
+  onIncrease,
+  onDecrease,
+  onRemove,
+}) {
+  const subtotal = sumCartSubtotal(items);
+  const isFarsi = language === "farsi";
+
+  if (!open) return null;
+
+  return (
+    <div className="cart-overlay">
+      <button
+        type="button"
+        className="cart-backdrop"
+        onClick={onClose}
+        aria-label={labels.close}
+      />
+
+      <aside className="cart-drawer" role="dialog" aria-modal="true" aria-label={labels.bag}>
+        <div className="cart-drawer-header">
+          <h2>{labels.bag}</h2>
+          <button type="button" className="icon-button" onClick={onClose} aria-label={labels.close}>
+            <CloseIcon />
+          </button>
+        </div>
+
+        {items.length ? (
+          <div className="cart-items">
+            {items.map((item) => {
+              const productName = isFarsi
+                ? item.product.nameFa || item.product.name
+                : item.product.name || item.product.nameFa;
+              const categoryName = isFarsi
+                ? item.product.categoryFa || item.product.category
+                : item.product.category || item.product.categoryFa;
+              const lineAmount = Number(item.product.priceAmount) * item.quantity;
+              const lineTotal =
+                Number.isFinite(lineAmount) && lineAmount > 0
+                  ? formatDemoMoney(lineAmount)
+                  : item.product.price;
+
+              return (
+                <div className="cart-line" key={item.product.id}>
+                  <ProductImage
+                    image={item.product.imageUrls}
+                    alt={productName}
+                    className="cart-line-image"
+                  />
+
+                  <div className="cart-line-main">
+                    <div className="cart-line-heading">
+                      <div>
+                        <h3>{productName}</h3>
+                        {categoryName && <p>{categoryName}</p>}
+                      </div>
+
+                      <strong>{lineTotal}</strong>
+                    </div>
+
+                    <div className="cart-line-actions">
+                      <div className="quantity-control" aria-label={`${labels.quantity}: ${productName}`}>
+                        <button
+                          type="button"
+                          onClick={() => onDecrease(item.product.id)}
+                          aria-label={`${labels.decrease}: ${productName}`}
+                        >
+                          -
+                        </button>
+                        <span>{item.quantity}</span>
+                        <button
+                          type="button"
+                          onClick={() => onIncrease(item.product.id)}
+                          aria-label={`${labels.increase}: ${productName}`}
+                        >
+                          +
+                        </button>
+                      </div>
+
+                      <button
+                        type="button"
+                        className="cart-remove"
+                        onClick={() => onRemove(item.product.id)}
+                      >
+                        {labels.remove}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <p className="empty-cart">{labels.empty}</p>
+        )}
+
+        <div className="checkout-card">
+          <div className="subtotal-row">
+            <span>{labels.subtotal}</span>
+            <strong>{subtotal ? formatDemoMoney(subtotal) : "Preview"}</strong>
+          </div>
+
+          <div className="checkout-steps">
+            <span>{checkoutLabels.customer}</span>
+            <span>{checkoutLabels.delivery}</span>
+            <span>{checkoutLabels.payment}</span>
+          </div>
+
+          <label className="payment-choice">
+            <input type="radio" name="payment" defaultChecked />
+            <span>{checkoutLabels.snapPay}</span>
+          </label>
+          <label className="payment-choice">
+            <input type="radio" name="payment" />
+            <span>{checkoutLabels.card}</span>
+          </label>
+
+          <p>{labels.snapPay}</p>
+
+          <button type="button" className="button button-dark" onClick={onCheckout}>
+            {checkoutLabels.continue}
+            <ArrowRight />
+          </button>
+        </div>
+      </aside>
+    </div>
+  );
+}
+
+function ProductPage({
+  product,
+  catalog,
+  catalogState,
+  language,
+  labels,
+  cartLabels,
+  onAdd,
+  isAdding,
+}) {
+  const isFarsi = language === "farsi";
+
+  if (!product) {
+    return (
+      <div className="product-page product-page-empty">
+        <a href="#products" className="text-link product-back-link">
+          <ArrowRight />
+          {labels.back}
+        </a>
+
+        <section className="product-not-found">
+          <span className="eyebrow">{labels.details}</span>
+          <h1>
+            {catalogState === "loading" ? labels.loading : labels.notFoundTitle}
+          </h1>
+          <p>
+            {catalogState === "loading"
+              ? labels.notFoundDescription
+              : labels.notFoundDescription}
+          </p>
+        </section>
+      </div>
+    );
+  }
+
+  const name = productDisplayName(product, isFarsi);
+  const category = productCategoryName(product, isFarsi);
+  const collection = productCollectionName(product, isFarsi);
+  const description = isFarsi
+    ? product.descriptionFa || product.description
+    : product.description;
+  const canAdd = product.source !== "medusa" || product.variantId;
+  const relatedProducts = catalog.products
+    .filter((item) => item.id !== product.id && item.categorySlug === product.categorySlug)
+    .slice(0, 4);
+
+  return (
+    <div className="product-page">
+      <a href="#products" className="text-link product-back-link">
+        <ArrowRight />
+        {labels.back}
+      </a>
+
+      <section className="product-detail-layout">
+        <div className="product-detail-media">
+          <ProductImage image={product.imageUrls} alt={name} className="product-detail-image" />
+        </div>
+
+        <div className="product-detail-content">
+          <span className="eyebrow">{labels.details}</span>
+          <h1>{name}</h1>
+
+          <div className="detail-price-row product-page-price">
+            {product.compareAtPrice && (
+              <span className="compare-price">{product.compareAtPrice}</span>
+            )}
+            <span className="product-price">{product.price}</span>
+          </div>
+
+          {description && <p className="product-page-description">{description}</p>}
+
+          <dl className="product-facts">
+            <div>
+              <dt>{labels.category}</dt>
+              <dd>{category}</dd>
+            </div>
+            <div>
+              <dt>{labels.collection}</dt>
+              <dd>{collection}</dd>
+            </div>
+            <div>
+              <dt>{labels.stock}</dt>
+              <dd>{productStockLabel(product, cartLabels)}</dd>
+            </div>
+          </dl>
+
+          {Array.isArray(product.colors) && product.colors.length > 0 && (
+            <div className="product-option-block">
+              <span>{labels.colors}</span>
+              <ColorSwatches colors={product.colors} language={language} />
+            </div>
+          )}
+
+          {Array.isArray(product.sizes) && product.sizes.length > 0 && (
+            <div className="product-option-block">
+              <span>{labels.sizes}</span>
+              <div className="size-list">
+                {product.sizes.map((size) => (
+                  <span key={size}>{size}</span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {product.installment && (
+            <p className="installment-note strong">{product.installment}</p>
+          )}
+
+          <div className="quick-view-actions product-page-actions">
+            <button
+              type="button"
+              className="button button-dark"
+              onClick={() => onAdd(product)}
+              disabled={!canAdd || isAdding}
+            >
+              {isAdding ? cartLabels.adding : canAdd ? cartLabels.quickAdd : cartLabels.noVariant}
+              <ArrowRight />
+            </button>
+
+            {product.externalUrl && (
+              <a
+                href={product.externalUrl}
+                className="button button-outline"
+                target="_blank"
+                rel="noreferrer"
+              >
+                {labels.openLive}
+                <ArrowUpRight />
+              </a>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {relatedProducts.length > 0 && (
+        <section className="section product-related">
+          <div className="section-heading">
+            <div>
+              <span className="eyebrow">{category}</span>
+              <h2>{labels.related}</h2>
+            </div>
+          </div>
+
+          <div className="products-grid">
+            {relatedProducts.map((relatedProduct) => (
+              <ProductCard
+                key={relatedProduct.id}
+                product={relatedProduct}
+                language={language}
+                labels={cartLabels}
+                onAdd={onAdd}
+                isAdding={isAdding && relatedProduct.id === product.id}
+              />
+            ))}
+          </div>
+        </section>
+      )}
+    </div>
+  );
+}
+
+function OwnerDashboardPage({ catalog, language, labels }) {
+  const isFarsi = language === "farsi";
+  const metrics = catalogMetrics(catalog);
+  const moduleRows = medusaFeatureRows(metrics, labels);
+  const priorityProducts = uniqueProducts([
+    ...metrics.lowStockProducts,
+    ...metrics.saleProducts,
+    ...metrics.products,
+  ]).slice(0, 9);
+
+  return (
+    <div className="dashboard-page">
+      <section className="dashboard-shell">
+        <div className="dashboard-heading">
+          <div>
+            <span className="eyebrow">{labels.ownerEyebrow}</span>
+            <h1>{labels.ownerTitle}</h1>
+            <p>{labels.ownerDescription}</p>
+          </div>
+
+          <div className="dashboard-heading-actions">
+            <a href="#products" className="button button-outline">
+              {labels.viewStore}
+              <ArrowRight />
+            </a>
+            <a href="#/assist" className="button button-dark">
+              {labels.websiteAssist}
+              <ArrowRight />
+            </a>
+          </div>
+        </div>
+
+        <div className="metric-grid">
+          <MetricCard label={labels.products} value={metrics.totalProducts} />
+          <MetricCard label={labels.inStock} value={metrics.inStockProducts} />
+          <MetricCard label={labels.lowStock} value={metrics.lowStockProducts.length} />
+          <MetricCard label={labels.sale} value={metrics.saleProducts.length} />
+          <MetricCard
+            label={labels.inventoryValue}
+            value={formatCompactAmount(metrics.inventoryValue)}
+          />
+        </div>
+
+        <section className="dashboard-panel dashboard-panel-wide">
+          <div className="dashboard-panel-header">
+            <h2>{labels.operations}</h2>
+            <span>{catalog.source}</span>
+          </div>
+
+          <div className="module-grid">
+            {moduleRows.map((feature) => (
+              <article className="module-card" key={feature.id}>
+                <div>
+                  <span>{feature.status}</span>
+                  <strong>{isFarsi ? feature.titleFa : feature.title}</strong>
+                </div>
+                <p>{isFarsi ? feature.detailFa : feature.detail}</p>
+                <b>{feature.metric}</b>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <div className="dashboard-grid">
+          <section className="dashboard-panel dashboard-panel-wide">
+            <div className="dashboard-panel-header">
+              <h2>{labels.priorityProducts}</h2>
+              <a href="#products">{labels.open}</a>
+            </div>
+
+            <div className="dashboard-table-wrap">
+              <table className="dashboard-table">
+                <thead>
+                  <tr>
+                    <th>{labels.name}</th>
+                    <th>{labels.price}</th>
+                    <th>{labels.status}</th>
+                    <th>{labels.badge}</th>
+                    <th>{labels.action}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {priorityProducts.map((product) => (
+                    <tr key={product.id}>
+                      <td>
+                        <a href={productPageHref(product)}>
+                          {productDisplayName(product, isFarsi)}
+                        </a>
+                        <span>{productCategoryName(product, isFarsi)}</span>
+                      </td>
+                      <td>{product.price}</td>
+                      <td>{productStockLabel(product, labels)}</td>
+                      <td>{product.badge || labels.ready}</td>
+                      <td>
+                        <a href={productPageHref(product)}>{labels.open}</a>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <aside className="dashboard-panel">
+            <div className="dashboard-panel-header">
+              <h2>{labels.categoryMix}</h2>
+            </div>
+
+            <div className="category-mix">
+              {(catalog.categories || []).map((category) => (
+                <div key={category.slug}>
+                  <span>{isFarsi ? category.nameFa : category.name}</span>
+                  <strong>{category.count}</strong>
+                </div>
+              ))}
+            </div>
+          </aside>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function DeveloperWorkspacePage({ catalog, language, labels }) {
+  const isFarsi = language === "farsi";
+  const metrics = catalogMetrics(catalog);
+  const moduleRows = medusaFeatureRows(metrics, labels);
+  const apiRows = [
+    {
+      id: "store",
+      title: labels.storefront,
+      status: labels.public,
+      route: "/store/products, /store/carts",
+      detail: "Catalog, cart, payment collection, checkout completion",
+    },
+    {
+      id: "admin",
+      title: labels.backend,
+      status: labels.protected,
+      route: "/api/commerce/admin/*",
+      detail: "Orders, products, customers, promotions, price lists",
+    },
+    {
+      id: "warehouse",
+      title: labels.inventory,
+      status: labels.protected,
+      route: "/api/commerce/warehouse/*",
+      detail: "Stock locations, inventory items, inventory levels",
+    },
+    {
+      id: "push",
+      title: labels.browserPush,
+      status: labels.chromeSafari,
+      route: "/api/commerce/loyalty/push/*",
+      detail: "Subscription registration and loyalty notification delivery",
+    },
+  ];
+
+  return (
+    <div className="dashboard-page developer-page">
+      <section className="dashboard-shell">
+        <div className="dashboard-heading">
+          <div>
+            <span className="eyebrow">{labels.developerEyebrow}</span>
+            <h1>{labels.developerTitle}</h1>
+            <p>{labels.developerDescription}</p>
+          </div>
+
+          <div className="dashboard-heading-actions">
+            <a href="#/owner" className="button button-outline">
+              {labels.owner}
+              <ArrowRight />
+            </a>
+            <a href="#/assist" className="button button-dark">
+              {labels.websiteAssist}
+              <ArrowRight />
+            </a>
+          </div>
+        </div>
+
+        <div className="workspace-grid">
+          <section className="dashboard-panel workspace-panel">
+            <div className="dashboard-panel-header">
+              <h2>{labels.medusaDomains}</h2>
+              <span>{catalog.source}</span>
+            </div>
+
+            <div className="module-list">
+              {moduleRows.map((feature) => (
+                <article className="workspace-row" key={feature.id}>
+                  <div>
+                    <strong>{isFarsi ? feature.titleFa : feature.title}</strong>
+                    <span>{isFarsi ? feature.detailFa : feature.detail}</span>
+                  </div>
+                  <b>{feature.metric}</b>
+                </article>
+              ))}
+            </div>
+          </section>
+
+          <section className="dashboard-panel workspace-panel">
+            <div className="dashboard-panel-header">
+              <h2>{labels.apiSurface}</h2>
+              <span>{mouherApiConfig.baseUrl || labels.needsApi}</span>
+            </div>
+
+            <div className="module-list">
+              {apiRows.map((row) => (
+                <article className="workspace-row workspace-row-api" key={row.id}>
+                  <div>
+                    <strong>{row.title}</strong>
+                    <span>{row.detail}</span>
+                    <code>{row.route}</code>
+                  </div>
+                  <b>{row.status}</b>
+                </article>
+              ))}
+            </div>
+          </section>
+        </div>
+
+        <div className="metric-grid">
+          <MetricCard label={labels.products} value={metrics.totalProducts} />
+          <MetricCard label={labels.inventoryValue} value={formatCompactAmount(metrics.inventoryValue)} />
+          <MetricCard label={labels.lowStock} value={metrics.lowStockProducts.length} />
+          <MetricCard label={labels.sale} value={metrics.saleProducts.length} />
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function AccountWorkspacePage({ language, labels, dashboardLabels }) {
+  const isSupported = supportsBrowserPush();
+  const [customerId, setCustomerId] = useState("");
+  const [status, setStatus] = useState(isSupported ? "idle" : "unsupported");
+  const isLoading = status === "loading";
+  const statusLabel = loyaltyStatusLabel(status, labels);
+
+  async function handleEnablePush(event) {
+    event.preventDefault();
+    setStatus("loading");
+
+    try {
+      const result = await requestLoyaltyPushSubscription({
+        customerId: customerId.trim(),
+      });
+
+      setStatus(result.ok ? "active" : result.reason);
+    } catch (error) {
+      console.error("Loyalty push setup failed:", error);
+      setStatus("failed");
+    }
+  }
+
+  return (
+    <div className="dashboard-page account-page">
+      <section className="dashboard-shell account-shell">
+        <div className="dashboard-heading">
+          <div>
+            <span className="eyebrow">{dashboardLabels.accountEyebrow}</span>
+            <h1>{dashboardLabels.accountTitle}</h1>
+            <p>{dashboardLabels.accountDescription}</p>
+          </div>
+
+          <div className="dashboard-heading-actions">
+            <a href="#products" className="button button-outline">
+              {dashboardLabels.viewStore}
+              <ArrowRight />
+            </a>
+          </div>
+        </div>
+
+        <section className="dashboard-panel loyalty-panel">
+          <div className="dashboard-panel-header">
+            <h2>{labels.browserPush}</h2>
+            <span>{isSupported ? labels.browserSupported : labels.browserUnsupported}</span>
+          </div>
+
+          <form className="loyalty-form" onSubmit={handleEnablePush}>
+            <label>
+              <span>{labels.customerId}</span>
+              <input
+                type="text"
+                value={customerId}
+                onChange={(event) => setCustomerId(event.target.value)}
+                placeholder={labels.customerPlaceholder}
+                autoComplete="off"
+              />
+            </label>
+
+            <button
+              type="submit"
+              className="button button-dark"
+              disabled={!isSupported || isLoading}
+            >
+              {isLoading ? labels.enabling : labels.enable}
+              <ArrowRight />
+            </button>
+          </form>
+
+          <div className={`loyalty-status loyalty-status-${status || "idle"}`} role="status">
+            <strong>{statusLabel}</strong>
+            <span>{labels.noPaidChannels}</span>
+          </div>
+        </section>
+      </section>
+    </div>
+  );
+}
+
+function loyaltyStatusLabel(status, labels) {
+  if (status === "active") return labels.active;
+  if (status === "blocked") return labels.blocked;
+  if (status === "not_configured") return labels.notConfigured;
+  if (status === "not_granted") return labels.notGranted;
+  if (status === "unsupported") return labels.unsupported;
+  if (status === "failed") return labels.failed;
+
+  return labels.browserPush;
+}
+
+function WebsiteAssistDashboard({ catalog, language, labels }) {
+  const isFarsi = language === "farsi";
+  const [assistQuery, setAssistQuery] = useState("");
+  const metrics = catalogMetrics(catalog);
+  const normalizedQuery = assistQuery.trim().toLowerCase();
+  const productMatches = metrics.products
+    .filter((product) => {
+      if (!normalizedQuery) return true;
+
+      return [
+        product.name,
+        product.nameFa,
+        product.category,
+        product.categoryFa,
+        product.collection,
+        product.price,
+      ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase()
+        .includes(normalizedQuery);
+    })
+    .slice(0, 8);
+  const selectedProduct = productMatches[0] || metrics.products[0];
+  const taskRows = buildAssistantTasks(metrics.products, labels);
+
+  return (
+    <div className="dashboard-page assistant-page">
+      <section className="dashboard-shell">
+        <div className="dashboard-heading">
+          <div>
+            <span className="eyebrow">{labels.assistEyebrow}</span>
+            <h1>{labels.assistTitle}</h1>
+            <p>{labels.assistDescription}</p>
+          </div>
+
+          <div className="dashboard-heading-actions">
+            <a href="#/owner" className="button button-outline">
+              {labels.owner}
+              <ArrowRight />
+            </a>
+            <a href="#products" className="button button-dark">
+              {labels.viewStore}
+              <ArrowRight />
+            </a>
+          </div>
+        </div>
+
+        <form className="assistant-search" onSubmit={(event) => event.preventDefault()}>
+          <SearchIcon />
+          <input
+            type="search"
+            value={assistQuery}
+            onChange={(event) => setAssistQuery(event.target.value)}
+            placeholder={labels.search}
+            aria-label={labels.search}
+          />
+        </form>
+
+        <div className="assistant-grid">
+          <section className="dashboard-panel assistant-answer">
+            <div className="dashboard-panel-header">
+              <h2>{labels.suggestedReply}</h2>
+              {selectedProduct && <span>{productStockLabel(selectedProduct, labels)}</span>}
+            </div>
+
+            {selectedProduct ? (
+              <>
+                <h3>{productDisplayName(selectedProduct, isFarsi)}</h3>
+                <p>{assistantReply(selectedProduct, isFarsi)}</p>
+                <div className="quick-view-actions">
+                  <a href={productPageHref(selectedProduct)} className="button button-dark">
+                    {labels.open}
+                    <ArrowRight />
+                  </a>
+                  {selectedProduct.externalUrl && (
+                    <a
+                      href={selectedProduct.externalUrl}
+                      className="button button-outline"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {labels.live}
+                      <ArrowUpRight />
+                    </a>
+                  )}
+                </div>
+              </>
+            ) : (
+              <p>{labels.noTasks}</p>
+            )}
+          </section>
+
+          <section className="dashboard-panel">
+            <div className="dashboard-panel-header">
+              <h2>{labels.productMatches}</h2>
+              <span>{productMatches.length}</span>
+            </div>
+
+            <div className="assistant-product-list">
+              {productMatches.map((product) => (
+                <a href={productPageHref(product)} key={product.id}>
+                  <ProductImage
+                    image={product.imageUrls}
+                    alt={productDisplayName(product, isFarsi)}
+                    className="assistant-product-image"
+                  />
+                  <span>{productDisplayName(product, isFarsi)}</span>
+                  <b>{product.price}</b>
+                </a>
+              ))}
+            </div>
+          </section>
+
+          <section className="dashboard-panel">
+            <div className="dashboard-panel-header">
+              <h2>{labels.contentQueue}</h2>
+            </div>
+
+            <div className="task-list">
+              {taskRows.length ? (
+                taskRows.map((task) => (
+                  <div key={task.id}>
+                    <span>{task.label}</span>
+                    <strong>{task.count}</strong>
+                  </div>
+                ))
+              ) : (
+                <p>{labels.noTasks}</p>
+              )}
+            </div>
+          </section>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function MetricCard({ label, value }) {
+  return (
+    <article className="metric-card">
+      <span>{label}</span>
+      <strong>{value}</strong>
+    </article>
+  );
+}
+
+function buildAssistantTasks(products, labels) {
+  const rows = [
+    {
+      id: "photo",
+      label: labels.missingPhoto,
+      count: products.filter((product) => !product.imageUrls?.length).length,
+    },
+    {
+      id: "color",
+      label: labels.missingColor,
+      count: products.filter((product) => !product.colors?.length).length,
+    },
+    {
+      id: "size",
+      label: labels.missingSize,
+      count: products.filter((product) => !product.sizes?.length).length,
+    },
+    {
+      id: "sale",
+      label: labels.saleBadge,
+      count: products.filter(
+        (product) => Number(product.compareAtAmount) > Number(product.priceAmount)
+      ).length,
+    },
+  ];
+
+  return rows.filter((row) => row.count > 0);
+}
+
+function assistantReply(product, isFarsi) {
+  const name = productDisplayName(product, isFarsi);
+  const category = productCategoryName(product, isFarsi);
+  const collection = productCollectionName(product, isFarsi);
+
+  if (isFarsi) {
+    return `${name} از محصولات فعلی موهر در دسته ${category} و ادیت ${collection} است. قیمت فعلی ${product.price} است و صفحه محصول برای عکس، رنگ، سایز و وضعیت موجودی آماده است.`;
+  }
+
+  return `${name} is a current Mouher product in ${category}, listed under ${collection}. The current price is ${product.price}, and the product page is ready for photos, colors, sizes and stock status.`;
+}
+
+function upsertCartItem(items, product) {
+  const existing = items.find((item) => item.product.id === product.id);
+
+  if (existing) {
+    return items.map((item) =>
+      item.product.id === product.id
+        ? { ...item, quantity: item.quantity + 1 }
+        : item
+    );
+  }
+
+  return [...items, { product, quantity: 1 }];
+}
+
+function updateCartItemQuantity(items, productId, delta) {
+  return items.flatMap((item) => {
+    if (item.product.id !== productId) return [item];
+
+    const quantity = item.quantity + delta;
+
+    return quantity > 0 ? [{ ...item, quantity }] : [];
+  });
+}
 
 export default function App() {
   const [language, setLanguage] = useState("pinglish");
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  const [cartCount, setCartCount] = useState(0);
+  const [cartOpen, setCartOpen] = useState(false);
+  const [cartItems, setCartItems] = useState([]);
+  const [cartMessage, setCartMessage] = useState("");
   const [email, setEmail] = useState("");
-  const [mouherImages, setMouherImages] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [route, setRoute] = useState(() => getRouteFromHash());
+  const [catalog, setCatalog] = useState({
+    products: [],
+    categories: [],
+    source: "demo",
+    featuredImage: "",
+    notice: "",
+  });
+  const [catalogState, setCatalogState] = useState("loading");
+  const [activeCategory, setActiveCategory] = useState("all");
+  const [activeCollection, setActiveCollection] = useState("all");
+  const [query, setQuery] = useState("");
+  const [addingProductId, setAddingProductId] = useState("");
 
   const t = content[language];
   const isFarsi = language === "farsi";
-
-  /* -------------------------------------------------------
-     LOAD REAL MOUHER IMAGES
-  ------------------------------------------------------- */
+  const cartCount = sumCartItems(cartItems);
 
   useEffect(() => {
     let cancelled = false;
 
-    async function loadImages() {
-      try {
-        const images = await getMouherImages();
+    async function hydrateCatalog() {
+      setCatalogState("loading");
+      const nextCatalog = await loadCatalog();
 
-        if (!cancelled && Array.isArray(images)) {
-          setMouherImages(images);
-        }
-      } catch (error) {
-        console.error("Failed to load Mouher images:", error);
+      if (!cancelled) {
+        setCatalog(nextCatalog);
+        setCatalogState("ready");
       }
     }
 
-    loadImages();
+    hydrateCatalog();
 
     return () => {
       cancelled = true;
     };
   }, []);
 
-  /* -------------------------------------------------------
-     AUTOMATIC LANGUAGE SWITCH
-     Every 10 seconds
-  ------------------------------------------------------- */
-
   useEffect(() => {
-    let timeoutId;
+    function handleHashChange() {
+      setRoute(getRouteFromHash());
+    }
 
-    const switchLanguage = () => {
-      setLanguage((current) => {
-        const next = current === "pinglish" ? "farsi" : "pinglish";
+    window.addEventListener("hashchange", handleHashChange);
 
-        timeoutId = window.setTimeout(
-          switchLanguage,
-          next === "farsi" ? 40_000 : 10_000
-        );
-
-        return next;
-      });
+    return () => {
+      window.removeEventListener("hashchange", handleHashChange);
     };
-
-    timeoutId = window.setTimeout(switchLanguage, 10_000);
-
-    return () => window.clearTimeout(timeoutId);
   }, []);
 
-  /* -------------------------------------------------------
-     CLOSE MOBILE MENU / SEARCH WITH ESC
-  ------------------------------------------------------- */
+  useEffect(() => {
+    setMenuOpen(false);
+    setSearchOpen(false);
+    setSelectedProduct(null);
+
+    if (route.type !== "home") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+
+    window.requestAnimationFrame(() => {
+      document.getElementById(route.section)?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    });
+  }, [route]);
 
   useEffect(() => {
     function handleKeyDown(event) {
@@ -519,6 +1900,8 @@ export default function App() {
 
       setMenuOpen(false);
       setSearchOpen(false);
+      setCartOpen(false);
+      setSelectedProduct(null);
     }
 
     document.addEventListener("keydown", handleKeyDown);
@@ -528,73 +1911,191 @@ export default function App() {
     };
   }, []);
 
-  /* -------------------------------------------------------
-     BODY SCROLL LOCK FOR OVERLAYS
-  ------------------------------------------------------- */
-
   useEffect(() => {
-    const shouldLock = menuOpen || searchOpen;
+    const shouldLock = menuOpen || searchOpen || cartOpen || selectedProduct;
 
     document.body.style.overflow = shouldLock ? "hidden" : "";
 
     return () => {
       document.body.style.overflow = "";
     };
-  }, [menuOpen, searchOpen]);
+  }, [cartOpen, menuOpen, searchOpen, selectedProduct]);
 
-  /* -------------------------------------------------------
-     CART
-  ------------------------------------------------------- */
+  const categoryOptions = useMemo(
+    () => [
+      {
+        id: "all",
+        slug: "all",
+        name: t.categories.all,
+        nameFa: t.categories.all,
+        count: catalog.products.length,
+      },
+      ...catalog.categories,
+    ],
+    [catalog.categories, catalog.products.length, t.categories.all]
+  );
 
-  function handleAddToCart() {
-    setCartCount((current) => current + 1);
+  const collectionOptions = useMemo(
+    () => [
+      {
+        id: "all",
+        slug: "all",
+        name: t.collections.all,
+        nameFa: t.collections.all,
+        count: catalog.products.length,
+      },
+      ...(catalog.collections || []),
+    ],
+    [catalog.collections, catalog.products.length, t.collections.all]
+  );
+
+  const filteredProducts = useMemo(() => {
+    const normalizedQuery = query.trim().toLowerCase();
+
+    return catalog.products.filter((product) => {
+      const matchesCategory =
+        activeCategory === "all" || product.categorySlug === activeCategory;
+      const matchesCollection =
+        activeCollection === "all" || slugify(product.collection) === activeCollection;
+      const searchable = [
+        product.name,
+        product.nameFa,
+        product.category,
+        product.categoryFa,
+        product.collection,
+        product.description,
+      ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+      const matchesQuery = !normalizedQuery || searchable.includes(normalizedQuery);
+
+      return matchesCategory && matchesCollection && matchesQuery;
+    });
+  }, [activeCategory, activeCollection, catalog.products, query]);
+
+  const routedProduct = useMemo(() => {
+    if (route.type !== "product") return null;
+
+    return catalog.products.find(
+      (product) => product.handle === route.handle || product.id === route.handle
+    );
+  }, [catalog.products, route]);
+
+  useEffect(() => {
+    if (route.type === "product" && routedProduct) {
+      document.title = `${productDisplayName(routedProduct, isFarsi)} | Mouher`;
+      return;
+    }
+
+    if (route.type === "owner") {
+      document.title = `${t.dashboard.ownerTitle} | Mouher`;
+      return;
+    }
+
+    if (route.type === "developer") {
+      document.title = `${t.dashboard.developerTitle} | Mouher`;
+      return;
+    }
+
+    if (route.type === "assist") {
+      document.title = `${t.dashboard.assistTitle} | Mouher`;
+      return;
+    }
+
+    if (route.type === "account") {
+      document.title = `${t.dashboard.accountTitle} | Mouher`;
+      return;
+    }
+
+    document.title = "Mouher — Contemporary Clothing";
+  }, [
+    isFarsi,
+    route,
+    routedProduct,
+    t.dashboard.accountTitle,
+    t.dashboard.assistTitle,
+    t.dashboard.developerTitle,
+    t.dashboard.ownerTitle,
+  ]);
+
+  const heroImage =
+    catalog.featuredImage || catalog.products.find((product) => product.imageUrls?.length)
+      ?.imageUrls[0];
+  const sourceLabel =
+    catalogState === "loading"
+      ? t.products.loading
+      : catalog.source === "medusa"
+        ? t.products.sourceMedusa
+        : catalog.source === "mouher-live-snapshot"
+          ? t.products.sourceLive
+        : t.products.sourceDemo;
+
+  async function handleAddToCart(product) {
+    setAddingProductId(product.id);
+    setCartMessage("");
+    setCartOpen(true);
+
+    try {
+      if (product.source === "medusa" && isMedusaConfigured(medusaConfig)) {
+        await addProductToCart(product, medusaConfig);
+        setCartMessage(t.cart.medusaAdded);
+      } else {
+        setCartMessage(t.cart.previewAdded);
+      }
+
+      setCartItems((current) => upsertCartItem(current, product));
+      setSelectedProduct(null);
+    } catch (error) {
+      console.error("Add to cart failed:", error);
+      setCartMessage(t.cart.unavailable);
+    } finally {
+      setAddingProductId("");
+    }
   }
 
-  /* -------------------------------------------------------
-     NEWSLETTER
-  ------------------------------------------------------- */
+  function handleIncreaseCartItem(productId) {
+    setCartMessage("");
+    setCartItems((current) => updateCartItemQuantity(current, productId, 1));
+  }
+
+  function handleDecreaseCartItem(productId) {
+    setCartMessage("");
+    setCartItems((current) => updateCartItemQuantity(current, productId, -1));
+  }
+
+  function handleRemoveCartItem(productId) {
+    setCartMessage("");
+    setCartItems((current) => current.filter((item) => item.product.id !== productId));
+  }
+
+  function handleCheckoutIntent() {
+    setCartMessage(t.checkout.description);
+  }
 
   function handleNewsletterSubmit(event) {
     event.preventDefault();
 
     if (!email.trim()) return;
 
-    alert(
-      isFarsi
-        ? "ممنون که به موهر پیوستی."
-        : "Mamnoon ke be Mouher peyvasti."
-    );
-
+    alert(t.newsletter.thanks);
     setEmail("");
   }
 
-  /* -------------------------------------------------------
-     HELPERS
-  ------------------------------------------------------- */
-
-  
-
-  const productImages = mouherImages
-    .map((image) => image?.urls || image?.src || image?.url || image)
-    .filter(Boolean)
-    .slice(0, products.length);
+  function handleSearchSubmit(event) {
+    event.preventDefault();
+    setSearchOpen(false);
+    setActiveCategory("all");
+  }
 
   return (
     <div
       className={`site ${isFarsi ? "site-farsi" : ""}`}
       dir={isFarsi ? "rtl" : "ltr"}
     >
-      {/* =================================================
-          ANNOUNCEMENT
-      ================================================= */}
-
       <div className="announcement">
         <p>{t.announcement}</p>
       </div>
-
-      {/* =================================================
-          HEADER
-      ================================================= */}
 
       <header className="header">
         <div className="header-inner">
@@ -614,36 +2115,33 @@ export default function App() {
             <a href="#products">{t.nav.shop}</a>
           </nav>
 
-          <a href="/" className="logo" aria-label="Mouher home">
+          <a href="#new" className="logo" aria-label="Mouher home">
             MOUHER
           </a>
 
           <nav className="desktop-nav nav-right" aria-label="Utility">
+            <a href="#/owner">{t.nav.owner}</a>
+            <a href="#/developer">{t.nav.developer}</a>
+            <a href="#/assist">{t.nav.assist}</a>
+
             <button
               type="button"
               className="icon-button"
               onClick={() => setSearchOpen(true)}
-              aria-label={isFarsi ? "جستجو" : "Search"}
+              aria-label={t.search.open}
             >
               <SearchIcon />
             </button>
 
-            <button
-              type="button"
-              className="icon-button"
-              aria-label={isFarsi ? "حساب کاربری" : "Account"}
-            >
+            <a href="#/account" className="icon-button" aria-label={t.cart.account}>
               <UserIcon />
-            </button>
+            </a>
 
             <button
               type="button"
               className="bag-button"
-              aria-label={
-                isFarsi
-                  ? `سبد خرید، ${cartCount} کالا`
-                  : `Shopping bag, ${cartCount} items`
-              }
+              onClick={() => setCartOpen(true)}
+              aria-label={`${t.cart.bag}, ${cartCount}`}
             >
               <BagIcon />
 
@@ -657,21 +2155,49 @@ export default function App() {
         </div>
       </header>
 
-      {/* =================================================
-          LANGUAGE INDICATOR
-      ================================================= */}
-
-      <div className="language-indicator" aria-live="polite">
+      <button
+        type="button"
+        className="language-indicator"
+        onClick={() =>
+          setLanguage((current) => (current === "pinglish" ? "farsi" : "pinglish"))
+        }
+        aria-label={isFarsi ? "Switch to Pinglish" : "تغییر زبان به فارسی"}
+      >
         <span className={language === "pinglish" ? "active" : ""}>EN</span>
         <span className="language-dot" aria-hidden="true">
           /
         </span>
         <span className={language === "farsi" ? "active" : ""}>فا</span>
-      </div>
+      </button>
 
-      {/* =================================================
-          MOBILE MENU
-      ================================================= */}
+      {cartMessage && (
+        <div className="cart-toast" role="status" aria-live="polite">
+          {cartMessage}
+        </div>
+      )}
+
+      <CartDrawer
+        open={cartOpen}
+        items={cartItems}
+        labels={t.cart}
+        checkoutLabels={t.checkout}
+        language={language}
+        onClose={() => setCartOpen(false)}
+        onCheckout={handleCheckoutIntent}
+        onIncrease={handleIncreaseCartItem}
+        onDecrease={handleDecreaseCartItem}
+        onRemove={handleRemoveCartItem}
+      />
+
+      <QuickView
+        product={selectedProduct}
+        language={language}
+        labels={t.cart}
+        productLabels={t.products}
+        onAdd={handleAddToCart}
+        onClose={() => setSelectedProduct(null)}
+        isAdding={addingProductId === selectedProduct?.id}
+      />
 
       {menuOpen && (
         <div className="mobile-menu" role="dialog" aria-modal="true">
@@ -692,90 +2218,110 @@ export default function App() {
             <a href="#new" onClick={() => setMenuOpen(false)}>
               {t.nav.newIn}
             </a>
-
             <a href="#categories" onClick={() => setMenuOpen(false)}>
               {t.nav.collections}
             </a>
-
             <a href="#products" onClick={() => setMenuOpen(false)}>
               {t.nav.shop}
+            </a>
+            <a href="#/owner" onClick={() => setMenuOpen(false)}>
+              {t.nav.owner}
+            </a>
+            <a href="#/developer" onClick={() => setMenuOpen(false)}>
+              {t.nav.developer}
+            </a>
+            <a href="#/assist" onClick={() => setMenuOpen(false)}>
+              {t.nav.assist}
+            </a>
+            <a href="#/account" onClick={() => setMenuOpen(false)}>
+              {t.cart.account}
             </a>
           </nav>
         </div>
       )}
-
-      {/* =================================================
-          SEARCH
-      ================================================= */}
 
       {searchOpen && (
         <div
           className="search-overlay"
           role="dialog"
           aria-modal="true"
-          aria-label={isFarsi ? "جستجو در موهر" : "Search Mouher"}
+          aria-label={t.search.title}
         >
           <div className="search-inner">
             <div className="search-header">
-              <span className="search-title">
-                {isFarsi ? "جستجو در موهر" : "Search Mouher"}
-              </span>
+              <span className="search-title">{t.search.title}</span>
 
               <button
                 type="button"
                 className="icon-button"
                 onClick={() => setSearchOpen(false)}
-                aria-label={isFarsi ? "بستن جستجو" : "Close search"}
+                aria-label={t.search.close}
               >
                 <CloseIcon />
               </button>
             </div>
 
-            <form
-              className="search-form"
-              onSubmit={(event) => {
-                event.preventDefault();
-                setSearchOpen(false);
-              }}
-            >
+            <form className="search-form" onSubmit={handleSearchSubmit}>
               <SearchIcon />
 
               <input
                 autoFocus
                 type="search"
-                placeholder={
-                  isFarsi
-                    ? "محصول یا کالکشن..."
-                    : "Search products, collections..."
-                }
-                aria-label={isFarsi ? "عبارت جستجو" : "Search query"}
+                placeholder={t.search.placeholder}
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+                aria-label={t.search.open}
               />
 
-              <button type="submit">
-                {isFarsi ? "جستجو" : "Search"}
-              </button>
+              <button type="submit">{t.search.submit}</button>
             </form>
           </div>
         </div>
       )}
 
-      {/* =================================================
-          MAIN
-      ================================================= */}
-
       <main>
-        {/* =================================================
-            HERO
-        ================================================= */}
-
+        {route.type === "product" ? (
+          <ProductPage
+            product={routedProduct}
+            catalog={catalog}
+            catalogState={catalogState}
+            language={language}
+            labels={t.productPage}
+            cartLabels={{ ...t.cart, outOfStock: t.dashboard.outOfStock }}
+            onAdd={handleAddToCart}
+            isAdding={addingProductId === routedProduct?.id}
+          />
+        ) : route.type === "owner" ? (
+          <OwnerDashboardPage
+            catalog={catalog}
+            language={language}
+            labels={t.dashboard}
+          />
+        ) : route.type === "developer" ? (
+          <DeveloperWorkspacePage
+            catalog={catalog}
+            language={language}
+            labels={t.dashboard}
+          />
+        ) : route.type === "assist" ? (
+          <WebsiteAssistDashboard
+            catalog={catalog}
+            language={language}
+            labels={t.dashboard}
+          />
+        ) : route.type === "account" ? (
+          <AccountWorkspacePage
+            language={language}
+            labels={t.account}
+            dashboardLabels={t.dashboard}
+          />
+        ) : (
+          <>
         <section className="hero" id="new">
-          <img
-            src={
-              "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=2300&q=85"
-            }
+          <ProductImage
+            image={heroImage}
             alt="Mouher collection"
             className="hero-image"
-            fetchPriority="high"
           />
 
           <div className="hero-overlay" />
@@ -801,90 +2347,144 @@ export default function App() {
           </div>
         </section>
 
-        {/* =================================================
-            PRODUCTS
-        ================================================= */}
+        <section className="trust-strip" aria-label="Store benefits">
+          <span>{t.trust.shipping}</span>
+          <span>{t.trust.returns}</span>
+          <span>{t.trust.support}</span>
+        </section>
+
+        <section className="section collections-section" id="collections">
+          <div className="section-heading">
+            <div>
+              <span className="eyebrow">{t.collections.eyebrow}</span>
+              <h2>{t.collections.title}</h2>
+            </div>
+          </div>
+
+          <div className="collection-rail">
+            {collectionOptions.map((collection) => (
+              <button
+                type="button"
+                key={collection.slug}
+                className={activeCollection === collection.slug ? "active" : ""}
+                onClick={() => {
+                  setActiveCollection(collection.slug);
+                  document.getElementById("products")?.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start",
+                  });
+                }}
+              >
+                <strong>{isFarsi ? collection.nameFa : collection.name}</strong>
+                <span>{collection.count}</span>
+              </button>
+            ))}
+          </div>
+        </section>
 
         <section className="section products-section" id="products">
-          <div className="section-heading">
+          <div className="section-heading catalog-heading">
             <div>
               <span className="eyebrow">{t.products.eyebrow}</span>
               <h2>{t.products.title}</h2>
             </div>
 
-            <a href="#products" className="text-link">
-              {t.products.shopAll}
-              <ArrowRight />
-            </a>
+            <div className="catalog-actions">
+              <span className={`catalog-pill catalog-pill-${catalog.source}`}>
+                {sourceLabel}
+              </span>
+
+              <button
+                type="button"
+                className="text-link"
+                onClick={() => {
+                  setActiveCategory("all");
+                  setActiveCollection("all");
+                  setQuery("");
+                }}
+              >
+                {t.products.shopAll}
+                <ArrowRight />
+              </button>
+            </div>
           </div>
 
-          <div className="products-grid">
-            {products.map((product, index) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                image={productImages[index] || product.fallbackImage}
-                language={language}
-                onAdd={handleAddToCart}
-              />
+          {catalog.notice && <p className="catalog-notice">{catalog.notice}</p>}
+
+          <div className="filter-bar" aria-label={t.categories.eyebrow}>
+            {categoryOptions.map((category) => (
+              <button
+                type="button"
+                key={category.slug}
+                className={activeCategory === category.slug ? "active" : ""}
+                onClick={() => setActiveCategory(category.slug)}
+              >
+                <span>{isFarsi ? category.nameFa : category.name}</span>
+                <span>{category.count}</span>
+              </button>
             ))}
           </div>
-        </section>
 
-        {/* =================================================
-            CATEGORIES
-        ================================================= */}
+          {filteredProducts.length > 0 ? (
+            <div className="products-grid">
+              {filteredProducts.map((product) => (
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                  language={language}
+                  labels={t.cart}
+                  onAdd={handleAddToCart}
+                  onView={setSelectedProduct}
+                  isAdding={addingProductId === product.id}
+                />
+              ))}
+            </div>
+          ) : (
+            <p className="empty-state">{t.products.empty}</p>
+          )}
+        </section>
 
         <section className="section categories-section" id="categories">
           <div className="section-heading">
             <div>
-              <span className="eyebrow">
-                {isFarsi ? "دسته‌بندی" : "Shop by category"}
-              </span>
-
-              <h2>{isFarsi ? "موهر را کشف کن" : "Explore Mouher"}</h2>
+              <span className="eyebrow">{t.categories.eyebrow}</span>
+              <h2>{t.categories.title}</h2>
             </div>
           </div>
 
           <div className="categories-grid">
-            {categories.map((category) => (
+            {catalog.categories.slice(0, 3).map((category) => (
               <CategoryCard
-                key={category.name}
+                key={category.slug}
                 category={category}
                 language={language}
+                labels={t.categories}
+                active={activeCategory === category.slug}
+                onSelect={(slug) => {
+                  setActiveCategory(slug);
+                  document.getElementById("products")?.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start",
+                  });
+                }}
               />
             ))}
           </div>
         </section>
 
-        {/* =================================================
-            PHILOSOPHY
-        ================================================= */}
-
         <section className="philosophy">
           <div className="philosophy-image">
-            <img
-              src={
-                productImages[1] ||
-                "https://images.unsplash.com/photo-1485968579580-b6d095142e6e?auto=format&fit=crop&w=2200&q=90"
-              }
+            <ProductImage
+              image={catalog.products[1]?.imageUrls || heroImage}
               alt="Mouher editorial"
-              loading="lazy"
-              decoding="async"
+              className=""
             />
           </div>
 
           <div className="philosophy-content">
             <span className="eyebrow">{t.philosophy.eyebrow}</span>
 
-            <h2>
-              {t.philosophy.title.split("\n").map((line, index) => (
-                <span key={line}>
-                  {line}
-                  {index === 0 && <br />}
-                </span>
-              ))}
-            </h2>
+            <h2>{t.philosophy.title}</h2>
 
             <p>{t.philosophy.description}</p>
 
@@ -894,10 +2494,6 @@ export default function App() {
             </a>
           </div>
         </section>
-
-        {/* =================================================
-            NEWSLETTER
-        ================================================= */}
 
         <section className="newsletter" id="newsletter">
           <div className="newsletter-inner">
@@ -925,11 +2521,9 @@ export default function App() {
             </form>
           </div>
         </section>
+          </>
+        )}
       </main>
-
-      {/* =================================================
-          FOOTER
-      ================================================= */}
 
       <footer className="footer" id="footer">
         <div className="footer-top">
@@ -941,7 +2535,7 @@ export default function App() {
             <p>
               {isFarsi
                 ? "لباس معاصر برای زندگی روزمره."
-                : "Lebas-e modern baraye zendegi-e roozmarreh."}
+                : "Lebas-e moaser baraye zendegi-e roozmarreh."}
             </p>
           </div>
 

@@ -1,0 +1,14 @@
+[project]
+name = "mouher-backend"
+version = "0.1.0"
+description = "Django companion API for Mouher's Medusa commerce backend."
+requires-python = ">=3.11"
+dependencies = [
+  "Django>=5.0,<6.0",
+  "gunicorn>=23.0,<24.0",
+  "pywebpush>=2.0,<3.0",
+  "psycopg[binary]>=3.2,<4.0",
+]
+
+[tool.setuptools]
+packages = ["mouher_backend", "commerce", "commerce.migrations"]

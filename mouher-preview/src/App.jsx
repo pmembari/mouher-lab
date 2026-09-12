@@ -489,13 +489,24 @@ export default function App() {
   ------------------------------------------------------- */
 
   useEffect(() => {
-    const intervalId = window.setInterval(() => {
-      setLanguage((current) =>
-        current === "pinglish" ? "farsi" : "pinglish"
-      );
-    }, 10_000);
+    let timeoutId;
 
-    return () => window.clearInterval(intervalId);
+    const switchLanguage = () => {
+      setLanguage((current) => {
+        const next = current === "pinglish" ? "farsi" : "pinglish";
+
+        timeoutId = window.setTimeout(
+          switchLanguage,
+          next === "farsi" ? 40_000 : 10_000
+        );
+
+        return next;
+      });
+    };
+
+    timeoutId = window.setTimeout(switchLanguage, 10_000);
+
+    return () => window.clearTimeout(timeoutId);
   }, []);
 
   /* -------------------------------------------------------

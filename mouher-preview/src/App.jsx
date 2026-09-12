@@ -608,7 +608,20 @@ function ProductCard({ product, language, labels, onAdd, isAdding }) {
     Number.isFinite(Number(product.stockCount)) && Number(product.stockCount) > 0 && Number(product.stockCount) <= 5;
 
   return (
-    <article className="product-card">
+    <article
+      className="product-card product-card-clickable"
+      onClick={() => {
+        window.location.hash = href.replace(/^#/, "");
+      }}
+      role="link"
+      tabIndex={0}
+      onKeyDown={(event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          window.location.hash = href.replace(/^#/, "");
+        }
+      }}
+    >
       <div className="product-image-wrap">
         {product.badge && <span className="product-badge">{product.badge}</span>}
 

@@ -15,29 +15,28 @@ function resolveImageUrls(image) {
 
   if (!src && !originalUrl) return [];
 
-  // If it is already an external URL, use it directly.
+  // If the source is already an external URL, use it directly.
   if (/^https?:\/\//i.test(src)) {
     return [src, originalUrl].filter(
-      (url, index, urls) => url && urls.indexOf(url) === index
+      (url, index, urls) =>
+        url && urls.indexOf(url) === index
     );
   }
 
   const filename = src.split("/").pop();
 
-  const urls = [
-    // 1. Current deployed location
+  return [
+    // 1. GitHub Pages
     `${IMAGE_BASE}${filename}`,
 
-    // 2. Current local/root location
+    // 2. Local development
     `/mouher-images/${filename}`,
 
-    // 3. Original Mouher image
+    // 3. Original Mouher source
     originalUrl,
-  ];
-
-  // Remove empty and duplicate URLs
-  return urls.filter(
-    (url, index) => url && urls.indexOf(url) === index
+  ].filter(
+    (url, index, urls) =>
+      url && urls.indexOf(url) === index
   );
 }
 

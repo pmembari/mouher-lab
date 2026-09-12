@@ -323,6 +323,39 @@ function ArrowUpRight() {
   );
 }
 
+
+function ProductImage({ image, fallbackImage, alt, className }) {
+  const sources = Array.isArray(image)
+    ? image.filter(Boolean)
+    : image
+      ? [image]
+      : [];
+
+  const allSources = [...sources, fallbackImage].filter(
+    (src, index, list) =>
+      src && list.indexOf(src) === index
+  );
+
+  const [sourceIndex, setSourceIndex] = useState(0);
+
+  const src = allSources[sourceIndex] || fallbackImage;
+
+  return (
+    <img
+      src={src}
+      alt={alt}
+      className={className}
+      loading="lazy"
+      decoding="async"
+      onError={() => {
+        if (sourceIndex < allSources.length - 1) {
+          setSourceIndex((current) => current + 1);
+        }
+      }}
+    />
+  );
+}
+
 /* =========================================================
    PRODUCT CARD
 ========================================================= */
@@ -347,12 +380,11 @@ function ProductCard({ product, image, language, onAdd }) {
           <span aria-hidden="true">♡</span>
         </button>
 
-        <img
-          src={image || product.fallbackImage}
+        <ProductImage
+          image={image}
+          fallbackImage={product.fallbackImage}
           alt={isFarsi ? product.nameFa : product.name}
           className="product-image"
-          loading="lazy"
-          decoding="async"
         />
 
         <button
@@ -529,13 +561,10 @@ export default function App() {
      HELPERS
   ------------------------------------------------------- */
 
-  function getImageSrc(image) {
-    if (typeof image === "string") return image;
-    return image?.src || image?.url || "";
-  }
+  
 
   const productImages = mouherImages
-    .map(getImageSrc)
+    .map((image) => image?.urls || image?.src || image?.url || image)
     .filter(Boolean)
     .slice(0, products.length);
 
@@ -731,8 +760,7 @@ export default function App() {
         <section className="hero" id="new">
           <img
             src={
-              productImages[0] ||
-              "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=2400&q=90"
+              "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=2300&q=85"
             }
             alt="Mouher collection"
             className="hero-image"

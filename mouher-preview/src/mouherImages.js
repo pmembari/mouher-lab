@@ -1,24 +1,44 @@
 const IMAGE_BASE = `${import.meta.env.BASE_URL}mouher-images/`;
 
-function resolveImageUrl(image) {
-  if (!image) return "";
+function resolveImageUrls(image) {
+  if (!image) return [];
 
   const src =
     typeof image === "string"
       ? image
       : image.src || image.url || "";
 
-  if (!src) return "";
+  const originalUrl =
+    typeof image === "object"
+      ? image.originalUrl || ""
+      : "";
 
-  // Already an external URL
+  if (!src && !originalUrl) return [];
+
+  // If it is already an external URL, use it directly.
   if (/^https?:\/\//i.test(src)) {
-    return src;
+    return [src, originalUrl].filter(
+      (url, index, urls) => url && urls.indexOf(url) === index
+    );
   }
 
-  // Local Mouher image
   const filename = src.split("/").pop();
 
-  return `${IMAGE_BASE}${filename}`;
+  const urls = [
+    // 1. Current deployed location
+    `${IMAGE_BASE}${filename}`,
+
+    // 2. Current local/root location
+    `/mouher-images/${filename}`,
+
+    // 3. Original Mouher image
+    originalUrl,
+  ];
+
+  // Remove empty and duplicate URLs
+  return urls.filter(
+    (url, index) => url && urls.indexOf(url) === index
+  );
 }
 
 export async function getMouherImages() {
@@ -32,5 +52,8 @@ export async function getMouherImages() {
 
   const images = await response.json();
 
-  return images.map(resolveImageUrl);
+  return images.map((image) => ({
+    ...image,
+    urls: resolveImageUrls(image),
+  }));
 }

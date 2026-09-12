@@ -1,0 +1,39 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mouher-storefront
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: mouher-storefront
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mouher-commerce-api
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: mouher-commerce-api
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mouher-medusa-server
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: mouher-medusa-server
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mouher-payment-service
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: mouher-payment-service

@@ -1,0 +1,49 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: mouher-public
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+    - host: mouher.example
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: mouher-storefront
+                port:
+                  name: http
+    - host: api.mouher.example
+      http:
+        paths:
+          - path: /api/commerce
+            pathType: Prefix
+            backend:
+              service:
+                name: mouher-commerce-api
+                port:
+                  name: http
+          - path: /store
+            pathType: Prefix
+            backend:
+              service:
+                name: mouher-medusa-server
+                port:
+                  name: http
+          - path: /admin
+            pathType: Prefix
+            backend:
+              service:
+                name: mouher-medusa-server
+                port:
+                  name: http
+          - path: /hooks/payment
+            pathType: Prefix
+            backend:
+              service:
+                name: mouher-medusa-server
+                port:
+                  name: http

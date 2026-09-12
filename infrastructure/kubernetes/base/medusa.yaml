@@ -1,0 +1,180 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mouher-medusa-server
+  labels:
+    app.kubernetes.io/name: mouher-medusa-server
+    app.kubernetes.io/part-of: mouher-commerce
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: mouher-medusa-server
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: mouher-medusa-server
+        app.kubernetes.io/part-of: mouher-commerce
+    spec:
+      containers:
+        - name: medusa
+          image: ghcr.io/mouher/mouher-medusa:replace-me
+          ports:
+            - name: http
+              containerPort: 9000
+          envFrom:
+            - secretRef:
+                name: mouher-secrets
+          env:
+            - name: NODE_ENV
+              value: production
+            - name: MEDUSA_WORKER_MODE
+              valueFrom:
+                configMapKeyRef:
+                  name: mouher-config
+                  key: MEDUSA_WORKER_SERVER_MODE
+            - name: DISABLE_MEDUSA_ADMIN
+              value: "false"
+            - name: PAYMENT_SERVICE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: mouher-config
+                  key: PAYMENT_SERVICE_URL
+          resources:
+            requests:
+              cpu: 500m
+              memory: 1Gi
+            limits:
+              cpu: "2"
+              memory: 2Gi
+          startupProbe:
+            httpGet:
+              path: /health
+              port: http
+            failureThreshold: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            periodSeconds: 10
+            timeoutSeconds: 3
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            periodSeconds: 30
+            timeoutSeconds: 3
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mouher-medusa-server
+spec:
+  selector:
+    app.kubernetes.io/name: mouher-medusa-server
+  ports:
+    - name: http
+      port: 9000
+      targetPort: http
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: mouher-medusa-server
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: mouher-medusa-server
+  minReplicas: 2
+  maxReplicas: 12
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 65
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mouher-medusa-worker
+  labels:
+    app.kubernetes.io/name: mouher-medusa-worker
+    app.kubernetes.io/part-of: mouher-commerce
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: mouher-medusa-worker
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: mouher-medusa-worker
+        app.kubernetes.io/part-of: mouher-commerce
+    spec:
+      containers:
+        - name: medusa-worker
+          image: ghcr.io/mouher/mouher-medusa:replace-me
+          ports:
+            - name: http
+              containerPort: 9000
+          envFrom:
+            - secretRef:
+                name: mouher-secrets
+          env:
+            - name: NODE_ENV
+              value: production
+            - name: MEDUSA_WORKER_MODE
+              valueFrom:
+                configMapKeyRef:
+                  name: mouher-config
+                  key: MEDUSA_WORKER_BACKGROUND_MODE
+            - name: DISABLE_MEDUSA_ADMIN
+              valueFrom:
+                configMapKeyRef:
+                  name: mouher-config
+                  key: DISABLE_MEDUSA_ADMIN_IN_WORKER
+            - name: PAYMENT_SERVICE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: mouher-config
+                  key: PAYMENT_SERVICE_URL
+          resources:
+            requests:
+              cpu: 500m
+              memory: 1Gi
+            limits:
+              cpu: "2"
+              memory: 2Gi
+          startupProbe:
+            httpGet:
+              path: /health
+              port: http
+            failureThreshold: 30
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            periodSeconds: 30
+            timeoutSeconds: 3
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: mouher-medusa-worker
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: mouher-medusa-worker
+  minReplicas: 1
+  maxReplicas: 8
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70

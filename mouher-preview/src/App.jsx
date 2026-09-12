@@ -77,7 +77,7 @@ const content = {
 
     hero: {
       eyebrow: "پاییز / زمستان ۱۴۰۵",
-      title: "موهر.\nآنچه می‌پوشی.",
+      title: "موهر\nآنچه می‌پوشی",
       description:
         "لباس‌های مدرن با تمرکز بر کیفیت، فرم و جزئیات.",
       button: "دیدن کالکشن",
@@ -135,7 +135,7 @@ const products = [
   {
     id: 1,
     name: "Structured Linen Coat",
-    nameFa: "کت لینن حمالی برای بدبحتا",
+    nameFa: "کت لینن حمالی برای بدبختا",
     category: "Outerwear",
     categoryFa: "لباس رویی",
     price: "€240",

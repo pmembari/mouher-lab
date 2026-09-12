@@ -17,7 +17,7 @@ const content = {
 
     hero: {
       eyebrow: "Payiz / Zemestan 2026",
-      title: "Mouher.\nWhat you wear.",
+      title: "Mouher\nWhat you wear",
       description:
         "Lebas-haye modern ba focus bar rooye quality, form va details.",
       button: "Boro be Collection ha",

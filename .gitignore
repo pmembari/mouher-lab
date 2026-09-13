@@ -160,7 +160,13 @@ venv/
 ENV/
 env.bak/
 venv.bak/
-
+Agent_Skills_Could_Inspired/
+*.git/*
+.vscode
+.codex
+.agents
+infrastructure
+*__pycache__*
 # Spyder project settings
 .spyderproject
 .spyproject

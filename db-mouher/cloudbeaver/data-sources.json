@@ -1,0 +1,53 @@
+{
+  "folders": {},
+  "connections": {
+    "mouher_backend": {
+      "provider": "postgresql",
+      "driver": "postgres-jdbc",
+      "name": "Mouher Backend Operations",
+      "description": "Django-owned operational database",
+      "configuration": {
+        "host": "db-mouher",
+        "port": "5432",
+        "database": "mouher_backend",
+        "url": "jdbc:postgresql://db-mouher:5432/mouher_backend",
+        "type": "dev",
+        "auth-properties": {
+          "userName": "mouher_backend"
+        }
+      }
+    },
+    "mouher_medusa": {
+      "provider": "postgresql",
+      "driver": "postgres-jdbc",
+      "name": "Mouher Medusa Commerce",
+      "description": "Medusa-owned commerce database",
+      "configuration": {
+        "host": "db-mouher",
+        "port": "5432",
+        "database": "mouher_medusa",
+        "url": "jdbc:postgresql://db-mouher:5432/mouher_medusa",
+        "type": "dev",
+        "auth-properties": {
+          "userName": "mouher_medusa"
+        }
+      }
+    },
+    "mouher_payment": {
+      "provider": "postgresql",
+      "driver": "postgres-jdbc",
+      "name": "Mouher Payment Adapter",
+      "description": "Reserved payment-service database",
+      "configuration": {
+        "host": "db-mouher",
+        "port": "5432",
+        "database": "mouher_payment",
+        "url": "jdbc:postgresql://db-mouher:5432/mouher_payment",
+        "type": "dev",
+        "auth-properties": {
+          "userName": "mouher_payment"
+        }
+      }
+    }
+  }
+}

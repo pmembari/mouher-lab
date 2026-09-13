@@ -12,7 +12,15 @@ test("summarizeEvents counts recent commerce interactions", () => {
     { name: "product_click", timestamp: "2026-07-01T00:00:00Z", properties: { product_id: "old" } },
   ];
 
-  assert.deepEqual(summarizeEvents(events, now), {
+  const summary = summarizeEvents(events, now);
+  assert.deepEqual({
+    totalEvents: summary.totalEvents,
+    productClicks: summary.productClicks,
+    quickAdds: summary.quickAdds,
+    wishlists: summary.wishlists,
+    conversionRate: summary.conversionRate,
+    topProducts: summary.topProducts,
+  }, {
     totalEvents: 3,
     productClicks: 1,
     quickAdds: 1,
@@ -23,4 +31,6 @@ test("summarizeEvents counts recent commerce interactions", () => {
       { id: "dress", name: "Dress", clicks: 0, quickAdds: 0, wishlists: 1 },
     ],
   });
+  assert.equal(summary.daily.at(-2).total, 3);
+  assert.deepEqual(summary.funnel.map((step) => step.value), [1, 1, 0, 0]);
 });

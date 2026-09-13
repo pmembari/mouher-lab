@@ -5,6 +5,8 @@ from . import views
 
 urlpatterns = [
     path("health/", views.health, name="commerce-health"),
+    path("analytics/events/", views.analytics_collect, name="commerce-analytics-collect"),
+    path("analytics/dashboard/", views.analytics_dashboard, name="commerce-analytics-dashboard"),
     path("cart/", views.cart_create, name="commerce-cart-create"),
     path("cart/<str:cart_id>/items/", views.cart_add_item, name="commerce-cart-add-item"),
     path(

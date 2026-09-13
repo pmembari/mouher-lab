@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { getAnalyticsSummary, trackEvent } from "./lib/analytics";
+import { getAnalyticsConsent, getAnalyticsSummary, setAnalyticsConsent, trackEvent } from "./lib/analytics";
 import {
   addProductToCart,
   isMedusaConfigured,
@@ -1858,6 +1858,11 @@ function OwnerDashboardPage({ catalog, language, labels }) {
               </p>
             )}
           </div>
+
+          <div className="analytics-visual-grid">
+            <AnalyticsBars title={isFarsi ? "تعامل هفت روز اخیر" : "7-day engagement"} rows={analytics.daily.map((row) => ({ label: row.date.slice(5), value: row.total }))} />
+            <AnalyticsBars title={isFarsi ? "قیف خرید" : "Commerce funnel"} rows={analytics.funnel} />
+          </div>
         </section>
 
         <section className="dashboard-panel dashboard-panel-wide owner-alert-panel">
@@ -2534,6 +2539,24 @@ function MetricCard({ label, value }) {
   );
 }
 
+function AnalyticsBars({ title, rows }) {
+  const maximum = Math.max(1, ...rows.map((row) => row.value));
+  return (
+    <section className="analytics-chart" aria-label={title}>
+      <h3>{title}</h3>
+      <div className="analytics-bars">
+        {rows.map((row) => (
+          <div className="analytics-bar-row" key={row.label}>
+            <span>{row.label}</span>
+            <div><i style={{ width: `${(row.value / maximum) * 100}%` }} /></div>
+            <strong>{row.value}</strong>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function buildAssistantTasks(products, labels) {
   const rows = [
     {
@@ -2621,6 +2644,7 @@ export default function App() {
   const [activeCollection, setActiveCollection] = useState("all");
   const [query, setQuery] = useState("");
   const [addingProductId, setAddingProductId] = useState("");
+  const [analyticsConsent, setAnalyticsConsentState] = useState(() => getAnalyticsConsent());
 
   const t = content[language];
   const isFarsi = language === "farsi";
@@ -2765,6 +2789,14 @@ export default function App() {
   }, [catalog.products, route]);
 
   useEffect(() => {
+    trackEvent(route.type === "product" ? "product_view" : "page_view", {
+      product_id: routedProduct?.id,
+      product_name: routedProduct?.name,
+      source: catalog.source,
+    });
+  }, [catalog.source, route, routedProduct]);
+
+  useEffect(() => {
     if (route.type === "product" && routedProduct) {
       document.title = `${productDisplayName(routedProduct, isFarsi)} | Mouher`;
       return;
@@ -2814,6 +2846,7 @@ export default function App() {
         : t.products.sourceDemo;
 
   async function handleAddToCart(product) {
+    trackEvent("add_to_cart", { product_id: product.id, product_name: product.name, price: product.priceAmount, source: product.source });
     setAddingProductId(product.id);
     setCartMessage("");
     setCartOpen(true);
@@ -2852,6 +2885,7 @@ export default function App() {
   }
 
   function handleCheckoutIntent() {
+    trackEvent("begin_checkout", { value: cartItems.reduce((total, item) => total + (Number(item.product.priceAmount) || 0) * item.quantity, 0), currency: "EUR" });
     setCartMessage(t.checkout.description);
   }
 
@@ -2956,6 +2990,16 @@ export default function App() {
         <div className="cart-toast" role="status" aria-live="polite">
           {cartMessage}
         </div>
+      )}
+
+      {analyticsConsent === "unknown" && (
+        <aside className="analytics-consent" role="dialog" aria-label="Analytics preferences">
+          <p>{isFarsi ? "با اجازه شما، رفتار خرید را به‌صورت ناشناس برای بهبود فروشگاه تحلیل می‌کنیم. مکان فقط در سطح شهر/منطقه ثبت می‌شود." : "With your permission, we use first-party analytics to improve the store. Location is limited to city/region level and no raw IP is stored."}</p>
+          <div>
+            <button type="button" className="button button-outline" onClick={() => { setAnalyticsConsent(false); setAnalyticsConsentState("denied"); }}>{isFarsi ? "رد کردن" : "Decline"}</button>
+            <button type="button" className="button button-dark" onClick={() => { setAnalyticsConsent(true); setAnalyticsConsentState("granted"); trackEvent("page_view", { source: catalog.source }); }}>{isFarsi ? "پذیرفتن" : "Allow analytics"}</button>
+          </div>
+        </aside>
       )}
 
       <CartDrawer

@@ -6,6 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_GET, require_POST
 
 from .auth import require_internal_token
+from .analytics import dashboard_summary, record_event
 from .http import error_response, json_response, parse_json_body, positive_int, query_params
 from .medusa import MedusaAPIError
 from .notifications import (
@@ -30,6 +31,24 @@ from .services import (
 @require_GET
 def health(_request: HttpRequest) -> JsonResponse:
     return json_response(health_payload())
+
+
+@csrf_exempt
+@require_POST
+def analytics_collect(request: HttpRequest) -> JsonResponse:
+    try:
+        return json_response(record_event(parse_json_body(request), request=request), status=202)
+    except Exception as error:
+        return error_response(error)
+
+
+@require_internal_token
+@require_GET
+def analytics_dashboard(request: HttpRequest) -> JsonResponse:
+    try:
+        return json_response(dashboard_summary(positive_int(request.GET.get("days"), 30, maximum=90)))
+    except Exception as error:
+        return error_response(error)
 
 
 @csrf_exempt

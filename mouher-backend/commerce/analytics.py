@@ -66,6 +66,20 @@ def dashboard_summary(days: int = 30) -> dict:
     daily_rows = {row["day"]: row["total"] for row in events.annotate(day=TruncDate("occurred_at")).values("day").annotate(total=Count("id")).order_by("day")}
     today = timezone.localdate()
     daily = [{"date": (today - timedelta(days=offset)).isoformat(), "events": daily_rows.get(today - timedelta(days=offset), 0)} for offset in range(days - 1, -1, -1)]
+    top_sold_products = list(
+        events.filter(event_name="purchase")
+        .exclude(product_id="")
+        .values("product_id", "product_name")
+        .annotate(sold_units=Count("id"))
+        .order_by("-sold_units", "product_name")[:10]
+    )
+    top_wishlisted_products = list(
+        events.filter(event_name="wishlist_click")
+        .exclude(product_id="")
+        .values("product_id", "product_name")
+        .annotate(wishlists=Count("id"))
+        .order_by("-wishlists", "product_name")[:10]
+    )
     return {
         "range_days": days,
         "visitors": visitors,
@@ -74,6 +88,8 @@ def dashboard_summary(days: int = 30) -> dict:
         "funnel": {"product_views": product_views, "adds": adds, "checkouts": checkouts, "purchases": purchases},
         "daily": daily,
         "top_products": list(events.exclude(product_id="").values("product_id", "product_name").annotate(interactions=Count("id"), adds=Count("id", filter=Q(event_name__in=["add_to_cart", "quick_add_click"]))).order_by("-interactions")[:10]),
+        "top_sold_products": top_sold_products,
+        "top_wishlisted_products": top_wishlisted_products,
         "locations": list(events.exclude(country_code="").values("country_code", "region", "city").annotate(events=Count("id"), visitors=Count("anonymous_id", distinct=True)).order_by("-events")[:20]),
         "devices": list(events.exclude(device_type="").values("device_type").annotate(events=Count("id")).order_by("-events")),
     }

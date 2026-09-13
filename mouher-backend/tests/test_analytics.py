@@ -36,3 +36,19 @@ class AnalyticsTests(TestCase):
         self.assertEqual(payload["data"]["visitors"], 1)
         self.assertEqual(payload["data"]["funnel"]["product_views"], 1)
         self.assertEqual(payload["data"]["locations"][0]["country_code"], "IT")
+
+    def test_dashboard_separates_sold_and_wishlisted_products(self):
+        occurred_at = timezone.now() - timedelta(hours=1)
+        AnalyticsEvent.objects.create(event_name="purchase", product_id="p1", product_name="Coat", occurred_at=occurred_at)
+        AnalyticsEvent.objects.create(event_name="wishlist_click", product_id="p2", product_name="Dress", occurred_at=occurred_at)
+
+        response = self.client.get(
+            "/api/commerce/analytics/dashboard/",
+            HTTP_X_MOUHER_INTERNAL_TOKEN="owner-secret",
+        )
+
+        payload = response.json()["data"]
+        self.assertEqual(payload["top_sold_products"][0]["product_id"], "p1")
+        self.assertEqual(payload["top_sold_products"][0]["sold_units"], 1)
+        self.assertEqual(payload["top_wishlisted_products"][0]["product_id"], "p2")
+        self.assertEqual(payload["top_wishlisted_products"][0]["wishlists"], 1)

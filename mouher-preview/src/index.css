@@ -3704,6 +3704,12 @@ img {
 .analytics-consent p { margin: 0 0 18px; color: var(--muted); font-size: 12px; line-height: 1.65; }
 .analytics-consent div { display: flex; justify-content: flex-end; gap: 10px; }
 
+.analytics-owner-access { display: grid; grid-template-columns: minmax(180px, 1fr) minmax(180px, 320px) auto; align-items: center; gap: 12px; margin-top: 28px; padding-top: 22px; border-top: 1px solid var(--border); }
+.analytics-owner-access label { font-size: 11px; }
+.analytics-owner-access input { min-height: 42px; padding: 0 12px; border: 1px solid var(--border); background: #fff; }
+.analytics-owner-access p { grid-column: 1 / -1; margin: 0; color: #934646; font-size: 10px; }
+.analytics-account-summary { align-self: end; font-family: var(--serif); font-size: 20px; }
+
 .owner-alert-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -3833,4 +3839,5 @@ img {
   }
 
   .analytics-visual-grid { grid-template-columns: 1fr; }
+  .analytics-owner-access { grid-template-columns: 1fr; }
 }

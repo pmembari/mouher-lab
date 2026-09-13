@@ -136,6 +136,15 @@ export function getAnalyticsSummary() {
   return summarizeEvents(readEvents(storage));
 }
 
+export async function loadOwnerAnalytics(token, days = 30) {
+  if (!apiBaseUrl) throw new Error("Analytics API is not configured.");
+  const response = await fetch(`${apiBaseUrl}/analytics/dashboard/?days=${days}`, {
+    headers: { Accept: "application/json", "X-Mouher-Internal-Token": token },
+  });
+  if (!response.ok) throw new Error(`Analytics report failed: ${response.status}`);
+  return response.json();
+}
+
 function stableId(key, storage) {
   let value = storage.getItem(key);
   if (!value) {

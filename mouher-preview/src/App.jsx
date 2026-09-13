@@ -90,9 +90,9 @@ const content = {
       developerDescription:
         "Protected Medusa Admin proxy, Store API checkout, and browser push delivery status.",
       accountEyebrow: "Customer workspace",
-      accountTitle: "Account and loyalty",
+      accountTitle: "Profile atelier",
       accountDescription:
-        "Loyalty rewards are delivered through browser notifications when the customer opts in.",
+        "A private profile landing page for personal details, style notes, photos and loyalty access.",
       apiSurface: "API surface",
       implementationQueue: "Implementation queue",
       medusaDomains: "Medusa domains",
@@ -114,6 +114,84 @@ const content = {
       outOfStock: "Out of stock",
     },
     account: {
+      account: "Account",
+      greeting: "Hi, Parham",
+      orders: "My orders",
+      myInfo: "My Info",
+      notifications: "Notifications",
+      notifyMeList: "Notify Me List",
+      giftCards: "Gift Cards",
+      helpCenter: "Help Center",
+      signOut: "Sign Out",
+      wishlist: "Wishlist",
+      viewed: "Viewed",
+      recommended: "Recommended for you",
+      viewAll: "View all",
+      shopFaster: "Shop faster with the app",
+      help: "Help",
+      trackOrder: "Track Order",
+      shippingInfo: "Shipping Info",
+      returns: "Returns",
+      contactUs: "Contact Us",
+      company: "Company",
+      careers: "Careers",
+      about: "About",
+      stores: "Stores",
+      ambassadorProgram: "Ambassador Program",
+      quickLinks: "Quick Links",
+      blog: "Blog",
+      sizeGuide: "Size Guide",
+      sitemap: "Sitemap",
+      checkGiftCardBalance: "Check Gift Card Balance",
+      loginTitle: "Sign in to your account",
+      createTitle: "Create your account",
+      loginDescription:
+        "Use a private session to manage your profile, orders, wishlist and notifications.",
+      createDescription:
+        "Create a Mouher account with a strong password before saving personal information.",
+      login: "Login",
+      createAccount: "Create account",
+      switchToCreate: "Create account",
+      switchToLogin: "I already have an account",
+      password: "Password",
+      passwordPlaceholder: "Enter your password",
+      confirmPassword: "Confirm password",
+      confirmPasswordPlaceholder: "Repeat your password",
+      showPassword: "Show",
+      hidePassword: "Hide",
+      authSecurityNote:
+        "Password is validated in the browser and never saved here. Connect this form to HTTPS backend sessions before production.",
+      authRequired: "Sign in or create an account to open your dashboard.",
+      authErrorRequired: "Email and password are required.",
+      authErrorPasswordLength: "Use at least 8 characters.",
+      authErrorPasswordMismatch: "Passwords do not match.",
+      profileEyebrow: "Personal profile",
+      heroTitle: "Create your Mouher profile",
+      heroDescription:
+        "Add the details that help Mouher remember your fit, style and preferred way to be contacted.",
+      profilePhoto: "Profile photo",
+      coverPhoto: "Cover photo",
+      addPhoto: "Add photo",
+      changePhoto: "Change photo",
+      gallery: "Photo gallery",
+      addGalleryPhoto: "Add picture",
+      profileDetails: "Profile details",
+      fullName: "Full name",
+      fullNamePlaceholder: "Your name",
+      email: "Email",
+      emailPlaceholder: "you@example.com",
+      phone: "Phone",
+      phonePlaceholder: "+39 ...",
+      city: "City",
+      cityPlaceholder: "Milan",
+      styleNotes: "Style notes",
+      styleNotesPlaceholder: "Preferred fits, colors, sizes and occasions",
+      saveProfile: "Save profile",
+      savedProfile: "Profile saved in this browser.",
+      previewLabel: "Profile preview",
+      emptyName: "Your name",
+      emptyLocation: "City and contact details",
+      emptyBio: "Your fit notes, favorite colors and preferred pieces will appear here.",
       browserPush: "Browser push",
       browserSupported: "Supported in this browser",
       browserUnsupported: "Unavailable in this browser",
@@ -297,9 +375,9 @@ const content = {
       developerDescription:
         "وضعیت پروکسی محافظت‌شده ادمین مدوسا، چک‌اوت Store API و ارسال پوش مرورگر.",
       accountEyebrow: "فضای مشتری",
-      accountTitle: "حساب و وفاداری",
+      accountTitle: "آتلیه پروفایل",
       accountDescription:
-        "پاداش‌های وفاداری با اجازه مشتری از طریق اعلان مرورگر ارسال می‌شوند.",
+        "صفحه پروفایل خصوصی برای اطلاعات شخصی، یادداشت استایل، عکس‌ها و دسترسی وفاداری.",
       apiSurface: "سطح API",
       implementationQueue: "صف پیاده‌سازی",
       medusaDomains: "دامنه‌های مدوسا",
@@ -321,6 +399,84 @@ const content = {
       outOfStock: "ناموجود",
     },
     account: {
+      account: "حساب کاربری",
+      greeting: "سلام، پرهام",
+      orders: "سفارش‌های من",
+      myInfo: "اطلاعات من",
+      notifications: "اعلان‌ها",
+      notifyMeList: "لیست اطلاع‌رسانی",
+      giftCards: "کارت هدیه",
+      helpCenter: "مرکز راهنما",
+      signOut: "خروج",
+      wishlist: "علاقه‌مندی‌ها",
+      viewed: "بازدید شده",
+      recommended: "پیشنهاد برای شما",
+      viewAll: "مشاهده همه",
+      shopFaster: "خرید سریع‌تر با اپ",
+      help: "راهنما",
+      trackOrder: "پیگیری سفارش",
+      shippingInfo: "اطلاعات ارسال",
+      returns: "مرجوعی",
+      contactUs: "تماس با ما",
+      company: "شرکت",
+      careers: "فرصت‌های شغلی",
+      about: "درباره ما",
+      stores: "فروشگاه‌ها",
+      ambassadorProgram: "برنامه سفیران",
+      quickLinks: "لینک‌های سریع",
+      blog: "بلاگ",
+      sizeGuide: "راهنمای سایز",
+      sitemap: "نقشه سایت",
+      checkGiftCardBalance: "بررسی موجودی کارت هدیه",
+      loginTitle: "ورود به حساب کاربری",
+      createTitle: "ساخت حساب کاربری",
+      loginDescription:
+        "با یک نشست خصوصی پروفایل، سفارش‌ها، علاقه‌مندی‌ها و اعلان‌ها را مدیریت کن.",
+      createDescription:
+        "قبل از ذخیره اطلاعات شخصی، حساب موهر را با رمز قوی بساز.",
+      login: "ورود",
+      createAccount: "ساخت حساب",
+      switchToCreate: "ساخت حساب",
+      switchToLogin: "حساب دارم",
+      password: "رمز عبور",
+      passwordPlaceholder: "رمز عبور را وارد کن",
+      confirmPassword: "تکرار رمز عبور",
+      confirmPasswordPlaceholder: "رمز عبور را تکرار کن",
+      showPassword: "نمایش",
+      hidePassword: "مخفی",
+      authSecurityNote:
+        "رمز عبور در مرورگر بررسی می‌شود و اینجا ذخیره نمی‌شود. قبل از پروداکشن این فرم باید به نشست امن HTTPS وصل شود.",
+      authRequired: "برای باز کردن داشبورد وارد شو یا حساب بساز.",
+      authErrorRequired: "ایمیل و رمز عبور لازم است.",
+      authErrorPasswordLength: "حداقل ۸ کاراکتر وارد کن.",
+      authErrorPasswordMismatch: "رمزها یکسان نیستند.",
+      profileEyebrow: "پروفایل شخصی",
+      heroTitle: "پروفایل موهر خودت را بساز",
+      heroDescription:
+        "اطلاعاتی را اضافه کن که به موهر کمک می‌کند فیت، استایل و روش تماس دلخواهت را به خاطر بسپارد.",
+      profilePhoto: "عکس پروفایل",
+      coverPhoto: "عکس کاور",
+      addPhoto: "افزودن عکس",
+      changePhoto: "تغییر عکس",
+      gallery: "گالری عکس",
+      addGalleryPhoto: "افزودن تصویر",
+      profileDetails: "جزئیات پروفایل",
+      fullName: "نام کامل",
+      fullNamePlaceholder: "نام شما",
+      email: "ایمیل",
+      emailPlaceholder: "you@example.com",
+      phone: "تلفن",
+      phonePlaceholder: "+39 ...",
+      city: "شهر",
+      cityPlaceholder: "میلان",
+      styleNotes: "یادداشت استایل",
+      styleNotesPlaceholder: "فیت، رنگ، سایز و مناسبت‌های دلخواه",
+      saveProfile: "ذخیره پروفایل",
+      savedProfile: "پروفایل در همین مرورگر ذخیره شد.",
+      previewLabel: "پیش‌نمایش پروفایل",
+      emptyName: "نام شما",
+      emptyLocation: "شهر و اطلاعات تماس",
+      emptyBio: "یادداشت فیت، رنگ‌های محبوب و آیتم‌های دلخواه اینجا نمایش داده می‌شود.",
       browserPush: "پوش مرورگر",
       browserSupported: "در این مرورگر پشتیبانی می‌شود",
       browserUnsupported: "در این مرورگر در دسترس نیست",
@@ -2302,12 +2458,150 @@ function DeveloperWorkspacePage({ catalog, language, labels }) {
   );
 }
 
+function AccountProductRail({ title, viewAllLabel, products }) {
+  return (
+    <section className="account-rail">
+      <div className="account-rail-header">
+        <h3>{title}</h3>
+        <a href="#products">{viewAllLabel}</a>
+      </div>
+
+      <div className="account-product-row">
+        {products.map((product, index) => (
+          <a href="#products" className="account-product-card" key={product.name}>
+            <ProductImage
+              image={product.image}
+              alt={`${product.name} | image ${index + 1} of ${products.length}.`}
+              className="account-product-image"
+            />
+            <span>{product.name}</span>
+          </a>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function AccountWorkspacePage({ language, labels, dashboardLabels }) {
   const isSupported = supportsBrowserPush();
   const [customerId, setCustomerId] = useState("");
   const [status, setStatus] = useState(isSupported ? "idle" : "unsupported");
+  const [profile, setProfile] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    city: "",
+    notes: "",
+  });
+  const [profilePhoto, setProfilePhoto] = useState("");
+  const [coverPhoto, setCoverPhoto] = useState("");
+  const [galleryPhotos, setGalleryPhotos] = useState([]);
+  const [profileSaved, setProfileSaved] = useState(false);
+  const [authMode, setAuthMode] = useState("login");
+  const [authForm, setAuthForm] = useState({
+    name: "Parham",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+  const [showPassword, setShowPassword] = useState(false);
+  const [authError, setAuthError] = useState("");
+  const [accountUser, setAccountUser] = useState(null);
   const isLoading = status === "loading";
   const statusLabel = loyaltyStatusLabel(status, labels);
+  const isFarsi = language === "farsi";
+  const isAuthenticated = Boolean(accountUser);
+
+  function handleProfileChange(field, value) {
+    setProfile((currentProfile) => ({
+      ...currentProfile,
+      [field]: value,
+    }));
+    setProfileSaved(false);
+  }
+
+  function handleSinglePhotoChange(setPhoto) {
+    return (event) => {
+      const file = event.target.files?.[0];
+
+      if (!file) return;
+
+      const nextPhoto = URL.createObjectURL(file);
+      setPhoto((currentPhoto) => {
+        if (currentPhoto) URL.revokeObjectURL(currentPhoto);
+        return nextPhoto;
+      });
+    };
+  }
+
+  function handleGalleryChange(event) {
+    const files = Array.from(event.target.files || []);
+
+    if (!files.length) return;
+
+    setGalleryPhotos((currentPhotos) => [
+      ...currentPhotos,
+      ...files.slice(0, 6).map((file) => URL.createObjectURL(file)),
+    ].slice(0, 6));
+  }
+
+  function handleSaveProfile(event) {
+    event.preventDefault();
+    setProfileSaved(true);
+  }
+
+  function handleAuthChange(field, value) {
+    setAuthForm((currentForm) => ({
+      ...currentForm,
+      [field]: value,
+    }));
+    setAuthError("");
+  }
+
+  function handleAuthSubmit(event) {
+    event.preventDefault();
+
+    const email = authForm.email.trim();
+    const name = authForm.name.trim() || "Parham";
+
+    if (!email || !authForm.password) {
+      setAuthError(labels.authErrorRequired);
+      return;
+    }
+
+    if (authForm.password.length < 8) {
+      setAuthError(labels.authErrorPasswordLength);
+      return;
+    }
+
+    if (authMode === "create" && authForm.password !== authForm.confirmPassword) {
+      setAuthError(labels.authErrorPasswordMismatch);
+      return;
+    }
+
+    setAccountUser({ name, email });
+    setProfile((currentProfile) => ({
+      ...currentProfile,
+      name: currentProfile.name || name,
+      email: currentProfile.email || email,
+    }));
+    setAuthForm({
+      name,
+      email,
+      password: "",
+      confirmPassword: "",
+    });
+    setAuthError("");
+  }
+
+  function handleSignOut() {
+    setAccountUser(null);
+    setAuthForm((currentForm) => ({
+      ...currentForm,
+      password: "",
+      confirmPassword: "",
+    }));
+  }
 
   async function handleEnablePush(event) {
     event.preventDefault();
@@ -2324,6 +2618,78 @@ function AccountWorkspacePage({ language, labels, dashboardLabels }) {
       setStatus("failed");
     }
   }
+
+  const profileLocation = [profile.city, profile.email || profile.phone].filter(Boolean).join(" / ");
+  const accountMenu = [
+    { label: labels.account, action: "account" },
+    { label: labels.orders, action: "orders" },
+    { label: labels.myInfo, action: "info" },
+    { label: labels.notifications, action: "notifications" },
+    { label: labels.notifyMeList, action: "notify" },
+    { label: labels.giftCards, action: "gift-cards" },
+    { label: labels.helpCenter, action: "help" },
+    { label: labels.signOut, action: "sign-out" },
+  ];
+  const wishlistItems = [
+    {
+      name: "Cornell Slim Jeans - Dark Wash",
+      image: "",
+    },
+    {
+      name: "Viscose Ribbed Turtleneck FN - Black",
+      image: "",
+    },
+    {
+      name: "Pick A Side Denim Top - Black",
+      image: "",
+    },
+  ];
+  const viewedItems = [
+    {
+      name: "Cropped Striped Button Up Shirt - Black",
+      image: "",
+    },
+    {
+      name: "Princeton Textured Johnny Collar Polo Shirt - Cream",
+      image: "",
+    },
+    {
+      name: "Monarch Royale Watch - Gold",
+      image: "",
+    },
+    {
+      name: "Bulls Digi Camo Soccer Top - Red",
+      image: "",
+    },
+  ];
+  const recommendedItems = [
+    {
+      name: "Tailored Everyday Blazer - Charcoal",
+      image: "",
+    },
+    {
+      name: "Wide Pleated Trouser - Stone",
+      image: "",
+    },
+    {
+      name: "Soft Cotton Overshirt - Ivory",
+      image: "",
+    },
+  ];
+  const accountLinkGroups = [
+    {
+      title: labels.help,
+      links: [labels.helpCenter, labels.trackOrder, labels.shippingInfo, labels.returns, labels.contactUs],
+    },
+    {
+      title: labels.company,
+      links: [labels.careers, labels.about, labels.stores, labels.ambassadorProgram],
+    },
+    {
+      title: labels.quickLinks,
+      links: [labels.blog, labels.sizeGuide, labels.sitemap, labels.giftCards, labels.checkGiftCardBalance],
+    },
+  ];
 
   return (
     <div className="dashboard-page account-page">
@@ -2343,6 +2709,318 @@ function AccountWorkspacePage({ language, labels, dashboardLabels }) {
           </div>
         </div>
 
+        {!isAuthenticated && (
+          <section className="account-auth-panel" dir={isFarsi ? "rtl" : undefined}>
+            <div>
+              <span className="eyebrow">{labels.authRequired}</span>
+              <h2>{authMode === "login" ? labels.loginTitle : labels.createTitle}</h2>
+              <p>{authMode === "login" ? labels.loginDescription : labels.createDescription}</p>
+            </div>
+
+            <form className="account-auth-form" onSubmit={handleAuthSubmit}>
+              {authMode === "create" && (
+                <label>
+                  <span>{labels.fullName}</span>
+                  <input
+                    type="text"
+                    value={authForm.name}
+                    onChange={(event) => handleAuthChange("name", event.target.value)}
+                    placeholder={labels.fullNamePlaceholder}
+                    autoComplete="name"
+                  />
+                </label>
+              )}
+
+              <label>
+                <span>{labels.email}</span>
+                <input
+                  type="email"
+                  value={authForm.email}
+                  onChange={(event) => handleAuthChange("email", event.target.value)}
+                  placeholder={labels.emailPlaceholder}
+                  autoComplete="email"
+                  required
+                />
+              </label>
+
+              <label>
+                <span>{labels.password}</span>
+                <div className="password-field">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    value={authForm.password}
+                    onChange={(event) => handleAuthChange("password", event.target.value)}
+                    placeholder={labels.passwordPlaceholder}
+                    autoComplete={authMode === "login" ? "current-password" : "new-password"}
+                    minLength="8"
+                    required
+                  />
+                  <button type="button" onClick={() => setShowPassword((current) => !current)}>
+                    {showPassword ? labels.hidePassword : labels.showPassword}
+                  </button>
+                </div>
+              </label>
+
+              {authMode === "create" && (
+                <label>
+                  <span>{labels.confirmPassword}</span>
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    value={authForm.confirmPassword}
+                    onChange={(event) => handleAuthChange("confirmPassword", event.target.value)}
+                    placeholder={labels.confirmPasswordPlaceholder}
+                    autoComplete="new-password"
+                    minLength="8"
+                    required
+                  />
+                </label>
+              )}
+
+              {authError && (
+                <strong className="account-auth-error" role="alert">
+                  {authError}
+                </strong>
+              )}
+
+              <div className="account-auth-actions">
+                <button type="submit" className="button button-dark">
+                  {authMode === "login" ? labels.login : labels.createAccount}
+                  <ArrowRight />
+                </button>
+
+                <button
+                  type="button"
+                  className="account-auth-switch"
+                  onClick={() => {
+                    setAuthMode((currentMode) => (currentMode === "login" ? "create" : "login"));
+                    setAuthError("");
+                  }}
+                >
+                  {authMode === "login" ? labels.switchToCreate : labels.switchToLogin}
+                </button>
+              </div>
+
+              <p>{labels.authSecurityNote}</p>
+            </form>
+          </section>
+        )}
+
+        {isAuthenticated && (
+        <section className="account-dashboard">
+          <aside className="account-menu" aria-label={labels.account}>
+            {accountMenu.map((item) => (
+              <button
+                type="button"
+                className={item.action === "account" ? "account-menu-active" : ""}
+                key={item.action}
+                onClick={item.action === "sign-out" ? handleSignOut : undefined}
+              >
+                {item.label}
+              </button>
+            ))}
+          </aside>
+
+          <div className="account-main">
+            <div className="account-welcome">
+              <span className="eyebrow">{labels.account}</span>
+              <h2>{labels.greeting.replace("Parham", accountUser?.name || "Parham").replace("پرهام", accountUser?.name || "پرهام")}</h2>
+            </div>
+
+            <AccountProductRail
+              title={labels.wishlist}
+              viewAllLabel={labels.viewAll}
+              products={wishlistItems}
+            />
+
+            <AccountProductRail
+              title={labels.viewed}
+              viewAllLabel={labels.viewAll}
+              products={viewedItems}
+            />
+
+            <AccountProductRail
+              title={labels.recommended}
+              viewAllLabel={labels.viewAll}
+              products={recommendedItems}
+            />
+
+            <div className="account-app-panel">
+              <strong>{labels.shopFaster}</strong>
+              <a href="#products" className="button button-light">
+                {dashboardLabels.viewStore}
+                <ArrowRight />
+              </a>
+            </div>
+
+            <div className="account-footer-links">
+              {accountLinkGroups.map((group) => (
+                <div key={group.title}>
+                  <h3>{group.title}</h3>
+                  {group.links.map((link) => (
+                    <a href="#/account" key={link}>
+                      {link}
+                    </a>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+        )}
+
+        {isAuthenticated && (
+        <section className="profile-landing" dir={isFarsi ? "rtl" : undefined}>
+          <div className="profile-cover">
+            {coverPhoto ? (
+              <img src={coverPhoto} alt="" />
+            ) : (
+              <div className="profile-cover-empty" aria-hidden="true" />
+            )}
+
+            <label className="profile-upload profile-cover-upload">
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleSinglePhotoChange(setCoverPhoto)}
+              />
+              <span>{coverPhoto ? labels.changePhoto : labels.coverPhoto}</span>
+            </label>
+          </div>
+
+          <div className="profile-intro">
+            <div className="profile-avatar-wrap">
+              <div className="profile-avatar">
+                {profilePhoto ? (
+                  <img src={profilePhoto} alt="" />
+                ) : (
+                  <span>{(profile.name || "M").trim().charAt(0).toUpperCase()}</span>
+                )}
+              </div>
+
+              <label className="profile-upload">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleSinglePhotoChange(setProfilePhoto)}
+                />
+                <span>{profilePhoto ? labels.changePhoto : labels.addPhoto}</span>
+              </label>
+            </div>
+
+            <div>
+              <span className="eyebrow">{labels.profileEyebrow}</span>
+              <h2>{labels.heroTitle}</h2>
+              <p>{labels.heroDescription}</p>
+            </div>
+          </div>
+
+          <div className="profile-content-grid">
+            <form className="profile-form" onSubmit={handleSaveProfile}>
+              <div className="dashboard-panel-header">
+                <h2>{labels.profileDetails}</h2>
+                <span>{labels.profilePhoto}</span>
+              </div>
+
+              <div className="profile-field-grid">
+                <label>
+                  <span>{labels.fullName}</span>
+                  <input
+                    type="text"
+                    value={profile.name}
+                    onChange={(event) => handleProfileChange("name", event.target.value)}
+                    placeholder={labels.fullNamePlaceholder}
+                    autoComplete="name"
+                  />
+                </label>
+
+                <label>
+                  <span>{labels.city}</span>
+                  <input
+                    type="text"
+                    value={profile.city}
+                    onChange={(event) => handleProfileChange("city", event.target.value)}
+                    placeholder={labels.cityPlaceholder}
+                    autoComplete="address-level2"
+                  />
+                </label>
+
+                <label>
+                  <span>{labels.email}</span>
+                  <input
+                    type="email"
+                    value={profile.email}
+                    onChange={(event) => handleProfileChange("email", event.target.value)}
+                    placeholder={labels.emailPlaceholder}
+                    autoComplete="email"
+                  />
+                </label>
+
+                <label>
+                  <span>{labels.phone}</span>
+                  <input
+                    type="tel"
+                    value={profile.phone}
+                    onChange={(event) => handleProfileChange("phone", event.target.value)}
+                    placeholder={labels.phonePlaceholder}
+                    autoComplete="tel"
+                  />
+                </label>
+              </div>
+
+              <label className="profile-notes-field">
+                <span>{labels.styleNotes}</span>
+                <textarea
+                  value={profile.notes}
+                  onChange={(event) => handleProfileChange("notes", event.target.value)}
+                  placeholder={labels.styleNotesPlaceholder}
+                  rows="6"
+                />
+              </label>
+
+              <div className="profile-form-actions">
+                <button type="submit" className="button button-dark">
+                  {labels.saveProfile}
+                  <ArrowRight />
+                </button>
+
+                {profileSaved && <span role="status">{labels.savedProfile}</span>}
+              </div>
+            </form>
+
+            <aside className="profile-preview" aria-label={labels.previewLabel}>
+              <span>{labels.previewLabel}</span>
+              <h3>{profile.name || labels.emptyName}</h3>
+              <p>{profileLocation || labels.emptyLocation}</p>
+              <blockquote>{profile.notes || labels.emptyBio}</blockquote>
+            </aside>
+          </div>
+
+          <section className="profile-gallery-panel">
+            <div className="dashboard-panel-header">
+              <h2>{labels.gallery}</h2>
+
+              <label className="profile-upload">
+                <input type="file" accept="image/*" multiple onChange={handleGalleryChange} />
+                <span>{labels.addGalleryPhoto}</span>
+              </label>
+            </div>
+
+            <div className="profile-gallery-grid">
+              {galleryPhotos.length ? (
+                galleryPhotos.map((photo) => (
+                  <img src={photo} alt="" key={photo} />
+                ))
+              ) : (
+                [0, 1, 2].map((slot) => (
+                  <div className="profile-gallery-empty" key={slot} aria-hidden="true" />
+                ))
+              )}
+            </div>
+          </section>
+        </section>
+        )}
+
+        {isAuthenticated && (
         <section className="dashboard-panel loyalty-panel">
           <div className="dashboard-panel-header">
             <h2>{labels.browserPush}</h2>
@@ -2376,6 +3054,7 @@ function AccountWorkspacePage({ language, labels, dashboardLabels }) {
             <span>{labels.noPaidChannels}</span>
           </div>
         </section>
+        )}
       </section>
     </div>
   );

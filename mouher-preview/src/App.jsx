@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-
+import { trackEvent } from "./lib/analytics";
 import {
   addProductToCart,
   isMedusaConfigured,
@@ -604,76 +604,155 @@ function ProductCard({ product, language, labels, onAdd, isAdding }) {
   const category = productCategoryName(product, isFarsi);
   const canAdd = product.source !== "medusa" || product.variantId;
   const href = productPageHref(product);
+
+  const stockCount = Number(product.stockCount);
+
   const lowStock =
-    Number.isFinite(Number(product.stockCount)) && Number(product.stockCount) > 0 && Number(product.stockCount) <= 5;
+    Number.isFinite(stockCount) &&
+    stockCount > 0 &&
+    stockCount <= 5;
+
+  function openProductPage(interaction = "mouse") {
+    trackEvent("product_click", {
+      product_id: product.id,
+      product_handle: product.handle,
+      product_name: product.name,
+      product_name_fa: product.nameFa,
+      category: product.category,
+      category_fa: product.categoryFa,
+      collection: product.collection,
+      price: product.priceAmount,
+      stock_count: Number.isFinite(stockCount) ? stockCount : null,
+      source: product.source,
+      interaction,
+    });
+
+    window.location.hash = href.replace(/^#/, "");
+  }
 
   return (
     <article
       className="product-card product-card-clickable"
       onClick={() => {
-        window.location.hash = href.replace(/^#/, "");
+        openProductPage("mouse");
       }}
       role="link"
       tabIndex={0}
+      aria-label={name}
       onKeyDown={(event) => {
         if (event.key === "Enter" || event.key === " ") {
           event.preventDefault();
-          window.location.hash = href.replace(/^#/, "");
+          openProductPage("keyboard");
         }
       }}
     >
       <div className="product-image-wrap">
-        {product.badge && <span className="product-badge">{product.badge}</span>}
+        {product.badge && (
+          <span className="product-badge">
+            {product.badge}
+          </span>
+        )}
 
         <button
           type="button"
           className="wishlist-button"
           aria-label={labels.wishlist}
+          onClick={(event) => {
+            event.stopPropagation();
+
+            trackEvent("wishlist_click", {
+              product_id: product.id,
+              product_handle: product.handle,
+              product_name: product.name,
+              category: product.category,
+              price: product.priceAmount,
+            });
+          }}
         >
           <span aria-hidden="true">♡</span>
         </button>
 
-        <ProductImage image={product.imageUrls} alt={name} className="product-image" />
+        <ProductImage
+          image={product.imageUrls}
+          alt={name}
+          className="product-image"
+        />
 
         <button
           type="button"
           className="quick-add"
-          onClick={() => onAdd(product)}
+          onClick={(event) => {
+            event.stopPropagation();
+
+            trackEvent("quick_add_click", {
+              product_id: product.id,
+              product_handle: product.handle,
+              product_name: product.name,
+              category: product.category,
+              price: product.priceAmount,
+            });
+
+            onAdd(product);
+          }}
           disabled={!canAdd || isAdding}
         >
           <span>
-            {isAdding ? labels.adding : canAdd ? labels.quickAdd : labels.noVariant}
+            {isAdding
+              ? labels.adding
+              : canAdd
+                ? labels.quickAdd
+                : labels.noVariant}
           </span>
+
           <ArrowRight />
         </button>
       </div>
 
       <div className="product-info">
         <div>
-          <h3>
-            <a href={href}>{name}</a>
-          </h3>
-          <p>{category}</p>
-          <ColorSwatches colors={product.colors} language={language} />
+          <h3>{name}</h3>
+
+          {category && (
+            <p>
+              {category}
+            </p>
+          )}
+
+          <ColorSwatches
+            colors={product.colors}
+            language={language}
+          />
         </div>
 
         <div className="product-commerce">
           {product.compareAtPrice && (
-            <span className="compare-price">{product.compareAtPrice}</span>
+            <span className="compare-price">
+              {product.compareAtPrice}
+            </span>
           )}
-          <span className="product-price">{product.price}</span>
+
+          <span className="product-price">
+            {product.price}
+          </span>
         </div>
       </div>
 
       <div className="product-card-footer">
-        <span>{lowStock ? labels.stockLow : labels.inStock}</span>
-        <a href={href}>
+        <span>
+          {lowStock
+            ? labels.stockLow
+            : labels.inStock}
+        </span>
+
+        <span className="product-card-view">
           {labels.viewDetails}
-        </a>
+        </span>
       </div>
 
       {product.installment && (
-        <p className="installment-note">{product.installment}</p>
+        <p className="installment-note">
+          {product.installment}
+        </p>
       )}
     </article>
   );

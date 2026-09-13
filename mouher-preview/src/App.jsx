@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { trackEvent } from "./lib/analytics";
+import { getAnalyticsSummary, trackEvent } from "./lib/analytics";
 import {
   addProductToCart,
   isMedusaConfigured,
@@ -1650,6 +1650,7 @@ function ProductPage({
 function OwnerDashboardPage({ catalog, language, labels }) {
   const isFarsi = language === "farsi";
   const metrics = catalogMetrics(catalog);
+  const analytics = getAnalyticsSummary();
 
   const products = metrics.products || [];
 
@@ -1828,6 +1829,36 @@ function OwnerDashboardPage({ catalog, language, labels }) {
           />
 
         </div>
+
+        <section className="dashboard-panel dashboard-panel-wide analytics-panel">
+          <div className="dashboard-panel-header">
+            <h2>{isFarsi ? "تحلیل رفتار فروشگاه" : "Store analytics"}</h2>
+            <span>{isFarsi ? "۳۰ روز گذشته" : "Last 30 days"}</span>
+          </div>
+
+          <div className="analytics-kpi-grid">
+            <MetricCard label={isFarsi ? "کلیک محصول" : "Product clicks"} value={analytics.productClicks} />
+            <MetricCard label={isFarsi ? "افزودن سریع" : "Quick adds"} value={analytics.quickAdds} />
+            <MetricCard label={isFarsi ? "علاقه‌مندی" : "Wishlists"} value={analytics.wishlists} />
+            <MetricCard label={isFarsi ? "نرخ تبدیل" : "Click-to-add rate"} value={`${analytics.conversionRate}%`} />
+          </div>
+
+          <div className="analytics-products">
+            <h3>{isFarsi ? "محصولات پربازدید" : "Top engaged products"}</h3>
+            {analytics.topProducts.length ? analytics.topProducts.map((product) => (
+              <div className="analytics-product-row" key={product.id}>
+                <strong>{product.name}</strong>
+                <span>{product.clicks} {isFarsi ? "کلیک" : "clicks"}</span>
+                <span>{product.quickAdds} {isFarsi ? "افزودن" : "adds"}</span>
+                <span>{product.wishlists} {isFarsi ? "علاقه‌مندی" : "wishlists"}</span>
+              </div>
+            )) : (
+              <p className="analytics-empty">
+                {isFarsi ? "پس از تعامل بازدیدکنندگان، داده‌ها اینجا نمایش داده می‌شوند." : "Analytics will appear after visitors interact with products."}
+              </p>
+            )}
+          </div>
+        </section>
 
         <section className="dashboard-panel dashboard-panel-wide owner-alert-panel">
 

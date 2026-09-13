@@ -1,5 +1,16 @@
-import { currentMouherCatalog } from "../data/currentMouherCatalog";
-import { demoCatalog } from "../data/demoCatalog";
+import { currentMouherCatalog } from "../data/currentMouherCatalog.js";
+import { demoCatalog } from "../data/demoCatalog.js";
+
+const CATEGORY_LABELS = {
+  "پیراهن": { name: "Shirts", nameFa: "پیراهن", slug: "shirts" },
+  "تیشرت": { name: "T-shirts", nameFa: "تیشرت", slug: "t-shirts" },
+  "شلوار": { name: "Trousers", nameFa: "شلوار", slug: "trousers" },
+  "کت": { name: "Coats", nameFa: "کت", slug: "coats" },
+  "ست": { name: "Sets", nameFa: "ست", slug: "sets" },
+  "اکسسوری": { name: "Accessories", nameFa: "اکسسوری", slug: "accessories" },
+  "پوشاک": { name: "Clothing", nameFa: "پوشاک", slug: "clothing" },
+};
+
 const fallbackCatalog = currentMouherCatalog || demoCatalog;
 function loadStaticFallbackCatalog(notice = "") {
   return {

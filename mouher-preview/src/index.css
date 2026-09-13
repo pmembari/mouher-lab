@@ -3643,6 +3643,39 @@ img {
   margin-bottom: 30px;
 }
 
+.analytics-panel {
+  margin-bottom: 28px;
+}
+
+.analytics-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 28px;
+}
+
+.analytics-products h3 {
+  margin: 0 0 12px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.analytics-product-row {
+  display: grid;
+  grid-template-columns: minmax(180px, 1fr) repeat(3, minmax(80px, auto));
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 11px;
+}
+
+.analytics-product-row span,
+.analytics-empty {
+  color: var(--muted);
+}
+
 .owner-alert-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -3764,5 +3797,10 @@ img {
   .owner-kpi-grid,
   .owner-alert-grid {
     grid-template-columns: 1fr;
+  }
+
+  .analytics-kpi-grid,
+  .analytics-product-row {
+    grid-template-columns: 1fr 1fr;
   }
 }

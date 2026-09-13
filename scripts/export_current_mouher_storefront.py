@@ -11,7 +11,7 @@ from prepare_mouher_catalog import base_handle, clean_text, write_json
 
 
 DEFAULT_INPUT_DIR = Path("Mouher_Data/current-site")
-DEFAULT_OUTPUT_JS = Path("mouher-preview/src/data/currentMouherCatalog.js")
+DEFAULT_OUTPUT_JS = Path("frontend/src/data/currentMouherCatalog.js")
 PUBLIC_PRODUCT_BASE_URL = "https://mouher.com/products"
 
 

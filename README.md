@@ -10,4 +10,4 @@ This folder is split into three role workspaces:
 - `assistant-workspace/` for assistant workflows, customer-support drafts, automation prompts, and browser-notification copy.
 - `infrastructure/` for production deployment templates and service-scaling boundaries.
 
-Application source stays in `mouher-preview/`, `mouher-backend/`, `mouher-payment-service/`, and `scripts/`. Private raw data and generated media stay out of Git.
+Application source stays in `frontend/`, `mouher-backend/`, `mouher-payment-service/`, and `scripts/`. Private raw data and generated media stay out of Git.

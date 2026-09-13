@@ -15,5 +15,5 @@ Use this workspace for Mouher business operations and store-management decisions
 ## Boundaries
 
 - Do not store Medusa admin tokens, payment credentials, or raw customer exports here.
-- Put source code changes in `mouher-preview/`, `mouher-backend/`, or `scripts/`.
+- Put source code changes in `frontend/`, `mouher-backend/`, or `scripts/`.
 - Put technical implementation details in `developer-workspace/`.

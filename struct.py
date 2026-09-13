@@ -1,6 +1,6 @@
 from pathlib import Path
 
-project = Path("mouher-preview")
+project = Path("frontend")
 
 directories = [
     project / "src",

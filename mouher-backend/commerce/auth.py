@@ -17,13 +17,23 @@ def require_internal_token(view: Callable) -> Callable:
 
         if not expected:
             return json_response(
-                {"error": {"message": "Internal API token is not configured."}},
+                {
+                    "error": {
+                        "message": "Internal API token is not configured.",
+                        "code": "service_unavailable",
+                    }
+                },
                 status=503,
             )
 
         if supplied != expected:
             return json_response(
-                {"error": {"message": "Invalid internal API token."}},
+                {
+                    "error": {
+                        "message": "Invalid internal API token.",
+                        "code": "unauthorized",
+                    }
+                },
                 status=401,
             )
 

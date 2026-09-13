@@ -18,6 +18,7 @@ def error_response(error: Exception) -> JsonResponse:
             {
                 "error": {
                     "message": str(error),
+                    "code": error_code(error),
                     "status_code": error.status_code,
                     "payload": error.payload,
                 }
@@ -25,7 +26,28 @@ def error_response(error: Exception) -> JsonResponse:
             status=error.status_code,
         )
 
-    return json_response({"error": {"message": "Internal server error."}}, status=500)
+    return json_response(
+        {"error": {"message": "Internal server error.", "code": "internal_error"}},
+        status=500,
+    )
+
+
+def error_code(error: MedusaAPIError) -> str:
+    if error.status_code == 400:
+        return "bad_request"
+    if error.status_code == 401:
+        return "unauthorized"
+    if error.status_code == 403:
+        return "forbidden"
+    if error.status_code == 404:
+        return "not_found"
+    if error.status_code == 409:
+        return "conflict"
+    if error.status_code == 503:
+        return "service_unavailable"
+    if 500 <= error.status_code:
+        return "upstream_error"
+    return "request_failed"
 
 
 def parse_json_body(request: HttpRequest) -> JsonObject:

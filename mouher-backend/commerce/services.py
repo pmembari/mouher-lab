@@ -228,6 +228,32 @@ def list_admin_resource(
     return repository.list(query=query or {})
 
 
+def owner_list_response(payload: JsonObject, resource_key: str) -> JsonObject:
+    data = payload.get(resource_key, [])
+    if not isinstance(data, list):
+        data = []
+
+    meta = {
+        "limit": int_or_zero(payload.get("limit")),
+        "offset": int_or_zero(payload.get("offset")),
+        "count": int_or_zero(payload.get("count", len(data))),
+    }
+
+    return {"data": data, "meta": meta}
+
+
+def owner_detail_response(payload: JsonObject, resource_key: str) -> JsonObject:
+    data = payload.get(resource_key, payload)
+    if not isinstance(data, dict):
+        data = {}
+
+    return {"data": data}
+
+
+def owner_analytics_response(payload: JsonObject) -> JsonObject:
+    return {"data": payload}
+
+
 def retrieve_admin_resource(
     repository: AdminResourceRepository | None,
     resource_id: str,
@@ -237,6 +263,13 @@ def retrieve_admin_resource(
         raise MedusaAPIError(503, "Medusa Admin resource is not configured.")
 
     return repository.retrieve(resource_id, query=query or {})
+
+
+def int_or_zero(value: Any) -> int:
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return 0
 
 
 def choose_payment_provider(

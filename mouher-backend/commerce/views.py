@@ -22,6 +22,9 @@ from .services import (
     health_payload,
     list_admin_resource,
     list_storefront_products,
+    owner_analytics_response,
+    owner_detail_response,
+    owner_list_response,
     prepare_payment,
     retrieve_admin_resource,
     retrieve_storefront_product,
@@ -46,7 +49,11 @@ def analytics_collect(request: HttpRequest) -> JsonResponse:
 @require_GET
 def analytics_dashboard(request: HttpRequest) -> JsonResponse:
     try:
-        return json_response(dashboard_summary(positive_int(request.GET.get("days"), 30, maximum=90)))
+        return json_response(
+            owner_analytics_response(
+                dashboard_summary(positive_int(request.GET.get("days"), 30, maximum=90))
+            )
+        )
     except Exception as error:
         return error_response(error)
 
@@ -114,7 +121,7 @@ def warehouse_stock_locations(request: HttpRequest) -> JsonResponse:
             limit=positive_int(request.GET.get("limit"), 50),
             offset=positive_int(request.GET.get("offset"), 0, maximum=100000),
         )
-        return json_response(payload)
+        return json_response(owner_list_response(payload, "stock_locations"))
     except Exception as error:
         return error_response(error)
 
@@ -130,7 +137,7 @@ def warehouse_inventory(request: HttpRequest) -> JsonResponse:
             sku=request.GET.get("sku", ""),
             q=request.GET.get("q", ""),
         )
-        return json_response(payload)
+        return json_response(owner_list_response(payload, "inventory_items"))
     except Exception as error:
         return error_response(error)
 
@@ -151,7 +158,12 @@ def warehouse_inventory_levels(request: HttpRequest) -> JsonResponse:
 def admin_orders(request: HttpRequest) -> JsonResponse:
     try:
         services = CommerceServices.default()
-        return json_response(list_admin_resource(services.orders, query_params(request)))
+        return json_response(
+            owner_list_response(
+                list_admin_resource(services.orders, query_params(request)),
+                "orders",
+            )
+        )
     except Exception as error:
         return error_response(error)
 
@@ -162,7 +174,10 @@ def admin_order_detail(request: HttpRequest, order_id: str) -> JsonResponse:
     try:
         services = CommerceServices.default()
         return json_response(
-            retrieve_admin_resource(services.orders, order_id, query_params(request))
+            owner_detail_response(
+                retrieve_admin_resource(services.orders, order_id, query_params(request)),
+                "order",
+            )
         )
     except Exception as error:
         return error_response(error)
@@ -173,7 +188,12 @@ def admin_order_detail(request: HttpRequest, order_id: str) -> JsonResponse:
 def admin_products(request: HttpRequest) -> JsonResponse:
     try:
         services = CommerceServices.default()
-        return json_response(list_admin_resource(services.products, query_params(request)))
+        return json_response(
+            owner_list_response(
+                list_admin_resource(services.products, query_params(request)),
+                "products",
+            )
+        )
     except Exception as error:
         return error_response(error)
 
@@ -184,7 +204,10 @@ def admin_product_detail(request: HttpRequest, product_id: str) -> JsonResponse:
     try:
         services = CommerceServices.default()
         return json_response(
-            retrieve_admin_resource(services.products, product_id, query_params(request))
+            owner_detail_response(
+                retrieve_admin_resource(services.products, product_id, query_params(request)),
+                "product",
+            )
         )
     except Exception as error:
         return error_response(error)
@@ -195,7 +218,12 @@ def admin_product_detail(request: HttpRequest, product_id: str) -> JsonResponse:
 def admin_customers(request: HttpRequest) -> JsonResponse:
     try:
         services = CommerceServices.default()
-        return json_response(list_admin_resource(services.customers, query_params(request)))
+        return json_response(
+            owner_list_response(
+                list_admin_resource(services.customers, query_params(request)),
+                "customers",
+            )
+        )
     except Exception as error:
         return error_response(error)
 
@@ -206,7 +234,10 @@ def admin_customer_detail(request: HttpRequest, customer_id: str) -> JsonRespons
     try:
         services = CommerceServices.default()
         return json_response(
-            retrieve_admin_resource(services.customers, customer_id, query_params(request))
+            owner_detail_response(
+                retrieve_admin_resource(services.customers, customer_id, query_params(request)),
+                "customer",
+            )
         )
     except Exception as error:
         return error_response(error)

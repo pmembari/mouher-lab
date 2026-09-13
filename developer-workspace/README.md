@@ -6,14 +6,14 @@ Use this workspace for engineering work that supports the Mouher Medusa, Django,
 
 - API contracts for Medusa-backed features.
 - Backend implementation plans for `mouher-backend/`.
-- Frontend implementation plans for `mouher-preview/`.
+- Frontend implementation plans for `frontend/`.
 - Test plans, migration notes, release checklists, and integration runbooks.
 - Browser push-notification implementation notes for Chrome and Safari.
 
 ## Current Application Folders
 
 - `mouher-backend/`: Django companion API and protected Medusa Admin proxy.
-- `mouher-preview/`: React/Vite storefront and owner/assistant dashboards.
+- `frontend/`: React/Vite storefront and owner/assistant dashboards.
 - `scripts/`: catalog inspection, export, and preparation tools.
 - `docs/`: shared architecture and data-import documentation.
 

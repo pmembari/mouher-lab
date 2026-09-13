@@ -8,7 +8,7 @@ warehouse tools, and operational webhooks.
 
 - Catalog, variants, cart, checkout, order, inventory, stock locations, and
   reservations: Medusa.
-- Public storefront UI: React/Vite in `mouher-preview`.
+- Public storefront UI: React/Vite in `frontend`.
 - Mouher-specific orchestration and protected admin proxying: Django in
   `mouher-backend`.
 - Payment provider implementation: Medusa payment provider module that calls an
@@ -63,5 +63,5 @@ python3 scripts/inspect_mouher_live_site.py --include-public-image-urls --output
 python3 scripts/export_current_mouher_storefront.py
 ```
 
-The generated `mouher-preview/src/data/currentMouherCatalog.js` is used as the
+The generated `frontend/src/data/currentMouherCatalog.js` is used as the
 storefront fallback when Medusa is not configured or reachable.

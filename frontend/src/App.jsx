@@ -1093,6 +1093,20 @@ function OwnerDashboardPage({ catalog, language, labels }) {
   const isFarsi = language === "farsi";
   const metrics = catalogMetrics(catalog);
   const analytics = getAnalyticsSummary();
+  const [ownerToken, setOwnerToken] = useState("");
+  const [serverAnalytics, setServerAnalytics] = useState(null);
+  const [analyticsError, setAnalyticsError] = useState("");
+
+  async function handleAnalyticsLogin(event) {
+    event.preventDefault();
+    setAnalyticsError("");
+    try {
+      setServerAnalytics(await loadOwnerAnalytics(ownerToken));
+      setOwnerToken("");
+    } catch {
+      setAnalyticsError(isFarsi ? "دسترسی یا اتصال API نامعتبر است." : "Owner access or analytics API connection is invalid.");
+    }
+  }
 
   const products = metrics.products || [];
 
@@ -1302,9 +1316,24 @@ function OwnerDashboardPage({ catalog, language, labels }) {
           </div>
 
           <div className="analytics-visual-grid">
-            <AnalyticsBars title={isFarsi ? "تعامل هفت روز اخیر" : "7-day engagement"} rows={analytics.daily.map((row) => ({ label: row.date.slice(5), value: row.total }))} />
-            <AnalyticsBars title={isFarsi ? "قیف خرید" : "Commerce funnel"} rows={analytics.funnel} />
+            <AnalyticsBars title={isFarsi ? "تعامل هفت روز اخیر" : "7-day engagement"} rows={(serverAnalytics?.daily || analytics.daily).slice(-7).map((row) => ({ label: (row.date || "").slice(5), value: row.events ?? row.total }))} />
+            <AnalyticsBars title={isFarsi ? "قیف خرید" : "Commerce funnel"} rows={serverAnalytics ? Object.entries(serverAnalytics.funnel).map(([label, value]) => ({ label: label.replaceAll("_", " "), value })) : analytics.funnel} />
           </div>
+
+          {!serverAnalytics ? (
+            <form className="analytics-owner-access" onSubmit={handleAnalyticsLogin}>
+              <label htmlFor="analytics-owner-token">{isFarsi ? "دسترسی گزارش مالک" : "Load protected site-wide report"}</label>
+              <input id="analytics-owner-token" type="password" autoComplete="off" value={ownerToken} onChange={(event) => setOwnerToken(event.target.value)} placeholder={isFarsi ? "توکن داخلی" : "Internal API token"} required />
+              <button className="button button-dark" type="submit">{isFarsi ? "بارگذاری" : "Load report"}</button>
+              {analyticsError && <p role="alert">{analyticsError}</p>}
+            </form>
+          ) : (
+            <div className="analytics-visual-grid">
+              <AnalyticsBars title={isFarsi ? "موقعیت بازدیدکنندگان" : "Visitor locations"} rows={serverAnalytics.locations.slice(0, 8).map((row) => ({ label: [row.city, row.country_code].filter(Boolean).join(", "), value: row.visitors }))} />
+              <AnalyticsBars title={isFarsi ? "نوع دستگاه" : "Device mix"} rows={serverAnalytics.devices.map((row) => ({ label: row.device_type, value: row.events }))} />
+              <p className="analytics-account-summary">{serverAnalytics.account_visitors} {isFarsi ? "بازدیدکننده واردشده" : "signed-in visitors"} · {serverAnalytics.visitors} {isFarsi ? "بازدیدکننده کل" : "total visitors"}</p>
+            </div>
+          )}
         </section>
 
         <section className="dashboard-panel dashboard-panel-wide owner-alert-panel">

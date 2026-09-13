@@ -18,7 +18,13 @@ import {
   medusaConfig,
 } from "./lib/catalog";
 import { mouherApiConfig } from "./lib/notifications";
-import { loadOwnerDashboard } from "./lib/ownerApi";
+import {
+  clearOwnerSession,
+  getOwnerSession,
+  isOwnerCredentialsValid,
+  loadOwnerDashboard,
+  setOwnerSession,
+} from "./lib/ownerApi";
 import { AccountWorkspacePage } from "./pages/AccountWorkspacePage";
 
 function ColorSwatches({ colors, language }) {
@@ -1093,27 +1099,98 @@ function ProductPage({
 function OwnerDashboardPage({ catalog, language, labels }) {
   const isFarsi = language === "farsi";
   const [ownerDashboard, setOwnerDashboard] = useState(null);
+  const [ownerLoading, setOwnerLoading] = useState(false);
+  const [ownerError, setOwnerError] = useState("");
+  const [ownerUser, setOwnerUser] = useState(getOwnerSession()?.username || "");
+  const [ownerPassword, setOwnerPassword] = useState("");
+  const [ownerAccessToken, setOwnerAccessToken] = useState("");
+  const [reportRange, setReportRange] = useState(30);
+  const [ownerSection, setOwnerSection] = useState("overview");
+  const [resourceQuery, setResourceQuery] = useState("");
+  const [resourcePage, setResourcePage] = useState(1);
   const dashboardCatalog = ownerDashboard?.catalog?.products?.length
     ? ownerDashboard.catalog
     : catalog;
   const metrics = catalogMetrics(dashboardCatalog);
   const analytics = getAnalyticsSummary();
   const [ownerToken, setOwnerToken] = useState("");
-  const [analyticsError, setAnalyticsError] = useState("");
 
   async function handleAnalyticsLogin(event) {
     event.preventDefault();
-    setAnalyticsError("");
-    try {
-      setOwnerDashboard(await loadOwnerDashboard(ownerToken));
-      setOwnerToken("");
-    } catch {
-      setAnalyticsError(isFarsi ? "دسترسی یا اتصال API نامعتبر است." : "Owner access or analytics API connection is invalid.");
+    setOwnerError("");
+
+    if (!isOwnerCredentialsValid(ownerUser, ownerPassword)) {
+      setOwnerError(isFarsi ? "نام کاربری یا رمز عبور مالک نامعتبر است." : "Invalid owner username or password.");
+      return;
     }
+
+    setOwnerLoading(true);
+
+    try {
+      setOwnerSession(ownerUser);
+      setOwnerAccessToken(ownerPassword);
+      setOwnerDashboard(await loadOwnerDashboard(ownerPassword, undefined, reportRange));
+      setOwnerPassword("");
+    } catch (error) {
+      setOwnerError(
+        error?.message ||
+          (isFarsi ? "دسترسی یا اتصال API نامعتبر است." : "Owner access or analytics API connection is invalid.")
+      );
+    } finally {
+      setOwnerLoading(false);
+    }
+  }
+
+  async function handleReportRangeChange(event) {
+    const nextRange = Number(event.target.value);
+    setReportRange(nextRange);
+
+    if (!ownerDashboard) return;
+
+    setOwnerLoading(true);
+    setOwnerError("");
+
+    try {
+      setOwnerDashboard(await loadOwnerDashboard(ownerAccessToken, undefined, nextRange));
+    } catch (error) {
+      setOwnerError(error?.message || (isFarsi ? "گزارش بارگذاری نشد." : "The report could not be loaded."));
+    } finally {
+      setOwnerLoading(false);
+    }
+  }
+
+  function handleLogoutOwner(event) {
+    event.preventDefault();
+    clearOwnerSession();
+    setOwnerDashboard(null);
+    setOwnerUser("");
+    setOwnerPassword("");
+    setOwnerAccessToken("");
+    setOwnerError("");
   }
 
   const products = metrics.products || [];
   const serverAnalytics = ownerDashboard?.analytics;
+  const reportDaily = Array.isArray(serverAnalytics?.daily) && serverAnalytics.daily.length
+    ? serverAnalytics.daily
+    : analytics.daily;
+  const reportFunnel = serverAnalytics?.funnel
+    ? [
+      { label: isFarsi ? "بازدید محصول" : "Product views", value: serverAnalytics.funnel.product_views || 0 },
+      { label: isFarsi ? "افزودن به سبد" : "Added to cart", value: serverAnalytics.funnel.adds || 0 },
+      { label: isFarsi ? "شروع پرداخت" : "Checkout", value: serverAnalytics.funnel.checkouts || 0 },
+      { label: isFarsi ? "خرید" : "Purchase", value: serverAnalytics.funnel.purchases || 0 },
+    ]
+    : analytics.funnel;
+  const recentOrders = ownerDashboard?.orders?.data?.slice(0, 5) ?? [];
+  const recentCustomers = ownerDashboard?.customers?.data?.slice(0, 5) ?? [];
+  const topProducts = ownerDashboard?.products?.data?.slice(0, 6) ?? products.slice(0, 6);
+  const inventoryItems = ownerDashboard?.inventory?.data?.slice(0, 8) ?? [];
+  const resourceRows = getOwnerResourceRows(ownerSection, ownerDashboard, dashboardCatalog);
+  const filteredResourceRows = resourceRows.filter((row) => ownerResourceSearchText(row).includes(resourceQuery.trim().toLowerCase()));
+  const resourcePageSize = 8;
+  const resourcePageCount = Math.max(1, Math.ceil(filteredResourceRows.length / resourcePageSize));
+  const visibleResourceRows = filteredResourceRows.slice((resourcePage - 1) * resourcePageSize, resourcePage * resourcePageSize);
   const ownerCounts = {
     products: ownerDashboard?.products?.meta?.count ?? metrics.totalProducts,
     orders: ownerDashboard?.orders?.meta?.count ?? 0,
@@ -1121,6 +1198,12 @@ function OwnerDashboardPage({ catalog, language, labels }) {
     inventory: ownerDashboard?.inventory?.meta?.count ?? products.length,
     stockLocations: ownerDashboard?.stockLocations?.meta?.count ?? 0,
   };
+
+  function selectOwnerSection(section) {
+    setOwnerSection(section);
+    setResourceQuery("");
+    setResourcePage(1);
+  }
 
   const outOfStockProducts = products.filter((product) => {
     const stock = Number(product.stockCount);
@@ -1201,6 +1284,71 @@ function OwnerDashboardPage({ catalog, language, labels }) {
     )
     : 100;
 
+  if (!ownerDashboard && !ownerLoading) {
+    return (
+      <div className="dashboard-page owner-dashboard-page">
+        <section className="dashboard-shell">
+          <div className="dashboard-heading">
+            <div>
+              <span className="eyebrow">{labels.ownerEyebrow}</span>
+              <h1>{isFarsi ? "مرکز کنترل موهر" : "Mouher control center"}</h1>
+              <p>
+                {isFarsi
+                  ? "برای مشاهده داشبورد مالک، نام کاربری و رمز عبور مالک را وارد کنید."
+                  : "Enter the owner username and password to view the dashboard."}
+              </p>
+            </div>
+          </div>
+
+          <form className="analytics-owner-access" onSubmit={handleAnalyticsLogin}>
+            <label htmlFor="owner-username">{isFarsi ? "نام کاربری مالک" : "Owner username"}</label>
+            <input
+              id="owner-username"
+              type="text"
+              autoComplete="username"
+              value={ownerUser}
+              onChange={(event) => setOwnerUser(event.target.value)}
+              placeholder="pmembari"
+              required
+            />
+
+            <label htmlFor="owner-password">{isFarsi ? "رمز عبور مالک" : "Owner password"}</label>
+            <input
+              id="owner-password"
+              type="password"
+              autoComplete="current-password"
+              value={ownerPassword}
+              onChange={(event) => setOwnerPassword(event.target.value)}
+              placeholder="1234"
+              required
+            />
+
+            <button className="button button-dark" type="submit" disabled={ownerLoading}>
+              {ownerLoading ? (isFarsi ? "در حال بارگذاری..." : "Loading...") : (isFarsi ? "ورود به داشبورد" : "Open dashboard")}
+            </button>
+            {ownerError && <p role="alert">{ownerError}</p>}
+          </form>
+        </section>
+      </div>
+    );
+  }
+
+  if (ownerLoading) {
+    return (
+      <div className="dashboard-page owner-dashboard-page">
+        <section className="dashboard-shell">
+          <div className="dashboard-heading">
+            <div>
+              <span className="eyebrow">{labels.ownerEyebrow}</span>
+              <h1>{isFarsi ? "در حال بارگذاری داشبورد" : "Loading dashboard"}</h1>
+              <p>{isFarsi ? "در حال دریافت داده‌های فروش، مشتریان و موجودی..." : "Loading products, orders, customers, and inventory..."}</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    );
+  }
+
   return (
     <div className="dashboard-page owner-dashboard-page">
       <section className="dashboard-shell">
@@ -1240,8 +1388,46 @@ function OwnerDashboardPage({ catalog, language, labels }) {
               {labels.websiteAssist}
               <ArrowRight />
             </a>
+
+            <button
+              type="button"
+              className="button button-outline"
+              onClick={handleLogoutOwner}
+            >
+              {isFarsi ? "خروج" : "Logout"}
+            </button>
           </div>
         </div>
+
+        <nav className="owner-section-nav" aria-label={isFarsi ? "بخش‌های مالک" : "Owner sections"}>
+          {["overview", "products", "categories", "orders", "users"].map((section) => (
+            <button key={section} type="button" className={ownerSection === section ? "active" : ""} onClick={() => selectOwnerSection(section)}>
+              {ownerSectionLabel(section, isFarsi)}
+            </button>
+          ))}
+        </nav>
+
+        {ownerSection !== "overview" && (
+          <section className="dashboard-panel dashboard-panel-wide owner-resource-panel">
+            <div className="dashboard-panel-header">
+              <div>
+                <h2>{ownerSectionLabel(ownerSection, isFarsi)}</h2>
+                <span>{filteredResourceRows.length} {isFarsi ? "رکورد" : "records"}</span>
+              </div>
+              <label className="owner-resource-search">
+                <span className="sr-only">{isFarsi ? "جستجو" : "Search"}</span>
+                <input type="search" value={resourceQuery} onChange={(event) => { setResourceQuery(event.target.value); setResourcePage(1); }} placeholder={isFarsi ? "جستجوی رکوردها" : `Search ${ownerSection}...`} />
+              </label>
+            </div>
+            <OwnerResourceTable section={ownerSection} rows={visibleResourceRows} isFarsi={isFarsi} />
+            <div className="owner-pagination">
+              <button type="button" disabled={resourcePage <= 1} onClick={() => setResourcePage((page) => page - 1)}>{isFarsi ? "قبلی" : "Previous"}</button>
+              <span>{resourcePage} / {resourcePageCount}</span>
+              <button type="button" disabled={resourcePage >= resourcePageCount} onClick={() => setResourcePage((page) => page + 1)}>{isFarsi ? "بعدی" : "Next"}</button>
+            </div>
+            <OwnerResourceInsights section={ownerSection} rows={resourceRows} catalog={dashboardCatalog} dashboard={ownerDashboard} isFarsi={isFarsi} />
+          </section>
+        )}
 
         <div className="owner-kpi-grid">
 
@@ -1298,10 +1484,36 @@ function OwnerDashboardPage({ catalog, language, labels }) {
 
         </div>
 
+        {ownerSection === "overview" && (
+          <section className="dashboard-panel dashboard-panel-wide owner-today-panel">
+            <div className="dashboard-panel-header">
+              <h2>{isFarsi ? "گزارش عملیاتی امروز" : "Today at a glance"}</h2>
+              <span>{isFarsi ? "بر پایه داده‌های واقعی API" : "From live API analytics"}</span>
+            </div>
+            <div className="owner-today-grid">
+              <MetricCard label={isFarsi ? "بازدیدکننده امروز" : "Today's visitors"} value={serverAnalytics?.visitors || 0} />
+              <MetricCard label={isFarsi ? "شروع پرداخت بدون خرید" : "Checkout drop-off"} value={Math.max(0, (serverAnalytics?.funnel?.checkouts || 0) - (serverAnalytics?.funnel?.purchases || 0))} />
+              <MetricCard label={isFarsi ? "محصولات پرفروش/پرتعامل" : "Top products"} value={serverAnalytics?.top_products?.length || analytics.topProducts.length} />
+              <MetricCard label={isFarsi ? "موارد نیازمند توجه" : "Needs attention"} value={outOfStockProducts.length + criticalStockProducts.length} />
+            </div>
+          </section>
+        )}
+
+        {ownerSection === "overview" && (
         <section className="dashboard-panel dashboard-panel-wide analytics-panel">
           <div className="dashboard-panel-header">
             <h2>{isFarsi ? "تحلیل رفتار فروشگاه" : "Store analytics"}</h2>
-            <span>{isFarsi ? "۳۰ روز گذشته" : "Last 30 days"}</span>
+            <div className="dashboard-report-controls">
+              <label htmlFor="owner-report-range">{isFarsi ? "گزارش" : "Report"}</label>
+              <select id="owner-report-range" value={reportRange} onChange={handleReportRangeChange}>
+                <option value="7">{isFarsi ? "۷ روز" : "7 days"}</option>
+                <option value="30">{isFarsi ? "۳۰ روز" : "30 days"}</option>
+                <option value="90">{isFarsi ? "۹۰ روز" : "90 days"}</option>
+              </select>
+              <button type="button" className="report-export-button" onClick={() => exportOwnerReport({ reportDaily, reportFunnel, serverAnalytics })}>
+                {isFarsi ? "خروجی CSV" : "Export CSV"}
+              </button>
+            </div>
           </div>
 
           <div className="analytics-kpi-grid">
@@ -1327,18 +1539,30 @@ function OwnerDashboardPage({ catalog, language, labels }) {
             )}
           </div>
 
+          <div className="analytics-report-grid">
+            <OwnerAnalyticsReport
+              title={isFarsi ? "پرفروش‌ترین محصولات" : "Top sold products"}
+              rows={serverAnalytics?.top_sold_products || []}
+              valueKey="sold_units"
+              valueLabel={isFarsi ? "فروش" : "sold"}
+              isFarsi={isFarsi}
+            />
+            <OwnerAnalyticsReport
+              title={isFarsi ? "محبوب‌ترین علاقه‌مندی‌ها" : "Top wishlisted products"}
+              rows={serverAnalytics?.top_wishlisted_products || []}
+              valueKey="wishlists"
+              valueLabel={isFarsi ? "علاقه‌مندی" : "wishlists"}
+              isFarsi={isFarsi}
+            />
+          </div>
+
           <div className="analytics-visual-grid">
-            <AnalyticsBars title={isFarsi ? "تعامل هفت روز اخیر" : "7-day engagement"} rows={(Array.isArray(serverAnalytics?.daily) ? serverAnalytics.daily : analytics.daily).slice(-7).map((row) => ({ label: (row.date || "").slice(5), value: row.events ?? row.total }))} />
-            <AnalyticsBars title={isFarsi ? "قیف خرید" : "Commerce funnel"} rows={serverAnalytics?.funnel ? Object.entries(serverAnalytics.funnel).map(([label, value]) => ({ label: label.replaceAll("_", " "), value })) : analytics.funnel} />
+            <AnalyticsLine title={isFarsi ? "روند تعامل" : "Engagement trend"} rows={reportDaily.map((row) => ({ label: (row.date || "").slice(5), value: row.events ?? row.total }))} />
+            <AnalyticsFunnel title={isFarsi ? "قیف خرید" : "Commerce funnel"} rows={reportFunnel} />
           </div>
 
           {!serverAnalytics ? (
-            <form className="analytics-owner-access" onSubmit={handleAnalyticsLogin}>
-              <label htmlFor="analytics-owner-token">{isFarsi ? "دسترسی داده مالک" : "Load protected owner data"}</label>
-              <input id="analytics-owner-token" type="password" autoComplete="off" value={ownerToken} onChange={(event) => setOwnerToken(event.target.value)} placeholder={isFarsi ? "توکن داخلی" : "Internal API token"} required />
-              <button className="button button-dark" type="submit">{isFarsi ? "بارگذاری" : "Load data"}</button>
-              {analyticsError && <p role="alert">{analyticsError}</p>}
-            </form>
+            null
           ) : (
             <div className="analytics-visual-grid">
               <AnalyticsBars title={isFarsi ? "موقعیت بازدیدکنندگان" : "Visitor locations"} rows={(serverAnalytics.locations || []).slice(0, 8).map((row) => ({ label: [row.city, row.country_code].filter(Boolean).join(", "), value: row.visitors }))} />
@@ -1347,7 +1571,9 @@ function OwnerDashboardPage({ catalog, language, labels }) {
             </div>
           )}
         </section>
+        )}
 
+        {ownerSection === "overview" && (
         <section className="dashboard-panel dashboard-panel-wide owner-alert-panel">
 
           <div className="dashboard-panel-header">
@@ -1429,7 +1655,9 @@ function OwnerDashboardPage({ catalog, language, labels }) {
 
           </div>
         </section>
+        )}
 
+        {ownerSection === "overview" && (
         <section className="dashboard-panel dashboard-panel-wide">
 
           <div className="dashboard-panel-header">
@@ -1477,7 +1705,157 @@ function OwnerDashboardPage({ catalog, language, labels }) {
             </article>
           </div>
         </section>
+        )}
 
+        {ownerSection === "overview" && (
+        <div className="owner-dashboard-grid">
+          <section className="dashboard-panel">
+            <div className="dashboard-panel-header">
+              <h2>{isFarsi ? "سفارش‌های اخیر" : "Recent orders"}</h2>
+              <span>{recentOrders.length}</span>
+            </div>
+
+            <div className="dashboard-table-wrap">
+              <table className="dashboard-table">
+                <thead>
+                  <tr>
+                    <th>{isFarsi ? "سفارش" : "Order"}</th>
+                    <th>{isFarsi ? "وضعیت" : "Status"}</th>
+                    <th>{isFarsi ? "مبلغ" : "Total"}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {recentOrders.length ? recentOrders.map((order) => (
+                    <tr key={order.id || `${order.display_id || "order"}-${Math.random()}`}>
+                      <td>{order.display_id || order.id}</td>
+                      <td>{order.fulfillment_status || order.status || "—"}</td>
+                      <td>{order.total || order.total_paid || "—"}</td>
+                    </tr>
+                  )) : (
+                    <tr>
+                      <td colSpan="3">{isFarsi ? "هیچ سفارشی ثبت نشده است." : "No recent orders."}</td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section className="dashboard-panel">
+            <div className="dashboard-panel-header">
+              <h2>{isFarsi ? "مشتریان اخیر" : "Recent customers"}</h2>
+              <span>{recentCustomers.length}</span>
+            </div>
+
+            <div className="dashboard-table-wrap">
+              <table className="dashboard-table">
+                <thead>
+                  <tr>
+                    <th>{isFarsi ? "مشتری" : "Customer"}</th>
+                    <th>{isFarsi ? "ایمیل" : "Email"}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {recentCustomers.length ? recentCustomers.map((customer) => (
+                    <tr key={customer.id || customer.email || `${customer.first_name || "customer"}-row`}>
+                      <td>{customer.first_name || customer.last_name ? `${customer.first_name || ""} ${customer.last_name || ""}`.trim() : customer.id}</td>
+                      <td>{customer.email || "—"}</td>
+                    </tr>
+                  )) : (
+                    <tr>
+                      <td colSpan="2">{isFarsi ? "هیچ مشتری جدیدی وجود ندارد." : "No recent customers."}</td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+        )}
+
+        {ownerSection === "overview" && (
+        <section className="dashboard-panel dashboard-panel-wide">
+          <div className="dashboard-panel-header">
+            <h2>{isFarsi ? "محصولات مهم" : "Key products"}</h2>
+            <span>{topProducts.length}</span>
+          </div>
+
+          <div className="dashboard-table-wrap">
+            <table className="dashboard-table">
+              <thead>
+                <tr>
+                  <th>{labels.name}</th>
+                  <th>{isFarsi ? "موجودی" : "Stock"}</th>
+                  <th>{labels.price}</th>
+                  <th>{isFarsi ? "وضعیت" : "State"}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {topProducts.length ? topProducts.map((product) => {
+                  const stock = Number(product.stockCount ?? product.quantity ?? 0);
+                  const status = stock <= 0 ? (isFarsi ? "ناموجود" : "Out of stock") : stock <= 5 ? (isFarsi ? "کم‌موجود" : "Low stock") : (isFarsi ? "موجود" : "In stock");
+
+                  return (
+                    <tr key={product.id || product.handle || product.title || product.name}>
+                      <td>{product.name || product.title || product.id}</td>
+                      <td>{stock}</td>
+                      <td>{product.price || "—"}</td>
+                      <td>{status}</td>
+                    </tr>
+                  );
+                }) : (
+                  <tr>
+                    <td colSpan="4">{isFarsi ? "هیچ محصولی برای نمایش وجود ندارد." : "No products available."}</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </section>
+        )}
+
+        {ownerSection === "overview" && (
+        <section className="dashboard-panel dashboard-panel-wide">
+          <div className="dashboard-panel-header">
+            <h2>{isFarsi ? "موجودی انبار" : "Inventory overview"}</h2>
+            <span>{inventoryItems.length}</span>
+          </div>
+
+          <div className="dashboard-table-wrap">
+            <table className="dashboard-table">
+              <thead>
+                <tr>
+                  <th>{isFarsi ? "کد SKU" : "SKU"}</th>
+                  <th>{isFarsi ? "موجودی" : "Quantity"}</th>
+                  <th>{isFarsi ? "مکان" : "Location"}</th>
+                  <th>{isFarsi ? "وضعیت" : "Status"}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {inventoryItems.length ? inventoryItems.map((item) => {
+                  const stock = Number(item.quantity ?? item.stock ?? item.available_quantity ?? 0);
+                  const status = stock <= 0 ? (isFarsi ? "ناموجود" : "Empty") : stock <= 5 ? (isFarsi ? "هشدار" : "Warning") : (isFarsi ? "سالم" : "Healthy");
+
+                  return (
+                    <tr key={item.id || item.sku || `${item.location_id || "inv"}-row`}>
+                      <td>{item.sku || item.id || "—"}</td>
+                      <td>{stock}</td>
+                      <td>{item.location_name || item.location_id || item.location || "—"}</td>
+                      <td>{status}</td>
+                    </tr>
+                  );
+                }) : (
+                  <tr>
+                    <td colSpan="4">{isFarsi ? "داده‌ای برای موجودی انبار وجود ندارد." : "No inventory data available."}</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </section>
+        )}
+
+        {ownerSection === "overview" && (
         <div className="owner-dashboard-grid">
 
           <section className="dashboard-panel">
@@ -1690,7 +2068,9 @@ function OwnerDashboardPage({ catalog, language, labels }) {
 
           </aside>
         </div>
+        )}
 
+        {ownerSection === "overview" && (
         <section className="dashboard-panel dashboard-panel-wide">
 
           <div className="dashboard-panel-header">
@@ -1718,6 +2098,7 @@ function OwnerDashboardPage({ catalog, language, labels }) {
           </div>
 
         </section>
+        )}
 
       </section>
     </div>
@@ -1971,6 +2352,101 @@ function WebsiteAssistDashboard({ catalog, language, labels }) {
   );
 }
 
+function ownerSectionLabel(section, isFarsi) {
+  const labels = {
+    overview: isFarsi ? "نمای کلی" : "Overview",
+    products: isFarsi ? "محصولات" : "Products",
+    categories: isFarsi ? "دسته‌بندی‌ها" : "Categories",
+    orders: isFarsi ? "سفارش‌ها" : "Orders",
+    users: isFarsi ? "کاربران" : "Users",
+  };
+  return labels[section] || labels.overview;
+}
+
+function getOwnerResourceRows(section, dashboard, catalog) {
+  if (section === "products") return dashboard?.products?.data || [];
+  if (section === "orders") return dashboard?.orders?.data || [];
+  if (section === "users") return dashboard?.customers?.data || [];
+  if (section === "categories") return catalog?.categories || [];
+  return [];
+}
+
+function ownerResourceSearchText(row) {
+  return Object.values(row || {}).filter((value) => ["string", "number"].includes(typeof value)).join(" ").toLowerCase();
+}
+
+function OwnerResourceTable({ section, rows, isFarsi }) {
+  if (section === "categories") {
+    return (
+      <div className="dashboard-table-wrap"><table className="dashboard-table"><thead><tr><th>{isFarsi ? "دسته‌بندی" : "Category"}</th><th>{isFarsi ? "شناسه" : "Slug"}</th><th>{isFarsi ? "تعداد محصول" : "Products"}</th></tr></thead><tbody>
+        {rows.length ? rows.map((row) => <tr key={row.slug || row.name}><td>{isFarsi ? row.nameFa || row.name : row.name}</td><td>{row.slug || "-"}</td><td>{row.count || 0}</td></tr>) : <OwnerEmptyRow colSpan="3" isFarsi={isFarsi} />}
+      </tbody></table></div>
+    );
+  }
+
+  const columns = section === "products"
+    ? [[isFarsi ? "محصول" : "Product", (row) => row.title || row.name || row.id], [isFarsi ? "وضعیت" : "Status", (row) => row.status || "-"], [isFarsi ? "دسته" : "Category", (row) => row.category || row.collection || "-"], [isFarsi ? "به‌روزرسانی" : "Updated", (row) => row.updated_at || row.created_at || "-"]]
+    : section === "orders"
+      ? [[isFarsi ? "سفارش" : "Order", (row) => row.display_id || row.id], [isFarsi ? "وضعیت" : "Status", (row) => row.status || row.fulfillment_status || "-"], [isFarsi ? "مبلغ" : "Total", (row) => row.total || row.total_paid || "-"], [isFarsi ? "تاریخ" : "Date", (row) => row.created_at || "-"]]
+      : [[isFarsi ? "کاربر" : "User", (row) => `${row.first_name || ""} ${row.last_name || ""}`.trim() || row.id], [isFarsi ? "ایمیل" : "Email", (row) => row.email || "-"], [isFarsi ? "گروه" : "Group", (row) => row.groups?.join?.(", ") || "Customer"], [isFarsi ? "تاریخ" : "Created", (row) => row.created_at || "-"]];
+
+  return <div className="dashboard-table-wrap"><table className="dashboard-table"><thead><tr>{columns.map(([label]) => <th key={label}>{label}</th>)}</tr></thead><tbody>{rows.length ? rows.map((row, index) => <tr key={row.id || index}>{columns.map(([label, value]) => <td key={label}>{value(row)}</td>)}</tr>) : <OwnerEmptyRow colSpan={String(columns.length)} isFarsi={isFarsi} />}</tbody></table></div>;
+}
+
+function OwnerEmptyRow({ colSpan, isFarsi }) {
+  return <tr><td colSpan={colSpan}>{isFarsi ? "داده‌ای برای نمایش وجود ندارد." : "No data available."}</td></tr>;
+}
+
+function OwnerResourceInsights({ section, rows, catalog, dashboard, isFarsi }) {
+  const products = catalog?.products || [];
+  const inventory = dashboard?.inventory?.data || [];
+  const orders = section === "orders" ? rows : dashboard?.orders?.data || [];
+  const customers = section === "users" ? rows : dashboard?.customers?.data || [];
+  const orderStatuses = Object.entries(orders.reduce((result, order) => {
+    const status = order.status || order.fulfillment_status || "unknown";
+    result[status] = (result[status] || 0) + 1;
+    return result;
+  }, {})).map(([label, value]) => ({ label, value }));
+  const categoryRows = (catalog?.categories || []).map((category) => ({ label: isFarsi ? category.nameFa || category.name : category.name, value: category.count || 0 }));
+  const productAttention = products.filter((product) => Number(product.stockCount) <= 5).length;
+  const saleProducts = products.filter((product) => Number(product.compareAtAmount) > Number(product.priceAmount)).length;
+  const totalOrderValue = orders.reduce((total, order) => total + (Number(order.total) || Number(order.total_paid) || 0), 0);
+  const repeatCustomers = customers.filter((customer) => Number(customer.orders_count || customer.order_count || 0) > 1).length;
+
+  return (
+    <div className="owner-resource-insights">
+      <div className="owner-today-grid">
+        {section === "products" && <>
+          <MetricCard label={isFarsi ? "محصولات کم‌موجود" : "Low-stock products"} value={productAttention} />
+          <MetricCard label={isFarsi ? "محصولات تخفیف‌دار" : "Sale products"} value={saleProducts} />
+          <MetricCard label={isFarsi ? "آیتم‌های انبار" : "Inventory items"} value={inventory.length} />
+          <MetricCard label={isFarsi ? "ارزش کاتالوگ" : "Catalog value"} value={formatCompactAmount(products.reduce((total, product) => total + (Number(product.priceAmount) || 0), 0))} />
+        </>}
+        {section === "categories" && <>
+          <MetricCard label={isFarsi ? "دسته‌ها" : "Categories"} value={categoryRows.length} />
+          <MetricCard label={isFarsi ? "محصولات دسته‌بندی‌شده" : "Categorized products"} value={categoryRows.reduce((total, row) => total + row.value, 0)} />
+          <MetricCard label={isFarsi ? "دسته‌های فعال" : "Active categories"} value={categoryRows.filter((row) => row.value > 0).length} />
+          <MetricCard label={isFarsi ? "محصول بدون دسته" : "Uncategorized"} value={Math.max(0, products.length - categoryRows.reduce((total, row) => total + row.value, 0))} />
+        </>}
+        {section === "orders" && <>
+          <MetricCard label={isFarsi ? "سفارش‌ها" : "Orders"} value={orders.length} />
+          <MetricCard label={isFarsi ? "ارزش سفارش‌ها" : "Order value"} value={formatCompactAmount(totalOrderValue)} />
+          <MetricCard label={isFarsi ? "وضعیت‌ها" : "Statuses"} value={orderStatuses.length} />
+          <MetricCard label={isFarsi ? "تغییرات امروز" : "Changed today"} value={orders.filter((order) => String(order.updated_at || "").slice(0, 10) === new Date().toISOString().slice(0, 10)).length} />
+        </>}
+        {section === "users" && <>
+          <MetricCard label={isFarsi ? "مشتری‌ها" : "Customers"} value={customers.length} />
+          <MetricCard label={isFarsi ? "مشتری تکراری" : "Repeat customers"} value={repeatCustomers} />
+          <MetricCard label={isFarsi ? "ایمیل ثبت‌شده" : "With email"} value={customers.filter((customer) => customer.email).length} />
+          <MetricCard label={isFarsi ? "بدون فعالیت" : "No activity data"} value={customers.filter((customer) => !customer.created_at && !customer.updated_at).length} />
+        </>}
+      </div>
+      {section === "categories" && <AnalyticsBars title={isFarsi ? "ترکیب دسته‌ها" : "Category mix"} rows={categoryRows} />}
+      {section === "orders" && <AnalyticsBars title={isFarsi ? "توزیع وضعیت سفارش‌ها" : "Order status distribution"} rows={orderStatuses} />}
+    </div>
+  );
+}
+
 function MetricCard({ label, value }) {
   return (
     <article className="metric-card">
@@ -1996,6 +2472,92 @@ function AnalyticsBars({ title, rows }) {
       </div>
     </section>
   );
+}
+
+function AnalyticsLine({ title, rows }) {
+  const values = rows.map((row) => Number(row.value) || 0);
+  const maximum = Math.max(1, ...values);
+  const points = rows.map((row, index) => {
+    const x = rows.length === 1 ? 50 : (index / (rows.length - 1)) * 100;
+    const y = 100 - ((Number(row.value) || 0) / maximum) * 82 - 8;
+    return `${x},${y}`;
+  }).join(" ");
+
+  return (
+    <section className="analytics-chart analytics-line-chart" aria-label={title}>
+      <h3>{title}</h3>
+      <div className="analytics-line-plot">
+        <svg viewBox="0 0 100 100" role="img" aria-label={title} preserveAspectRatio="none">
+          <polyline points={points} />
+          {rows.map((row, index) => {
+            const x = rows.length === 1 ? 50 : (index / (rows.length - 1)) * 100;
+            const y = 100 - ((Number(row.value) || 0) / maximum) * 82 - 8;
+            return <circle key={`${row.label}-${index}`} cx={x} cy={y} r="1.6" />;
+          })}
+        </svg>
+      </div>
+      <div className="analytics-line-labels">
+        {rows.filter((_, index) => index === 0 || index === rows.length - 1 || index % Math.max(1, Math.floor(rows.length / 5)) === 0).map((row) => (
+          <span key={row.label}>{row.label}</span>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function AnalyticsFunnel({ title, rows }) {
+  const maximum = Math.max(1, ...rows.map((row) => Number(row.value) || 0));
+
+  return (
+    <section className="analytics-chart analytics-funnel" aria-label={title}>
+      <h3>{title}</h3>
+      {rows.map((row) => (
+        <div className="analytics-funnel-row" key={row.label}>
+          <div>
+            <span>{row.label}</span>
+            <strong>{row.value}</strong>
+          </div>
+          <i style={{ width: `${((Number(row.value) || 0) / maximum) * 100}%` }} />
+        </div>
+      ))}
+    </section>
+  );
+}
+
+function OwnerAnalyticsReport({ title, rows, valueKey, valueLabel, isFarsi }) {
+  return (
+    <section className="analytics-report" aria-label={title}>
+      <h3>{title}</h3>
+      {rows.length ? rows.map((row) => (
+        <div className="analytics-report-row" key={row.product_id}>
+          <span>{row.product_name || row.product_id}</span>
+          <strong>{row[valueKey] || 0} {valueLabel}</strong>
+        </div>
+      )) : (
+        <p className="analytics-empty">{isFarsi ? "هنوز داده‌ای ثبت نشده است." : "No report data yet."}</p>
+      )}
+    </section>
+  );
+}
+
+function exportOwnerReport({ reportDaily, reportFunnel, serverAnalytics }) {
+  const rows = [
+    ["Metric", "Value"],
+    ...reportFunnel.map((row) => [row.label, row.value]),
+    ["Visitors", serverAnalytics?.visitors || 0],
+    ["Events", serverAnalytics?.events || 0],
+    [],
+    ["Date", "Events"],
+    ...reportDaily.map((row) => [row.date, row.events ?? row.total ?? 0]),
+  ];
+  const csv = rows.map((row) => row.map((value) => `"${String(value ?? "").replaceAll('"', '""')}"`).join(",")).join("\n");
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "mouher-owner-report.csv";
+  link.click();
+  URL.revokeObjectURL(url);
 }
 
 function buildAssistantTasks(products, labels) {

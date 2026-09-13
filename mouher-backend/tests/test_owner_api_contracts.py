@@ -5,14 +5,19 @@ from unittest.mock import patch
 
 from django.test import TestCase, override_settings
 
+from commerce.medusa import MedusaAPIError
+
 
 class FakeAdminRepository:
     def __init__(self, resource_key: str, detail_key: str, rows: list[dict]):
         self.resource_key = resource_key
         self.detail_key = detail_key
         self.rows = rows
+        self.last_query = None
+        self.last_detail_query = None
 
     def list(self, query=None):
+        self.last_query = query or {}
         return {
             self.resource_key: self.rows,
             "limit": int((query or {}).get("limit", 50)),
@@ -21,7 +26,13 @@ class FakeAdminRepository:
         }
 
     def retrieve(self, resource_id, query=None):
+        self.last_detail_query = query or {}
         return {self.detail_key: {"id": resource_id}}
+
+
+class FailingAdminRepository:
+    def list(self, query=None):
+        raise MedusaAPIError(503, "Medusa Admin API is unavailable.")
 
 
 class FakeWarehouseRepository:
@@ -51,17 +62,28 @@ class OwnerAPIContractTests(TestCase):
         self.assertEqual(response.json()["error"]["code"], "unauthorized")
 
     @patch("commerce.views.CommerceServices.default")
-    def test_products_list_uses_dashboard_list_envelope(self, default_services):
-        default_services.return_value = SimpleNamespace(
-            products=FakeAdminRepository(
-                "products",
-                "product",
-                [{"id": "prod_1", "title": "Mouher Coat"}],
-            )
-        )
+    def test_medusa_errors_include_machine_readable_code(self, default_services):
+        default_services.return_value = SimpleNamespace(products=FailingAdminRepository())
 
         response = self.client.get(
-            "/api/commerce/admin/products/?limit=25&offset=50",
+            "/api/commerce/admin/products/",
+            HTTP_X_MOUHER_INTERNAL_TOKEN="owner-secret",
+        )
+
+        self.assertEqual(response.status_code, 503)
+        self.assertEqual(response.json()["error"]["code"], "service_unavailable")
+
+    @patch("commerce.views.CommerceServices.default")
+    def test_products_list_uses_dashboard_list_envelope(self, default_services):
+        products = FakeAdminRepository(
+            "products",
+            "product",
+            [{"id": "prod_1", "title": "Mouher Coat"}],
+        )
+        default_services.return_value = SimpleNamespace(products=products)
+
+        response = self.client.get(
+            "/api/commerce/admin/products/?limit=25&offset=50&unsafe=drop-me",
             HTTP_X_MOUHER_INTERNAL_TOKEN="owner-secret",
         )
 
@@ -73,6 +95,7 @@ class OwnerAPIContractTests(TestCase):
                 "meta": {"limit": 25, "offset": 50, "count": 1},
             },
         )
+        self.assertNotIn("unsafe", products.last_query)
 
     @patch("commerce.views.CommerceServices.default")
     def test_product_detail_uses_dashboard_detail_envelope(self, default_services):
@@ -108,6 +131,53 @@ class OwnerAPIContractTests(TestCase):
         self.assertEqual(response.json()["meta"], {"limit": 50, "offset": 0, "count": 1})
 
     @patch("commerce.views.CommerceServices.default")
+    def test_order_detail_uses_dashboard_detail_envelope(self, default_services):
+        default_services.return_value = SimpleNamespace(
+            orders=FakeAdminRepository("orders", "order", [])
+        )
+
+        response = self.client.get(
+            "/api/commerce/admin/orders/order_1/",
+            HTTP_X_MOUHER_INTERNAL_TOKEN="owner-secret",
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {"data": {"id": "order_1"}})
+
+    @patch("commerce.views.CommerceServices.default")
+    def test_customers_list_uses_dashboard_list_envelope(self, default_services):
+        default_services.return_value = SimpleNamespace(
+            customers=FakeAdminRepository(
+                "customers",
+                "customer",
+                [{"id": "cus_1", "email": "buyer@example.test"}],
+            )
+        )
+
+        response = self.client.get(
+            "/api/commerce/admin/customers/",
+            HTTP_X_MOUHER_INTERNAL_TOKEN="owner-secret",
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["data"][0]["id"], "cus_1")
+        self.assertEqual(response.json()["meta"], {"limit": 50, "offset": 0, "count": 1})
+
+    @patch("commerce.views.CommerceServices.default")
+    def test_customer_detail_uses_dashboard_detail_envelope(self, default_services):
+        customers = FakeAdminRepository("customers", "customer", [])
+        default_services.return_value = SimpleNamespace(customers=customers)
+
+        response = self.client.get(
+            "/api/commerce/admin/customers/cus_1/?fields=id,email&unsafe=drop-me",
+            HTTP_X_MOUHER_INTERNAL_TOKEN="owner-secret",
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {"data": {"id": "cus_1"}})
+        self.assertEqual(customers.last_detail_query, {"fields": "id,email"})
+
+    @patch("commerce.views.CommerceServices.default")
     def test_inventory_list_uses_dashboard_list_envelope(self, default_services):
         default_services.return_value = SimpleNamespace(warehouse=FakeWarehouseRepository())
 
@@ -120,3 +190,15 @@ class OwnerAPIContractTests(TestCase):
         self.assertEqual(response.json()["data"][0]["sku"], "COAT-001")
         self.assertEqual(response.json()["meta"], {"limit": 50, "offset": 0, "count": 1})
 
+    @patch("commerce.views.CommerceServices.default")
+    def test_stock_locations_list_uses_dashboard_list_envelope(self, default_services):
+        default_services.return_value = SimpleNamespace(warehouse=FakeWarehouseRepository())
+
+        response = self.client.get(
+            "/api/commerce/warehouse/stock-locations/?limit=10&offset=20",
+            HTTP_X_MOUHER_INTERNAL_TOKEN="owner-secret",
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["data"][0]["id"], "sloc_1")
+        self.assertEqual(response.json()["meta"], {"limit": 10, "offset": 20, "count": 1})

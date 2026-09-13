@@ -80,7 +80,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--output-dir",
         type=Path,
-        default=Path("Mouher_Data/clean"),
+        default=Path("data/Mouher_Data/clean"),
         help="Ignored directory for generated clean JSON and media links.",
     )
     parser.add_argument(

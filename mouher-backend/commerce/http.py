@@ -85,3 +85,8 @@ def query_params(request: HttpRequest) -> JsonObject:
         params[key] = clean_values if len(clean_values) > 1 else clean_values[0]
 
     return params
+
+
+def allowed_query_params(request: HttpRequest, allowed_keys: set[str]) -> JsonObject:
+    params = query_params(request)
+    return {key: value for key, value in params.items() if key in allowed_keys}

@@ -62,7 +62,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--output-dir",
         type=Path,
-        default=Path("Mouher_Data/current-site"),
+        default=Path("data/Mouher_Data/current-site"),
     )
     parser.add_argument(
         "--delay",

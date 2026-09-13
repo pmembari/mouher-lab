@@ -8,7 +8,7 @@ __pycache__/
 *node_modules*
 
 # Mouher private catalog exports and local preview media.
-Mouher_Data/
+data/Mouher_Data
 mouher-preview/public/
 
 # Distribution / packaging
@@ -167,7 +167,7 @@ venv.bak/
 
 # mkdocs documentation
 /site
-Mouher_Data/
+data/Mouher_Data
 # mypy
 .mypy_cache/
 .dmypy.json

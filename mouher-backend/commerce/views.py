@@ -7,7 +7,14 @@ from django.views.decorators.http import require_GET, require_POST
 
 from .auth import require_internal_token
 from .analytics import dashboard_summary, record_event
-from .http import error_response, json_response, parse_json_body, positive_int, query_params
+from .http import (
+    allowed_query_params,
+    error_response,
+    json_response,
+    parse_json_body,
+    positive_int,
+    query_params,
+)
 from .medusa import MedusaAPIError
 from .notifications import (
     loyalty_push_config,
@@ -29,6 +36,40 @@ from .services import (
     retrieve_admin_resource,
     retrieve_storefront_product,
 )
+
+OWNER_PRODUCT_QUERY_KEYS = {
+    "limit",
+    "offset",
+    "q",
+    "status",
+    "collection_id",
+    "category_id",
+    "sales_channel_id",
+    "fields",
+    "order",
+}
+OWNER_ORDER_QUERY_KEYS = {
+    "limit",
+    "offset",
+    "q",
+    "status",
+    "fulfillment_status",
+    "payment_status",
+    "created_at",
+    "updated_at",
+    "fields",
+    "order",
+}
+OWNER_CUSTOMER_QUERY_KEYS = {
+    "limit",
+    "offset",
+    "q",
+    "email",
+    "created_at",
+    "updated_at",
+    "fields",
+    "order",
+}
 
 
 @require_GET
@@ -160,7 +201,10 @@ def admin_orders(request: HttpRequest) -> JsonResponse:
         services = CommerceServices.default()
         return json_response(
             owner_list_response(
-                list_admin_resource(services.orders, query_params(request)),
+                list_admin_resource(
+                    services.orders,
+                    allowed_query_params(request, OWNER_ORDER_QUERY_KEYS),
+                ),
                 "orders",
             )
         )
@@ -175,7 +219,11 @@ def admin_order_detail(request: HttpRequest, order_id: str) -> JsonResponse:
         services = CommerceServices.default()
         return json_response(
             owner_detail_response(
-                retrieve_admin_resource(services.orders, order_id, query_params(request)),
+                retrieve_admin_resource(
+                    services.orders,
+                    order_id,
+                    allowed_query_params(request, OWNER_ORDER_QUERY_KEYS),
+                ),
                 "order",
             )
         )
@@ -190,7 +238,10 @@ def admin_products(request: HttpRequest) -> JsonResponse:
         services = CommerceServices.default()
         return json_response(
             owner_list_response(
-                list_admin_resource(services.products, query_params(request)),
+                list_admin_resource(
+                    services.products,
+                    allowed_query_params(request, OWNER_PRODUCT_QUERY_KEYS),
+                ),
                 "products",
             )
         )
@@ -205,7 +256,11 @@ def admin_product_detail(request: HttpRequest, product_id: str) -> JsonResponse:
         services = CommerceServices.default()
         return json_response(
             owner_detail_response(
-                retrieve_admin_resource(services.products, product_id, query_params(request)),
+                retrieve_admin_resource(
+                    services.products,
+                    product_id,
+                    allowed_query_params(request, OWNER_PRODUCT_QUERY_KEYS),
+                ),
                 "product",
             )
         )
@@ -220,7 +275,10 @@ def admin_customers(request: HttpRequest) -> JsonResponse:
         services = CommerceServices.default()
         return json_response(
             owner_list_response(
-                list_admin_resource(services.customers, query_params(request)),
+                list_admin_resource(
+                    services.customers,
+                    allowed_query_params(request, OWNER_CUSTOMER_QUERY_KEYS),
+                ),
                 "customers",
             )
         )
@@ -235,7 +293,11 @@ def admin_customer_detail(request: HttpRequest, customer_id: str) -> JsonRespons
         services = CommerceServices.default()
         return json_response(
             owner_detail_response(
-                retrieve_admin_resource(services.customers, customer_id, query_params(request)),
+                retrieve_admin_resource(
+                    services.customers,
+                    customer_id,
+                    allowed_query_params(request, OWNER_CUSTOMER_QUERY_KEYS),
+                ),
                 "customer",
             )
         )

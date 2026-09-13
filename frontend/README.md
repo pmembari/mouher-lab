@@ -36,7 +36,7 @@ npm run build
 npm run test:catalog
 ```
 
-Private data stays local in `Mouher_Data/`. The Vite build has `publicDir: false`, so local product media is not copied into `dist`.
+Private data stays local in `data/Mouher_Data`. The Vite build has `publicDir: false`, so local product media is not copied into `dist`.
 
 ## Private Data Prep
 
@@ -47,5 +47,5 @@ python3 scripts/prepare_mouher_catalog.py --link-media
 python3 -m unittest scripts/test_prepare_mouher_catalog.py
 ```
 
-The generated files stay in ignored `Mouher_Data/clean/`.
+The generated files stay in ignored `data/Mouher_Data/clean/`.
 By default this includes visible products only; add `--include-hidden` when you want hidden/draft products in the private clean output too.

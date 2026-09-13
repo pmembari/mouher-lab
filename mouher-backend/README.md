@@ -13,11 +13,29 @@ python3 -m venv .venv
 . .venv/bin/activate
 pip install -e .
 cp .env.example .env
-python manage.py runserver 8001
+python3 manage.py migrate
+python3 manage.py runserver 8001
 ```
 
 Load the `.env` values into your shell or deployment platform before starting
-Django.
+Django. The default local setup uses SQLite. Set `DJANGO_DATABASE_URL` when
+you want Django to use PostgreSQL from `db-mouher` or another separately
+managed database.
+
+## Import the Mouher catalog snapshot
+
+The cleaned source catalog contains products, variants, categories, and
+collections. Import it into Django-owned reporting tables with:
+
+```bash
+python3 manage.py migrate
+python3 manage.py import_mouher_catalog
+```
+
+The command is safe to rerun: stable legacy source IDs prevent duplicate rows.
+Historical orders, customers, and live inventory are not present in
+`data/Mouher_Data`; those remain Medusa-owned and are read through the
+protected owner API.
 
 ## API
 

@@ -59,7 +59,7 @@ or order placement.
 The current public catalog from `https://mouher.com/products` is exported with:
 
 ```bash
-python3 scripts/inspect_mouher_live_site.py --include-public-image-urls --output-dir Mouher_Data/current-site
+python3 scripts/inspect_mouher_live_site.py --include-public-image-urls --output-dir data/Mouher_Data/current-site
 python3 scripts/export_current_mouher_storefront.py
 ```
 

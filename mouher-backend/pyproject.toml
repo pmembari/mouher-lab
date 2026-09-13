@@ -11,4 +11,10 @@ dependencies = [
 ]
 
 [tool.setuptools]
-packages = ["mouher_backend", "commerce", "commerce.migrations"]
+packages = [
+  "mouher_backend",
+  "commerce",
+  "commerce.migrations",
+  "commerce.management",
+  "commerce.management.commands",
+]

@@ -32,7 +32,7 @@ Generate a private cleaned catalog and organized symlink tree:
 python3 scripts/prepare_mouher_catalog.py --link-media
 ```
 
-This writes ignored files under `Mouher_Data/clean/`:
+This writes ignored files under `data/Mouher_Data/clean/`:
 
 - `catalog.clean.json`
 - `categories.clean.json`
@@ -49,14 +49,14 @@ To inspect the current public Mouher storefront as import/domain source data:
 python3 scripts/inspect_mouher_live_site.py
 ```
 
-This writes ignored files under `Mouher_Data/current-site/`. It strips raw remote image URLs by default and only keeps filename/product-ID hints, because the live asset URLs should not be treated as durable media storage.
+This writes ignored files under `data/Mouher_Data/current-site/`. It strips raw remote image URLs by default and only keeps filename/product-ID hints, because the live asset URLs should not be treated as durable media storage.
 
 Current public site facts checked on September 12, 2026:
 
 - `/products` exposes 181 products across 10 pages.
 - `/collections` exposes `اکسسوری`, `زنانه`, and `مردانه`.
 - `/categories` exposes `تیشرت`, `کت`, `شلوار`, `پیراهن`, and `ست`.
-- Current live product IDs include IDs outside the local historical export range, so exact ID matching to `Mouher_Data/data/images/<product_id>/` is not guaranteed.
+- Current live product IDs include IDs outside the local historical export range, so exact ID matching to `data/Mouher_Data/data/images/<product_id>/` is not guaranteed.
 
 ## Tests Needed Before Import
 
@@ -71,6 +71,6 @@ Current public site facts checked on September 12, 2026:
 
 ## Privacy Rules
 
-- Keep `Mouher_Data/`, CSVs, local image folders, generated local catalog JSON, and sample image folders out of Git.
+- Keep `data/Mouher_Data`, CSVs, local image folders, generated local catalog JSON, and sample image folders out of Git.
 - Use tiny non-sensitive fixtures in tests.
 - Use environment variables for Medusa backend URL, publishable key, region, country, and currency.

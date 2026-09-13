@@ -10,6 +10,7 @@ This document defines the read-only API contract for the first owner dashboard m
 - Error responses return `error.message` and `error.code`.
 - List pagination uses `limit`, `offset`, and `count`.
 - Query parameters accepted by Django may be passed through to Medusa only after validation or explicit allow-listing.
+- Unsupported query parameters are ignored, not proxied to Medusa.
 
 ## Response Shapes
 
@@ -99,6 +100,18 @@ GET /api/commerce/admin/products/<product_id>/
 
 The list endpoint returns Medusa products normalized into the list response shape. The detail endpoint returns the product object in `data`.
 
+Allowed query parameters:
+
+- `limit`
+- `offset`
+- `q`
+- `status`
+- `collection_id`
+- `category_id`
+- `sales_channel_id`
+- `fields`
+- `order`
+
 ### Orders
 
 ```text
@@ -108,6 +121,19 @@ GET /api/commerce/admin/orders/<order_id>/
 
 The list endpoint returns Medusa orders normalized into the list response shape. The detail endpoint returns the order object in `data`.
 
+Allowed query parameters:
+
+- `limit`
+- `offset`
+- `q`
+- `status`
+- `fulfillment_status`
+- `payment_status`
+- `created_at`
+- `updated_at`
+- `fields`
+- `order`
+
 ### Customers
 
 ```text
@@ -116,6 +142,17 @@ GET /api/commerce/admin/customers/<customer_id>/
 ```
 
 The list endpoint returns Medusa customers normalized into the list response shape. The detail endpoint returns the customer object in `data`.
+
+Allowed query parameters:
+
+- `limit`
+- `offset`
+- `q`
+- `email`
+- `created_at`
+- `updated_at`
+- `fields`
+- `order`
 
 ### Inventory
 
@@ -137,8 +174,14 @@ mouher-backend/tests/test_owner_api_contracts.py
 They currently cover:
 
 - Protected endpoint error code.
+- Medusa/API error code mapping.
 - Products list envelope.
 - Product detail envelope.
 - Orders list envelope.
+- Order detail envelope.
+- Customers list envelope.
+- Customer detail envelope.
 - Inventory list envelope.
-
+- Stock-location list envelope.
+- Default pagination behavior.
+- Query allow-listing.

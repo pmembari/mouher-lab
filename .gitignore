@@ -13,6 +13,7 @@ mouher-preview/public/
 
 # Distribution / packaging
 .Python
+graphify-out/
 build/
 develop-eggs/
 dist/
@@ -20,6 +21,8 @@ downloads/
 eggs/
 .eggs/
 lib/
+!frontend/src/lib/
+!frontend/src/lib/*.js
 !mouher-preview/src/lib/
 !mouher-preview/src/lib/*.js
 data
@@ -157,7 +160,13 @@ venv/
 ENV/
 env.bak/
 venv.bak/
-
+Agent_Skills_Could_Inspired/
+*.git/*
+.vscode
+.codex
+.agents
+infrastructure
+*__pycache__*
 # Spyder project settings
 .spyderproject
 .spyproject

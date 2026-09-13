@@ -10,6 +10,7 @@ Build Mouher as a complete ecommerce operating system, not just a storefront and
 - Django as the secure Mouher API, backend-for-frontend, and admin gateway.
 - A separate payment adapter service.
 - PostgreSQL, Redis, and object storage as independent infrastructure components.
+- `db-mouher/`: optional PostgreSQL Docker image and connection contract for Django-owned operational data; it remains separate from the Medusa commerce database and does not require Compose.
 
 This plan is the delivery guide for the next implementation phases. It should be used together with:
 
@@ -18,6 +19,7 @@ This plan is the delivery guide for the next implementation phases. It should be
 - `docs/mouher-medusa-django-backend.md`: backend boundary and Medusa/Django integration plan.
 - `Agent_Skills_Could_Inspired/vercel-commerce/`: ecommerce completeness reference for routes, product pages, cart behavior, Medusa Store API usage, metadata, sitemap, robots, and revalidation concepts.
 - `Agent_Skills_Could_Inspired/Free-Admin-Dashboard/`: UI reference for the owner dashboard shell, tables, charts, notifications, reviews, help desk, and responsive navigation.
+- `Agent_Skills_Could_Inspired/hitkeep/`: MIT-licensed, self-hostable reference for privacy-first analytics, ecommerce reporting, funnels, exports, permissions, and calm operational dashboard design. Use its product principles and information architecture as inspiration; do not copy its brand or import paid/cloud-only services.
 - `Agent_Skills_Could_Inspired/graphify/`: optional reference for agent-aware development and keeping implementation context compact.
 
 ## Current Baseline
@@ -59,6 +61,7 @@ Required development practices:
 - Include request IDs or correlation IDs across service calls.
 - Keep secrets out of source control and browser bundles.
 - Prefer stateless app services so they can be restarted, debugged, and scaled independently.
+- Prefer open-source and self-hosted components. Do not add paid agent services, hosted AI tools, proprietary dashboard dependencies, or usage-billed integrations without explicit owner approval.
 - Document how to start, test, and troubleshoot each component locally.
 
 ### Component Flow
@@ -145,7 +148,41 @@ Recommended production host:
 admin.mouher.com
 ```
 
+Implementation status: the first independent `owner-workspace/` Vite app now
+exists with separated auth, API, navigation, Overview, resource-table, chart,
+and report modules. The existing owner route in `frontend/` remains a legacy
+preview until the new workspace completes integration and end-to-end parity.
+
 Use `Agent_Skills_Could_Inspired/Free-Admin-Dashboard/` as a UI starting point only. The template's static data, demo routing, and generic styling must be replaced with Mouher API clients, real auth, permission checks, loading states, empty states, validation, audit logs, and brand tokens.
+
+### Owner Dashboard Page Model
+
+The owner experience must use a persistent, protected dashboard shell with separate enriched pages. Each page must have its own loading, empty, error, search/filter, pagination, export, and responsive states where applicable:
+
+- **Overview**: executive KPIs, revenue and order trends, traffic and conversion funnel, today's visits, checkout drop-off, what changed today, low-stock and attention alerts, top sold products, top wishlisted products, device mix, geographic mix, and report-range controls.
+- **Products**: paginated product table, search, status/category/collection filters, inventory and price signals, product performance, low-stock ranking, top sellers, top wishlisted products, and read-only product detail view.
+- **Categories**: category and collection performance, product counts, revenue/order contribution when available, inventory health by category, demand signals, search, pagination, and read-only category detail view.
+- **Orders**: paginated order table, search, status/payment/fulfillment/date filters, order totals and customer context, today's changed orders, status distribution, revenue trend, and read-only order detail view.
+- **Users**: paginated customer/user table, search, account activity, order count/value when available, repeat-customer signals, recent activity, and read-only customer detail view. Owner users and roles remain a separate protected administration capability and must not be confused with customers.
+
+The page model should follow HitKeep's useful open-source patterns: clear scope and date controls, aggregate evidence instead of invasive visitor profiling, compact tables with stable pagination, explicit empty/loading/error feedback, accessible charts, tabular fallbacks, downloadable open-format reports, visible permission boundaries, and self-hostable operation.
+
+### Advanced Analytics Requirements
+
+Analytics must be based on Django's owner API and real `AnalyticsEvent` and Medusa commerce data. It must not use hard-coded dashboard figures in production owner pages. The reporting layer should support:
+
+- Daily, weekly, and selectable 7/30/90-day trend comparisons.
+- Visitors, product views, adds to cart, checkout starts, purchases, conversion rates, and checkout drop-off.
+- Orders, gross/net revenue, average order value, refunds/cancellations, and order-status distribution when the commerce source exposes the fields.
+- Top 10 sold products with units, revenue, stock, and comparison context.
+- Top 10 wishlisted products with wishlist count, product context, and stock state.
+- Product/category/collection performance and inventory value.
+- Low-stock, out-of-stock, stale-catalog, and other actionable attention reports.
+- Country/region/city aggregates and device aggregates without raw IP storage or cross-site identity profiles.
+- CSV or another open-format export for every report that the owner can view.
+- Charts with accessible labels, tabular fallbacks, responsive layout, and truthful no-data states.
+
+HitKeep's optional AI-native and MCP features are not part of the Mouher scope. Mouher will not add paid agents or non-open-source agent tooling; future automation must use local, open-source, permissioned services only and only after the core dashboard is complete.
 
 ## Backend Boundaries
 
@@ -248,6 +285,7 @@ The database is an independent component, not an implementation detail of any fr
 Requirements:
 
 - PostgreSQL runs separately from Django, Medusa, dashboard, storefront, and payment service.
+- `db-mouher` provides a single Dockerfile image and documents the optional Django database connection and migration boundary. Local development may use SQLite until PostgreSQL is needed.
 - Schema migrations are explicit, reviewed, and reversible where practical.
 - Each service accesses only the database/schema it owns.
 - Django must not directly modify Medusa-owned commerce tables.
@@ -675,7 +713,7 @@ Cover scenarios that can harm the storefront, analytics, or dashboard:
 3. Add owner auth tests in Django, then implement secure owner auth.
 4. Add protected endpoint tests for products, orders, customers, inventory, and analytics.
 5. Implement or normalize Django owner/admin API responses.
-6. Create `owner-dashboard/` from the admin template with Mouher branding.
+6. Create `owner-workspace/` from the admin template and HitKeep analytics principles with Mouher branding.
 7. Remove demo-only pages that are not part of Phase 1.
 8. Add frontend tests for protected routing, loading states, empty states, error states, and pagination.
 9. Add a typed owner dashboard API client.

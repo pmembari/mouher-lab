@@ -28,11 +28,14 @@ from .services import (
     create_cart,
     health_payload,
     list_admin_resource,
+    list_catalog_snapshot_inventory,
+    list_catalog_snapshot_products,
     list_storefront_products,
     owner_analytics_response,
     owner_detail_response,
     owner_list_response,
     prepare_payment,
+    retrieve_catalog_snapshot_product,
     retrieve_admin_resource,
     retrieve_storefront_product,
 )
@@ -171,6 +174,20 @@ def warehouse_stock_locations(request: HttpRequest) -> JsonResponse:
 @require_GET
 def warehouse_inventory(request: HttpRequest) -> JsonResponse:
     try:
+        if settings.MOUHER_OWNER_USE_CATALOG_SNAPSHOT:
+            return json_response(
+                owner_list_response(
+                    list_catalog_snapshot_inventory(
+                        {
+                            "limit": positive_int(request.GET.get("limit"), 50),
+                            "offset": positive_int(request.GET.get("offset"), 0, maximum=100000),
+                            "sku": request.GET.get("sku", ""),
+                            "q": request.GET.get("q", ""),
+                        }
+                    ),
+                    "inventory_items",
+                )
+            )
         services = CommerceServices.default()
         payload = services.warehouse.list_inventory(
             limit=positive_int(request.GET.get("limit"), 50),
@@ -235,6 +252,15 @@ def admin_order_detail(request: HttpRequest, order_id: str) -> JsonResponse:
 @require_GET
 def admin_products(request: HttpRequest) -> JsonResponse:
     try:
+        if settings.MOUHER_OWNER_USE_CATALOG_SNAPSHOT:
+            return json_response(
+                owner_list_response(
+                    list_catalog_snapshot_products(
+                        allowed_query_params(request, OWNER_PRODUCT_QUERY_KEYS),
+                    ),
+                    "products",
+                )
+            )
         services = CommerceServices.default()
         return json_response(
             owner_list_response(
@@ -253,6 +279,13 @@ def admin_products(request: HttpRequest) -> JsonResponse:
 @require_GET
 def admin_product_detail(request: HttpRequest, product_id: str) -> JsonResponse:
     try:
+        if settings.MOUHER_OWNER_USE_CATALOG_SNAPSHOT:
+            return json_response(
+                owner_detail_response(
+                    retrieve_catalog_snapshot_product(product_id),
+                    "product",
+                )
+            )
         services = CommerceServices.default()
         return json_response(
             owner_detail_response(

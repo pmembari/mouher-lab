@@ -6,6 +6,7 @@ from unittest.mock import patch
 from django.test import TestCase, override_settings
 
 from commerce.medusa import MedusaAPIError
+from commerce.models import CatalogProduct, CatalogVariant
 
 
 class FakeAdminRepository:
@@ -202,3 +203,43 @@ class OwnerAPIContractTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()["data"][0]["id"], "sloc_1")
         self.assertEqual(response.json()["meta"], {"limit": 10, "offset": 20, "count": 1})
+
+    @override_settings(MOUHER_OWNER_USE_CATALOG_SNAPSHOT=True)
+    def test_products_can_use_catalog_snapshot_contract(self):
+        product = CatalogProduct.objects.create(
+            legacy_id="1",
+            handle="coat",
+            title="کت",
+            title_fa="کت",
+            is_visible=True,
+        )
+        CatalogVariant.objects.create(product=product, legacy_id="7", stock=4, source_price=1480000)
+
+        response = self.client.get(
+            "/api/commerce/admin/products/",
+            HTTP_X_MOUHER_INTERNAL_TOKEN="owner-secret",
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["data"][0]["id"], "1")
+        self.assertEqual(response.json()["data"][0]["stockCount"], 4)
+        self.assertEqual(response.json()["meta"], {"limit": 50, "offset": 0, "count": 1})
+
+    @override_settings(MOUHER_OWNER_USE_CATALOG_SNAPSHOT=True)
+    def test_inventory_can_use_catalog_snapshot_contract(self):
+        product = CatalogProduct.objects.create(
+            legacy_id="1",
+            handle="coat",
+            title="کت",
+            is_visible=True,
+        )
+        CatalogVariant.objects.create(product=product, legacy_id="7", sku="COAT-1", stock=4)
+
+        response = self.client.get(
+            "/api/commerce/warehouse/inventory/",
+            HTTP_X_MOUHER_INTERNAL_TOKEN="owner-secret",
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["data"][0]["sku"], "COAT-1")
+        self.assertEqual(response.json()["data"][0]["stocked_quantity"], 4)

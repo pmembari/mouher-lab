@@ -5,8 +5,8 @@ from typing import Any
 
 from django.conf import settings as django_settings
 from django.core.exceptions import ImproperlyConfigured
-
 from .medusa import JsonObject, MedusaAPIError, MedusaClient, parse_quantity
+from .models import CatalogProduct, CatalogVariant
 from .repositories import (
     AdminResourceRepository,
     CartRepository,
@@ -254,6 +254,67 @@ def owner_analytics_response(payload: JsonObject) -> JsonObject:
     return {"data": payload}
 
 
+def list_catalog_snapshot_products(query: JsonObject | None = None) -> JsonObject:
+    query = query or {}
+    limit = positive_limit(query.get("limit"), 50)
+    offset = max(0, int_or_zero(query.get("offset")))
+    search = str(query.get("q") or "").strip()
+    status = str(query.get("status") or "").strip().lower()
+    products = CatalogProduct.objects.prefetch_related("categories", "collections", "variants").all().order_by("id")
+
+    if search:
+        products = products.filter(title__icontains=search)
+    if status in {"published", "active"}:
+        products = products.filter(is_visible=True)
+    elif status in {"draft", "hidden"}:
+        products = products.filter(is_visible=False)
+
+    count = products.count()
+    return {
+        "products": [serialize_catalog_product(product) for product in products[offset:offset + limit]],
+        "limit": limit,
+        "offset": offset,
+        "count": count,
+        "source": "django_catalog_snapshot",
+    }
+
+
+def retrieve_catalog_snapshot_product(product_id: str) -> JsonObject:
+    try:
+        product = CatalogProduct.objects.prefetch_related("categories", "collections", "variants").get(
+            legacy_id=product_id
+        )
+    except CatalogProduct.DoesNotExist:
+        try:
+            product = CatalogProduct.objects.prefetch_related("categories", "collections", "variants").get(
+                handle=product_id
+            )
+        except CatalogProduct.DoesNotExist as error:
+            raise MedusaAPIError(404, "Product does not exist in the catalog snapshot.") from error
+
+    return {"product": serialize_catalog_product(product), "source": "django_catalog_snapshot"}
+
+
+def list_catalog_snapshot_inventory(query: JsonObject | None = None) -> JsonObject:
+    query = query or {}
+    limit = positive_limit(query.get("limit"), 50)
+    offset = max(0, int_or_zero(query.get("offset")))
+    search = str(query.get("q") or query.get("sku") or "").strip()
+    variants = CatalogVariant.objects.select_related("product").order_by("id")
+
+    if search:
+        variants = variants.filter(sku__icontains=search)
+
+    count = variants.count()
+    return {
+        "inventory_items": [serialize_catalog_inventory_item(variant) for variant in variants[offset:offset + limit]],
+        "limit": limit,
+        "offset": offset,
+        "count": count,
+        "source": "django_catalog_snapshot",
+    }
+
+
 def retrieve_admin_resource(
     repository: AdminResourceRepository | None,
     resource_id: str,
@@ -270,6 +331,84 @@ def int_or_zero(value: Any) -> int:
         return int(value)
     except (TypeError, ValueError):
         return 0
+
+
+def positive_limit(value: Any, default: int) -> int:
+    return max(1, min(int_or_zero(value) or default, 100))
+
+
+def serialize_catalog_product(product: CatalogProduct) -> JsonObject:
+    variants = list(product.variants.all())
+    stock_count = sum(variant.stock for variant in variants)
+    prices = [variant.source_price for variant in variants if variant.source_price is not None]
+    return {
+        "id": product.legacy_id,
+        "legacy_id": product.legacy_id,
+        "upc": product.upc,
+        "handle": product.handle,
+        "title": product.title,
+        "title_fa": product.title_fa,
+        "description": product.description_fa,
+        "description_fa": product.description_fa,
+        "status": "published" if product.is_visible else "draft",
+        "is_visible": product.is_visible,
+        "is_promotion": product.is_promotion,
+        "stockCount": stock_count,
+        "inventory_quantity": stock_count,
+        "source_price": min(prices) if prices else None,
+        "created_at": product.source_created_at.isoformat() if product.source_created_at else None,
+        "updated_at": product.source_updated_at.isoformat() if product.source_updated_at else None,
+        "categories": [
+            {
+                "id": category.legacy_id,
+                "legacy_id": category.legacy_id,
+                "slug": category.slug,
+                "name": category.name,
+                "name_fa": category.name_fa,
+            }
+            for category in product.categories.all()
+        ],
+        "collections": [
+            {
+                "id": collection.legacy_id,
+                "legacy_id": collection.legacy_id,
+                "slug": collection.slug,
+                "title": collection.title,
+                "title_fa": collection.title_fa,
+            }
+            for collection in product.collections.all()
+        ],
+        "variants": [serialize_catalog_variant(variant) for variant in variants],
+    }
+
+
+def serialize_catalog_variant(variant: CatalogVariant) -> JsonObject:
+    return {
+        "id": variant.legacy_id,
+        "legacy_id": variant.legacy_id,
+        "sku": variant.sku,
+        "inventory_quantity": variant.stock,
+        "stock": variant.stock,
+        "source_price": variant.source_price,
+        "source_discount": variant.source_discount,
+        "size": variant.size,
+        "color": variant.color,
+        "is_visible": variant.is_visible,
+    }
+
+
+def serialize_catalog_inventory_item(variant: CatalogVariant) -> JsonObject:
+    return {
+        "id": variant.legacy_id,
+        "legacy_id": variant.legacy_id,
+        "sku": variant.sku,
+        "title": variant.product.title,
+        "product_id": variant.product.legacy_id,
+        "stocked_quantity": variant.stock,
+        "reserved_quantity": 0,
+        "available_quantity": variant.stock,
+        "location_name": "Legacy Mouher catalog",
+    }
 
 
 def choose_payment_provider(

@@ -160,8 +160,9 @@ venv/
 ENV/
 env.bak/
 venv.bak/
-Agent_Skills_Could_Inspired/
 *.git/*
+.git
+
 .vscode
 .codex
 .agents

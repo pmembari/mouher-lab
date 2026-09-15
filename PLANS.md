@@ -9,28 +9,37 @@ Build Mouher as a complete ecommerce operating system, not just a storefront and
 - Medusa as the commerce source of truth.
 - Django as the secure Mouher API, backend-for-frontend, and admin gateway.
 - A separate payment adapter service.
-- PostgreSQL, Redis, and object storage as independent infrastructure components.
-- `db-mouher/`: optional PostgreSQL Docker image and connection contract for Django-owned operational data; it remains separate from the Medusa commerce database and does not require Compose.
+- PostgreSQL, and object storage as independent infrastructure components.
+- `services/db/`: optional PostgreSQL Docker image and connection contract for Django-owned operational data; it remains separate from the Medusa commerce database and does not require Compose.
 
 This plan is the delivery guide for the next implementation phases. It should be used together with:
 
-- `Agent.md`: agent operating brief and working rules.
 - `docs/mouher-medusa-data-plan.md`: source catalog, media, and Medusa import plan.
 - `docs/mouher-medusa-django-backend.md`: backend boundary and Medusa/Django integration plan.
-- `Agent_Skills_Could_Inspired/vercel-commerce/`: ecommerce completeness reference for routes, product pages, cart behavior, Medusa Store API usage, metadata, sitemap, robots, and revalidation concepts.
-- `Agent_Skills_Could_Inspired/Free-Admin-Dashboard/`: UI reference for the owner dashboard shell, tables, charts, notifications, reviews, help desk, and responsive navigation.
-- `Agent_Skills_Could_Inspired/hitkeep/`: MIT-licensed, self-hostable reference for privacy-first analytics, ecommerce reporting, funnels, exports, permissions, and calm operational dashboard design. Use its product principles and information architecture as inspiration; do not copy its brand or import paid/cloud-only services.
-- `Agent_Skills_Could_Inspired/graphify/`: optional reference for agent-aware development and keeping implementation context compact.
+- `.agents/.skills/vercel-commerce/`: ecommerce completeness reference for routes, product pages, cart behavior, Medusa Store API usage, metadata, sitemap, robots, and revalidation concepts.
+- `.agents/.skills/hitkeep/`: primary dashboard reference for role-aware layout, privacy-first analytics, ecommerce reporting, funnels, exports, permissions, audit-friendly operations, loading/empty/error states, tests, and calm self-hostable dashboard design. Use its product principles and information architecture as inspiration; do not copy its brand or import paid/cloud-only services.
+- `graphify-out/`: generated graph context from `graphy`/Graphify. Do not feed this output back into future graph builds.
 
 ## Current Baseline
 
-- `frontend/`: Vite React storefront with catalog display, cart drawer, checkout UI, account workspace, analytics calls, and Medusa fallback behavior.
-- `mouher-backend/`: Django commerce API with analytics collection/dashboard, protected Medusa admin proxy endpoints, warehouse inventory endpoints, push notification support, and payment webhook endpoint.
-- `mouher-payment-service/`: isolated payment adapter service.
+- `apps/storefront/`: Vite React storefront with catalog display, cart drawer, checkout UI, account workspace, analytics calls, and Medusa fallback behavior.
+- `apps/dashboards/`: unified dashboard boundary with role-specific workspaces for owners (and developer which has the same access), assistants.
+- `services/backend/`: Django commerce API with analytics collection/dashboard, protected Medusa admin proxy endpoints, warehouse inventory endpoints, push notification support, and payment webhook endpoint.
+- `services/payment/`: isolated payment adapter service.
+- `services/db/`: independent PostgreSQL service boundary.
 - `docs/`: existing Medusa data and backend plans.
-- `data/Mouher_Data`: private raw/source data and generated catalog outputs. This data must stay out of Git.
-- `Agent_Skills_Could_Inspired/vercel-commerce/`: external Next.js Commerce x Medusa reference.
-- `Agent_Skills_Could_Inspired/Free-Admin-Dashboard/`: external React admin dashboard reference.
+- `data/Mouher_Data`: private raw/source data and generated catalog outputs. And do not read it if we don't need for planing for data model.
+- `.agents/.skills/vercel-commerce/`: external Next.js Commerce x Medusa reference.
+
+## Agent Context Exclusions
+
+Agents should default to source code, typed configs, and human-authored docs.
+Do not read or index CSV files, image/video/media files, build outputs,
+generated data JSON, Graphify output JSON, or files larger than 5 MB unless the
+task explicitly requires that material.
+
+Environment files are stricter: do not read `.env`, `.env.*`, or `*.env` files
+unless the user explicitly asks for environment inspection.
 
 ## Target Architecture
 
@@ -83,7 +92,7 @@ owner browser
 checkout/payment
   -> Django checkout orchestration
   -> Medusa payment collection/session
-  -> mouher-payment-service
+  -> services/payment
   -> payment provider
 
 analytics
@@ -136,10 +145,12 @@ The current Vite storefront can keep its framework. It should adopt the ecommerc
 
 The owner dashboard should be a separate app, not mixed into the public storefront.
 
-Recommended local path:
+Recommended local paths:
 
 ```text
-owner-dashboard/
+apps/dashboards/owner-workspace/
+apps/dashboards/assistant-workspace/
+apps/dashboards/developer-workspace/
 ```
 
 Recommended production host:
@@ -148,12 +159,12 @@ Recommended production host:
 admin.mouher.com
 ```
 
-Implementation status: the first independent `owner-workspace/` Vite app now
-exists with separated auth, API, navigation, Overview, resource-table, chart,
-and report modules. The existing owner route in `frontend/` remains a legacy
-preview until the new workspace completes integration and end-to-end parity.
+Implementation status: the independent owner dashboard now lives at
+`apps/dashboards/owner-workspace/`. Assistant and developer dashboard
+workspaces live beside it so shared dashboard template, design-token, auth,
+role, and API-client patterns can be unified under `apps/dashboards/`.
 
-Use `Agent_Skills_Could_Inspired/Free-Admin-Dashboard/` as a UI starting point only. The template's static data, demo routing, and generic styling must be replaced with Mouher API clients, real auth, permission checks, loading states, empty states, validation, audit logs, and brand tokens.
+Use `.agents/.skills/hitkeep/` as the dashboard product reference only. Its static data, analytics-specific naming, generic site concepts, branding, and optional AI/MCP features must be replaced with Mouher commerce concepts, Mouher API clients, real auth, role permissions, loading states, empty states, validation, audit logs, and brand tokens.
 
 ### Owner Dashboard Page Model
 
@@ -285,7 +296,7 @@ The database is an independent component, not an implementation detail of any fr
 Requirements:
 
 - PostgreSQL runs separately from Django, Medusa, dashboard, storefront, and payment service.
-- `db-mouher` provides a single Dockerfile image and documents the optional Django database connection and migration boundary. Local development may use SQLite until PostgreSQL is needed.
+- `services/db` provides a single Dockerfile image and documents the optional Django database connection and migration boundary. Local development may use SQLite until PostgreSQL is needed.
 - Schema migrations are explicit, reviewed, and reversible where practical.
 - Each service accesses only the database/schema it owns.
 - Django must not directly modify Medusa-owned commerce tables.
@@ -473,7 +484,7 @@ Rules:
 - Put English/Farsi language switching in the upper UI where it is discoverable.
 - Support Persian/RTL and English/LTR layouts without text overlap.
 - Preserve accessibility contrast for text, buttons, badges, charts, and focus states.
-- Avoid generic electronics-dashboard styling when adapting the admin template.
+- Avoid generic analytics-dashboard styling when adapting HitKeep patterns.
 - Owner dashboard should be denser and more operational than the public storefront while still sharing Mouher brand tokens.
 
 ## Website Production Checklist
@@ -708,12 +719,12 @@ Cover scenarios that can harm the storefront, analytics, or dashboard:
 
 ## Implementation Order
 
-1. Keep implementation context compact; use `Agent_Skills_Could_Inspired/graphify/` when useful for agent-aware analysis.
+1. Keep implementation context compact; use `graphy`/Graphify when useful for agent-aware analysis, but never feed `graphify-out/` back into later graph builds.
 2. Define Phase 1 API contracts and write contract tests first.
 3. Add owner auth tests in Django, then implement secure owner auth.
 4. Add protected endpoint tests for products, orders, customers, inventory, and analytics.
 5. Implement or normalize Django owner/admin API responses.
-6. Create `owner-workspace/` from the admin template and HitKeep analytics principles with Mouher branding.
+6. Build shared dashboard foundations under `apps/dashboards/`, then adapt `owner-workspace/` from HitKeep dashboard principles with Mouher branding and commerce workflows.
 7. Remove demo-only pages that are not part of Phase 1.
 8. Add frontend tests for protected routing, loading states, empty states, error states, and pagination.
 9. Add a typed owner dashboard API client.
@@ -768,4 +779,3 @@ The owner dashboard is ready for initial use when:
   - How many customers visited today.
   - How many customers reached checkout but did not purchase.
   - The top 10 wishlisted products with useful context.
-

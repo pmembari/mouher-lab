@@ -4,22 +4,24 @@ Use this brief when continuing work on Mouher's ecommerce website and owner dash
 
 ## Primary References
 
-- `Agent_Skills_Could_Inspired/Free-Admin-Dashboard/`: It is a Agent skill to use as the owner/admin dashboard UI reference. It is a React, Vite, TypeScript, Tailwind template with e-commerce pages, charts, tables, auth screens, notifications, reviews, and help desk UI. Treat it as a UI starter, not a finished admin system.
-- `Agent_Skills_Could_Inspired/vercel-commerce/`: It is a simple and complete ecosystem for WebApplication that agent can leverage to implement the logic of how the lifecycle of my website should be. Agent uses it as the e-commerce completeness reference. It shows expected Medusa storefront concepts: product detail routes, search/collection routes, cart mutations, product type reshaping, SEO metadata, sitemap, robots, Open Graph images, and cache/revalidation patterns.
+- `.agents/.skills/vercel-commerce/`: It is a simple and complete ecosystem for WebApplication that agent can leverage to implement the logic of how the lifecycle of my website should be. Agent uses it as the e-commerce completeness reference. It shows expected Medusa storefront concepts: product detail routes, search/collection routes, cart mutations, product type reshaping, SEO metadata, sitemap, robots, Open Graph images, and cache/revalidation patterns.
+- `.agents/.skills/hitkeep/`: Use this as the dashboard reference for role-aware layout, analytics/reporting, permissions, exports, audit-friendly operations, loading/empty/error states, and self-hostable dashboard patterns. Do not copy HitKeep branding or optional AI/MCP features.
 - `data/Mouher_Data`: Is the history transactions, users, images, glary of our shop. This might be needed for test and building test for our Admin Dashboard.
 - `https://mouher.com/` this is our current (old website) you can know it as the old website that needs to be refine.
-- `Plan.md`: follow the phased implementation plan and test/user-scenario checklist.
+- `PLANS.md`: follow the phased implementation plan and test/user-scenario checklist.
 
 ## System Boundaries
 
 - Medusa is the source of truth for commerce data.
-- Django in `mouher-backend/` is the secure API/BFF and protected admin gateway.
-- The public storefront lives in `frontend/`.
-- The owner dashboard should become a separate app, preferably `owner-dashboard/`.
-- The payment adapter stays isolated in `mouher-payment-service/`. In future we will push it into a separate git repo so we can follow the SaaS best practices.
+- Django in `services/backend/` is the secure API/BFF and protected admin gateway.
+- The public storefront lives in `apps/storefront/`.
+- Role dashboards live under `apps/dashboards/`: `owner-workspace/`, `assistant-workspace/`, and `developer-workspace/`.
+- The payment adapter stays isolated in `services/payment/`. In future we will push it into a separate git repo so we can follow the SaaS best practices.
 - PostgreSQL must remain a separated, independent component. Do not embed database state in an app component. In future we will push it into a separate git repo so we can follow the SaaS best practices.
 - Heavy components must be loosely coupled and independently runnable: storefront, owner dashboard, Django API, Medusa, payment service, database, cache, and media storage.
 - Private catalog/media data under `data/Mouher_Data` must not be committed.
+- Agents must not read CSV files, media files, build outputs, generated data JSON, or files larger than 5 MB unless a task explicitly requires them.
+- Agents must not read environment files such as `.env`, `.env.*`, or `*.env` unless explicitly told to do so.
 
 ## Software Engineering Rules
 
@@ -56,7 +58,7 @@ Use this brief when continuing work on Mouher's ecommerce website and owner dash
 - Support Persian/RTL and English/LTR layouts carefully.
 - put English/Farsi in a button in upper part of ui.
 - Preserve accessibility contrast and avoid text overlap on mobile and desktop.
-- Avoid generic electronics-dashboard styling when adapting `Agent_Skills_Could_Inspired/Free-Admin-Dashboard/`.
+- Avoid generic analytics-dashboard styling when adapting `.agents/.skills/hitkeep/`; keep Mouher brand tokens, commerce workflows, and role access central.
 
 ## API FAIR Principles
 
@@ -140,3 +142,13 @@ Cover scenarios that can harm the dashboard:
 - Use `apply_patch` for manual file edits.
 - Do not revert unrelated user changes.
 - Verify changes with focused tests when code is modified.
+
+## Token-Efficient Codex Workflow
+
+- Use ChatGPT app for planning, product decisions, writing specs, UI direction, architecture discussion, and reviewing summaries.
+- Use Codex only when repository access is needed: reading files, editing code, running tests, checking logs, or making commits.
+- Prefer targeted Codex requests with exact paths, constraints, and acceptance tests over broad project exploration.
+- Query `graphify-out/` first when relevant before reading many files, and keep it fresh as the compact project map.
+- Keep exclusions strict: do not read CSV files, media files, environment files, generated JSON, build outputs, or files larger than 5 MB unless explicitly required.
+- Prefer short repo docs such as `PLANS.md` sections over pasted long requirements.
+- When a task is still product or architecture planning, tell the user to use ChatGPT; when repo access is needed, tell the user to use Codex.

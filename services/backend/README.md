@@ -8,7 +8,7 @@ locations, inventory levels, and reservations.
 ## Setup
 
 ```bash
-cd mouher-backend
+cd services/backend
 python3 -m venv .venv
 . .venv/bin/activate
 pip install -e .
@@ -19,7 +19,7 @@ python3 manage.py runserver 8001
 
 Load the `.env` values into your shell or deployment platform before starting
 Django. The default local setup uses SQLite. Set `DJANGO_DATABASE_URL` when
-you want Django to use PostgreSQL from `db-mouher` or another separately
+you want Django to use PostgreSQL from `services/db` or another separately
 managed database.
 
 ## Import the Mouher catalog snapshot
@@ -36,6 +36,20 @@ The command is safe to rerun: stable legacy source IDs prevent duplicate rows.
 Historical orders, customers, and live inventory are not present in
 `data/Mouher_Data`; those remain Medusa-owned and are read through the
 protected owner API.
+
+## Django-owned database tables
+
+Django migrations create only Mouher operational tables in `mouher_backend`:
+
+- owner users, roles, and user-role assignments for the future real owner auth model
+- admin audit logs for protected dashboard actions
+- privacy-conscious analytics events and cached daily dashboard metrics
+- admin notifications, support tickets/messages, product notes, and browser push subscriptions
+- catalog snapshot tables for read-only local reporting/import workflows
+
+Medusa-owned products, orders, carts, customers, inventory, payments, refunds,
+and reservations remain in Medusa and must be accessed through API adapters, not
+through Django database tables.
 
 ## API
 
@@ -142,7 +156,7 @@ Use separate workloads for:
 - `mouher-commerce-api`: this Django API.
 - `mouher-medusa-server`: Medusa HTTP Store/Admin API.
 - `mouher-medusa-worker`: Medusa background jobs and subscribers.
-- `mouher-payment-service`: isolated payment provider adapter.
+- `services/payment`: isolated payment provider adapter.
 - PostgreSQL: managed/dedicated database service, not an app pod.
 - Redis: managed/dedicated cache, queue, session, and event service.
 
@@ -154,7 +168,7 @@ Use separate workloads for:
 - Medusa creates reservations when a cart is completed into an order for
   managed-inventory variants.
 - SnapPay or another local payment method should be implemented as a Medusa
-  payment provider that calls the isolated `mouher-payment-service`.
+  payment provider that calls the isolated `services/payment` adapter.
 
 References:
 

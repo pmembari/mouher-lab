@@ -1,0 +1,48 @@
+# Mouher agent context exclusions.
+# Keep Graphify and future agents focused on source code and docs.
+
+# Private data exports and generated catalog snapshots
+data/Mouher_Data/
+data/Mouher_Data/**/*.json
+*.csv
+**/*.csv
+
+# Media and binary-like assets
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.webp
+*.svg
+*.mov
+*.mp4
+*.zst
+
+# Environment files must not be read unless explicitly requested.
+.env
+.env.*
+*.env
+
+# Dependency, build, cache, and generated outputs
+node_modules/
+.venv/
+venv/
+env/
+dist/
+build/
+.next/
+coverage/
+htmlcov/
+.cache/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+__pycache__/
+*.pyc
+
+# Graphify output and cache should not be fed back into later graph builds.
+graphify-out/
+graphify-out/**/*.json
+
+# Generated storefront data
+apps/storefront/public/mouher-images.json

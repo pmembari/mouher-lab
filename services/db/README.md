@@ -1,4 +1,4 @@
-# db-mouher
+# Mouher Database Service
 
 Standalone PostgreSQL service and CloudBeaver Community UI image for local
 Mouher database work. This milestone intentionally does not use Docker Compose.
@@ -30,7 +30,7 @@ Use `.env.example` only as a key list; do not put real passwords in committed
 files.
 
 CloudBeaver Community is available as a separate visual UI container under
-`db-mouher/cloudbeaver/`. It is not part of the PostgreSQL image.
+`services/db/cloudbeaver/`. It is not part of the PostgreSQL image.
 
 ## Human Database Access
 
@@ -61,7 +61,7 @@ psql "postgresql://postgres:<admin-password>@localhost:5433/postgres" \
   -v user_name='firstname_lastname' \
   -v user_password='<generated-password>' \
   -v access_role='mouher_backend_readonly' \
-  -f db-mouher/sql/create-human-db-user.sql
+  -f services/db/sql/create-human-db-user.sql
 ```
 
 If your PostgreSQL data volume already existed before these read-only roles were
@@ -69,7 +69,7 @@ added, install or refresh the group roles first:
 
 ```bash
 psql "postgresql://postgres:<admin-password>@localhost:5433/postgres" \
-  -f db-mouher/sql/install-readonly-access-roles.sql
+  -f services/db/sql/install-readonly-access-roles.sql
 ```
 
 Then in CloudBeaver, open **Mouher Backend Operations** and use:
@@ -104,7 +104,7 @@ Store issued human passwords in a password manager or
 Build and run the free, open-source CloudBeaver UI as its own container:
 
 ```bash
-cd db-mouher/cloudbeaver
+cd services/db/cloudbeaver
 docker build -t mouher-cloudbeaver .
 docker run --name mouher-cloudbeaver \
 	--publish 8978:8978 \
@@ -184,7 +184,7 @@ Password: MOUHER_PAYMENT_DB_PASSWORD
 ## Build and run PostgreSQL
 
 ```bash
-cd db-mouher
+cd services/db
 docker build -t db-mouher:16 .
 docker run --name db-mouher \
 	--env POSTGRES_DB=postgres \
@@ -209,7 +209,7 @@ docker exec db-mouher pg_isready -U mouher_backend -d mouher_backend
 
 ## Django connection
 
-In `mouher-backend/.env`, use the same values as `db-mouher/.env`:
+In the `services/backend` environment, use the same values as the database service environment:
 
 ```dotenv
 DJANGO_DATABASE_URL=postgresql://mouher_backend:change-this-local-backend-password@localhost:5433/mouher_backend
@@ -218,7 +218,7 @@ DJANGO_DATABASE_URL=postgresql://mouher_backend:change-this-local-backend-passwo
 Then apply Django-owned migrations:
 
 ```bash
-cd mouher-backend
+cd services/backend
 python3 manage.py migrate
 python3 manage.py runserver 8001
 ```

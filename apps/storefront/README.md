@@ -4,7 +4,7 @@ React/Vite storefront for Mouher. It is built to use Medusa as the commerce back
 
 ## Medusa Setup
 
-Create `frontend/.env.local` from `.env.example` and fill in:
+Create `apps/storefront/.env.local` from the example file and fill in:
 
 ```bash
 VITE_MEDUSA_BACKEND_URL=http://localhost:9000

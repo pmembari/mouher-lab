@@ -3,11 +3,14 @@ Mouher LAB is a repository for implementing data analysis workflows and experime
 
 ## Workspaces
 
-This folder is split into three role workspaces:
+This folder is split into the storefront, role dashboards, and separated services:
 
-- `owner-workspace/` for Mouher business operations, merchandising, customer, promotion, price-list, and loyalty decisions.
-- `developer-workspace/` for engineering plans, implementation notes, API contracts, and test plans.
-- `assistant-workspace/` for assistant workflows, customer-support drafts, automation prompts, and browser-notification copy.
-- `infrastructure/` for production deployment templates and service-scaling boundaries.
+- `apps/storefront/` for the public Mouher ecommerce storefront.
+- `apps/dashboards/owner-workspace/` for Mouher business operations, merchandising, customer, promotion, price-list, and loyalty decisions.
+- `apps/dashboards/developer-workspace/` for engineering plans, implementation notes, API contracts, and test plans.
+- `apps/dashboards/assistant-workspace/` for assistant workflows, customer-support drafts, automation prompts, and browser-notification copy.
+- `services/backend/` for the Django API/BFF and protected admin gateway.
+- `services/payment/` for the isolated payment adapter service.
+- `services/db/` for the independent PostgreSQL service boundary.
 
-Application source stays in `frontend/`, `mouher-backend/`, `mouher-payment-service/`, and `scripts/`. Private raw data and generated media stay out of Git.
+Private raw data, CSV exports, generated catalog JSON, media, build outputs, and environment files stay out of routine agent context. Do not read environment files unless explicitly requested.

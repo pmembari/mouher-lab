@@ -32,9 +32,9 @@ imagery, restrained motion, and Mouher's existing brand colors.
 
 `services/backend/` represents the Mouher backend service boundary.
 
-Its implementation is Medusa, and we must transition from Django to Medusa once this achive. All the Agent related including PLANS.md, AGENTS.md, `.agents/skills/mouher-medusa/SKILL.md`, `docs/mouher-medusa-django-backend.md`, and `docs/mouher-medusa-data-plan.md` should be updated and do not maintain the django in these files. This decision will be taken whenever I ask for.
+Its implementation is Medusa. All agent references, including PLANS.md, AGENTS.md, `.agents/skills/mouher-medusa/SKILL.md`, `docs/mouher-medusa-backend.md`, and `docs/mouher-medusa-data-plan.md`, should stay aligned with the Medusa backend direction and avoid reviving legacy backend assumptions.
 
-Do not create a second Django backend or a Django-style proxy layer in
+Do not create a second backend or a proxy-style layer in
 front of Medusa.
 
 This plan is the delivery guide for the next implementation phases.
@@ -70,7 +70,7 @@ ecommerce UI.
 - `apps/dashboards/`: Mouher operational dashboard boundary.
 
 - `services/backend/`: backend service boundary that is being
-migrated from Django to Medusa.
+migrated to Medusa.
 
 - `services/payment/`: isolated payment adapter service.
 
@@ -85,7 +85,7 @@ gallery/media, and catalog source data.
 
 - `.agents/skills/hitkeep/`: operational dashboard reference.
 
-The current Django implementation may contain important Mouher-specific
+The current legacy backend implementation may contain important Mouher-specific
 operational behavior.
 
 ---
@@ -297,7 +297,7 @@ specific use case requires aggregation, authorization, or orchestration.
 ---
 
 ## Payment
-
+This is very soon to connect snappay to my store. cause I still haven't access to its documentation. These are documented here just for the purpose of long term perspective.
 `services/payment/`
 
 Owns:
@@ -323,18 +323,16 @@ Future payment providers should integrate through this boundary.
 
 ---
 
-# Engineering Principles--
+# Engineering Principles
 
 - Keep components loosely coupled.
 
 - Keep components highly cohesive.
-
+- Keep components light-weight.
 - Depend on stable API contracts rather than internal database
 structure.
 
 - Keep commerce ownership explicit.
-
-- Keep frontend state separate from backend source-of-truth state.
 
 - Centralize API adaptation.
 
@@ -352,7 +350,7 @@ structure.
 
 - Add abstractions only when they remove real complexity.
 
-- Do not reproduce Django architecture inside Medusa.
+- Do not reproduce legacy backend architecture inside Medusa.
 
 - Do not create a competing source of truth for Medusa-owned commerce
 data. - Preserve Mouher-specific extensions to Medusa-owned entities
@@ -373,7 +371,7 @@ mutations
 
 ---
 
-# Development DevOps Principles--
+# Development DevOps Principles(future milestone)
 
 This milestone focuses on:
 
@@ -431,7 +429,7 @@ explicitly requested.
 
 ---
 
-# Component Flow--
+# Component Flow
 
 ## Customer Flow--
 
@@ -471,12 +469,12 @@ object storage / CDN
 
 ```
 
-There should not be a Django commerce proxy between storefront and
+There should not be a legacy backend commerce proxy between storefront and
 Medusa.
 
 ---
 
-## Dashboard Flow--
+## Dashboard Flow
 
 ```text
 
@@ -596,7 +594,7 @@ Analytics ingestion must not block commerce.
 
 ---
 
-## Media--
+## Media
 
 ```text
 
@@ -624,7 +622,7 @@ CDN/public media URL
 
 ---
 
-# Operational Benefits--
+# Operational Benefits
 
 This architecture allows:
 
@@ -634,7 +632,7 @@ This architecture allows:
 
 - future mobile apps to reuse the same backend
 
-- payment providers to be replaced independently
+- payment providers to be replaced independently(and based on medusa best practice)
 
 - commerce logic to stay inside Medusa
 
@@ -648,7 +646,7 @@ This architecture allows:
 
 ---
 
-# Public Storefront Scope--
+# Public Storefront Scope
 
 The storefront must include:
 
@@ -690,11 +688,8 @@ The storefront must include:
 
 - Sitemap.
 
-- Robots rules.
-
 - Canonical URLs.
 
-- Open Graph metadata.
 
 The current storefront framework may remain unless a separate framework
 migration is approved.
@@ -703,9 +698,9 @@ Use Medusa Store API-compatible patterns.
 
 ---
 
-# Storefront UX Direction--
+# Storefront UX Direction
 
-## Design Philosophy--
+## Design Philosophy
 
 Mouher storefront should combine:
 
@@ -715,7 +710,7 @@ Apple-like UX discipline
 
 \+
 
-large product imagery
+large product imagery box to fill multi images based on screen size and responsiveness
 
 \+
 
@@ -731,8 +726,6 @@ premium ecommerce functionality
 
 ```
 
-The goal is not to copy Apple.
-
 Use Apple as inspiration for:
 
 - simplicity
@@ -743,7 +736,7 @@ Use Apple as inspiration for:
 
 - whitespace
 
-- large imagery
+- large imagery without stretching
 
 - progressive disclosure
 
@@ -755,21 +748,10 @@ Use Apple as inspiration for:
 
 - immersive product storytelling
 
-Do not copy:
-
-- Apple branding
-
-- Apple icons
-
-- Apple typography
-
-- Apple page layouts literally
-
-- Apple visual identity
 
 ---
 
-# Mouher Brand Colors--
+# Mouher Brand Colors
 
 Preserve the existing Mouher color direction.
 
@@ -833,7 +815,7 @@ Do not transform Mouher into a generic monochrome Apple clone.
 
 # Storefront Imagery--
 
-Use large imagery intentionally.
+Use large imagery without stretching intentionally (my images are not wide an example of them is: )
 
 Product images should dominate:
 
@@ -927,7 +909,7 @@ Preferred flow:
 
 Brand / product hero
 
-↓ large imagery
+↓ large imagery without stretching
 
 Featured collection
 
@@ -1806,17 +1788,17 @@ Preferred decision order:
 
 ---
 
-# Legacy Django Data Model Migration--
+# Legacy Backend Data Model Migration--
 
-The migration from Django to Medusa is an implementation migration, not
-a reason to recreate Django's framework structure.
+The migration to Medusa is an implementation migration, not
+a reason to recreate legacy backend's framework structure.
 
-Inventory the operational data model already designed in Django before
+Inventory the operational data model already designed in legacy backend before
 removing it.
 
 Preserve useful Mouher-specific behavior, reporting meaning, permissions
 semantics, and migration-critical data. Do not preserve obsolete fields as
-active application state merely because they existed in Django.
+active application state merely because they existed in legacy backend.
 
 The existing operational model is the discovery baseline, not an automatic
 target schema.
@@ -1876,7 +1858,7 @@ Prefer Medusa-native commerce models wherever Medusa represents the domain
 correctly.
 
 Use Python cleaning and normalization for legacy import data before import
-instead of forcing Medusa to mirror obsolete Django or CSV structure.
+instead of forcing Medusa to mirror obsolete legacy backend or CSV structure.
 
 ---
 
@@ -2147,11 +2129,11 @@ Do not duplicate the referenced commerce entity.
 
 ---
 
-# Migration Requirements For Django Models--
+# Migration Requirements For legacy backend Models--
 
-Before removing Django persistence:
+Before removing legacy backend persistence:
 
-1\. Inventory every Django model.
+1\. Inventory every legacy backend model.
 
 2\. Record every field.
 
@@ -2179,7 +2161,7 @@ Before removing Django persistence:
 
 14\. Verify reporting queries.
 
-15\. Remove Django model only after its replacement is validated.
+15\. Remove legacy backend model only after its replacement is validated.
 
 If an existing field appears obsolete:
 
@@ -2551,16 +2533,16 @@ Mouher custom modules own Mouher-specific operational persistence.
 
 # Commerce Data Ownership And Migration
 
-Medusa is the target commerce source of truth. The Django-to-Medusa
-migration is an implementation migration, not permission to recreate Django
+Medusa is the target commerce source of truth. The legacy-backend-to-Medusa
+migration is an implementation migration, not permission to recreate legacy backend
 inside Medusa.
 
-The existing Django-designed data model is the discovery baseline for useful
+The existing legacy backend-designed data model is the discovery baseline for useful
 Mouher behavior, not an automatic target schema.
 
 ## Migration Rule
 
-Before replacing, merging, or removing an existing Django model or
+Before replacing, merging, or removing an existing legacy backend model or
 field:
 
 1. Inspect its fields, relationships, constraints, indexes, defaults,
@@ -2600,7 +2582,7 @@ inspect -> classify -> map or retire deliberately
 over:
 
 ``` text
-delete blindly -> simplify blindly -> recreate Django structure
+delete blindly -> simplify blindly -> recreate legacy backend structure
 ```
 
 ## Medusa-Owned Commerce
@@ -2660,7 +2642,7 @@ product_admin_note
 browser_push_subscription
 ```
 
-These may move from Django models to Medusa-compatible Mouher modules/models
+These may move from legacy backend models to Medusa-compatible Mouher modules/models
 when they still carry product or operational value. Framework migration alone
 is not permission to drop useful behavior, and legacy existence alone is not
 permission to preserve obsolete state.
@@ -2855,7 +2837,7 @@ Before calling the storefront production-ready, verify:
 
 - motion respects reduced-motion preferences
 
-- large imagery is performance optimized
+- large imagery without stretching is performance optimized
 
 ---
 
@@ -2915,17 +2897,17 @@ Before calling the dashboard production-ready, verify:
 
 Goal:
 
-Establish the Medusa-native architecture before deleting Django.
+Establish the Medusa-native architecture before deleting legacy backend.
 
 Work:
 
-- Inventory Django responsibilities.
+- Inventory legacy backend responsibilities.
 
-- Inventory Django operational models.
+- Inventory legacy backend operational models.
 
-- Map Django models to Medusa custom models/modules.
+- Map legacy backend models to Medusa custom models/modules.
 
-- Map Django endpoints to native Medusa APIs or Mouher custom APIs.
+- Map legacy backend endpoints to native Medusa APIs or Mouher custom APIs.
 
 - Establish `services/backend/` as the Medusa application.
 
@@ -2945,7 +2927,7 @@ Acceptance criteria:
 
 - Medusa backend starts from `services/backend/`.
 
-- Existing Django responsibilities are documented.
+- Existing legacy backend responsibilities are documented.
 
 - No important operational model is lost.
 
@@ -2957,7 +2939,7 @@ Acceptance criteria:
 
 - Data migration plan is explicit.
 
-- No broad destructive Django deletion has occurred.
+- No broad destructive legacy backend deletion has occurred.
 
 ---
 
@@ -3145,11 +3127,11 @@ Acceptance criteria:
 
 ---
 
-# Phase 4: Django Removal--
+# Phase 4: legacy backend Removal--
 
 Goal:
 
-Remove Django only after equivalent Medusa behavior is verified.
+Remove legacy backend only after equivalent Medusa behavior is verified.
 
 Before deletion verify:
 
@@ -3179,21 +3161,21 @@ Before deletion verify:
 
 Then remove:
 
-- Django runtime dependency
+- legacy backend runtime dependency
 
-- Django project configuration
+- legacy backend project configuration
 
-- Django settings
+- legacy backend settings
 
-- Django apps
+- legacy backend apps
 
-- Django-only dependencies
+- legacy backend-only dependencies
 
-- obsolete Django tests
+- obsolete legacy backend tests
 
-- obsolete Django documentation
+- obsolete legacy backend documentation
 
-- obsolete Django environment/config assumptions
+- obsolete legacy backend environment/config assumptions
 
 Do not remove unrelated Python tooling if it serves another purpose.
 
@@ -3301,7 +3283,7 @@ Add or expand tests for:
 
 - Medusa workflow behavior
 
-- Django-to-Medusa data migration compatibility
+- legacy-backend-to-Medusa data migration compatibility
 
 ---
 
@@ -3461,9 +3443,9 @@ Cover:
 
 2\. Query `graphify-out/` before broad exploration.
 
-3\. Inventory Django backend responsibilities.
+3\. Inventory legacy backend responsibilities.
 
-4\. Inventory Django operational data model.
+4\. Inventory legacy backend operational data model.
 
 5\. Correct `AGENTS.md` and `PLANS.md`.
 
@@ -3503,7 +3485,7 @@ Cover:
 
 23\. Add higher-risk commerce operations.
 
-24\. Remove Django only after migration validation.
+24\. Remove legacy backend only after migration validation.
 
 25\. Update developer/operator documentation.
 
@@ -3623,7 +3605,7 @@ Prefer:
 
 ```text
 
-Migrate analytics_event persistence from the existing Django
+Migrate analytics_event persistence from the existing legacy backend
 implementation
 
 to the Medusa analytics module.
@@ -3632,7 +3614,7 @@ Paths:
 
 \- services/backend/...
 
-\- existing Django analytics model path
+\- existing legacy backend analytics model path
 
 \- relevant tests
 
@@ -3712,7 +3694,7 @@ The initial Mouher system is ready when:
 
 - Medusa runs under `services/backend/`.
 
-- Django is no longer required at runtime.
+- legacy backend runtime is removed.
 
 - Existing operational data model is preserved.
 
@@ -3750,7 +3732,7 @@ The initial Mouher system is ready when:
 
 - Dashboard supports English/LTR.
 
-- Large imagery is used without unacceptable performance cost.
+- large imagery without stretching is used without unacceptable performance cost.
 
 - Motion respects reduced-motion preferences.
 
@@ -3800,7 +3782,7 @@ The storefront must provide:
 
 - premium visual presentation
 
-- large imagery
+- large imagery without stretching
 
 - purposeful motion
 

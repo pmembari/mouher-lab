@@ -16,7 +16,7 @@ All mutating routes accept `X-Mouher-Payment-Secret` when `PAYMENT_SERVICE_SHARE
 
 ## Production Notes
 
-- Run in separate pods from Medusa and Django.
+- Run independently from Medusa.
 - Keep gateway credentials only in this service and the minimal Medusa provider config needed to call it.
 - Use idempotency keys for every authorization, capture, and refund.
 - Verify provider webhook signatures before normalizing webhook events.

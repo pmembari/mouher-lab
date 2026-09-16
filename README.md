@@ -9,7 +9,7 @@ This folder is split into the storefront, role dashboards, and separated service
 - `apps/dashboards/owner-workspace/` for Mouher business operations, merchandising, customer, promotion, price-list, and loyalty decisions.
 - `apps/dashboards/developer-workspace/` for engineering plans, implementation notes, API contracts, and test plans.
 - `apps/dashboards/assistant-workspace/` for assistant workflows, customer-support drafts, automation prompts, and browser-notification copy.
-- `services/backend/` for the Django API/BFF and protected admin gateway.
+- `services/backend/` for the Medusa backend service and protected custom APIs.
 - `services/payment/` for the isolated payment adapter service.
 - `services/db/` for the independent PostgreSQL service boundary.
 

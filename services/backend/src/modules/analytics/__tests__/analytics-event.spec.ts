@@ -80,7 +80,7 @@ describe("analytics event compatibility", () => {
     expect(future.occurred_at.toISOString()).toBe(now.toISOString())
   })
 
-  it("keeps Django-compatible device classification", () => {
+  it("keeps stable device classification", () => {
     expect(detectDeviceType("Mozilla/5.0 iPhone Safari")).toBe("mobile")
     expect(detectDeviceType("Mozilla/5.0 iPad Safari")).toBe("tablet")
     expect(detectDeviceType("Mozilla/5.0 Macintosh Safari")).toBe("desktop")

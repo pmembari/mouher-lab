@@ -5,7 +5,7 @@
       "provider": "postgresql",
       "driver": "postgres-jdbc",
       "name": "Mouher Backend Operations",
-      "description": "Django-owned operational database",
+      "description": "Mouher backend operational database",
       "configuration": {
         "host": "db-mouher",
         "port": "5432",

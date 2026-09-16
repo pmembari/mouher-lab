@@ -2,7 +2,7 @@ ARG POSTGRES_VERSION=16
 FROM postgres:${POSTGRES_VERSION}-alpine
 
 LABEL org.opencontainers.image.title="Mouher database"
-LABEL org.opencontainers.image.description="PostgreSQL image for Django-owned Mouher operational data"
+LABEL org.opencontainers.image.description="PostgreSQL image for Mouher Medusa and operational data"
 
 # Configure credentials at runtime; never bake them into the image.
 ENV POSTGRES_DB=postgres

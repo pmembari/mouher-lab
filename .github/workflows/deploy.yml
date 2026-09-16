@@ -3,7 +3,7 @@ name: Deploy Mouher Preview
 on:
   push:
     branches:
-      - main
+      - main1
 
 permissions:
   contents: read

@@ -8,15 +8,15 @@ Mouher database work. This milestone intentionally does not use Docker Compose.
 This stack creates separate logical databases so the service boundaries stay
 visible during development:
 
-- `mouher_backend`: Django-owned operational data such as analytics events,
+- `mouher_backend`: Mouher backend operational data such as analytics events,
   browser push subscriptions, owner authentication metadata, audit logs,
   notifications, support tickets, and product notes.
 - `mouher_medusa`: Medusa-owned commerce data.
 - `mouher_payment`: reserved for the isolated payment adapter if it later needs
   durable provider state.
 
-Django must access Medusa through its APIs, not by directly editing
-`mouher_medusa`.
+Custom Mouher backend code must access Medusa through its APIs or Medusa module
+boundaries, not by directly editing `mouher_medusa`.
 
 ## Credentials
 
@@ -54,7 +54,7 @@ passwords with a password manager or this local command:
 openssl rand -base64 24
 ```
 
-Example for a person who may inspect Django-owned operational data:
+Example for a person who may inspect Mouher backend operational data:
 
 ```bash
 psql "postgresql://postgres:<admin-password>@localhost:5433/postgres" \
@@ -151,7 +151,7 @@ docker network connect mouher-network mouher-cloudbeaver
 From CloudBeaver, use `db-mouher` as the PostgreSQL host. From the host machine,
 PostgreSQL is available on `localhost:5433`.
 
-### Django Operations
+### Mouher Backend Operations
 
 ```text
 Host: db-mouher
@@ -207,20 +207,19 @@ docker ps --filter name=db-mouher
 docker exec db-mouher pg_isready -U mouher_backend -d mouher_backend
 ```
 
-## Django connection
+## Medusa Backend Connection
 
-In the `services/backend` environment, use the same values as the database service environment:
+In the `services/backend` environment, point Medusa at the commerce database:
 
 ```dotenv
-DJANGO_DATABASE_URL=postgresql://mouher_backend:change-this-local-backend-password@localhost:5433/mouher_backend
+DATABASE_URL=postgresql://mouher_medusa:change-this-local-medusa-password@localhost:5433/mouher_medusa
 ```
 
-Then apply Django-owned migrations:
+Then run the Medusa backend:
 
 ```bash
 cd services/backend
-python3 manage.py migrate
-python3 manage.py runserver 8001
+npm run dev
 ```
 
 Do not commit `.env` files or production credentials. For production, use a

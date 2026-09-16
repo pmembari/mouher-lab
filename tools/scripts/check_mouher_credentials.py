@@ -8,7 +8,7 @@ from pathlib import Path
 
 
 REQUIRED_KEYS = {
-    "backend": ["DJANGO_SECRET_KEY", "MOUHER_INTERNAL_API_TOKEN"],
+    "backend": ["DATABASE_URL", "JWT_SECRET", "COOKIE_SECRET"],
     "payment": ["PAYMENT_SERVICE_SHARED_SECRET", "PAYMENT_GATEWAY_API_KEY"],
     "database": ["POSTGRES_PASSWORD"],
 }

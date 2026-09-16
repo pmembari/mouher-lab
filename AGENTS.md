@@ -19,7 +19,7 @@ Use this brief when continuing work on Mouher's ecommerce website and owner dash
 - The payment adapter stays isolated in `services/payment/`. In future we will push it into a separate git repo so we can follow the SaaS best practices.
 - PostgreSQL must remain a separated, independent component. Do not embed database state in an app component. In future we will push it into a separate git repo so we can follow the SaaS best practices.
 - Heavy components must be loosely coupled and independently runnable: storefront, shared dashboards, Medusa backend, payment service, database, cache, and media storage.
-- Django is current implementation of our website backend which might not based on best practices of a shop logic. Therefore, Django should be completely deprecated and instead rely on Medusa backend ecosystem and best practices.
+- The legacy Python backend is deprecated and must not be reintroduced. New backend behavior belongs in the Medusa backend ecosystem under `services/backend/`.
 - Private catalog/media data under `data/Mouher_Data` must not be committed.
 - Agents must not read CSV files, media files, build outputs, generated data JSON, or files larger than 1 MB unless a task explicitly requires them.
 - Agents must not read environment files such as `.env`, `.venv` , `.env.*`, or `*.env` unless explicitly told to do so.
@@ -37,7 +37,7 @@ Use this brief when continuing work on Mouher's ecommerce website and owner dash
 ## Development DevOps Rules
 
 - For this milestone, focus on development-time operability, not Kubernetes or deployment.
-- Do not use mamba/conda for virtual envs. Use pyproject.toml + hatch if needed.
+- Do not use mamba/conda for virtual envs. Use the service's native toolchain; `services/backend/` is Node/Medusa.
 - Services should be stateless where practical so they can be restarted and later scaled independently.
 - Keep secrets out of Git and out of browser bundles.
 - Use structured logs and request/correlation IDs for cross-service debugging.

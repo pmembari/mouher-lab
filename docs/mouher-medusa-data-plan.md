@@ -29,7 +29,7 @@ This note summarizes the local `Mouher_Data` analysis without committing the raw
 Generate a private cleaned catalog and organized symlink tree:
 
 ```bash
-python3 scripts/prepare_mouher_catalog.py --link-media
+python3 tools/scripts/prepare_mouher_catalog.py --link-media
 ```
 
 This writes ignored files under `data/Mouher_Data/clean/`:

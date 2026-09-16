@@ -1,17 +1,22 @@
-FROM python:3.12-slim AS runtime
-
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
+FROM node:22-slim AS dependencies
 
 WORKDIR /app
 
-COPY pyproject.toml ./
-COPY commerce ./commerce
-COPY mouher_backend ./mouher_backend
-COPY manage.py ./
+COPY package.json package-lock.json ./
+RUN npm ci
 
-RUN pip install --no-cache-dir .
+FROM node:22-slim AS runtime
 
-EXPOSE 8001
+ENV NODE_ENV=production
 
-CMD ["gunicorn", "mouher_backend.wsgi:application", "--bind", "0.0.0.0:8001", "--workers", "3", "--timeout", "60"]
+WORKDIR /app
+
+COPY --from=dependencies /app/node_modules ./node_modules
+COPY package.json package-lock.json medusa-config.ts tsconfig.json ./
+COPY src ./src
+
+RUN npm run build
+
+EXPOSE 9000
+
+CMD ["npx", "medusa", "start"]

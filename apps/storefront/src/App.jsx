@@ -19,11 +19,9 @@ import {
 } from "./lib/catalog";
 import { mouherApiConfig } from "./lib/notifications";
 import {
-  clearOwnerSession,
-  getOwnerSession,
-  isOwnerCredentialsValid,
+  loginOwner,
+  logoutOwner,
   loadOwnerDashboard,
-  setOwnerSession,
 } from "./lib/ownerApi";
 import { AccountWorkspacePage } from "./pages/AccountWorkspacePage";
 
@@ -1097,13 +1095,8 @@ function ProductPage({
 }
 
 function OwnerDashboardPage({ catalog, language, labels }) {
-  const isFarsi = language === "farsi";
-  const [ownerDashboard, setOwnerDashboard] = useState(null);
-  const [ownerLoading, setOwnerLoading] = useState(false);
-  const [ownerError, setOwnerError] = useState("");
-  const [ownerUser, setOwnerUser] = useState(getOwnerSession()?.username || "");
+  const [ownerUser, setOwnerUser] = useState("");
   const [ownerPassword, setOwnerPassword] = useState("");
-  const [ownerAccessToken, setOwnerAccessToken] = useState("");
   const [reportRange, setReportRange] = useState(30);
   const [ownerSection, setOwnerSection] = useState("overview");
   const [resourceQuery, setResourceQuery] = useState("");
@@ -1113,28 +1106,40 @@ function OwnerDashboardPage({ catalog, language, labels }) {
     : catalog;
   const metrics = catalogMetrics(dashboardCatalog);
   const analytics = getAnalyticsSummary();
-  const [ownerToken, setOwnerToken] = useState("");
-
+  
   async function handleAnalyticsLogin(event) {
     event.preventDefault();
     setOwnerError("");
 
-    if (!isOwnerCredentialsValid(ownerUser, ownerPassword)) {
-      setOwnerError(isFarsi ? "نام کاربری یا رمز عبور مالک نامعتبر است." : "Invalid owner username or password.");
+    const email = ownerUser.trim();
+
+    if (!email || !ownerPassword) {
+      setOwnerError(
+        isFarsi
+          ? "ایمیل و رمز عبور مدیر الزامی است."
+          : "Admin email and password are required."
+      );
       return;
     }
 
     setOwnerLoading(true);
 
     try {
-      setOwnerSession(ownerUser);
-      setOwnerAccessToken(ownerPassword);
-      setOwnerDashboard(await loadOwnerDashboard(ownerPassword, undefined, reportRange));
+      await loginOwner(email, ownerPassword);
+
+      setOwnerDashboard(
+        await loadOwnerDashboard(undefined, reportRange)
+      );
+
       setOwnerPassword("");
     } catch (error) {
+      setOwnerDashboard(null);
+
       setOwnerError(
         error?.message ||
-          (isFarsi ? "دسترسی یا اتصال API نامعتبر است." : "Owner access or analytics API connection is invalid.")
+        (isFarsi
+          ? "ورود مدیر یا اتصال به سرور ناموفق بود."
+          : "Admin login or backend connection failed.")
       );
     } finally {
       setOwnerLoading(false);
@@ -1151,7 +1156,12 @@ function OwnerDashboardPage({ catalog, language, labels }) {
     setOwnerError("");
 
     try {
-      setOwnerDashboard(await loadOwnerDashboard(ownerAccessToken, undefined, nextRange));
+      setOwnerDashboard(
+        await loadOwnerDashboard(
+          undefined,
+          nextRange
+        )
+      );
     } catch (error) {
       setOwnerError(error?.message || (isFarsi ? "گزارش بارگذاری نشد." : "The report could not be loaded."));
     } finally {
@@ -1159,14 +1169,22 @@ function OwnerDashboardPage({ catalog, language, labels }) {
     }
   }
 
-  function handleLogoutOwner(event) {
+  async function handleLogoutOwner(event) {
     event.preventDefault();
-    clearOwnerSession();
-    setOwnerDashboard(null);
-    setOwnerUser("");
-    setOwnerPassword("");
-    setOwnerAccessToken("");
+
+    setOwnerLoading(true);
     setOwnerError("");
+
+    try {
+      await logoutOwner();
+    } catch (error) {
+      console.error("Owner logout failed:", error);
+    } finally {
+      setOwnerDashboard(null);
+      setOwnerUser("");
+      setOwnerPassword("");
+      setOwnerLoading(false);
+    }
   }
 
   const products = metrics.products || [];
@@ -1294,23 +1312,28 @@ function OwnerDashboardPage({ catalog, language, labels }) {
               <h1>{isFarsi ? "مرکز کنترل موهر" : "Mouher control center"}</h1>
               <p>
                 {isFarsi
-                  ? "برای مشاهده داشبورد مالک، نام کاربری و رمز عبور مالک را وارد کنید."
-                  : "Enter the owner username and password to view the dashboard."}
+                  ? "برای مشاهده داشبورد، با حساب مدیر مدوسا وارد شوید."
+                  : "Sign in with your Medusa administrator account to view the dashboard."}
               </p>
             </div>
           </div>
 
           <form className="analytics-owner-access" onSubmit={handleAnalyticsLogin}>
-            <label htmlFor="owner-username">{isFarsi ? "نام کاربری مالک" : "Owner username"}</label>
+            
+            <label htmlFor="owner-email">
+              {isFarsi ? "ایمیل مدیر" : "Admin email"}
+            </label>
+
             <input
-              id="owner-username"
-              type="text"
+              id="owner-email"
+              type="email"
               autoComplete="username"
               value={ownerUser}
               onChange={(event) => setOwnerUser(event.target.value)}
-              placeholder="pmembari"
+              placeholder="admin@example.com"
               required
             />
+           
 
             <label htmlFor="owner-password">{isFarsi ? "رمز عبور مالک" : "Owner password"}</label>
             <input
@@ -1319,7 +1342,7 @@ function OwnerDashboardPage({ catalog, language, labels }) {
               autoComplete="current-password"
               value={ownerPassword}
               onChange={(event) => setOwnerPassword(event.target.value)}
-              placeholder="1234"
+              placeholder={isFarsi ? "رمز عبور" : "Password"}
               required
             />
 
@@ -1668,13 +1691,13 @@ function OwnerDashboardPage({ catalog, language, labels }) {
             </h2>
 
             <span>
-              {ownerDashboard
-                ? isFarsi
-                  ? "متصل"
-                  : "Connected"
-                : isFarsi
-                  ? "در انتظار توکن"
-                  : "Token required"}
+                {ownerDashboard
+                  ? isFarsi
+                    ? "متصل"
+                    : "Connected"
+                  : isFarsi
+                    ? "وارد نشده"
+                    : "Not signed in"}
             </span>
           </div>
 

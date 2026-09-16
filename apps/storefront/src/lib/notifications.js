@@ -1,8 +1,11 @@
 const viteEnv = import.meta.env || {};
 
 export const mouherApiConfig = {
-  baseUrl: stripTrailingSlash(viteEnv.VITE_MOUHER_API_URL || ""),
-  workerUrl: `${viteEnv.BASE_URL || "/"}mouher-push-worker.js`,
+  baseUrl: String(
+    viteEnv.VITE_MEDUSA_BACKEND_URL || ""
+  ).replace(/\/$/, ""),
+  workerUrl:
+    `${viteEnv.BASE_URL || "/"}mouher-push-worker.js`,
 };
 
 export function supportsBrowserPush(environment = browserEnvironment()) {

@@ -2,12 +2,11 @@ import { useEffect, useState } from "react";
 import { ArrowRight } from "../components/icons";
 import { ProductImage } from "../components/ProductImage";
 import {
-  initKeycloakSession,
-  isKeycloakConfigured,
-  loginWithKeycloak,
-  logoutFromKeycloak,
-  registerWithKeycloak,
-} from "../lib/keycloakAuth";
+  loadCurrentCustomer,
+  loginCustomer,
+  logoutCustomer,
+  registerCustomer,
+} from "../lib/medusaAuth";
 import {
   requestLoyaltyPushSubscription,
   supportsBrowserPush,
@@ -62,42 +61,35 @@ export function AccountWorkspacePage({ language, labels, dashboardLabels }) {
   const [showPassword, setShowPassword] = useState(false);
   const [authError, setAuthError] = useState("");
   const [accountUser, setAccountUser] = useState(null);
-  const [keycloakReady, setKeycloakReady] = useState(!isKeycloakConfigured());
   const isLoading = status === "loading";
   const statusLabel = loyaltyStatusLabel(status, labels);
   const isFarsi = language === "farsi";
-  const keycloakEnabled = isKeycloakConfigured();
   const isAuthenticated = Boolean(accountUser);
 
   useEffect(() => {
-    if (!keycloakEnabled) return;
-
     let active = true;
 
-    initKeycloakSession()
-      .then((session) => {
-        if (!active) return;
+    loadCurrentCustomer()
+      .then((customer) => {
+        if (!active || !customer) return;
 
-        setKeycloakReady(true);
-
-        if (session.authenticated && session.user) {
-          applyAuthenticatedUser(session.user);
-        }
+        applyAuthenticatedUser({
+          id: customer.id,
+          name: [
+            customer.first_name,
+            customer.last_name,
+          ]
+            .filter(Boolean)
+            .join(" "),
+          email: customer.email || "",
+        });
       })
-      .catch((error) => {
-        console.error("Keycloak initialization failed:", error);
-
-        if (active) {
-          setKeycloakReady(true);
-          setAuthError(labels.failed || "Authentication is unavailable.");
-        }
-      });
+      .catch(() => { });
 
     return () => {
       active = false;
     };
-  }, [keycloakEnabled, labels.failed]);
-
+  }, []);
   function handleProfileChange(field, value) {
     setProfile((currentProfile) => ({
       ...currentProfile,
@@ -144,23 +136,11 @@ export function AccountWorkspacePage({ language, labels, dashboardLabels }) {
     setAuthError("");
   }
 
-  function handleAuthSubmit(event) {
+  async function handleAuthSubmit(event) {
     event.preventDefault();
 
-    if (keycloakEnabled) {
-      const redirectUri = window.location.href;
-
-      if (authMode === "create") {
-        registerWithKeycloak({ redirectUri });
-      } else {
-        loginWithKeycloak({ redirectUri });
-      }
-
-      return;
-    }
-
     const email = authForm.email.trim();
-    const name = authForm.name.trim() || "Parham";
+    const name = authForm.name.trim();
 
     if (!email || !authForm.password) {
       setAuthError(labels.authErrorRequired);
@@ -172,28 +152,82 @@ export function AccountWorkspacePage({ language, labels, dashboardLabels }) {
       return;
     }
 
-    if (authMode === "create" && authForm.password !== authForm.confirmPassword) {
+    if (
+      authMode === "create" &&
+      authForm.password !== authForm.confirmPassword
+    ) {
       setAuthError(labels.authErrorPasswordMismatch);
       return;
     }
 
-    applyAuthenticatedUser({ name, email });
-    setAuthForm({
-      name,
-      email,
-      password: "",
-      confirmPassword: "",
-    });
     setAuthError("");
+
+    try {
+      let customer;
+
+      if (authMode === "create") {
+        const parts = name.split(/\s+/).filter(Boolean);
+
+        customer = await registerCustomer({
+          email,
+          password: authForm.password,
+          firstName: parts[0] || "",
+          lastName: parts.slice(1).join(" "),
+        });
+      } else {
+        customer = await loginCustomer(
+          email,
+          authForm.password
+        );
+      }
+
+      if (!customer) {
+        throw new Error(
+          labels.failed || "Authentication failed."
+        );
+      }
+
+      applyAuthenticatedUser({
+        id: customer.id,
+        name:
+          [
+            customer.first_name,
+            customer.last_name,
+          ]
+            .filter(Boolean)
+            .join(" ") ||
+          customer.email,
+        email: customer.email || "",
+      });
+
+      setAuthForm({
+        name,
+        email,
+        password: "",
+        confirmPassword: "",
+      });
+    } catch (error) {
+      setAuthError(
+        error?.message ||
+        labels.failed ||
+        "Authentication failed."
+      );
+    }
   }
 
-  function handleSignOut() {
-    if (keycloakEnabled) {
-      logoutFromKeycloak();
-      return;
+  async function handleSignOut() {
+    try {
+      await logoutCustomer();
+    } catch (error) {
+      console.error(
+        "Medusa logout failed:",
+        error
+      );
     }
 
     setAccountUser(null);
+    setCustomerId("");
+
     setAuthForm((currentForm) => ({
       ...currentForm,
       password: "",

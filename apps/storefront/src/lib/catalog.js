@@ -42,31 +42,13 @@ export const medusaConfig = {
   allowStaticCatalogFallback: truthy(viteEnv.VITE_ALLOW_STATIC_CATALOG_FALLBACK),
 };
 
-export function isMouherApiConfigured(config = medusaConfig) {
-  return Boolean(config.mouherApiUrl);
-}
+
 
 export function isMedusaConfigured(config = medusaConfig) {
   return Boolean(config.backendUrl && config.publishableKey);
 }
 
 export async function loadCatalog(config = medusaConfig) {
-  if (isMouherApiConfigured(config)) {
-    try {
-      const response = await fetchMouherProducts(config);
-
-      return {
-        ...normalizeMedusaProductsResponse(
-          response,
-          response.currency_code || config.currencyCode
-        ),
-        notice: "",
-      };
-    } catch (error) {
-      console.error("Failed to load Mouher API:", error);
-    }
-  }
-
   if (isMedusaConfigured(config)) {
     try {
       const response = await fetchMedusaProducts(config);
@@ -76,6 +58,7 @@ export async function loadCatalog(config = medusaConfig) {
           response,
           response.currency_code || config.currencyCode
         ),
+        source: "medusa",
         notice: "",
       };
     } catch (error) {
@@ -83,12 +66,17 @@ export async function loadCatalog(config = medusaConfig) {
     }
   }
 
+  if (config.allowStaticCatalogFallback) {
+    return loadStaticFallbackCatalog(
+      "Unable to reach Medusa. Showing catalog snapshot."
+    );
+  }
+
   return {
-    ...currentMouherCatalog,
-    notice: "Showing current Mouher catalog snapshot.",
+    ...EMPTY_CATALOG,
+    notice: "Unable to load the catalog.",
   };
 }
-
 
 export async function addProductToCart(product, config = medusaConfig) {
   if (!isMedusaConfigured(config)) {

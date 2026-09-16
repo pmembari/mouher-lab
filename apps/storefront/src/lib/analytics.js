@@ -3,8 +3,12 @@ const CONSENT_KEY = "mouher.analytics.consent.v1";
 const VISITOR_KEY = "mouher.analytics.visitor.v1";
 const SESSION_KEY = "mouher.analytics.session.v1";
 const MAX_EVENTS = 1000;
-const apiBaseUrl = String(import.meta.env?.VITE_MOUHER_API_URL || "").replace(/\/$/, "");
+const backendUrl = String(
+  import.meta.env?.VITE_MEDUSA_BACKEND_URL || ""
+).replace(/\/$/, "");
 
+const publishableKey =
+  import.meta.env?.VITE_MEDUSA_PUBLISHABLE_KEY || "";
 function readEvents(storage) {
   if (!storage) return [];
 
@@ -33,18 +37,29 @@ export function trackEvent(name, properties = {}) {
     // Analytics must never interrupt a shopping action.
   }
 
-  if (apiBaseUrl) {
+  if (backendUrl && publishableKey) {
     const productId = properties.product_id || "";
-    fetch(`${apiBaseUrl}/analytics/events/`, {
+
+    fetch(`${backendUrl}/store/analytics/events`, {
       method: "POST",
       keepalive: true,
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "x-publishable-api-key": publishableKey,
+      },
       body: JSON.stringify({
         consent: true,
         event_name: name,
         occurred_at: event.timestamp,
-        anonymous_id: stableId(VISITOR_KEY, window.localStorage),
-        session_id: stableId(SESSION_KEY, window.sessionStorage),
+        anonymous_id: stableId(
+          VISITOR_KEY,
+          window.localStorage
+        ),
+        session_id: stableId(
+          SESSION_KEY,
+          window.sessionStorage
+        ),
         path: `${window.location.pathname}${window.location.hash}`,
         product_id: productId,
         product_name: properties.product_name || "",
@@ -52,7 +67,7 @@ export function trackEvent(name, properties = {}) {
         currency: properties.currency || "EUR",
         properties,
       }),
-    }).catch(() => {});
+    }).catch(() => { });
   }
 }
 
@@ -136,14 +151,6 @@ export function getAnalyticsSummary() {
   return summarizeEvents(readEvents(storage));
 }
 
-export async function loadOwnerAnalytics(token, days = 30) {
-  if (!apiBaseUrl) throw new Error("Analytics API is not configured.");
-  const response = await fetch(`${apiBaseUrl}/analytics/dashboard/?days=${days}`, {
-    headers: { Accept: "application/json", "X-Mouher-Internal-Token": token },
-  });
-  if (!response.ok) throw new Error(`Analytics report failed: ${response.status}`);
-  return response.json();
-}
 
 function stableId(key, storage) {
   let value = storage.getItem(key);

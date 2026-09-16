@@ -1,0 +1,22 @@
+{
+  "name": "mouher-medusa-backend",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Mouher Medusa backend service.",
+  "scripts": {
+    "build": "medusa build",
+    "dev": "medusa develop",
+    "test": "vitest run",
+    "test:analytics": "vitest run src/modules/analytics src/api/store/analytics src/api/admin/analytics"
+  },
+  "dependencies": {
+    "@medusajs/framework": "^2.16.0",
+    "@medusajs/medusa": "^2.16.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.0",
+    "vitest": "^2.1.0"
+  }
+}

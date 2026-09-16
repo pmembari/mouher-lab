@@ -523,6 +523,9 @@ def clean_product(
     if handle != raw_handle:
         quality_flags.append("handle_deduped")
 
+    options = build_medusa_options(variants)
+    medusa_import_variants = build_medusa_import_variants(variants)
+
     return {
         "legacy_id": legacy_id,
         "upc": clean_text(row.get("upc")),
@@ -536,6 +539,14 @@ def clean_product(
         "categories": categories_by_product.get(legacy_id, []),
         "collections": collections_by_product.get(legacy_id, []),
         "variants": variants,
+        "options": options,
+        "medusa_import": {
+            "options": options,
+            "variants": medusa_import_variants,
+            "excluded_variant_ids": [
+                variant["legacy_id"] for variant in variants if not variant["is_visible"]
+            ],
+        },
         "media": {
             "thumbnail": images[0] if images else None,
             "images": images,
@@ -546,11 +557,74 @@ def clean_product(
         "metadata": {
             "legacy_product_id": legacy_id,
             "legacy_slug": clean_text(row.get("slug")),
-            "legacy_drophub": clean_text(row.get("drophub")),
-            "legacy_attributes": clean_text(row.get("attributes")),
+            "legacy_upc": clean_text(row.get("upc")),
+            "legacy_is_visible": is_visible,
         },
         "quality_flags": quality_flags,
     }
+
+
+def build_medusa_options(variants: list[dict]) -> list[dict]:
+    visible_variants = [variant for variant in variants if variant["is_visible"]]
+    sizes = unique_option_values(
+        variant["size"]["name"] for variant in visible_variants if variant["size"]["name"]
+    )
+    colors = unique_option_values(
+        variant["color"]["name"] for variant in visible_variants if variant["color"]["name"]
+    )
+    options = []
+
+    if sizes:
+        options.append({"title": "Size", "values": sizes})
+    if colors:
+        options.append({"title": "Color", "values": colors})
+
+    return options
+
+
+def build_medusa_import_variants(variants: list[dict]) -> list[dict]:
+    import_variants = []
+
+    for variant in variants:
+        if not variant["is_visible"]:
+            continue
+
+        options = {}
+        if variant["size"]["name"]:
+            options["Size"] = variant["size"]["name"]
+        if variant["color"]["name"]:
+            options["Color"] = variant["color"]["name"]
+
+        title = " / ".join(options.values()) or variant["sku"] or variant["legacy_id"]
+
+        import_variants.append(
+            {
+                "sku": variant["sku"],
+                "legacy_variant_id": variant["legacy_id"],
+                "title": title,
+                "options": options,
+                "source_price": variant["source_price"],
+                "inventory_quantity": variant["stock"],
+                "manage_inventory": True,
+                "allow_backorder": False,
+                "metadata": {"legacy_variant_id": variant["legacy_id"]},
+            }
+        )
+
+    return import_variants
+
+
+def unique_option_values(values: object) -> list[str]:
+    unique = []
+    seen = set()
+
+    for value in values:
+        if value in seen:
+            continue
+        seen.add(value)
+        unique.append(value)
+
+    return unique
 
 
 def clean_variant(row: dict, variant_value_by_id: dict[str, dict]) -> dict:

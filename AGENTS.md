@@ -4,8 +4,8 @@ Use this brief when continuing work on Mouher's ecommerce website and owner dash
 
 ## Primary References
 
-- `.agents/.skills/vercel-commerce/`: It is a simple and complete ecosystem for WebApplication that agent can leverage to implement the logic of how the lifecycle of my website should be. Agent uses it as the e-commerce completeness reference. It shows expected Medusa storefront concepts: product detail routes, search/collection routes, cart mutations, product type reshaping, SEO metadata, sitemap, robots, Open Graph images, and cache/revalidation patterns.
-- `.agents/.skills/hitkeep/`: Use this as the dashboard reference for role-aware layout, analytics/reporting, permissions, exports, audit-friendly operations, loading/empty/error states, and self-hostable dashboard patterns. Do not copy HitKeep branding or optional AI/MCP features.
+- `.agents/skills/vercel-commerce/`: It is a simple and complete ecosystem for WebApplication that agent can leverage to implement the logic of how the lifecycle of my website should be. Agent uses it as the e-commerce completeness reference. It shows expected Medusa storefront concepts: product detail routes, search/collection routes, cart mutations, product type reshaping, SEO metadata, sitemap, robots, Open Graph images, and cache/revalidation patterns.
+- `.agents/skills/hitkeep/`: Use this as the dashboard reference for role-aware layout, analytics/reporting, permissions, exports, audit-friendly operations, loading/empty/error states, and self-hostable dashboard patterns. Do not copy HitKeep branding or optional AI/MCP features.
 - `data/Mouher_Data`: Is the history transactions, users, images, glary of our shop. This might be needed for test and building test for our Admin Dashboard.
 - `https://mouher.com/` this is our current (old website) you can know it as the old website that needs to be refine.
 - `PLANS.md`: follow the phased implementation plan and test/user-scenario checklist.
@@ -13,52 +13,49 @@ Use this brief when continuing work on Mouher's ecommerce website and owner dash
 ## System Boundaries
 
 - Medusa is the source of truth for commerce data.
-- Django in `services/backend/` is the secure API/BFF and protected admin gateway.
+- `services/backend/` is the Mouher backend service boundary, implemented with Medusa.
 - The public storefront lives in `apps/storefront/`.
-- Role dashboards live under `apps/dashboards/`: `owner-workspace/`, `assistant-workspace/`, and `developer-workspace/`.
+- Role dashboards live under `apps/dashboards/`: roles and access are developer, owner, and staff.
 - The payment adapter stays isolated in `services/payment/`. In future we will push it into a separate git repo so we can follow the SaaS best practices.
 - PostgreSQL must remain a separated, independent component. Do not embed database state in an app component. In future we will push it into a separate git repo so we can follow the SaaS best practices.
-- Heavy components must be loosely coupled and independently runnable: storefront, owner dashboard, Django API, Medusa, payment service, database, cache, and media storage.
+- Heavy components must be loosely coupled and independently runnable: storefront, shared dashboards, Medusa backend, payment service, database, cache, and media storage.
+- Django is current implementation of our website backend which might not based on best practices of a shop logic. Therefore, Django should be completely deprecated and instead rely on Medusa backend ecosystem and best practices.
 - Private catalog/media data under `data/Mouher_Data` must not be committed.
-- Agents must not read CSV files, media files, build outputs, generated data JSON, or files larger than 5 MB unless a task explicitly requires them.
-- Agents must not read environment files such as `.env`, `.env.*`, or `*.env` unless explicitly told to do so.
+- Agents must not read CSV files, media files, build outputs, generated data JSON, or files larger than 1 MB unless a task explicitly requires them.
+- Agents must not read environment files such as `.env`, `.venv` , `.env.*`, or `*.env` unless explicitly told to do so.
 
 ## Software Engineering Rules
 
 - Design components with high cohesion and loose coupling.
 - Depend on stable API contracts, not another component's internal database schema.
-- Keep Medusa-owned commerce data, Django-owned operational data, and frontend state clearly separated.
+- Keep Medusa-owned commerce data, Mouher operational extensions, and frontend state clearly separated.
+- Prefer Medusa-native models and extension points when they fit; preserve Mouher-specific legacy behavior only when it still has product or operational value.
 - Keep adapters at service boundaries so Medusa/API response reshaping is centralized and testable.
 - Avoid spreading raw HTTP calls, auth checks, price formatting, and analytics mapping across UI components.
 - Failures should degrade locally: analytics problems must not block checkout, dashboard problems must not block the storefront, and payment-service problems must not block catalog browsing.
 
 ## Development DevOps Rules
 
-- For this milestone, focus on development-time operability, not Kubernetes.
-- Each component needs documented startup commands, environment variables, health checks, and troubleshooting notes.
+- For this milestone, focus on development-time operability, not Kubernetes or deployment.
 - Do not use mamba/conda for virtual envs. Use pyproject.toml + hatch if needed.
-- For the documentation, they should follow the [Diataxis](https://diataxis.fr/) framework. Provide them for developers and also Site Assistants (separately) in both English and Farsi.
 - Services should be stateless where practical so they can be restarted and later scaled independently.
-- Use local service composition, such as Docker (I don't need Docker compose for the moment), before cluster orchestration.
 - Keep secrets out of Git and out of browser bundles.
 - Use structured logs and request/correlation IDs for cross-service debugging.
-- Product media belongs in object storage or an object-storage-compatible service, not in app source code or app containers.
 - Follow the best practices of security for both user and provider (owner).
 
 ## UI Direction
 
-- Take inspiration from Apple's restraint, product focus, whitespace, typography, simple navigation, and polished interactions.
-- Do not copy Apple branding or visual identity.
-- For the homepage I can have a light-weight motion that shows `data/Mouher_Data/data/videos/IMG_2575.MOV` as a gif or motions of images.
-- Use Persian-inspired brand colors: Persian blue for primary actions, Persian red for urgent/sale/error accents, and Persian gold (#FFD700) for premium highlights.
+- Skill set for agent ui design is described in `.agents/skills/mouher-storefront/SKILL.md`
+- For the homepage I can have a light-weight motion that shows in such a way that describe in  .agents/skills/mouher-storefront/SKILL.md `## Multi-Video Hero` section.
+- Use Persian-inspired brand colors: Persian blue for primary actions, navy buttons, Beige for showing product box for selection, Persian red for urgent/sale/error accents, and Persian gold (#FFD700) for premium highlights.
 - Keep the main surfaces neutral so product photography remains central.
 - Use the same design tokens across storefront and owner dashboard.
 - Public storefront should feel premium, visual, and product-led.
 - Owner dashboard should feel denser, operational, and easy to scan while still using Mouher brand tokens.
+- For Client dashboard stick to the Medusa style dashboard. Keep it easy.
 - Support Persian/RTL and English/LTR layouts carefully.
-- put English/Farsi in a button in upper part of ui.
 - Preserve accessibility contrast and avoid text overlap on mobile and desktop.
-- Avoid generic analytics-dashboard styling when adapting `.agents/.skills/hitkeep/`; keep Mouher brand tokens, commerce workflows, and role access central.
+- For purpose of Dashboard we want to add an e-commerce model dashboard that inherit the features in `.agents/skills/hitkeep/`; At the end we are going to provide the dashboard just using the free feature of hitkeep implementations. use the AGENT skills in that standalone repo (e.g. `.agents/skills/hitkeep/hitkeep/.agents/skills`).
 
 ## API FAIR Principles
 
@@ -135,7 +132,6 @@ Cover scenarios that can harm the dashboard:
 
 ## Working Style
 
-- Prefer existing repo patterns.
 - Keep edits scoped.
 - Use `rg` for search.
 - Agent should ask question for critical design decisions.
@@ -146,9 +142,8 @@ Cover scenarios that can harm the dashboard:
 ## Token-Efficient Codex Workflow
 
 - Use ChatGPT app for planning, product decisions, writing specs, UI direction, architecture discussion, and reviewing summaries.
-- Use Codex only when repository access is needed: reading files, editing code, running tests, checking logs, or making commits.
+- Use Codex only when repository access is needed: reading files, editing code, running tests, checking logs.
 - Prefer targeted Codex requests with exact paths, constraints, and acceptance tests over broad project exploration.
-- Query `graphify-out/` first when relevant before reading many files, and keep it fresh as the compact project map.
-- Keep exclusions strict: do not read CSV files, media files, environment files, generated JSON, build outputs, or files larger than 5 MB unless explicitly required.
-- Prefer short repo docs such as `PLANS.md` sections over pasted long requirements.
+- Keep exclusions strict: do not read CSV files, media files, environment files, generated JSON, build outputs, or files larger than 2 MB unless explicitly required.
+- For every implementation first try to find if any agent skills are provided. and then only after that check codebase and other files. This is for such skills that I clone a repository under my .agents/skills for example .agents/skills/hitkeep/hitkeep could progressively use you tokens. therefore you should be careful about that repo.
 - When a task is still product or architecture planning, tell the user to use ChatGPT; when repo access is needed, tell the user to use Codex.

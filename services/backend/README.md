@@ -114,8 +114,7 @@ curl http://localhost:8001/api/commerce/warehouse/inventory/ \
   -H "X-Mouher-Internal-Token: $MOUHER_INTERNAL_API_TOKEN"
 ```
 
-Inventory and reservation accounting stay in Medusa. This backend only forwards
-stock-location and inventory-level operations to Medusa Admin API.
+Inventory and reservation accounting stay in Medusa. This backend only forwards stock-location and inventory-level operations to Medusa Admin API.
 
 ## Admin Proxy
 

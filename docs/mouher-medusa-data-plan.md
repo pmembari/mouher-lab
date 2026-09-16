@@ -21,7 +21,7 @@ This note summarizes the local `Mouher_Data` analysis without committing the raw
 - Prices: Medusa v2 price amounts are major units; confirm whether the source values are toman or rial before importing.
 - Inventory: map variant `stock`, `is_visible`, `allow_backorder`, and `manage_inventory` deliberately. Do not treat invisible variants as sellable.
 - Images: ignore deprecated CSV image URLs. Match product images from physical folders named `data/images/<product_id>/`, sorted by the leading number in filenames like `1_2025_06_15.jpg`.
-- Videos: current files are named `IMG_2574.MOV`, `IMG_2575.MOV`, and `IMG_2576.MOV`; they have no product ID in the filename, so keep them as unmatched/editorial media until a product mapping is provided.
+- Editorial video: the current homepage candidate is `data/Mouher_Data/data/videos/1-parnian.webm`. Treat private raw video as unmatched/editorial media until a product mapping is provided.
 - Upload matched physical images to Medusa file storage or private object storage, then attach returned URLs to products. Do not commit the image folders to GitHub.
 
 ## Local Cleaning Command

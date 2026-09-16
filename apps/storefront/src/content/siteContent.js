@@ -187,7 +187,7 @@ export const content = {
       enabling: "Enabling",
       active: "Loyalty notifications are active in this browser.",
       blocked: "Notifications are blocked in this browser.",
-      notConfigured: "Web Push keys are not configured in Django yet.",
+      notConfigured: "Web Push keys are not configured in Medusa yet.",
       notGranted: "Notification permission was not granted.",
       unsupported: "This browser cannot receive Web Push notifications here.",
       failed: "Could not enable loyalty notifications.",

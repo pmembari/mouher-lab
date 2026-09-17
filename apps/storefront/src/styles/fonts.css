@@ -1,0 +1,76 @@
+/* =========================================================
+   STOREFRONT FONT SETUP
+
+   Licensed techno display font placeholder:
+   Place the commercially licensed webfont files at:
+
+   apps/storefront/public-safe/fonts/techno-display.woff2
+   apps/storefront/public-safe/fonts/techno-display.woff
+
+   Keep the filenames below in sync with the licensed files you add.
+   Do not commit demo or personal-use-only font files here.
+========================================================= */
+
+@font-face {
+  font-family: "Mouher Techno Display";
+  src:
+    url("/mouher-lab/fonts/techno-display.woff2") format("woff2"),
+    url("/mouher-lab/fonts/techno-display.woff") format("woff");
+  font-style: normal;
+  font-weight: 400 900;
+  font-display: swap;
+}
+
+:root {
+  --font-ui:
+    -apple-system,
+    BlinkMacSystemFont,
+    "SF Pro Text",
+    "SF Pro Display",
+    "Helvetica Neue",
+    Helvetica,
+    Arial,
+    sans-serif;
+
+  --font-display-techno:
+    "Mouher Techno Display",
+    "Arial Black",
+    "Helvetica Neue",
+    Helvetica,
+    Arial,
+    sans-serif;
+}
+
+/* English display typography only. Keep body/UI text highly readable. */
+.site:not(.site-farsi) .home-intro h1,
+.site:not(.site-farsi) .home-trending .section-heading h2,
+.site:not(.site-farsi) .categories-section .section-heading h2,
+.site:not(.site-farsi) .philosophy-content h2,
+.site:not(.site-farsi) .home-discovery .section-heading h2,
+.site:not(.site-farsi) .newsletter h2,
+.site:not(.site-farsi) .home-trending-copy h3,
+.site:not(.site-farsi) .home-category-copy h3 {
+  font-family: var(--font-display-techno);
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.site:not(.site-farsi) .home-intro h1 {
+  text-transform: uppercase;
+  letter-spacing: -0.025em;
+}
+
+/* Small labels stay clean and restrained rather than using the display face. */
+.site:not(.site-farsi) .eyebrow,
+.site:not(.site-farsi) .home-merch-kicker,
+.site:not(.site-farsi) .desktop-nav,
+.site:not(.site-farsi) .button,
+.site:not(.site-farsi) .text-link,
+.site:not(.site-farsi) .product-info,
+.site:not(.site-farsi) .product-card-footer,
+.site:not(.site-farsi) .newsletter,
+.site:not(.site-farsi) .search-overlay,
+.site:not(.site-farsi) .shop-page {
+  font-family: var(--font-ui);
+}

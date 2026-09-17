@@ -1,3 +1,4 @@
+import { medusaConfig } from "./catalog/config.js";
 import { getMedusaSdk } from "./medusaSdk.js";
 
 export async function loginCustomer(email, password) {
@@ -30,56 +31,68 @@ export async function registerCustomer({
   password,
   firstName = "",
   lastName = "",
+  phone,
+  captchaToken,
 }) {
   const sdk = getMedusaSdk();
-  let authenticatedExistingIdentity = false;
-  let authResult;
+  const normalizedPhone = normalizeMobilePhone(phone);
+  const token = String(captchaToken || "").trim();
 
-  try {
-    authResult = await sdk.auth.register(
-      "customer",
-      "emailpass",
-      {
-        email,
-        password,
-      }
+  if (!isValidMobilePhone(normalizedPhone)) {
+    throw new Error(
+      "Enter a valid mobile phone number, including the country code."
     );
-  } catch (error) {
-    if (!isExistingIdentityError(error)) {
-      throw error;
-    }
-
-    authResult = await sdk.auth.login(
-      "customer",
-      "emailpass",
-      {
-        email,
-        password,
-      }
-    );
-
-    authenticatedExistingIdentity = true;
   }
 
-  assertAuthCompleted(authResult);
-
-  if (authenticatedExistingIdentity) {
-    const existingCustomer =
-      await loadCurrentCustomer();
-
-    if (existingCustomer) {
-      return existingCustomer;
-    }
+  if (!token) {
+    throw new Error(
+      "Complete the security check before creating your account."
+    );
   }
 
-  await sdk.store.customer.create({
-    email,
-    first_name: firstName,
-    last_name: lastName,
-  });
+  const registration = await requestJson(
+    `${medusaConfig.backendUrl}/auth/customer/emailpass/register`,
+    {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "x-publishable-api-key": medusaConfig.publishableKey,
+        "x-turnstile-token": token,
+      },
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+    }
+  );
 
-  // The registration token is used to create the customer. Log in once
-  // more so the SDK stores a normal customer JWT for subsequent requests.
+  const registrationToken = registration?.token;
+
+  if (!registrationToken) {
+    throw new Error(
+      "Medusa registration completed without returning an account token."
+    );
+  }
+
+  await requestJson(
+    `${medusaConfig.backendUrl}/store/customers`,
+    {
+      method: "POST",
+      headers: {
+        authorization: `Bearer ${registrationToken}`,
+        "content-type": "application/json",
+        "x-publishable-api-key": medusaConfig.publishableKey,
+      },
+      body: JSON.stringify({
+        email,
+        first_name: firstName,
+        last_name: lastName,
+        phone: normalizedPhone,
+      }),
+    }
+  );
+
+  // Store a normal customer JWT in the SDK after the actor profile exists.
   const loginResult = await sdk.auth.login(
     "customer",
     "emailpass",
@@ -124,6 +137,51 @@ export async function logoutCustomer() {
   await sdk.auth.logout();
 }
 
+export function normalizeMobilePhone(value) {
+  const raw = String(value || "").trim();
+
+  if (!raw) {
+    return "";
+  }
+
+  const compact = raw.replace(/[\s().-]/g, "");
+
+  if (/^09\d{9}$/.test(compact)) {
+    return `+98${compact.slice(1)}`;
+  }
+
+  if (/^98\d{10}$/.test(compact)) {
+    return `+${compact}`;
+  }
+
+  if (/^00\d+$/.test(compact)) {
+    return `+${compact.slice(2)}`;
+  }
+
+  return compact;
+}
+
+export function isValidMobilePhone(value) {
+  return /^\+[1-9]\d{7,14}$/.test(String(value || ""));
+}
+
+async function requestJson(url, options) {
+  const response = await fetch(url, options);
+  const payload = await response
+    .json()
+    .catch(() => ({}));
+
+  if (!response.ok) {
+    throw new Error(
+      payload?.message ||
+      payload?.error ||
+      `Request failed with status ${response.status}.`
+    );
+  }
+
+  return payload;
+}
+
 function assertAuthCompleted(result) {
   if (typeof result === "string") {
     return;
@@ -143,20 +201,6 @@ function assertAuthCompleted(result) {
 
   throw new Error(
     "Medusa authentication did not complete successfully."
-  );
-}
-
-function isExistingIdentityError(error) {
-  const message = String(
-    error?.message || ""
-  ).toLowerCase();
-
-  return (
-    message.includes("identity") &&
-    (
-      message.includes("already") ||
-      message.includes("exists")
-    )
   );
 }
 

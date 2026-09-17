@@ -51,12 +51,14 @@ export async function registerCustomer({
 
   // sdk.auth.register doesn't accept custom request headers. Use the SDK's
   // low-level client for the built-in registration route so the backend can
-  // verify the Turnstile token before Medusa creates the auth identity.
+  // verify both the required phone and Turnstile proof before Medusa creates
+  // the auth identity.
   const registration = await sdk.client.fetch(
     "/auth/customer/emailpass/register",
     {
       method: "POST",
       headers: {
+        "x-mouher-phone": normalizedPhone,
         "x-turnstile-token": token,
       },
       body: {

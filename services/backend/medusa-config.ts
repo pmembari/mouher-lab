@@ -18,7 +18,10 @@ function corsList(...values: Array<string | undefined>) {
 
 export default defineConfig({
   admin: {
-    disable: true,
+    // Keep Admin off by default. Set MEDUSA_ADMIN_DISABLED=false only in a
+    // trusted local environment when you need to create users, regions,
+    // sales channels, or publishable API keys through Medusa Admin.
+    disable: process.env.MEDUSA_ADMIN_DISABLED !== "false",
   },
   projectConfig: {
     databaseUrl: process.env.DATABASE_URL,

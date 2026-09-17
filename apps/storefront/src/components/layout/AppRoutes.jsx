@@ -1,8 +1,13 @@
 import { lazy, Suspense } from "react";
+
 import HomePage from "../../pages/HomePage";
 
 const ProductPage = lazy(
   () => import("../../pages/ProductPage")
+);
+
+const ShopPage = lazy(
+  () => import("../../pages/ShopPage")
 );
 
 const OwnerDashboardPage = lazy(
@@ -18,9 +23,11 @@ const WebsiteAssistDashboard = lazy(
 );
 
 const AccountWorkspacePage = lazy(() =>
-  import("../../pages/AccountWorkspacePage").then((module) => ({
-    default: module.AccountWorkspacePage,
-  }))
+  import("../../pages/AccountWorkspacePage").then(
+    (module) => ({
+      default: module.AccountWorkspacePage,
+    })
+  )
 );
 
 function RouteFallback({
@@ -42,13 +49,17 @@ function RouteFallback({
 export default function AppRoutes({
   route,
   routedProduct,
+
   catalog,
   catalogState,
+
   language,
   t,
   isFarsi,
+
   addingProductId,
   addToCart,
+
   heroImage,
   sourceLabel,
 
@@ -61,6 +72,12 @@ export default function AppRoutes({
   setEmail,
   handleNewsletterSubmit,
 }) {
+  const isCatalogBrowseRoute =
+    route.type === "shop" ||
+    route.type === "category" ||
+    route.type === "collection" ||
+    route.type === "search";
+
   return (
     <main>
       <Suspense
@@ -86,6 +103,20 @@ export default function AppRoutes({
             isAdding={
               addingProductId ===
               routedProduct?.id
+            }
+          />
+        ) : isCatalogBrowseRoute ? (
+          <ShopPage
+            route={route}
+            catalog={catalog}
+            catalogState={catalogState}
+            language={language}
+            t={t}
+            addingProductId={
+              addingProductId
+            }
+            onAddToCart={
+              addToCart
             }
           />
         ) : route.type === "owner" ? (
@@ -120,14 +151,24 @@ export default function AppRoutes({
             t={t}
             heroImage={heroImage}
             sourceLabel={sourceLabel}
-            homepageProducts={homepageProducts}
-            homepageCategories={homepageCategories}
-            homepageCollections={homepageCollections}
-            addingProductId={addingProductId}
+            homepageProducts={
+              homepageProducts
+            }
+            homepageCategories={
+              homepageCategories
+            }
+            homepageCollections={
+              homepageCollections
+            }
+            addingProductId={
+              addingProductId
+            }
             email={email}
             onSetQuery={setQuery}
             onSetEmail={setEmail}
-            onAddToCart={addToCart}
+            onAddToCart={
+              addToCart
+            }
             onNewsletterSubmit={
               handleNewsletterSubmit
             }

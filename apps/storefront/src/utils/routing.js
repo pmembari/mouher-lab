@@ -4,7 +4,16 @@ export function getRouteFromHash() {
       ? ""
       : window.location.hash;
 
-  const value = hash.replace(/^#\/?/, "");
+  const rawValue = hash.replace(/^#\/?/, "");
+
+  const [pathPart, queryString = ""] =
+    rawValue.split("?");
+
+  const value = pathPart.replace(/\/+$/, "");
+
+  const params = new URLSearchParams(
+    queryString
+  );
 
   if (value.startsWith("products/")) {
     return {
@@ -17,25 +26,175 @@ export function getRouteFromHash() {
     };
   }
 
+  if (value === "shop") {
+    return {
+      type: "shop",
+
+      query:
+        params.get("q") || "",
+
+      category:
+        params.get("category") || "all",
+
+      collection:
+        params.get("collection") || "all",
+
+      minPrice:
+        params.get("minPrice") || "",
+
+      maxPrice:
+        params.get("maxPrice") || "",
+
+      size:
+        params.get("size") || "all",
+
+      color:
+        params.get("color") || "all",
+
+      inStock:
+        params.get("inStock") === "true",
+
+      sale:
+        params.get("sale") === "true",
+
+      sort:
+        params.get("sort") || "featured",
+    };
+  }
+
+  if (value.startsWith("categories/")) {
+    return {
+      type: "category",
+
+      slug: decodeRoutePart(
+        value.replace(
+          /^categories\//,
+          ""
+        )
+      ),
+
+      minPrice:
+        params.get("minPrice") || "",
+
+      maxPrice:
+        params.get("maxPrice") || "",
+
+      size:
+        params.get("size") || "all",
+
+      color:
+        params.get("color") || "all",
+
+      inStock:
+        params.get("inStock") === "true",
+
+      sale:
+        params.get("sale") === "true",
+
+      sort:
+        params.get("sort") || "featured",
+    };
+  }
+
+  if (value.startsWith("collections/")) {
+    return {
+      type: "collection",
+
+      slug: decodeRoutePart(
+        value.replace(
+          /^collections\//,
+          ""
+        )
+      ),
+
+      minPrice:
+        params.get("minPrice") || "",
+
+      maxPrice:
+        params.get("maxPrice") || "",
+
+      size:
+        params.get("size") || "all",
+
+      color:
+        params.get("color") || "all",
+
+      inStock:
+        params.get("inStock") === "true",
+
+      sale:
+        params.get("sale") === "true",
+
+      sort:
+        params.get("sort") || "featured",
+    };
+  }
+
+  if (value === "search") {
+    return {
+      type: "search",
+
+      query:
+        params.get("q") || "",
+
+      category:
+        params.get("category") || "all",
+
+      collection:
+        params.get("collection") || "all",
+
+      minPrice:
+        params.get("minPrice") || "",
+
+      maxPrice:
+        params.get("maxPrice") || "",
+
+      size:
+        params.get("size") || "all",
+
+      color:
+        params.get("color") || "all",
+
+      inStock:
+        params.get("inStock") === "true",
+
+      sale:
+        params.get("sale") === "true",
+
+      sort:
+        params.get("sort") || "featured",
+    };
+  }
+
   if (value === "owner") {
-    return { type: "owner" };
+    return {
+      type: "owner",
+    };
   }
 
   if (value === "developer") {
-    return { type: "developer" };
+    return {
+      type: "developer",
+    };
   }
 
   if (value === "assist") {
-    return { type: "assist" };
+    return {
+      type: "assist",
+    };
   }
 
   if (value === "account") {
-    return { type: "account" };
+    return {
+      type: "account",
+    };
   }
 
   return {
     type: "home",
-    section: value.replace(/^#/, "") || "new",
+    section:
+      value.replace(/^#/, "") ||
+      "new",
   };
 }
 

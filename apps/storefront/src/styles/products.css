@@ -1,0 +1,31 @@
+.product-image-wrap {
+  background: #ffffff;
+  border-radius: 14px;
+}
+
+.product-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  transform: none;
+  transition: none;
+  filter: none;
+  image-rendering: auto;
+}
+
+.product-card:hover .product-image {
+  transform: none;
+}
+
+.product-badge {
+  background: #ffffff;
+  color: #111827;
+  border: 1px solid rgba(17, 24, 39, 0.12);
+  border-radius: 4px;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}

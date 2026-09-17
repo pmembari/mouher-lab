@@ -12,6 +12,7 @@
     "test:keycloak": "node --test src/lib/keycloakAuth.test.js"
   },
   "dependencies": {
+    "@medusajs/js-sdk": "2.16.0",
     "@stripe/react-stripe-js": "^6.10.0",
     "@stripe/stripe-js": "^9.16.0",
     "keycloak-js": "^26.2.4",

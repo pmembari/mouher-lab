@@ -1,4 +1,8 @@
-import { useMemo } from "react";
+import {
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 
 import ProductCard from "../components/storefront/ProductCard";
 import { useCatalogBrowse } from "../hooks/useCatalogBrowse";
@@ -14,6 +18,11 @@ export default function ShopPage({
 }) {
   const isFarsi =
     language === "farsi";
+
+  const [
+    filtersOpen,
+    setFiltersOpen,
+  ] = useState(false);
 
   const browseInput = useMemo(() => {
     if (route.type === "category") {
@@ -144,23 +153,58 @@ export default function ShopPage({
       isFarsi,
     });
 
+  useEffect(() => {
+    if (!filtersOpen) {
+      return undefined;
+    }
+
+    function handleKeyDown(
+      event
+    ) {
+      if (
+        event.key === "Escape"
+      ) {
+        setFiltersOpen(false);
+      }
+    }
+
+    document.addEventListener(
+      "keydown",
+      handleKeyDown
+    );
+
+    const previousOverflow =
+      document.body.style.overflow;
+
+    document.body.style.overflow =
+      "hidden";
+
+    return () => {
+      document.removeEventListener(
+        "keydown",
+        handleKeyDown
+      );
+
+      document.body.style.overflow =
+        previousOverflow;
+    };
+  }, [
+    filtersOpen,
+  ]);
+
   function updateRoute(
     changes
   ) {
-    const next =
+    window.location.hash =
       buildNextRoute({
         route,
         changes,
       });
-
-    window.location.hash =
-      next;
   }
 
   function resetFilters() {
     if (
-      route.type ===
-      "category"
+      route.type === "category"
     ) {
       window.location.hash =
         `#/categories/${encodeURIComponent(
@@ -171,8 +215,7 @@ export default function ShopPage({
     }
 
     if (
-      route.type ===
-      "collection"
+      route.type === "collection"
     ) {
       window.location.hash =
         `#/collections/${encodeURIComponent(
@@ -183,8 +226,7 @@ export default function ShopPage({
     }
 
     if (
-      route.type ===
-      "search"
+      route.type === "search"
     ) {
       const params =
         new URLSearchParams();
@@ -237,258 +279,284 @@ export default function ShopPage({
         <div className="shop-result-count">
           {isFarsi
             ? `${browse.filteredCount} محصول`
-            : `${browse.filteredCount} ${browse.filteredCount ===
-              1
+            : `${browse.filteredCount} ${browse.filteredCount === 1
               ? "product"
               : "products"
             }`}
         </div>
       </header>
 
-      <div className="catalog-browser">
-        <aside
-          className="catalog-filters"
-          aria-label={
-            isFarsi
-              ? "فیلتر محصولات"
-              : "Product filters"
-          }
-        >
-          <FilterGroup
-            title={
-              isFarsi
-                ? "دسته‌بندی"
-                : "Category"
+      <div className="shop-toolbar">
+        <div className="shop-toolbar-left">
+          <button
+            type="button"
+            className="shop-filter-trigger"
+            onClick={() =>
+              setFiltersOpen(true)
             }
           >
-            <select
-              value={
-                browseInput.category
-              }
-              onChange={(event) =>
-                updateRoute({
-                  category:
-                    event.target
-                      .value,
-                })
-              }
-              disabled={
-                route.type ===
-                "category"
-              }
-            >
-              <option value="all">
-                {isFarsi
-                  ? "همه"
-                  : "All"}
-              </option>
+            <span>
+              {isFarsi
+                ? "فیلترها"
+                : "Filters"}
+            </span>
 
-              {browse.availableCategories.map(
-                (category) => (
-                  <option
-                    key={
-                      category.slug
-                    }
-                    value={
-                      category.slug
-                    }
-                  >
-                    {isFarsi
-                      ? category.nameFa
-                      : category.name}
-                    {" "}
-                    ({category.count})
-                  </option>
-                )
+            {browse.activeFilterCount >
+              0 && (
+                <span className="shop-filter-count">
+                  {
+                    browse.activeFilterCount
+                  }
+                </span>
               )}
-            </select>
-          </FilterGroup>
+          </button>
 
-          <FilterGroup
-            title={
-              isFarsi
-                ? "کالکشن"
-                : "Collection"
-            }
-          >
-            <select
-              value={
-                browseInput.collection
-              }
-              onChange={(event) =>
-                updateRoute({
-                  collection:
-                    event.target
-                      .value,
-                })
-              }
-              disabled={
-                route.type ===
-                "collection"
-              }
-            >
-              <option value="all">
-                {isFarsi
-                  ? "همه"
-                  : "All"}
-              </option>
-
-              {browse.availableCollections.map(
-                (collection) => (
-                  <option
-                    key={
-                      collection.slug
-                    }
-                    value={
-                      collection.slug
-                    }
-                  >
-                    {isFarsi
-                      ? collection.nameFa
-                      : collection.name}
-                    {" "}
-                    ({collection.count})
-                  </option>
-                )
-              )}
-            </select>
-          </FilterGroup>
-
-          <FilterGroup
-            title={
-              isFarsi
-                ? "قیمت"
-                : "Price"
-            }
-          >
-            <div className="price-filter-row">
-              <input
-                type="number"
-                inputMode="numeric"
-                min={
-                  browse
-                    .priceBounds
-                    .min ??
-                  undefined
+          {browseInput.category !==
+            "all" && (
+              <ActiveFilterChip
+                label={
+                  findCategoryLabel(
+                    browse,
+                    browseInput.category,
+                    isFarsi
+                  )
                 }
-                max={
-                  browse
-                    .priceBounds
-                    .max ??
-                  undefined
-                }
-                value={
-                  browseInput.minPrice
-                }
-                placeholder={
-                  isFarsi
-                    ? "حداقل"
-                    : "Min"
-                }
-                onChange={(event) =>
+                onRemove={() =>
                   updateRoute({
-                    minPrice:
-                      event.target
-                        .value,
+                    category: "all",
                   })
                 }
               />
-
-              <input
-                type="number"
-                inputMode="numeric"
-                min={
-                  browse
-                    .priceBounds
-                    .min ??
-                  undefined
-                }
-                max={
-                  browse
-                    .priceBounds
-                    .max ??
-                  undefined
-                }
-                value={
-                  browseInput.maxPrice
-                }
-                placeholder={
-                  isFarsi
-                    ? "حداکثر"
-                    : "Max"
-                }
-                onChange={(event) =>
-                  updateRoute({
-                    maxPrice:
-                      event.target
-                        .value,
-                  })
-                }
-              />
-            </div>
-          </FilterGroup>
-
-          {browse
-            .availableSizes
-            .length > 0 && (
-              <FilterGroup
-                title={
-                  isFarsi
-                    ? "سایز"
-                    : "Size"
-                }
-              >
-                <select
-                  value={
-                    browseInput.size
-                  }
-                  onChange={(event) =>
-                    updateRoute({
-                      size:
-                        event.target
-                          .value,
-                    })
-                  }
-                >
-                  <option value="all">
-                    {isFarsi
-                      ? "همه سایزها"
-                      : "All sizes"}
-                  </option>
-
-                  {browse.availableSizes.map(
-                    (size) => (
-                      <option
-                        key={size}
-                        value={String(
-                          size
-                        ).toLowerCase()}
-                      >
-                        {size}
-                      </option>
-                    )
-                  )}
-                </select>
-              </FilterGroup>
             )}
 
-          {browse
-            .availableColors
-            .length > 0 && (
+          {browseInput.collection !==
+            "all" && (
+              <ActiveFilterChip
+                label={
+                  findCollectionLabel(
+                    browse,
+                    browseInput.collection,
+                    isFarsi
+                  )
+                }
+                onRemove={() =>
+                  updateRoute({
+                    collection: "all",
+                  })
+                }
+              />
+            )}
+
+          {browseInput.sale && (
+            <ActiveFilterChip
+              label={
+                isFarsi
+                  ? "تخفیف"
+                  : "Sale"
+              }
+              onRemove={() =>
+                updateRoute({
+                  sale: false,
+                })
+              }
+            />
+          )}
+
+          {browseInput.inStock && (
+            <ActiveFilterChip
+              label={
+                isFarsi
+                  ? "موجود"
+                  : "In stock"
+              }
+              onRemove={() =>
+                updateRoute({
+                  inStock: false,
+                })
+              }
+            />
+          )}
+        </div>
+
+        <label className="shop-sort">
+          <span>
+            {isFarsi
+              ? "مرتب‌سازی"
+              : "Sort"}
+          </span>
+
+          <select
+            value={
+              browseInput.sort
+            }
+            onChange={(event) =>
+              updateRoute({
+                sort:
+                  event.target.value,
+              })
+            }
+          >
+            <option value="featured">
+              {isFarsi
+                ? "پیشنهادی"
+                : "Featured"}
+            </option>
+
+            <option value="newest">
+              {isFarsi
+                ? "جدیدترین"
+                : "Newest"}
+            </option>
+
+            <option value="price-asc">
+              {isFarsi
+                ? "قیمت: کم به زیاد"
+                : "Price: Low to High"}
+            </option>
+
+            <option value="price-desc">
+              {isFarsi
+                ? "قیمت: زیاد به کم"
+                : "Price: High to Low"}
+            </option>
+
+            {browse.bestSellingAvailable && (
+              <option value="best-selling">
+                {isFarsi
+                  ? "پرفروش‌ترین"
+                  : "Best Selling"}
+              </option>
+            )}
+          </select>
+        </label>
+      </div>
+
+      {catalogState ===
+        "loading" ? (
+        <p className="empty-state">
+          {t.products.loading}
+        </p>
+      ) : browse.products.length >
+        0 ? (
+        <div className="shop-product-grid products-grid">
+          {browse.products.map(
+            (product) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                language={language}
+                labels={t.cart}
+                onAdd={
+                  onAddToCart
+                }
+                isAdding={
+                  addingProductId ===
+                  product.id
+                }
+              />
+            )
+          )}
+        </div>
+      ) : (
+        <div className="catalog-empty">
+          <h2>
+            {isFarsi
+              ? "محصولی پیدا نشد"
+              : "No products found"}
+          </h2>
+
+          <p>
+            {isFarsi
+              ? "فیلترها را تغییر دهید یا پاک کنید."
+              : "Try changing or clearing the filters."}
+          </p>
+
+          <button
+            type="button"
+            className="button button-dark"
+            onClick={
+              resetFilters
+            }
+          >
+            {isFarsi
+              ? "پاک کردن فیلترها"
+              : "Clear filters"}
+          </button>
+        </div>
+      )}
+
+      {filtersOpen && (
+        <div
+          className="shop-filter-backdrop"
+          onMouseDown={(event) => {
+            if (
+              event.target ===
+              event.currentTarget
+            ) {
+              setFiltersOpen(false);
+            }
+          }}
+        >
+          <aside
+            className="shop-filter-drawer"
+            role="dialog"
+            aria-modal="true"
+            aria-label={
+              isFarsi
+                ? "فیلتر محصولات"
+                : "Product filters"
+            }
+          >
+            <div className="shop-filter-drawer-header">
+              <div>
+                <span className="eyebrow">
+                  {isFarsi
+                    ? "فروشگاه"
+                    : "Shop"}
+                </span>
+
+                <h2>
+                  {isFarsi
+                    ? "فیلترها"
+                    : "Filters"}
+                </h2>
+              </div>
+
+              <button
+                type="button"
+                className="shop-filter-close"
+                onClick={() =>
+                  setFiltersOpen(false)
+                }
+                aria-label={
+                  isFarsi
+                    ? "بستن فیلترها"
+                    : "Close filters"
+                }
+              >
+                ×
+              </button>
+            </div>
+
+            <div className="shop-filter-drawer-body">
               <FilterGroup
                 title={
                   isFarsi
-                    ? "رنگ"
-                    : "Color"
+                    ? "دسته‌بندی"
+                    : "Category"
                 }
               >
                 <select
                   value={
-                    browseInput.color
+                    browseInput.category
+                  }
+                  disabled={
+                    route.type ===
+                    "category"
                   }
                   onChange={(event) =>
                     updateRoute({
-                      color:
+                      category:
                         event.target
                           .value,
                     })
@@ -496,232 +564,302 @@ export default function ShopPage({
                 >
                   <option value="all">
                     {isFarsi
-                      ? "همه رنگ‌ها"
-                      : "All colors"}
+                      ? "همه"
+                      : "All"}
                   </option>
 
-                  {browse.availableColors.map(
-                    (color) => (
+                  {browse.availableCategories.map(
+                    (category) => (
                       <option
                         key={
-                          color.value
+                          category.slug
                         }
                         value={
-                          color.value
+                          category.slug
                         }
                       >
                         {isFarsi
-                          ? color.labelFa
-                          : color.label}
+                          ? category.nameFa
+                          : category.name}
+                        {" "}
+                        ({category.count})
                       </option>
                     )
                   )}
                 </select>
               </FilterGroup>
-            )}
 
-          <FilterGroup
-            title={
-              isFarsi
-                ? "وضعیت"
-                : "Availability"
-            }
-          >
-            <label className="filter-check">
-              <input
-                type="checkbox"
-                checked={
-                  browseInput.inStock
-                }
-                onChange={(event) =>
-                  updateRoute({
-                    inStock:
-                      event.target
-                        .checked,
-                  })
-                }
-              />
-
-              <span>
-                {isFarsi
-                  ? "فقط موجود"
-                  : "In stock only"}
-              </span>
-            </label>
-
-            <label className="filter-check">
-              <input
-                type="checkbox"
-                checked={
-                  browseInput.sale
-                }
-                onChange={(event) =>
-                  updateRoute({
-                    sale:
-                      event.target
-                        .checked,
-                  })
-                }
-              />
-
-              <span>
-                {isFarsi
-                  ? "فقط تخفیف‌دار"
-                  : "Sale only"}
-              </span>
-            </label>
-          </FilterGroup>
-
-          {browse.activeFilterCount >
-            0 && (
-              <button
-                type="button"
-                className="filter-reset"
-                onClick={
-                  resetFilters
+              <FilterGroup
+                title={
+                  isFarsi
+                    ? "کالکشن"
+                    : "Collection"
                 }
               >
-                {isFarsi
-                  ? "پاک کردن فیلترها"
-                  : "Clear filters"}
-              </button>
-            )}
-        </aside>
-
-        <div className="catalog-results">
-          <div className="catalog-toolbar">
-            <div>
-              {browse.activeFilterCount >
-                0 && (
-                  <span className="active-filter-count">
+                <select
+                  value={
+                    browseInput.collection
+                  }
+                  disabled={
+                    route.type ===
+                    "collection"
+                  }
+                  onChange={(event) =>
+                    updateRoute({
+                      collection:
+                        event.target
+                          .value,
+                    })
+                  }
+                >
+                  <option value="all">
                     {isFarsi
-                      ? `${browse.activeFilterCount} فیلتر فعال`
-                      : `${browse.activeFilterCount} active ${browse.activeFilterCount ===
-                        1
-                        ? "filter"
-                        : "filters"
-                      }`}
-                  </span>
-                )}
-            </div>
-
-            <label className="catalog-sort">
-              <span>
-                {isFarsi
-                  ? "مرتب‌سازی"
-                  : "Sort"}
-              </span>
-
-              <select
-                value={
-                  browseInput.sort
-                }
-                onChange={(event) =>
-                  updateRoute({
-                    sort:
-                      event.target
-                        .value,
-                  })
-                }
-              >
-                <option value="featured">
-                  {isFarsi
-                    ? "پیشنهادی"
-                    : "Featured"}
-                </option>
-
-                <option value="newest">
-                  {isFarsi
-                    ? "جدیدترین"
-                    : "Newest"}
-                </option>
-
-                <option value="price-asc">
-                  {isFarsi
-                    ? "قیمت: کم به زیاد"
-                    : "Price: Low to High"}
-                </option>
-
-                <option value="price-desc">
-                  {isFarsi
-                    ? "قیمت: زیاد به کم"
-                    : "Price: High to Low"}
-                </option>
-
-                {browse.bestSellingAvailable && (
-                  <option value="best-selling">
-                    {isFarsi
-                      ? "پرفروش‌ترین"
-                      : "Best Selling"}
+                      ? "همه"
+                      : "All"}
                   </option>
-                )}
-              </select>
-            </label>
-          </div>
 
-          {catalogState ===
-            "loading" ? (
-            <p className="empty-state">
-              {t.products.loading}
-            </p>
-          ) : browse.products
-            .length > 0 ? (
-            <div className="products-grid">
-              {browse.products.map(
-                (product) => (
-                  <ProductCard
-                    key={
-                      product.id
+                  {browse.availableCollections.map(
+                    (collection) => (
+                      <option
+                        key={
+                          collection.slug
+                        }
+                        value={
+                          collection.slug
+                        }
+                      >
+                        {isFarsi
+                          ? collection.nameFa
+                          : collection.name}
+                        {" "}
+                        ({collection.count})
+                      </option>
+                    )
+                  )}
+                </select>
+              </FilterGroup>
+
+              <FilterGroup
+                title={
+                  isFarsi
+                    ? "قیمت"
+                    : "Price"
+                }
+              >
+                <div className="price-filter-row">
+                  <input
+                    type="number"
+                    inputMode="numeric"
+                    value={
+                      browseInput.minPrice
                     }
-                    product={
-                      product
+                    placeholder={
+                      isFarsi
+                        ? "حداقل"
+                        : "Minimum"
                     }
-                    language={
-                      language
-                    }
-                    labels={
-                      t.cart
-                    }
-                    onAdd={
-                      onAddToCart
-                    }
-                    isAdding={
-                      addingProductId ===
-                      product.id
+                    onChange={(event) =>
+                      updateRoute({
+                        minPrice:
+                          event.target
+                            .value,
+                      })
                     }
                   />
-                )
-              )}
+
+                  <input
+                    type="number"
+                    inputMode="numeric"
+                    value={
+                      browseInput.maxPrice
+                    }
+                    placeholder={
+                      isFarsi
+                        ? "حداکثر"
+                        : "Maximum"
+                    }
+                    onChange={(event) =>
+                      updateRoute({
+                        maxPrice:
+                          event.target
+                            .value,
+                      })
+                    }
+                  />
+                </div>
+              </FilterGroup>
+
+              {browse.availableSizes.length >
+                0 && (
+                  <FilterGroup
+                    title={
+                      isFarsi
+                        ? "سایز"
+                        : "Size"
+                    }
+                  >
+                    <select
+                      value={
+                        browseInput.size
+                      }
+                      onChange={(event) =>
+                        updateRoute({
+                          size:
+                            event.target
+                              .value,
+                        })
+                      }
+                    >
+                      <option value="all">
+                        {isFarsi
+                          ? "همه سایزها"
+                          : "All sizes"}
+                      </option>
+
+                      {browse.availableSizes.map(
+                        (size) => (
+                          <option
+                            key={size}
+                            value={String(
+                              size
+                            ).toLowerCase()}
+                          >
+                            {size}
+                          </option>
+                        )
+                      )}
+                    </select>
+                  </FilterGroup>
+                )}
+
+              {browse.availableColors.length >
+                0 && (
+                  <FilterGroup
+                    title={
+                      isFarsi
+                        ? "رنگ"
+                        : "Color"
+                    }
+                  >
+                    <select
+                      value={
+                        browseInput.color
+                      }
+                      onChange={(event) =>
+                        updateRoute({
+                          color:
+                            event.target
+                              .value,
+                        })
+                      }
+                    >
+                      <option value="all">
+                        {isFarsi
+                          ? "همه رنگ‌ها"
+                          : "All colors"}
+                      </option>
+
+                      {browse.availableColors.map(
+                        (color) => (
+                          <option
+                            key={
+                              color.value
+                            }
+                            value={
+                              color.value
+                            }
+                          >
+                            {isFarsi
+                              ? color.labelFa
+                              : color.label}
+                          </option>
+                        )
+                      )}
+                    </select>
+                  </FilterGroup>
+                )}
+
+              <FilterGroup
+                title={
+                  isFarsi
+                    ? "وضعیت"
+                    : "Availability"
+                }
+              >
+                <label className="filter-check">
+                  <input
+                    type="checkbox"
+                    checked={
+                      browseInput.inStock
+                    }
+                    onChange={(event) =>
+                      updateRoute({
+                        inStock:
+                          event.target
+                            .checked,
+                      })
+                    }
+                  />
+
+                  <span>
+                    {isFarsi
+                      ? "فقط موجود"
+                      : "In stock only"}
+                  </span>
+                </label>
+
+                <label className="filter-check">
+                  <input
+                    type="checkbox"
+                    checked={
+                      browseInput.sale
+                    }
+                    onChange={(event) =>
+                      updateRoute({
+                        sale:
+                          event.target
+                            .checked,
+                      })
+                    }
+                  />
+
+                  <span>
+                    {isFarsi
+                      ? "فقط تخفیف‌دار"
+                      : "Sale only"}
+                  </span>
+                </label>
+              </FilterGroup>
             </div>
-          ) : (
-            <div className="catalog-empty">
-              <h2>
-                {isFarsi
-                  ? "محصولی پیدا نشد"
-                  : "No products found"}
-              </h2>
 
-              <p>
-                {isFarsi
-                  ? "فیلترها را تغییر دهید یا همه فیلترها را پاک کنید."
-                  : "Try changing the filters or clear them to see more products."}
-              </p>
-
+            <div className="shop-filter-drawer-footer">
               <button
                 type="button"
-                className="button button-dark"
+                className="shop-filter-reset"
                 onClick={
                   resetFilters
                 }
               >
                 {isFarsi
-                  ? "پاک کردن فیلترها"
-                  : "Clear filters"}
+                  ? "پاک کردن"
+                  : "Clear"}
+              </button>
+
+              <button
+                type="button"
+                className="shop-filter-apply"
+                onClick={() =>
+                  setFiltersOpen(false)
+                }
+              >
+                {isFarsi
+                  ? `نمایش ${browse.filteredCount} محصول`
+                  : `Show ${browse.filteredCount} products`}
               </button>
             </div>
-          )}
+          </aside>
         </div>
-      </div>
+      )}
     </section>
   );
 }
@@ -732,9 +870,9 @@ function FilterGroup({
 }) {
   return (
     <div className="filter-group">
-      <h2>
+      <h3>
         {title}
-      </h2>
+      </h3>
 
       <div className="filter-group-content">
         {children}
@@ -743,56 +881,100 @@ function FilterGroup({
   );
 }
 
+function ActiveFilterChip({
+  label,
+  onRemove,
+}) {
+  if (!label) {
+    return null;
+  }
+
+  return (
+    <button
+      type="button"
+      className="active-filter-chip"
+      onClick={onRemove}
+    >
+      <span>
+        {label}
+      </span>
+
+      <span aria-hidden="true">
+        ×
+      </span>
+    </button>
+  );
+}
+
+function findCategoryLabel(
+  browse,
+  slug,
+  isFarsi
+) {
+  const category =
+    browse.availableCategories.find(
+      (item) =>
+        item.slug === slug
+    );
+
+  return isFarsi
+    ? category?.nameFa
+    : category?.name;
+}
+
+function findCollectionLabel(
+  browse,
+  slug,
+  isFarsi
+) {
+  const collection =
+    browse.availableCollections.find(
+      (item) =>
+        item.slug === slug
+    );
+
+  return isFarsi
+    ? collection?.nameFa
+    : collection?.name;
+}
+
 function getPageTitle({
   route,
   browse,
   isFarsi,
 }) {
   if (
-    route.type ===
-    "category"
+    route.type === "category"
   ) {
-    const category =
-      browse.availableCategories.find(
-        (item) =>
-          item.slug ===
-          route.slug
-      );
-
     return (
-      (isFarsi
-        ? category?.nameFa
-        : category?.name) ||
+      findCategoryLabel(
+        browse,
+        route.slug,
+        isFarsi
+      ) ||
       formatSlug(route.slug)
     );
   }
 
   if (
-    route.type ===
-    "collection"
+    route.type === "collection"
   ) {
-    const collection =
-      browse.availableCollections.find(
-        (item) =>
-          item.slug ===
-          route.slug
-      );
-
     return (
-      (isFarsi
-        ? collection?.nameFa
-        : collection?.name) ||
+      findCollectionLabel(
+        browse,
+        route.slug,
+        isFarsi
+      ) ||
       formatSlug(route.slug)
     );
   }
 
   if (
-    route.type ===
-    "search"
+    route.type === "search"
   ) {
     return route.query
       ? isFarsi
-        ? `نتایج برای «${route.query}»`
+        ? `نتایج «${route.query}»`
         : `Results for “${route.query}”`
       : isFarsi
         ? "جستجو"
@@ -810,65 +992,65 @@ function getPageDescription({
   isFarsi,
 }) {
   if (
-    route.type ===
-    "category"
+    route.type === "category"
   ) {
     return isFarsi
-      ? "محصولات این دسته‌بندی را ببینید و با فیلترهای بیشتر انتخاب خود را محدود کنید."
-      : "Explore this category and refine the selection with additional filters.";
+      ? "محصولات این دسته‌بندی را مرور کنید."
+      : "Explore this category and refine the selection when needed.";
   }
 
   if (
-    route.type ===
-    "collection"
+    route.type === "collection"
   ) {
     return isFarsi
-      ? "محصولات این کالکشن و ادیت را مرور کنید."
-      : "Explore products from this Mouher collection.";
+      ? "محصولات این کالکشن را مرور کنید."
+      : "Explore this Mouher collection.";
   }
 
   if (
-    route.type ===
-    "search"
+    route.type === "search"
   ) {
     return isFarsi
-      ? `${browse.filteredCount} نتیجه از کاتالوگ موهر`
-      : `${browse.filteredCount} results from the Mouher catalog`;
+      ? `${browse.filteredCount} نتیجه`
+      : `${browse.filteredCount} matching products`;
   }
 
   return isFarsi
-    ? "کاتالوگ کامل موهر با امکان فیلتر بر اساس دسته، کالکشن، قیمت، سایز و رنگ."
-    : "Explore the full Mouher catalog with category, collection, price, size and color filters.";
+    ? "کاتالوگ کامل موهر"
+    : "Explore the full Mouher catalog.";
 }
 
 function buildNextRoute({
   route,
   changes,
 }) {
-  const params =
-    new URLSearchParams();
-
   const current = {
     query:
       route.query || "",
 
     category:
-      route.category || "all",
+      route.category ||
+      "all",
 
     collection:
-      route.collection || "all",
+      route.collection ||
+      "all",
 
     minPrice:
-      route.minPrice || "",
+      route.minPrice ||
+      "",
 
     maxPrice:
-      route.maxPrice || "",
+      route.maxPrice ||
+      "",
 
     size:
-      route.size || "all",
+      route.size ||
+      "all",
 
     color:
-      route.color || "all",
+      route.color ||
+      "all",
 
     inStock:
       Boolean(
@@ -902,6 +1084,9 @@ function buildNextRoute({
     current.collection =
       route.slug;
   }
+
+  const params =
+    new URLSearchParams();
 
   if (current.query) {
     params.set(
@@ -949,8 +1134,7 @@ function buildNextRoute({
   }
 
   if (
-    current.size !==
-    "all"
+    current.size !== "all"
   ) {
     params.set(
       "size",
@@ -959,8 +1143,7 @@ function buildNextRoute({
   }
 
   if (
-    current.color !==
-    "all"
+    current.color !== "all"
   ) {
     params.set(
       "color",

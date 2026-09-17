@@ -5,6 +5,8 @@ import App from "./App";
 
 import "./index.css";
 import "./styles/search.css";
+import "./styles/shop.css";
+
 
 createRoot(
   document.getElementById("root")

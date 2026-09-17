@@ -18,6 +18,7 @@ export function getRouteFromHash() {
   if (value.startsWith("products/")) {
     return {
       type: "product",
+
       handle: decodeRoutePart(
         value
           .replace(/^products\//, "")
@@ -59,6 +60,18 @@ export function getRouteFromHash() {
 
       sort:
         params.get("sort") || "featured",
+
+      page:
+        normalizePositiveInteger(
+          params.get("page"),
+          1
+        ),
+
+      pageSize:
+        normalizePageSize(
+          params.get("pageSize"),
+          30
+        ),
     };
   }
 
@@ -93,6 +106,18 @@ export function getRouteFromHash() {
 
       sort:
         params.get("sort") || "featured",
+
+      page:
+        normalizePositiveInteger(
+          params.get("page"),
+          1
+        ),
+
+      pageSize:
+        normalizePageSize(
+          params.get("pageSize"),
+          30
+        ),
     };
   }
 
@@ -127,6 +152,18 @@ export function getRouteFromHash() {
 
       sort:
         params.get("sort") || "featured",
+
+      page:
+        normalizePositiveInteger(
+          params.get("page"),
+          1
+        ),
+
+      pageSize:
+        normalizePageSize(
+          params.get("pageSize"),
+          30
+        ),
     };
   }
 
@@ -163,6 +200,18 @@ export function getRouteFromHash() {
 
       sort:
         params.get("sort") || "featured",
+
+      page:
+        normalizePositiveInteger(
+          params.get("page"),
+          1
+        ),
+
+      pageSize:
+        normalizePageSize(
+          params.get("pageSize"),
+          30
+        ),
     };
   }
 
@@ -192,6 +241,7 @@ export function getRouteFromHash() {
 
   return {
     type: "home",
+
     section:
       value.replace(/^#/, "") ||
       "new",
@@ -204,4 +254,40 @@ export function decodeRoutePart(value) {
   } catch {
     return value;
   }
+}
+
+function normalizePositiveInteger(
+  value,
+  fallback
+) {
+  const parsed =
+    Number.parseInt(
+      value,
+      10
+    );
+
+  if (
+    !Number.isFinite(parsed) ||
+    parsed < 1
+  ) {
+    return fallback;
+  }
+
+  return parsed;
+}
+
+function normalizePageSize(
+  value,
+  fallback
+) {
+  const parsed =
+    normalizePositiveInteger(
+      value,
+      fallback
+    );
+
+  return Math.min(
+    parsed,
+    100
+  );
 }

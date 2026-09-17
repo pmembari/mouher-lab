@@ -8,8 +8,11 @@ import {
   medusaConfig,
 } from "../lib/catalog/config";
 
-const FALLBACK_THRESHOLD_RIAL =
-  120_000_000;
+const BASE_POLICY_YEAR = 2026;
+const BASE_THRESHOLD_TOMAN =
+  10_000_000;
+const ANNUAL_INCREMENT_TOMAN =
+  1_000_000;
 
 export function useFreeShippingThreshold({
   language,
@@ -63,11 +66,11 @@ export function useFreeShippingThreshold({
           next &&
           Number.isFinite(
             Number(
-              next.threshold_rial
+              next.threshold_toman
             )
           ) &&
           Number(
-            next.threshold_rial
+            next.threshold_toman
           ) > 0
         ) {
           setThreshold(next);
@@ -90,48 +93,70 @@ export function useFreeShippingThreshold({
   }, []);
 
   return useMemo(() => {
+    const fallbackToman =
+      annualThresholdToman(
+        new Date().getUTCFullYear()
+      );
+
+    const thresholdToman =
+      Number(
+        threshold?.threshold_toman
+      ) || fallbackToman;
+
     const thresholdRial =
       Number(
         threshold?.threshold_rial
-      ) ||
-      FALLBACK_THRESHOLD_RIAL;
+      ) || thresholdToman * 10;
 
     return {
       ...threshold,
+      thresholdToman,
       thresholdRial,
       announcement:
         formatShippingCopy({
           language,
-          thresholdRial,
+          thresholdToman,
         }),
     };
   }, [language, threshold]);
 }
 
+function annualThresholdToman(year) {
+  const elapsedYears = Math.max(
+    0,
+    Math.trunc(year) -
+      BASE_POLICY_YEAR
+  );
+
+  return (
+    BASE_THRESHOLD_TOMAN +
+    elapsedYears *
+      ANNUAL_INCREMENT_TOMAN
+  );
+}
+
 function formatShippingCopy({
   language,
-  thresholdRial,
+  thresholdToman,
 }) {
   const isFarsi =
     language === "farsi";
 
-  const roundedMillions =
-    Math.round(
-      thresholdRial /
-        1_000_000
-    );
+  const millions =
+    thresholdToman /
+    1_000_000;
 
   if (isFarsi) {
     return `ارسال رایگان برای خریدهای بالای ${toPersianDigits(
-      roundedMillions
-    )} میلیون ریال`;
+      millions
+    )} میلیون تومان`;
   }
 
   return `Free shipping on orders over ${new Intl.NumberFormat(
     "en-US"
   ).format(
-    roundedMillions
-  )} million rial`;
+    thresholdToman
+  )} toman`;
 }
 
 function toPersianDigits(value) {

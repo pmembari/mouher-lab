@@ -43,28 +43,6 @@ export default function HomePage({
 
   return (
     <>
-      <section className="home-intro" id="new">
-        <div className="home-intro-copy">
-          <p className="eyebrow">{t.hero.eyebrow}</p>
-
-          <h1>
-            {t.hero.title.split("\n").map((line, index, lines) => (
-              <span key={`${line}-${index}`}>
-                {line}
-                {index < lines.length - 1 && <br />}
-              </span>
-            ))}
-          </h1>
-
-          <p className="hero-description">{t.hero.description}</p>
-
-          <a href="#/shop" className="button button-dark">
-            {t.hero.button}
-            <ArrowRight />
-          </a>
-        </div>
-      </section>
-
       <section
         className="hero-video-story"
         aria-label={isFarsi ? "داستان تصویری موهر" : "Mouher visual story"}
@@ -85,6 +63,30 @@ export default function HomePage({
               </video>
             </div>
           ))}
+        </div>
+      </section>
+
+      <div className="home-video-cta">
+        <a href="#/shop" className="button button-dark">
+          {t.hero.button}
+          <ArrowRight />
+        </a>
+      </div>
+
+      <section className="home-intro" id="new">
+        <div className="home-intro-copy">
+          <p className="eyebrow">{t.hero.eyebrow}</p>
+
+          <h1>
+            {t.hero.title.split("\n").map((line, index, lines) => (
+              <span key={`${line}-${index}`}>
+                {line}
+                {index < lines.length - 1 && <br />}
+              </span>
+            ))}
+          </h1>
+
+          <p className="hero-description">{t.hero.description}</p>
         </div>
       </section>
 

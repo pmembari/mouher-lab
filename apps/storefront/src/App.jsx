@@ -1,3 +1,5 @@
+import { useMemo } from "react";
+
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 import AppRoutes from "./components/layout/AppRoutes";
@@ -7,6 +9,7 @@ import StorefrontOverlays from "./components/layout/StorefrontOverlays";
 import { useAnalyticsConsent } from "./hooks/useAnalyticsConsent";
 import { useCatalog } from "./hooks/useCatalog";
 import { useCart } from "./hooks/useCart";
+import { useFreeShippingThreshold } from "./hooks/useFreeShippingThreshold";
 import { useHashRoute } from "./hooks/useHashRoute";
 import { useLocale } from "./hooks/useLocale";
 import { useNewsletter } from "./hooks/useNewsletter";
@@ -27,8 +30,31 @@ export default function App() {
     toggleLanguage,
   } = locale;
 
+  const freeShipping =
+    useFreeShippingThreshold({
+      language,
+    });
+
+  const storefrontText = useMemo(
+    () => ({
+      ...t,
+      announcement:
+        freeShipping.announcement,
+      trust: {
+        ...t.trust,
+        shipping:
+          freeShipping.announcement,
+      },
+    }),
+    [
+      t,
+      freeShipping.announcement,
+    ]
+  );
+
   const catalogState = useCatalog({
-    productLabels: t.products,
+    productLabels:
+      storefrontText.products,
   });
 
   const {
@@ -42,31 +68,39 @@ export default function App() {
 
   const filters = useStorefrontFilters({
     catalog,
-    categoriesLabel: t.categories.all,
-    collectionsLabel: t.collections.all,
+    categoriesLabel:
+      storefrontText.categories.all,
+    collectionsLabel:
+      storefrontText.collections.all,
   });
 
   const cart = useCart({
-    cartLabels: t.cart,
-    checkoutLabels: t.checkout,
+    cartLabels: storefrontText.cart,
+    checkoutLabels:
+      storefrontText.checkout,
     onOpenCart: shell.openCart,
-    onProductAdded: shell.closeQuickView,
+    onProductAdded:
+      shell.closeQuickView,
   });
 
   const routing = useHashRoute({
     products: catalog.products,
     catalogSource: catalog.source,
     isFarsi,
-    dashboardLabels: t.dashboard,
-    onRouteChange: shell.closeTransientUi,
+    dashboardLabels:
+      storefrontText.dashboard,
+    onRouteChange:
+      shell.closeTransientUi,
   });
 
-  const analytics = useAnalyticsConsent({
-    catalogSource: catalog.source,
-  });
+  const analytics =
+    useAnalyticsConsent({
+      catalogSource: catalog.source,
+    });
 
   const newsletter = useNewsletter({
-    thanksMessage: t.newsletter.thanks,
+    thanksMessage:
+      storefrontText.newsletter.thanks,
   });
 
   const homepageProducts = (
@@ -101,11 +135,15 @@ export default function App() {
       dir={direction}
     >
       <div className="announcement">
-        <p>{t.announcement}</p>
+        <p>
+          {
+            storefrontText.announcement
+          }
+        </p>
       </div>
 
       <Header
-        t={t}
+        t={storefrontText}
         isFarsi={isFarsi}
         menuOpen={shell.menuOpen}
         cartCount={cart.cartCount}
@@ -131,42 +169,58 @@ export default function App() {
       )}
 
       <StorefrontOverlays
-        t={t}
+        t={storefrontText}
         language={language}
         isFarsi={isFarsi}
         analytics={analytics}
         shell={shell}
         cart={cart}
         query={filters.query}
-        onQueryChange={filters.setQuery}
-        onSearchSubmit={handleSearchSubmit}
+        onQueryChange={
+          filters.setQuery
+        }
+        onSearchSubmit={
+          handleSearchSubmit
+        }
       />
 
       <AppRoutes
         route={routing.route}
-        routedProduct={routing.routedProduct}
+        routedProduct={
+          routing.routedProduct
+        }
         catalog={catalog}
         catalogState={loadingState}
         language={language}
-        t={t}
+        t={storefrontText}
         isFarsi={isFarsi}
-        addingProductId={cart.addingProductId}
+        addingProductId={
+          cart.addingProductId
+        }
         addToCart={cart.addToCart}
         heroImage={heroImage}
         sourceLabel={sourceLabel}
-        homepageProducts={homepageProducts}
-        homepageCategories={homepageCategories}
-        homepageCollections={homepageCollections}
+        homepageProducts={
+          homepageProducts
+        }
+        homepageCategories={
+          homepageCategories
+        }
+        homepageCollections={
+          homepageCollections
+        }
         email={newsletter.email}
         setQuery={filters.setQuery}
-        setEmail={newsletter.setEmail}
+        setEmail={
+          newsletter.setEmail
+        }
         handleNewsletterSubmit={
           newsletter.handleSubmit
         }
       />
 
       <Footer
-        t={t}
+        t={storefrontText}
         isFarsi={isFarsi}
       />
     </div>

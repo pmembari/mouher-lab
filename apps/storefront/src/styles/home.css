@@ -2,6 +2,17 @@
    HOMEPAGE MERCHANDISING
 ========================================================= */
 
+.home-video-cta {
+  display: flex;
+  justify-content: center;
+  padding: 28px 24px 10px;
+}
+
+.home-video-cta .button {
+  min-width: 170px;
+  justify-content: center;
+}
+
 .home-merch-heading {
   gap: 28px;
 }
@@ -143,6 +154,15 @@
 }
 
 @media (max-width: 700px) {
+  .home-video-cta {
+    padding: 22px 16px 6px;
+  }
+
+  .home-video-cta .button {
+    width: 100%;
+    max-width: 320px;
+  }
+
   .home-merch-heading {
     align-items: flex-start;
     flex-direction: column;

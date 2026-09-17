@@ -47,7 +47,7 @@ export default function Header({
             {t.nav.shop}
           </a>
 
-          <a href="#collections">
+          <a href="#/shop">
             {t.nav.collections}
           </a>
 

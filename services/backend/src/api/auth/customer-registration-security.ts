@@ -8,6 +8,7 @@ import type {
 const TURNSTILE_VERIFY_URL =
   "https://challenges.cloudflare.com/turnstile/v0/siteverify"
 const REGISTRATION_ACTION = "customer-register"
+const E164_PHONE_PATTERN = /^\+[1-9]\d{7,14}$/
 
 type TurnstileVerification = {
   success?: boolean
@@ -108,10 +109,34 @@ export async function verifyCustomerRegistrationTurnstile(
   return next()
 }
 
+export function requireCustomerRegistrationPhone(
+  req: MedusaRequest,
+  res: MedusaResponse,
+  next: MedusaNextFunction
+) {
+  const body = (req.body || {}) as Record<string, unknown>
+  const phone = String(body.phone || "").trim()
+
+  if (!E164_PHONE_PATTERN.test(phone)) {
+    return res.status(400).json({
+      message:
+        "A valid mobile phone number in international format is required to create an account.",
+      code: "mobile_phone_required",
+    })
+  }
+
+  return next()
+}
+
 export const customerRegistrationSecurityMiddlewares: MiddlewareRoute[] = [
   {
     matcher: "/auth/customer/emailpass/register",
     method: "POST",
     middlewares: [verifyCustomerRegistrationTurnstile],
+  },
+  {
+    matcher: "/store/customers",
+    method: "POST",
+    middlewares: [requireCustomerRegistrationPhone],
   },
 ]

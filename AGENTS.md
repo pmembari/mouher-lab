@@ -57,6 +57,37 @@ Use this brief when continuing work on Mouher's ecommerce website and owner dash
 - Preserve accessibility contrast and avoid text overlap on mobile and desktop.
 - For purpose of Dashboard we want to add an e-commerce model dashboard that inherit the features in `.agents/skills/hitkeep/`; At the end we are going to provide the dashboard just using the free feature of hitkeep implementations. use the AGENT skills in that standalone repo (e.g. `.agents/skills/hitkeep/hitkeep/.agents/skills`).
 
+### Storefront Implementation Rules
+
+For any change under `apps/storefront/`:
+
+1. Load `.agents/skills/mouher-storefront/SKILL.md`.
+2. If the task touches catalog/API/data fetching, also load
+   `.agents/skills/building-storefronts/SKILL.md`.
+3. Read the relevant storefront section of `PLANS.md`.
+4. Inspect only the smallest necessary storefront files before editing.
+
+Homepage is a curated entry surface.
+
+Do not implement full catalog browsing, filtering, or pagination inside
+HomePage.
+
+Navigation contract:
+
+- product -> product route
+- collection -> collection route
+- category -> category route
+- Shop / Shop All -> shop route
+- search -> search route
+
+Do not use homepage anchors such as `#products` as the destination for
+collection or category entities.
+
+Prefer route-based browsing so URLs remain shareable and browser
+back/forward navigation remains meaningful.
+
+Before adding new CSS to `index.css`, check whether the styles belong in
+an existing file under `apps/storefront/src/styles/`.
 ## API FAIR Principles
 
 All storefront and owner APIs should be:

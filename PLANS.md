@@ -930,7 +930,26 @@ Footer
 Avoid beginning the homepage with a dense marketplace-style product
 grid.
 
-## Homepage Hero Media--
+## Homepage Discovery And Routing
+
+Homepage content is curated and intentionally incomplete.
+
+Acceptance criteria:
+
+- Hero primary commerce CTA opens the catalog, not an internal homepage
+  product anchor.
+- "Shop All" opens `#/shop`.
+- Product cards open their product detail route.
+- Category cards open `#/categories/<slug>`.
+- Collection cards open `#/collections/<slug>`.
+- Search opens the dedicated search results route.
+- Homepage does not own full catalog filtering or pagination.
+- Catalog pages own filtering, sorting, price range, availability,
+  collection/category selection, search, and pagination.
+- Browser back/forward navigation must preserve browsing state through
+  route/query parameters.
+
+## Homepage Hero Media
 
 Mouher currently has multiple portrait-oriented video assets rather than
 one widescreen cinematic source.
@@ -1041,7 +1060,7 @@ Product pages must handle:
 
 ---
 
-# Search / Collections--
+# Search / Collections
 
 Product browsing should remain:
 
@@ -1079,8 +1098,21 @@ Search must support:
 
 - error state
 
+
 ---
 
+## Catalog Browsing Acceptance Criteria
+
+For large catalogs:
+
+- fetch at most 30 products per catalog page by default
+- preserve filter/sort/page state in the URL
+- changing a filter resets page to 1
+- category and collection pages use dedicated routes
+- price sorting must be globally correct, not merely sort the current page
+- best-selling sorting must only appear when real sales data exists
+- filters must use progressive disclosure and must not dominate product imagery
+- mobile filters should use a drawer or sheet rather than a permanent sidebar
 # Cart And Checkout--
 
 Cart state must correctly preserve:

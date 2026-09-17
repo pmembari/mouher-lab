@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import { ArrowRight } from "../components/icons";
 import { ProductImage } from "../components/ProductImage";
 import ProductCard from "../components/storefront/ProductCard";
@@ -7,6 +9,7 @@ import {
 } from "../utils/product";
 
 const BASE_URL = import.meta.env.BASE_URL;
+const DISCOVERY_PAGE_SIZE = 30;
 
 const HERO_VIDEOS = [
   { id: "hero-1", src: `${BASE_URL}media/home/hero-1.webm` },
@@ -30,16 +33,61 @@ export default function HomePage({
   onNewsletterSubmit,
 }) {
   const isFarsi = language === "farsi";
+  const [discoveryPage, setDiscoveryPage] = useState(1);
 
   const featuredProducts = homepageProducts.slice(0, 8);
   const trendingProducts = homepageProducts.slice(0, 3);
-  const discoveryProducts = homepageProducts.slice(8, 20);
   const visibleCategories = homepageCategories.slice(0, 3);
+  const allDiscoveryProducts = catalog.products || [];
+
+  const discoveryTotalPages = Math.max(
+    1,
+    Math.ceil(allDiscoveryProducts.length / DISCOVERY_PAGE_SIZE)
+  );
+
+  const currentDiscoveryPage = Math.min(
+    discoveryPage,
+    discoveryTotalPages
+  );
+
+  const discoveryStart =
+    (currentDiscoveryPage - 1) * DISCOVERY_PAGE_SIZE;
+
+  const discoveryProducts = allDiscoveryProducts.slice(
+    discoveryStart,
+    discoveryStart + DISCOVERY_PAGE_SIZE
+  );
+
+  const discoveryPaginationItems = buildPaginationItems(
+    currentDiscoveryPage,
+    discoveryTotalPages
+  );
 
   const editorialImage =
     homepageProducts[1]?.imageUrls ||
     homepageProducts[0]?.imageUrls ||
     heroImage;
+
+  function changeDiscoveryPage(page) {
+    if (
+      page < 1 ||
+      page > discoveryTotalPages ||
+      page === currentDiscoveryPage
+    ) {
+      return;
+    }
+
+    setDiscoveryPage(page);
+
+    window.requestAnimationFrame(() => {
+      document
+        .getElementById("discover")
+        ?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+    });
+  }
 
   return (
     <>
@@ -275,18 +323,26 @@ export default function HomePage({
         </div>
       </section>
 
-      {discoveryProducts.length > 0 && (
-        <section className="section products-section home-discovery">
-          <div className="section-heading">
+      {allDiscoveryProducts.length > 0 && (
+        <section
+          className="section products-section home-discovery"
+          id="discover"
+        >
+          <div className="section-heading home-discovery-heading">
             <div>
               <span className="eyebrow">
-                {isFarsi ? "انتخاب‌های موهر" : "The Mouher Edit"}
+                {isFarsi ? "تمام محصولات" : "The full catalog"}
               </span>
               <h2>{isFarsi ? "برای کشف بیشتر" : "More to discover"}</h2>
+              <p className="home-discovery-summary">
+                {isFarsi
+                  ? `${allDiscoveryProducts.length} محصول، ${DISCOVERY_PAGE_SIZE} محصول در هر صفحه`
+                  : `${allDiscoveryProducts.length} products · ${DISCOVERY_PAGE_SIZE} per page`}
+              </p>
             </div>
 
             <a href="#/shop" className="text-link">
-              {isFarsi ? "مشاهده همه" : "Shop all"}
+              {isFarsi ? "فروشگاه و فیلترها" : "Shop & filters"}
               <ArrowRight />
             </a>
           </div>
@@ -303,6 +359,69 @@ export default function HomePage({
               />
             ))}
           </div>
+
+          {discoveryTotalPages > 1 && (
+            <nav
+              className="home-discovery-pagination"
+              aria-label={
+                isFarsi
+                  ? "صفحه‌بندی محصولات بیشتر"
+                  : "More to discover pagination"
+              }
+            >
+              <button
+                type="button"
+                className="home-discovery-pagination-nav"
+                disabled={currentDiscoveryPage === 1}
+                onClick={() =>
+                  changeDiscoveryPage(currentDiscoveryPage - 1)
+                }
+              >
+                {isFarsi ? "قبلی" : "Previous"}
+              </button>
+
+              <div className="home-discovery-pagination-pages">
+                {discoveryPaginationItems.map((item, index) =>
+                  item === "ellipsis" ? (
+                    <span
+                      key={`ellipsis-${index}`}
+                      className="home-discovery-pagination-ellipsis"
+                      aria-hidden="true"
+                    >
+                      …
+                    </span>
+                  ) : (
+                    <button
+                      key={item}
+                      type="button"
+                      className={
+                        item === currentDiscoveryPage
+                          ? "home-discovery-pagination-page is-active"
+                          : "home-discovery-pagination-page"
+                      }
+                      aria-current={
+                        item === currentDiscoveryPage ? "page" : undefined
+                      }
+                      onClick={() => changeDiscoveryPage(item)}
+                    >
+                      {item}
+                    </button>
+                  )
+                )}
+              </div>
+
+              <button
+                type="button"
+                className="home-discovery-pagination-nav"
+                disabled={currentDiscoveryPage === discoveryTotalPages}
+                onClick={() =>
+                  changeDiscoveryPage(currentDiscoveryPage + 1)
+                }
+              >
+                {isFarsi ? "بعدی" : "Next"}
+              </button>
+            </nav>
+          )}
         </section>
       )}
 
@@ -340,4 +459,36 @@ function getCategoryImage({ category, products, fallback }) {
   );
 
   return match?.imageUrls || fallback || "";
+}
+
+function buildPaginationItems(currentPage, totalPages) {
+  if (totalPages <= 7) {
+    return Array.from({ length: totalPages }, (_, index) => index + 1);
+  }
+
+  if (currentPage <= 4) {
+    return [1, 2, 3, 4, 5, "ellipsis", totalPages];
+  }
+
+  if (currentPage >= totalPages - 3) {
+    return [
+      1,
+      "ellipsis",
+      totalPages - 4,
+      totalPages - 3,
+      totalPages - 2,
+      totalPages - 1,
+      totalPages,
+    ];
+  }
+
+  return [
+    1,
+    "ellipsis",
+    currentPage - 1,
+    currentPage,
+    currentPage + 1,
+    "ellipsis",
+    totalPages,
+  ];
 }

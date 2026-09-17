@@ -2,12 +2,13 @@ import { getMedusaSdk } from "./medusaSdk.js";
 
 export async function loginCustomer(email, password) {
   const sdk = getMedusaSdk();
+  const normalizedEmail = String(email || "").trim();
 
   const result = await sdk.auth.login(
     "customer",
     "emailpass",
     {
-      email,
+      email: normalizedEmail,
       password,
     }
   );
@@ -18,7 +19,7 @@ export async function loginCustomer(email, password) {
 
   if (!customer) {
     throw new Error(
-      "Authentication succeeded, but no Medusa customer profile was found for this account."
+      "Authentication succeeded, but the Medusa customer profile could not be loaded."
     );
   }
 
@@ -31,11 +32,14 @@ export async function registerCustomer({
   firstName = "",
   lastName = "",
   phone,
-  captchaToken,
 }) {
   const sdk = getMedusaSdk();
+  const normalizedEmail = String(email || "").trim();
   const normalizedPhone = normalizeMobilePhone(phone);
-  const token = String(captchaToken || "").trim();
+
+  if (!normalizedEmail || !password) {
+    throw new Error("Email and password are required.");
+  }
 
   if (!isValidMobilePhone(normalizedPhone)) {
     throw new Error(
@@ -43,61 +47,30 @@ export async function registerCustomer({
     );
   }
 
-  if (!token) {
-    throw new Error(
-      "Complete the security check before creating your account."
-    );
-  }
-
-  // sdk.auth.register doesn't accept custom request headers. Use the SDK's
-  // low-level client for the built-in registration route so the backend can
-  // verify both the required phone and Turnstile proof before Medusa creates
-  // the auth identity.
-  const registration = await sdk.client.fetch(
-    "/auth/customer/emailpass/register",
+  // Medusa's register call stores the registration JWT in the SDK client.
+  // The following customer.create call automatically reuses that token.
+  await sdk.auth.register(
+    "customer",
+    "emailpass",
     {
-      method: "POST",
-      headers: {
-        "x-mouher-phone": normalizedPhone,
-        "x-turnstile-token": token,
-      },
-      body: {
-        email,
-        password,
-      },
+      email: normalizedEmail,
+      password,
     }
   );
 
-  const registrationToken = registration?.token;
+  await sdk.store.customer.create({
+    email: normalizedEmail,
+    first_name: firstName,
+    last_name: lastName,
+    phone: normalizedPhone,
+  });
 
-  if (!registrationToken) {
-    throw new Error(
-      "Medusa registration completed without returning an account token."
-    );
-  }
-
-  // The registration JWT has no customer actor attached yet, so pass it
-  // explicitly while creating the Medusa customer profile. The SDK method's
-  // second argument is query params and the third is request headers.
-  await sdk.store.customer.create(
-    {
-      email,
-      first_name: firstName,
-      last_name: lastName,
-      phone: normalizedPhone,
-    },
-    undefined,
-    {
-      authorization: `Bearer ${registrationToken}`,
-    }
-  );
-
-  // Store a normal customer JWT in the SDK after the actor profile exists.
+  // Start a normal customer session after the customer actor has been created.
   const loginResult = await sdk.auth.login(
     "customer",
     "emailpass",
     {
-      email,
+      email: normalizedEmail,
       password,
     }
   );
@@ -119,9 +92,7 @@ export async function loadCurrentCustomer() {
   const sdk = getMedusaSdk();
 
   try {
-    const payload =
-      await sdk.store.customer.retrieve();
-
+    const payload = await sdk.store.customer.retrieve();
     return payload?.customer || null;
   } catch (error) {
     if (isUnauthenticatedError(error)) {
@@ -176,13 +147,7 @@ function assertAuthCompleted(result) {
     );
   }
 
-  if (result?.mfa_required) {
-    throw new Error(
-      "This account requires an additional authentication step."
-    );
-  }
-
-  if (result?.location) {
+  if (result?.mfa_required || result?.location) {
     throw new Error(
       "This account requires an additional authentication step."
     );

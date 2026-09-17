@@ -1,0 +1,502 @@
+package hitkeepcmd
+
+import (
+	"context"
+	"errors"
+	"fmt"
+	"log/slog"
+	"net"
+	"net/http"
+	"os"
+	"strings"
+	"time"
+
+	"github.com/nsqio/go-nsq"
+	"github.com/nsqio/nsq/nsqd"
+	"golang.org/x/sync/errgroup"
+
+	"hitkeep/config"
+	"hitkeep/hklog"
+	"hitkeep/internal/cluster"
+	"hitkeep/internal/database"
+	"hitkeep/internal/entitlements"
+	"hitkeep/internal/ingest"
+	"hitkeep/internal/mailer"
+	"hitkeep/internal/realtime"
+	"hitkeep/internal/searchconsole"
+	"hitkeep/internal/server"
+	"hitkeep/internal/webhookdispatcher"
+	"hitkeep/internal/worker"
+	"hitkeep/public"
+)
+
+var Version = "snapshot"
+
+func check(err error) {
+	if err != nil {
+		panic(err)
+	}
+}
+
+func Run(logger *slog.Logger) {
+	if err := run(logger, os.Args[1:], ""); err != nil {
+		panic(err)
+	}
+}
+
+func run(logger *slog.Logger, args []string, configFile string) error {
+	return runContext(context.Background(), logger, args, configFile)
+}
+
+func runContext(ctx context.Context, logger *slog.Logger, args []string, configFile string) error {
+	if logger == nil {
+		panic("hitkeepcmd: logger is required")
+	}
+	conf, err := config.LoadArgs(args, configFile, logger)
+	if err != nil {
+		return fmt.Errorf("load configuration: %w", err)
+	}
+	conf.Version = Version
+
+	logLevel, err := hklog.ParseLevel(conf.LogLevel)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Invalid log level '%s', defaulting to INFO: %v\n", conf.LogLevel, err)
+		logLevel = slog.LevelInfo
+	}
+
+	logger = slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{
+		Level: logLevel,
+	}))
+
+	if conf.Healthcheck {
+		if err := runHealthcheck(ctx, conf); err != nil {
+			return &HealthcheckError{Err: err}
+		}
+		return nil
+	}
+
+	defer func() {
+		if r := recover(); r != nil {
+			logger.Error("Application startup panicked", "error", r)
+			os.Exit(1)
+		}
+	}()
+
+	logger.Info("Starting HitKeep", "version", Version, "log_level", logLevel.String(), "config", conf)
+
+	ctx = hklog.WithLogger(ctx, logger)
+
+	g, gCtx := errgroup.WithContext(ctx)
+
+	clusterManager, err := cluster.NewManager(conf, logger)
+	check(err)
+	defer func() {
+		if err := clusterManager.Shutdown(); err != nil {
+			logger.Error("Failed to shutdown cluster manager", "error", err)
+		}
+	}()
+
+	publicFS := public.FS()
+	check(err)
+
+	mailSvc, err := mailer.New(conf)
+	if err != nil {
+		logMailerConfigurationError(logger, conf)
+	}
+
+	var store *database.Store
+	var tenantMgr *database.TenantStoreManager
+	var producer *nsq.Producer
+	ent := entitlements.NewProvider(conf)
+	realtimeBroker := realtime.NewBroker()
+
+	if clusterManager.IsLeader() {
+		var leaderShutdown func()
+
+		store, tenantMgr, producer, leaderShutdown, err = startLeaderServices(gCtx, conf, logger, logLevel, realtimeBroker)
+		check(err)
+
+		// Start Retention Worker
+		var s3Conf *worker.S3Config
+		if worker.IsS3ArchivePath(conf.ArchivePath) {
+			s3Conf = &worker.S3Config{
+				AccessKeyID:     conf.S3AccessKeyID,
+				SecretAccessKey: conf.S3SecretAccessKey,
+				SessionToken:    conf.S3SessionToken,
+				Region:          conf.S3Region,
+				Endpoint:        conf.S3Endpoint,
+				URLStyle:        conf.S3URLStyle,
+				UseSSL:          conf.S3UseSSL,
+			}
+			if s3Conf.AccessKeyID != "" {
+				logger.Info("S3 archive enabled", "mode", "static credentials", "region", s3Conf.Region)
+			} else {
+				logger.Info("S3 archive enabled", "mode", "credential chain", "region", s3Conf.Region)
+			}
+		}
+		retentionWorker := worker.NewRetentionWorker(tenantMgr, conf.ArchivePath, conf.DataRetentionDays, s3Conf, conf.DataPath)
+		go retentionWorker.Start(gCtx)
+
+		// Start Rollup Backfill Worker
+		rollupWorker := worker.NewRollupBackfillWorker(tenantMgr)
+		go rollupWorker.Start(gCtx)
+
+		// Start Report Worker
+		reportWorker := worker.NewReportWorker(tenantMgr, mailSvc, conf.PublicURL, conf.JWTSecret).
+			WithEntitlements(entitlements.NewService(store, ent, conf))
+		go reportWorker.Start(gCtx)
+
+		// Start cloud lifecycle email worker. The worker is a no-op in non-billing builds.
+		cloudLifecycleWorker := worker.NewCloudLifecycleWorker(tenantMgr, mailSvc, conf)
+		go cloudLifecycleWorker.Start(gCtx)
+
+		// Start cloud retention sync worker (daily reconciliation safety net
+		// for the webhook-triggered sync in internal/server/cloud). No-op in
+		// non-billing builds.
+		cloudRetentionSyncWorker := worker.NewCloudRetentionSyncWorker(tenantMgr, entitlements.NewService(store, ent, conf), conf)
+		go cloudRetentionSyncWorker.Start(gCtx)
+
+		startSearchConsoleSyncWorker(gCtx, conf, tenantMgr)
+
+		g.Go(func() error {
+			select {
+			case <-gCtx.Done():
+				return nil
+			case fatalErr := <-store.FatalErrors():
+				return fmt.Errorf("database requires controlled restart: %w", fatalErr)
+			case fatalErr := <-tenantMgr.FatalErrors():
+				return fatalErr
+			}
+		})
+
+		g.Go(func() error {
+			<-gCtx.Done()
+			leaderShutdown()
+			return nil
+		})
+	} else {
+		logger.Debug("Node is a follower, skipping stateful service initialization.")
+		if conf.MCPEnabled {
+			logger.Info("MCP server is leader-only and will not start on this follower")
+		}
+	}
+
+	httpServer := server.New(conf, publicFS, store, tenantMgr, ent, clusterManager, producer, mailSvc, realtimeBroker, logger)
+	if store != nil {
+		importCleanupWorker := worker.NewImportStageCleanupWorker(store, conf.DataPath, conf.ImportStageRetentionDays, httpServer.ImportStageCleanupStatus())
+		go importCleanupWorker.Start(gCtx)
+	}
+	if tenantMgr != nil && conf.BackupPath != "" {
+		var backupS3 *worker.S3Config
+		if worker.IsS3ArchivePath(conf.BackupPath) {
+			backupS3 = &worker.S3Config{
+				AccessKeyID:     conf.S3AccessKeyID,
+				SecretAccessKey: conf.S3SecretAccessKey,
+				SessionToken:    conf.S3SessionToken,
+				Region:          conf.S3Region,
+				Endpoint:        conf.S3Endpoint,
+				URLStyle:        conf.S3URLStyle,
+				UseSSL:          conf.S3UseSSL,
+			}
+		}
+		backupWorker := worker.NewBackupWorker(tenantMgr, conf.DataPath, conf.BackupPath,
+			conf.BackupIntervalMinutes, conf.BackupRetentionCount, backupS3, httpServer.BackupStatus())
+		go backupWorker.Start(gCtx)
+	}
+
+	g.Go(func() error {
+		logger.Info("HTTP server starting", "addr", conf.HTTPAddr)
+		if err := httpServer.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
+			return err
+		}
+		return nil
+	})
+
+	g.Go(func() error {
+		<-gCtx.Done()
+		logger.Info("Shutdown signal received, shutting down HTTP server...")
+		shutdownCtx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		defer cancel()
+		return httpServer.Shutdown(shutdownCtx)
+	})
+
+	logger.Info("Application is running. Press Ctrl+C to exit.")
+
+	check(g.Wait())
+	return nil
+}
+
+func logMailerConfigurationError(logger *slog.Logger, conf *config.Config) {
+	driverKind := "unsupported"
+	switch strings.TrimSpace(conf.MailDriver) {
+	case "":
+		driverKind = "unset"
+	case "smtp":
+		driverKind = "smtp"
+	}
+
+	logger.Warn("Mailer configuration rejected",
+		"error_kind", "configuration",
+		slog.Group("mail",
+			slog.String("driver_kind", driverKind),
+			slog.Bool("host_configured", strings.TrimSpace(conf.MailHost) != ""),
+			slog.Bool("credentials_configured", strings.TrimSpace(conf.MailUsername) != "" || conf.MailPassword != ""),
+			slog.Bool("from_address_configured", strings.TrimSpace(conf.MailFromAddress) != ""),
+		),
+	)
+}
+
+func startSearchConsoleSyncWorker(ctx context.Context, conf *config.Config, tenantMgr *database.TenantStoreManager) {
+	if strings.TrimSpace(conf.GoogleSearchConsoleClientID) == "" || strings.TrimSpace(conf.GoogleSearchConsoleClientSecret) == "" {
+		return
+	}
+	searchConsoleWorker := worker.NewSearchConsoleSyncWorker(tenantMgr, searchconsole.NewGoogleClient(searchconsole.OAuthConfig{
+		ClientID:     conf.GoogleSearchConsoleClientID,
+		ClientSecret: conf.GoogleSearchConsoleClientSecret,
+	}))
+	go searchConsoleWorker.Start(ctx)
+}
+
+func startLeaderServices(ctx context.Context, conf *config.Config, logger *slog.Logger, logLevel slog.Level, realtimeBroker *realtime.Broker) (*database.Store, *database.TenantStoreManager, *nsq.Producer, func(), error) {
+	logger.Debug("(Leader) Starting stateful services...")
+	if err := validateLiveDatabasePaths(conf); err != nil {
+		return nil, nil, nil, nil, err
+	}
+
+	openStore := func(forMandatorySplit bool) (*database.Store, error) {
+		opener := database.OpenMigratedStore
+		if forMandatorySplit {
+			opener = database.OpenDefaultSplitControlStore
+		}
+		return opener(ctx, conf.DBPath,
+			database.WithLogger(logger),
+			database.WithMemoryLimit(conf.DuckDBMemoryLimit),
+			database.WithThreads(conf.DuckDBThreads),
+			database.WithCheckpointInterval(time.Duration(conf.DBCheckpointIntervalMinutes)*time.Minute),
+			database.WithAutomaticRecovery(conf.DBAutoRecover, conf.DBRecoveryPath),
+			database.WithAutomaticWALRecovery(conf.DBAutoRecoverWAL),
+		)
+	}
+
+	store, err := openStore(true)
+	if err != nil {
+		return nil, nil, nil, nil, err
+	}
+
+	// Recover and migrate before compaction so a problematic database is never
+	// rewritten before its recovery bundle exists.
+	recoveredAtStartup := store.RecoveredDuringConnect()
+	if recoveredAtStartup {
+		_ = store.Close()
+		return nil, nil, nil, nil, fmt.Errorf("automatic database recovery completed; restart HitKeep to run the mandatory 2.13 default-tenant migration from a clean startup")
+	}
+	complete, markerErr := store.DefaultTenantSplitComplete(ctx)
+	if markerErr != nil {
+		_ = store.Close()
+		return nil, nil, nil, nil, markerErr
+	}
+	if !complete {
+		if err := store.Close(); err != nil {
+			return nil, nil, nil, nil, fmt.Errorf("close database before default tenant split: %w", err)
+		}
+		if err := database.RunDefaultTenantSplit(ctx, conf.DBPath, conf.DataPath,
+			database.WithLogger(logger),
+			database.WithMemoryLimit(conf.DuckDBMemoryLimit),
+			database.WithThreads(conf.DuckDBThreads),
+		); err != nil {
+			return nil, nil, nil, nil, err
+		}
+		store, err = openStore(false)
+		if err != nil {
+			return nil, nil, nil, nil, fmt.Errorf("reopen control database after default tenant split: %w", err)
+		}
+	}
+	if conf.DBCompactOnStart {
+		if err := store.Close(); err != nil {
+			return nil, nil, nil, nil, fmt.Errorf("close database before startup compaction: %w", err)
+		}
+		compaction := database.DefaultCompactionOptions()
+		compaction.MemoryLimit = conf.DuckDBMemoryLimit
+		compaction.Threads = conf.DuckDBThreads
+		compaction.Logger = logger
+		if result, err := database.MaybeCompactDatabase(ctx, conf.DBPath, compaction, database.PrepareSharedSchema); err != nil {
+			logger.Warn("Skipping database compaction at startup", "path", conf.DBPath, "error", err)
+		} else if result.Compacted {
+			logger.Info("Compacted database at startup", "path", conf.DBPath, "bytes_before", result.BytesBefore, "bytes_after", result.BytesAfter)
+		}
+		store, err = openStore(false)
+		if err != nil {
+			return nil, nil, nil, nil, err
+		}
+	}
+	store.StartMaintenance(ctx)
+
+	var tenantOpts []database.TenantStoreManagerOption
+	if conf.DBCompactOnStart {
+		compaction := database.DefaultCompactionOptions()
+		compaction.MemoryLimit = conf.DuckDBMemoryLimit
+		compaction.Threads = conf.DuckDBThreads
+		compaction.Logger = logger
+		tenantOpts = append(tenantOpts, database.WithTenantCompaction(compaction))
+	}
+	tenantOpts = append(tenantOpts, database.WithTenantDataPlane(true))
+	tenantMgr := database.NewTenantStoreManager(store, conf.DataPath, tenantOpts...)
+	closeStores := func() {
+		if err := tenantMgr.Close(); err != nil {
+			logger.Error("Failed to close tenant databases during startup cleanup", "error", err)
+		}
+		if err := store.Close(); err != nil {
+			logger.Error("Failed to close shared database during startup cleanup", "error", err)
+		}
+	}
+	tenantMgr.StartMaintenance(ctx)
+	if err := tenantMgr.SyncAllTenants(ctx); err != nil {
+		closeStores()
+		return nil, nil, nil, nil, err
+	}
+
+	nsqdOpts := nsqd.NewOptions()
+	tmpDir, _ := os.MkdirTemp("", "nsqd")
+	nsqdOpts.DataPath = tmpDir
+
+	// Use configured internal addresses
+	nsqdOpts.TCPAddress = conf.NSQTCPAddress
+	nsqdOpts.HTTPAddress = conf.NSQHTTPAddress
+
+	// Wire up NSQD logger to slog
+	hklog.ApplyNSQDLogger(nsqdOpts, logger, logLevel)
+
+	nsqdServer, err := nsqd.New(nsqdOpts)
+	if err != nil {
+		closeStores()
+		return nil, nil, nil, nil, err
+	}
+
+	go func() {
+		if err := nsqdServer.Main(); err != nil {
+			logger.Error("Embedded NSQD server exited", "error", err)
+		}
+	}()
+	// Listen for context cancellation to gracefully shut down NSQD.
+	go func() {
+		<-ctx.Done()
+		nsqdServer.Exit()
+	}()
+	// Producer connects to the local embedded NSQ
+	producer, err := nsq.NewProducer(conf.NSQTCPAddress, nsq.NewConfig())
+	if err != nil {
+		closeStores()
+		return nil, nil, nil, nil, err
+	}
+	// Wire up Producer logger to slog
+	producer.SetLogger(hklog.GoNSQLogger{Logger: logger}, hklog.NSQGoLevel(logLevel))
+
+	// The embedded nsqd starts asynchronously; wait until it accepts
+	// connections instead of racing it with a fixed sleep.
+	var pingErr error
+	for range 50 {
+		if pingErr = producer.Ping(); pingErr == nil {
+			break
+		}
+		time.Sleep(100 * time.Millisecond)
+	}
+	if pingErr != nil {
+		producer.Stop()
+		closeStores()
+		return nil, nil, nil, nil, fmt.Errorf("embedded nsqd did not become ready: %w", pingErr)
+	}
+
+	consumer := ingest.NewConsumer(tenantMgr, logger, logLevel, realtimeBroker)
+	consumer.SetWebhookEmitter(webhookdispatcher.NewEmitter(store, producer, conf.Version, logger))
+	if err := consumer.Connect(conf.NSQTCPAddress); err != nil {
+		producer.Stop()
+		closeStores()
+		return nil, nil, nil, nil, err
+	}
+	webhookWorker := webhookdispatcher.NewWorker(store, producer, *conf, logger, logLevel)
+	if err := webhookWorker.Connect(ctx, conf.NSQTCPAddress); err != nil {
+		producer.Stop()
+		consumer.Stop()
+		closeStores()
+		return nil, nil, nil, nil, err
+	}
+
+	shutdownFunc := func() {
+		logger.Debug("(Leader) Shutting down stateful services...")
+		webhookWorker.Stop()
+		consumer.Stop()
+		producer.Stop()
+		if err := tenantMgr.Close(); err != nil {
+			logger.Error("Failed to close tenant databases", "error", err)
+		}
+		if err := store.Close(); err != nil {
+			logger.Error("Failed to close shared database cleanly", "error", err)
+		}
+		os.RemoveAll(tmpDir)
+	}
+
+	return store, tenantMgr, producer, shutdownFunc, nil
+}
+
+func validateLiveDatabasePaths(conf *config.Config) error {
+	if worker.IsS3ArchivePath(conf.DBPath) {
+		return fmt.Errorf("HITKEEP_DB_PATH must be a local writable DuckDB path; use HITKEEP_BACKUP_PATH for S3 snapshots")
+	}
+	if worker.IsS3ArchivePath(conf.DataPath) {
+		return fmt.Errorf("HITKEEP_DATA_PATH must be a local writable directory; use HITKEEP_BACKUP_PATH for S3 snapshots")
+	}
+	return nil
+}
+
+type HealthcheckError struct {
+	Err error
+}
+
+func (err *HealthcheckError) Error() string {
+	return fmt.Sprintf("Healthcheck failed: %v", err.Err)
+}
+
+func (err *HealthcheckError) Unwrap() error {
+	return err.Err
+}
+
+func runHealthcheck(ctx context.Context, conf *config.Config) error {
+	_, port, err := net.SplitHostPort(conf.HTTPAddr)
+	if err != nil {
+		port = "8080"
+	}
+
+	url := fmt.Sprintf("http://127.0.0.1:%s/healthz", port)
+
+	transport := &http.Transport{
+		DisableKeepAlives: true,
+	}
+	defer transport.CloseIdleConnections()
+
+	client := http.Client{
+		Timeout:   2 * time.Second,
+		Transport: transport,
+	}
+
+	ctx, cancel := context.WithTimeout(ctx, 2*time.Second)
+	defer cancel()
+
+	//nolint:gosec // The healthcheck target is trusted operator configuration.
+	req, err := http.NewRequestWithContext(ctx, http.MethodHead, url, nil)
+	if err != nil {
+		return fmt.Errorf("build healthcheck request: %w", err)
+	}
+
+	//nolint:gosec // The healthcheck target is trusted operator configuration.
+	resp, err := client.Do(req)
+	if err != nil {
+		return fmt.Errorf("healthcheck request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return fmt.Errorf("status code %d", resp.StatusCode)
+	}
+
+	return nil
+}

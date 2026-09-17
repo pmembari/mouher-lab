@@ -1,0 +1,7 @@
+@defer (when isAddSiteVisible()) {
+<app-add-site-dialog [visible]="isAddSiteVisible()" (visibleChange)="isAddSiteVisible.set($event)" />
+} @defer (when isCreateTeamVisible()) {
+<app-create-team-dialog [(visible)]="isCreateTeamVisible" />
+} @if (!shareService.isShareMode()) {
+<app-session-expiry-indicator />
+}

@@ -1,0 +1,96 @@
+<div class="flex flex-col h-full w-full bg-[var(--p-surface-ground)] transition-colors duration-200">
+    <app-page-header>
+        <ng-template appPageHeaderLeft>
+            <div>
+                <app-page-breadcrumb [items]="breadcrumbItems()" />
+            </div>
+        </ng-template>
+    </app-page-header>
+
+    <app-report-range-toolbar [loading]="isLoading()" (refresh)="refreshData()">
+        <div toolbar-right class="flex items-center gap-2">
+            <a
+                pButton
+                [href]="docsUrl"
+                target="_blank"
+                rel="noreferrer"
+                size="small"
+                icon="pi pi-external-link"
+                iconPos="right"
+                [label]="'aiChatbots.docsAction' | transloco"
+                [attr.aria-label]="'aiChatbots.docsAction' | transloco"
+                class="p-button-rounded p-button-secondary"
+            ></a>
+        </div>
+    </app-report-range-toolbar>
+
+    @if (noSite()) {
+    <app-no-site-selected icon="pi pi-comments" descriptionKey="aiChatbots.noSiteDescription" />
+    } @else if (needsSetup()) {
+    <app-setup-callout testId="ai-chatbots-setup-callout" icon="pi pi-comments" titleKey="aiChatbots.setup.title" descriptionKey="aiChatbots.setup.description" docsActionKey="aiChatbots.setup.docsAction" [docsUrl]="docsUrl" />
+    } @else {
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 mb-6">
+        @for (card of kpiCards(); track card.label) {
+        <app-kpi-card [label]="card.label" [value]="card.value" [format]="card.format" [suffix]="card.suffix" [delta]="card.delta ?? null" [loading]="isLoadingSeries() || isLoadingComparison()" [updateKey]="card.updateKey ?? 0" />
+        }
+    </div>
+
+    <p-card class="shadow-sm border border-surface-200 dark:border-surface-700 surface-card mb-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="flex flex-col gap-1">
+                <label for="scope-key-select" class="text-sm font-medium">{{ "aiChatbots.filters.groupBy" | transloco }}</label>
+                <p-select inputId="scope-key-select" [options]="scopeKeyOptions()" [ngModel]="selectedScopeKey()" (ngModelChange)="selectedScopeKey.set($event)" optionLabel="label" optionValue="value" class="w-full" />
+            </div>
+            <div class="flex flex-col gap-1">
+                <label for="scope-value-select" class="text-sm font-medium">{{ "aiChatbots.filters.value" | transloco }}</label>
+                <p-select
+                    inputId="scope-value-select"
+                    [options]="scopeValueOptions()"
+                    [ngModel]="selectedScopeValue()"
+                    (ngModelChange)="selectedScopeValue.set($event)"
+                    optionLabel="label"
+                    optionValue="value"
+                    [placeholder]="'aiChatbots.filters.allValues' | transloco"
+                    [loading]="isLoadingBreakdowns()"
+                    [showClear]="true"
+                    class="w-full"
+                />
+            </div>
+        </div>
+    </p-card>
+
+    <div class="mb-6">
+        <p-card class="shadow-sm border border-surface-200 dark:border-surface-700 surface-card">
+            <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between mb-4">
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h3 class="text-lg font-semibold">{{ "aiChatbots.chart.title" | transloco }}</h3>
+                        @if (filterChips().length > 0) {
+                        <span class="inline-flex items-center px-2 py-0.5 rounded-full border border-[var(--p-primary-color)] text-xs font-medium">{{ "dashboard.filteredBadge" | transloco }}</span>
+                        }
+                    </div>
+                    <p class="text-sm text-[var(--p-text-muted-color)] mt-1">{{ "aiChatbots.chart.description" | transloco }}</p>
+                </div>
+            </div>
+            <app-series-chart
+                [data]="chartSeries()"
+                [series]="chartConfig()"
+                [comparisonData]="comparisonChartSeries()"
+                [isLoading]="isLoadingSeries()"
+                [isShortRange]="isShortRange()"
+                [comparisonLabel]="comparisonLabel()"
+                [emptyTitle]="'aiChatbots.chart.emptyTitle' | transloco"
+                [emptyDescription]="'aiChatbots.chart.emptyDescription' | transloco"
+            />
+        </p-card>
+    </div>
+
+    <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
+        <app-filter-chip-row [chips]="filterChips()" (clearAll)="clearFilters()" />
+        <app-export-split-button [isExporting]="isExporting()" [disabled]="!exportUrl() || isExporting()" (export)="exportFiltered($event)" />
+    </div>
+    <app-export-status-banner [state]="exportState()" successKey="aiChatbots.exportStatus.success" errorKey="aiChatbots.exportStatus.error" />
+
+    <app-metric-card-group [tabs]="metricCardTabs()" (rowClicked)="onMetricCardClick($event)" />
+    }
+</div>

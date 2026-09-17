@@ -1,0 +1,41 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.PascaleBeier/hitkeep",
+  "title": "HitKeep",
+  "description": "Stateless 2026-07-28 read-only MCP server for aggregate HitKeep analytics and official docs.",
+  "icons": [
+    {
+      "src": "https://hitkeep.com/favicon.png",
+      "mimeType": "image/png",
+      "sizes": [
+        "512x512"
+      ]
+    }
+  ],
+  "websiteUrl": "https://hitkeep.com/use-cases/read-only-mcp-server-web-analytics/",
+  "repository": {
+    "url": "https://github.com/pascalebeier/hitkeep",
+    "source": "github"
+  },
+  "version": "2.13.18",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://{hitkeep_host}/mcp",
+      "variables": {
+        "hitkeep_host": {
+          "description": "Hostname of your HitKeep leader or proxy, without the scheme, for example analytics.example.com.",
+          "isRequired": true
+        }
+      },
+      "headers": [
+        {
+          "name": "Authorization",
+          "description": "Bearer token from a scoped HitKeep personal or team API client.",
+          "isRequired": true,
+          "isSecret": true
+        }
+      ]
+    }
+  ]
+}

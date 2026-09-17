@@ -1,0 +1,141 @@
+<div class="flex flex-col h-full w-full bg-[var(--p-surface-ground)]">
+    <p-confirmdialog />
+    <app-page-header
+        ><ng-template appPageHeaderLeft><app-page-breadcrumb [items]="breadcrumbItems()" /></ng-template
+    ></app-page-header>
+    <app-report-range-toolbar [loading]="isRefreshing()" (refresh)="refresh()">
+        @if (canManage()) {
+        <p-button toolbar-right icon="pi pi-plus" [label]="'funnels.list.createAction' | transloco" size="small" (onClick)="openCreate()" />
+        }
+    </app-report-range-toolbar>
+
+    @if (siteService.isLoading()) {
+    <app-page-state titleKey="common.loading" messageKey="common.loadingSiteData" icon="pi pi-spin pi-spinner" />
+    } @else if (!siteService.activeSite()) {
+    <app-page-state titleKey="common.noSiteSelected" messageKey="funnels.noSiteDescription" icon="pi pi-globe" />
+    } @else if (loadError()) {
+    <app-page-state titleKey="funnels.states.errorTitle" messageKey="funnels.states.errorDescription" icon="pi pi-exclamation-circle" actionLabelKey="common.actions.refresh" (actionClicked)="refresh()" />
+    } @else {
+    <app-conversion-subject-card
+        labelKey="funnels.subject.label"
+        headingId="funnel-subject-heading"
+        controlId="funnel-subject"
+        [description]="subjectDescription()"
+        [options]="subjectOptions()"
+        [control]="subjectControl"
+        (subjectChanged)="selectFunnel($event)"
+    />
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+        @for (card of kpis(); track card.label) {
+        <app-kpi-card [label]="card.label" [value]="card.value" [loading]="card.loading" [format]="card.format" [suffix]="card.suffix" [delta]="card.delta ?? null" />
+        }
+    </div>
+
+    <p-card styleClass="mb-6">
+        <div class="mb-4">
+            <h2 class="text-lg font-semibold">{{ selectedFunnel()?.name || ('funnels.series.title' | transloco) }}</h2>
+            <p class="text-sm text-muted-color mt-1">{{ 'funnels.series.workspaceDescription' | transloco }}</p>
+        </div>
+        <app-series-chart
+            [data]="seriesData()"
+            [series]="seriesConfig()"
+            [comparisonData]="comparisonSeriesData()"
+            [isLoading]="seriesLoading()"
+            [isShortRange]="isShortRange()"
+            [emptyTitle]="'funnels.series.emptyTitle' | transloco"
+            [emptyDescription]="'funnels.series.emptyDescription' | transloco"
+            [comparisonLabel]="comparisonLabel()"
+        />
+
+        @if (selectedFunnel() && funnelStats()) {
+        <section class="mt-6 pt-5 border-t border-surface-200 dark:border-surface-700" aria-labelledby="funnel-steps-heading">
+            <h3 id="funnel-steps-heading" class="font-semibold mb-3">{{ 'funnels.steps.title' | transloco }}</h3>
+            <ol class="m-0 p-0 list-none grid gap-2">
+                @for (step of funnelStats()!.steps; track step.step_index; let index = $index) {
+                <li class="grid grid-cols-[auto_1fr_auto] items-center gap-3 rounded-md bg-surface-100 dark:bg-surface-800 px-4 py-3">
+                    <span class="flex items-center justify-center min-w-8 min-h-8 rounded-full bg-primary text-primary-contrast font-semibold">{{ index + 1 }}</span>
+                    <span class="min-w-0"
+                        ><span class="block font-medium truncate">{{ step.name }}</span
+                        ><span class="block text-xs text-muted-color">{{ 'funnels.steps.retention' | transloco: { rate: (step.conversion_rate | translocoDecimal: { maximumFractionDigits: 1 }) } }}</span></span
+                    >
+                    <span class="text-right"><strong class="block">{{ step.visitors }}</strong><span class="block text-xs text-muted-color">{{ 'funnels.steps.dropoff' | transloco: { count: step.dropoff } }}</span></span>
+                </li>
+                }
+            </ol>
+        </section>
+        }
+    </p-card>
+
+    <app-traffic-records-card
+        class="mb-6 block"
+        titleKey="funnels.traffic.title"
+        [descriptionKey]="trafficDescriptionKey()"
+        unavailableTitleKey="funnels.traffic.unavailableTitle"
+        unavailableDescriptionKey="funnels.traffic.unavailableDescription"
+        [siteId]="siteService.activeSite()?.id || null"
+        [siteDomain]="siteService.activeSite()?.domain || null"
+        [from]="trafficDateRange()?.from || null"
+        [to]="trafficDateRange()?.to || null"
+        [funnelIds]="trafficFunnelIds()"
+        [enabled]="trafficEnabled()"
+        [refreshKey]="trafficRefreshKey()"
+        [shareToken]="trafficShareToken()"
+        [showExport]="true"
+    />
+
+    <p-card>
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+            <div>
+                <h2 class="text-lg font-semibold">{{ 'funnels.definitions.title' | transloco }}</h2>
+                <p class="text-sm text-muted-color mt-1">{{ 'funnels.definitions.count' | transloco: { count: funnels().length } }}</p>
+            </div>
+            <input pInputText #search [placeholder]="'common.searchPlaceholder' | transloco" [attr.aria-label]="'common.searchPlaceholder' | transloco" (input)="funnelsTable.filterGlobal(search.value, 'contains')" class="w-full sm:w-64" />
+        </div>
+        <div class="hk-crud-table-wrap">
+            <p-table #funnelsTable [value]="funnels()" [loading]="loading()" [paginator]="funnels().length > 10" [rows]="10" [globalFilterFields]="['name']" sortField="name" [sortOrder]="1" styleClass="hk-crud-table p-datatable-sm">
+                <ng-template pTemplate="header"
+                    ><tr>
+                        <th pSortableColumn="name">
+                            {{ 'common.columns.name' | transloco }}
+                            <p-sortIcon field="name" />
+                        </th>
+                        <th>{{ 'funnels.definitions.steps' | transloco }}</th>
+                        @if (canManage()) {
+                        <th class="hk-actions-column">{{ 'common.columns.actions' | transloco }}</th>
+                        }
+                    </tr></ng-template
+                >
+                <ng-template pTemplate="body" let-funnel>
+                    <tr
+                        class="cursor-pointer"
+                        [class.bg-highlight]="selectedFunnelId() === funnel.id"
+                        (click)="selectFunnel(funnel.id)"
+                        tabindex="0"
+                        (keydown.enter)="selectFunnel(funnel.id)"
+                        (keydown.space)="$event.preventDefault(); selectFunnel(funnel.id)"
+                    >
+                        <td class="font-medium">{{ funnel.name }}</td>
+                        <td>
+                            <span class="text-sm">{{ 'funnels.list.stepsCount' | transloco: { count: funnel.steps.length } }}</span
+                            ><span class="block text-xs text-muted-color truncate max-w-xl">@for (step of funnel.steps; track $index) { @if ($index) { <span aria-hidden="true"> → </span> }{{ step.value }} }</span>
+                        </td>
+                        @if (canManage()) {
+                        <td class="hk-actions-cell" (click)="$event.stopPropagation()">
+                            <app-table-row-actions [items]="funnelActions(funnel)" [loading]="deletingFunnelId() === funnel.id" />
+                        </td>
+                        }
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage"
+                    ><tr>
+                        <td [attr.colspan]="canManage() ? 3 : 2" class="text-center py-8 text-muted-color">{{ 'funnels.manager.empty' | transloco }}</td>
+                    </tr></ng-template
+                >
+            </p-table>
+        </div>
+    </p-card>
+    }
+
+    <app-funnel-manager [(visible)]="editorVisible" [siteId]="siteService.activeSite()?.id || null" [funnel]="editingFunnel()" [pathSuggestions]="pathSuggestions()" [eventSuggestions]="eventSuggestions()" (funnelsChanged)="onDefinitionsChanged()" />
+</div>

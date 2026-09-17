@@ -1,0 +1,210 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "hitkeep.fullname" . }}
+  labels:
+    {{- include "hitkeep.labels" . | nindent 4 }}
+spec:
+  serviceName: {{ include "hitkeep.fullname" . }}-headless
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "hitkeep.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "hitkeep.selectorLabels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if .Values.serviceAccount.create }}
+      serviceAccountName: {{ include "hitkeep.serviceAccountName" . }}
+      {{- else if .Values.serviceAccount.name }}
+      serviceAccountName: {{ include "hitkeep.serviceAccountName" . }}
+      {{- end }}
+      securityContext:
+        fsGroup: 65532
+      containers:
+        - name: hitkeep
+          {{- $imageTag := .Values.image.tag | default (trimPrefix "v" .Chart.AppVersion) }}
+          image: "{{ .Values.image.repository }}{{ if .Values.image.digest }}@{{ .Values.image.digest }}{{ else }}:{{ $imageTag }}{{ end }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.targetPort }}
+              protocol: TCP
+            - name: gossip-tcp
+              containerPort: 7946
+              protocol: TCP
+            - name: gossip-udp
+              containerPort: 7946
+              protocol: UDP
+          env:
+            - name: HITKEEP_NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            {{- $env := .Values.env | default dict -}}
+            {{- $flags := dict "hasJoin" false "hasBind" false "hasCustomTrackingTLSMode" false "hasCustomTrackingDNSTarget" false "hasCaddyTLSAskToken" false -}}
+            {{- if hasKey $env "HITKEEP_JOIN_ADDR" }}
+            {{- $_ := set $flags "hasJoin" true }}
+            {{- end }}
+            {{- if hasKey $env "HITKEEP_BIND_ADDR" }}
+            {{- $_ := set $flags "hasBind" true }}
+            {{- end }}
+            {{- if hasKey $env "HITKEEP_CUSTOM_TRACKING_TLS_MODE" }}
+            {{- $_ := set $flags "hasCustomTrackingTLSMode" true }}
+            {{- end }}
+            {{- if hasKey $env "HITKEEP_CUSTOM_TRACKING_DNS_TARGET" }}
+            {{- $_ := set $flags "hasCustomTrackingDNSTarget" true }}
+            {{- end }}
+            {{- if hasKey $env "HITKEEP_CADDY_TLS_ASK_TOKEN" }}
+            {{- $_ := set $flags "hasCaddyTLSAskToken" true }}
+            {{- end }}
+            {{- range .Values.extraEnv }}
+            {{- if and (hasKey . "name") (eq .name "HITKEEP_JOIN_ADDR") }}
+            {{- $_ := set $flags "hasJoin" true }}
+            {{- end }}
+            {{- if and (hasKey . "name") (eq .name "HITKEEP_BIND_ADDR") }}
+            {{- $_ := set $flags "hasBind" true }}
+            {{- end }}
+            {{- if and (hasKey . "name") (eq .name "HITKEEP_CUSTOM_TRACKING_TLS_MODE") }}
+            {{- $_ := set $flags "hasCustomTrackingTLSMode" true }}
+            {{- end }}
+            {{- if and (hasKey . "name") (eq .name "HITKEEP_CUSTOM_TRACKING_DNS_TARGET") }}
+            {{- $_ := set $flags "hasCustomTrackingDNSTarget" true }}
+            {{- end }}
+            {{- if and (hasKey . "name") (eq .name "HITKEEP_CADDY_TLS_ASK_TOKEN") }}
+            {{- $_ := set $flags "hasCaddyTLSAskToken" true }}
+            {{- end }}
+            {{- end }}
+            {{- if gt (.Values.replicaCount | int) 1 }}
+            {{- if not $flags.hasBind }}
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: HITKEEP_BIND_ADDR
+              value: "$(POD_IP):7946"
+            {{- end }}
+            {{- if not $flags.hasJoin }}
+            - name: HITKEEP_JOIN_ADDR
+              value: "{{ include "hitkeep.fullname" . }}-headless.{{ .Release.Namespace }}.svc.cluster.local:7946"
+            {{- end }}
+            {{- end }}
+            {{- if not (hasKey $env "HITKEEP_DB_PATH") }}
+            - name: HITKEEP_DB_PATH
+              value: {{ printf "%s/hitkeep.db" .Values.persistence.mountPath | quote }}
+            {{- end }}
+{{- if not (hasKey $env "HITKEEP_DATA_PATH") }}
+            - name: HITKEEP_DATA_PATH
+              value: {{ .Values.persistence.mountPath | quote }}
+            {{- end }}
+            {{- if not (hasKey $env "HITKEEP_ARCHIVE_PATH") }}
+            - name: HITKEEP_ARCHIVE_PATH
+              value: {{ printf "%s/archive" .Values.persistence.mountPath | quote }}
+            {{- end }}
+            {{- if not (hasKey $env "HITKEEP_SPAM_FILTER_PATH") }}
+            - name: HITKEEP_SPAM_FILTER_PATH
+              value: {{ printf "%s/spam-filter.json" .Values.persistence.mountPath | quote }}
+            {{- end }}
+            {{- if .Values.customTrackingDomains.enabled }}
+            {{- if not $flags.hasCustomTrackingTLSMode }}
+            - name: HITKEEP_CUSTOM_TRACKING_TLS_MODE
+              value: {{ .Values.customTrackingDomains.tlsMode | default "external" | quote }}
+            {{- end }}
+            {{- if and (not $flags.hasCustomTrackingDNSTarget) .Values.customTrackingDomains.dnsTarget }}
+            - name: HITKEEP_CUSTOM_TRACKING_DNS_TARGET
+              value: {{ .Values.customTrackingDomains.dnsTarget | quote }}
+            {{- end }}
+            {{- if and (not $flags.hasCaddyTLSAskToken) .Values.customTrackingDomains.caddyAskToken.existingSecret }}
+            - name: HITKEEP_CADDY_TLS_ASK_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.customTrackingDomains.caddyAskToken.existingSecret | quote }}
+                  key: {{ .Values.customTrackingDomains.caddyAskToken.existingSecretKey | default "token" | quote }}
+            {{- end }}
+            {{- end }}
+            {{- range $key, $value := $env }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+            {{- end }}
+            {{- with .Values.extraEnv }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+          {{- if .Values.extraArgs }}
+          args:
+            {{- toYaml .Values.extraArgs | nindent 12 }}
+          {{- end }}
+          startupProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 48
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: data
+              mountPath: {{ .Values.persistence.mountPath }}
+      {{- if not .Values.persistence.enabled }}
+      volumes:
+        - name: data
+          emptyDir: {}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+  {{- if .Values.persistence.enabled }}
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+        {{- with .Values.persistence.annotations }}
+        annotations:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+      spec:
+        accessModes:
+          - {{ .Values.persistence.accessMode }}
+        resources:
+          requests:
+            storage: {{ .Values.persistence.size }}
+        {{- if .Values.persistence.storageClass }}
+        storageClassName: {{ .Values.persistence.storageClass }}
+        {{- end }}
+  {{- end }}

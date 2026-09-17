@@ -1,0 +1,135 @@
+<div class="utm-builder-page">
+    <app-page-header>
+        <ng-template appPageHeaderLeft>
+            <div>
+                <app-page-breadcrumb [items]="breadcrumbItems()" />
+            </div>
+        </ng-template>
+    </app-page-header>
+
+    <div class="utm-builder-grid">
+        <form [formGroup]="form" class="utm-builder-panel utm-builder-form" autocomplete="off">
+            <div class="utm-builder-panel-header">
+                <h3>{{ "utmBuilder.form.title" | transloco }}</h3>
+                <p>{{ "utmBuilder.subtitle" | transloco }}</p>
+            </div>
+
+            @if (siteService.sites().length) {
+            <div class="utm-builder-field">
+                <label for="utm-site">{{ "utmBuilder.form.siteSelectLabel" | transloco }}</label>
+                <p-select
+                    inputId="utm-site"
+                    class="w-full"
+                    styleClass="w-full"
+                    [options]="siteService.sites()"
+                    optionLabel="domain"
+                    [ngModel]="selectedSite()"
+                    [ngModelOptions]="{ standalone: true }"
+                    (ngModelChange)="prefillFromSite($event)"
+                    [placeholder]="'utmBuilder.form.siteSelectPlaceholder' | transloco"
+                    [fluid]="true"
+                    appendTo="body"
+                >
+                    <ng-template pTemplate="selectedItem" let-site>
+                        <app-site-select-option [site]="site" [selected]="true" />
+                    </ng-template>
+                    <ng-template pTemplate="item" let-site>
+                        <app-site-select-option [site]="site" />
+                    </ng-template>
+                </p-select>
+                <small>{{ "utmBuilder.form.siteSelectHint" | transloco }}</small>
+            </div>
+            }
+
+            <div class="utm-builder-field">
+                <label for="utm-url">{{ "utmBuilder.form.websiteUrlLabel" | transloco }} *</label>
+                <input pInputText id="utm-url" formControlName="url" class="w-full" [class.ng-invalid]="form.controls.url.invalid && form.controls.url.touched" autocomplete="url" type="url" />
+                @if (form.controls.url.errors?.["required"] && form.controls.url.touched) {
+                <small class="utm-builder-error">{{ "utmBuilder.validation.urlRequired" | transloco }}</small>
+                } @else if (form.controls.url.errors?.["urlInvalid"] && form.controls.url.touched) {
+                <small class="utm-builder-error">{{ "utmBuilder.validation.urlInvalid" | transloco }}</small>
+                } @else {
+                <small>{{ "utmBuilder.form.websiteUrlHint" | transloco }}</small>
+                }
+            </div>
+
+            <div class="utm-builder-field">
+                <label for="utm-source">{{ "utmBuilder.form.sourceLabel" | transloco }} *</label>
+                <input pInputText id="utm-source" formControlName="source" class="w-full" [class.ng-invalid]="form.controls.source.invalid && form.controls.source.touched" />
+                @if (form.controls.source.errors?.["required"] && form.controls.source.touched) {
+                <small class="utm-builder-error">{{ "utmBuilder.validation.sourceRequired" | transloco }}</small>
+                } @else {
+                <small>{{ "utmBuilder.form.sourceHint" | transloco }}</small>
+                }
+            </div>
+
+            <div class="utm-builder-field-grid">
+                <div class="utm-builder-field">
+                    <label for="utm-medium">{{ "utmBuilder.form.mediumLabel" | transloco }}</label>
+                    <input pInputText id="utm-medium" formControlName="medium" class="w-full" />
+                    <small>{{ "utmBuilder.form.mediumHint" | transloco }}</small>
+                </div>
+
+                <div class="utm-builder-field">
+                    <label for="utm-campaign">{{ "utmBuilder.form.campaignLabel" | transloco }}</label>
+                    <input pInputText id="utm-campaign" formControlName="campaign" class="w-full" />
+                    <small>{{ "utmBuilder.form.campaignHint" | transloco }}</small>
+                </div>
+            </div>
+
+            <div class="utm-builder-field-grid">
+                <div class="utm-builder-field">
+                    <label for="utm-term">{{ "utmBuilder.form.termLabel" | transloco }}</label>
+                    <input pInputText id="utm-term" formControlName="term" class="w-full" />
+                    <small>{{ "utmBuilder.form.termHint" | transloco }}</small>
+                </div>
+
+                <div class="utm-builder-field">
+                    <label for="utm-content">{{ "utmBuilder.form.contentLabel" | transloco }}</label>
+                    <input pInputText id="utm-content" formControlName="content" class="w-full" />
+                    <small>{{ "utmBuilder.form.contentHint" | transloco }}</small>
+                </div>
+            </div>
+
+            <div class="utm-builder-form-actions">
+                <p-button severity="secondary" [label]="'common.actions.clearAll' | transloco" (onClick)="clearForm()" icon="pi pi-times" styleClass="utm-builder-clear-button" />
+            </div>
+        </form>
+
+        <aside class="utm-builder-side">
+            <section class="utm-builder-panel">
+                <div class="utm-builder-panel-header">
+                    <h3>{{ "utmBuilder.preview.title" | transloco }}</h3>
+                </div>
+
+                @if (generatedUrl()) {
+                <div class="utm-builder-generated-url" role="textbox" aria-readonly="true" [attr.aria-label]="'utmBuilder.preview.title' | transloco">{{ generatedUrl() }}</div>
+
+                <app-copy-control [value]="generatedUrl()" [fluid]="true" styleClass="w-full justify-center" />
+                } @else {
+                <div class="utm-builder-empty-preview">
+                    <i class="pi pi-link" style="color: var(--p-primary-color)" aria-hidden="true"></i>
+                    <p>{{ "utmBuilder.preview.description" | transloco }}</p>
+                </div>
+                }
+            </section>
+
+            <section class="utm-builder-panel">
+                <div class="utm-builder-panel-header">
+                    <h3>{{ "utmBuilder.reference.title" | transloco }}</h3>
+                </div>
+                <div class="utm-builder-reference-list">
+                    @for (key of utmParamKeys; track key) {
+                    <div class="utm-builder-reference-item">
+                        <code>utm_{{ key }}</code>
+                        <div>
+                            <p>{{ "utm.kpis." + key | transloco }}</p>
+                            <span>{{ "utmBuilder.reference." + key | transloco }}</span>
+                        </div>
+                    </div>
+                    }
+                </div>
+            </section>
+        </aside>
+    </div>
+</div>

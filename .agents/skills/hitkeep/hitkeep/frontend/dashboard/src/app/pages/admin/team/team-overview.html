@@ -1,0 +1,186 @@
+@if (team(); as t) {
+<div class="grid gap-4">
+    <app-settings-card [title]="t.name" icon="pi pi-users">
+        <div settings-card-body>
+            <app-admin-item-list [items]="teamDetailItems()" [ariaLabel]="'admin.team.overview.title' | transloco" [emptyMessage]="'common.empty.noDataDescription' | transloco" />
+        </div>
+    </app-settings-card>
+
+    @if (cloudPlan(); as cloudPlan) {
+    <app-settings-card [title]="'admin.team.overview.cloud.title' | transloco" [subtitle]="cloudPlanDescription(cloudPlan.plan)" icon="pi pi-cloud">
+        <div settings-card-header>
+            <p-tag [value]="'admin.team.overview.cloud.managed' | transloco" severity="info" [rounded]="true" />
+        </div>
+
+        <div settings-card-body>
+            <app-admin-item-list [items]="cloudPlanItems()" [ariaLabel]="'admin.team.overview.cloud.title' | transloco" [emptyMessage]="'common.empty.noDataDescription' | transloco" />
+        </div>
+
+        @if (canManageBilling()) {
+        <div settings-card-footer class="flex flex-wrap justify-end gap-2">
+            @if (cloudPlan.plan.support_url || cloudPlan.cloud.support_url; as supportUrl) {
+            <a pButton [href]="supportUrl" target="_blank" rel="noreferrer" severity="secondary" [outlined]="true" icon="pi pi-external-link" iconPos="right">
+                <span pButtonLabel>{{ "admin.team.overview.cloud.supportAction" | transloco }}</span>
+            </a>
+            }
+            <p-button [label]="'admin.team.overview.cloud.manageBillingAction' | transloco" [loading]="portalPending()" [disabled]="!canManageBilling()" severity="secondary" (onClick)="openBillingPortal()" />
+        </div>
+        }
+    </app-settings-card>
+    } @if (showPlanComparison()) {
+    <section class="grid gap-4" aria-labelledby="team-plan-comparison-title">
+        <div class="flex flex-wrap items-end justify-between gap-4">
+            <div class="grid max-w-[70ch] gap-1">
+                <h2 id="team-plan-comparison-title" class="m-0 text-base leading-5 font-semibold text-[var(--p-text-color)]">{{ "admin.team.overview.plans.title" | transloco }}</h2>
+                <p class="m-0 text-sm leading-5 text-[var(--p-text-muted-color)]">{{ "admin.team.overview.plans.description" | transloco }}</p>
+            </div>
+            <div class="grid justify-items-end gap-1">
+                <p-selectbutton
+                    [options]="billingOptions()"
+                    [ngModel]="billingInterval()"
+                    (ngModelChange)="billingInterval.set($event)"
+                    optionLabel="label"
+                    optionValue="value"
+                    [allowEmpty]="false"
+                    size="small"
+                    [attr.aria-label]="'admin.team.overview.plans.billingLabel' | transloco"
+                />
+                <span class="text-xs leading-4 text-[var(--p-text-muted-color)]">{{ "admin.team.overview.plans.annualSaving" | transloco }}</span>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-[repeat(auto-fit,minmax(16rem,1fr))] gap-4">
+            @if (currentTier(); as current) {
+            <p-card styleClass="hk-card plan-comparison__card--current">
+                <div class="flex flex-col gap-1">
+                    <div class="flex items-center gap-2">
+                        <span class="text-lg font-bold">{{ ("signup.plans." + current.code + ".name") | transloco }}</span>
+                        <p-tag [value]="'admin.team.overview.plans.currentPlan' | transloco" severity="secondary" [rounded]="true" />
+                    </div>
+                    <span class="flex items-baseline gap-1">
+                        <span class="text-3xl font-extrabold">{{ planPriceLabels()[current.code] }}</span>
+                        @if (current.code !== "free") {
+                        <span class="text-sm font-semibold text-[var(--p-text-muted-color)]">{{ (billingInterval() === "annual" ? "admin.team.overview.plans.perYear" : "admin.team.overview.plans.perMonth") | transloco }}</span>
+                        }
+                    </span>
+                    <p class="mt-1 mb-0 text-sm text-[var(--p-text-muted-color)]">{{ ("signup.plans." + current.code + ".description") | transloco }}</p>
+                </div>
+
+                <div class="flex flex-1 flex-col gap-2">
+                    <div class="flex items-center gap-2 text-sm">
+                        <i class="pi pi-check text-sm font-bold text-primary" aria-hidden="true"></i>
+                        <span>{{ "admin.team.overview.plans.features.sites" | transloco: { count: current.entitlements.max_sites_per_team } }}</span>
+                    </div>
+                    <div class="flex items-center gap-2 text-sm">
+                        <i class="pi pi-check text-sm font-bold text-primary" aria-hidden="true"></i>
+                        <span>{{ "admin.team.overview.plans.features.members" | transloco: { count: current.entitlements.max_team_members } }}</span>
+                    </div>
+                    <div class="flex items-center gap-2 text-sm">
+                        <i class="pi pi-check text-sm font-bold text-primary" aria-hidden="true"></i>
+                        <span>{{ retentionYears(current.entitlements.max_retention_days) }}</span>
+                    </div>
+                    <div class="flex items-center gap-2 text-sm">
+                        @if (current.entitlements.allow_external_report_recipients) {
+                        <i class="pi pi-check text-sm font-bold text-primary" aria-hidden="true"></i>
+                        } @else {
+                        <i class="pi pi-times text-sm font-bold text-[var(--p-text-muted-color)]" aria-hidden="true"></i>
+                        }
+                        <span>{{ "admin.team.overview.plans.features.externalReportRecipients" | transloco }}</span>
+                    </div>
+                </div>
+            </p-card>
+            } @for (tier of upgradeTiers(); track tier.code) {
+            <p-card [styleClass]="'hk-card' + (tier.code === 'pro' ? ' plan-comparison__card--recommended' : '')">
+                <div class="flex flex-col gap-1">
+                    <div class="flex items-center gap-2">
+                        <span class="text-lg font-bold">{{ ("signup.plans." + tier.code + ".name") | transloco }}</span>
+                        @if (tier.code === "pro") {
+                        <p-tag [value]="'admin.team.overview.plans.recommended' | transloco" severity="success" [rounded]="true" />
+                        }
+                    </div>
+                    <span class="flex items-baseline gap-1">
+                        <span class="text-3xl font-extrabold">{{ planPriceLabels()[tier.code] }}</span>
+                        <span class="text-sm font-semibold text-[var(--p-text-muted-color)]">{{ (billingInterval() === "annual" ? "admin.team.overview.plans.perYear" : "admin.team.overview.plans.perMonth") | transloco }}</span>
+                    </span>
+                    <p class="mt-1 mb-0 text-sm text-[var(--p-text-muted-color)]">{{ ("signup.plans." + tier.code + ".description") | transloco }}</p>
+                </div>
+
+                <div class="flex flex-1 flex-col gap-2">
+                    <div class="flex items-center gap-2 text-sm">
+                        <i class="pi pi-check text-sm font-bold text-primary" aria-hidden="true"></i><span>{{ "admin.team.overview.plans.features.sites" | transloco: { count: tier.entitlements.max_sites_per_team } }}</span>
+                    </div>
+                    <div class="flex items-center gap-2 text-sm">
+                        <i class="pi pi-check text-sm font-bold text-primary" aria-hidden="true"></i><span>{{ "admin.team.overview.plans.features.members" | transloco: { count: tier.entitlements.max_team_members } }}</span>
+                    </div>
+                    <div class="flex items-center gap-2 text-sm"><i class="pi pi-check text-sm font-bold text-primary" aria-hidden="true"></i><span>{{ retentionYears(tier.entitlements.max_retention_days) }}</span></div>
+                    <div class="flex items-center gap-2 text-sm">
+                        @if (tier.entitlements.allow_external_report_recipients) {
+                        <i class="pi pi-check text-sm font-bold text-primary" aria-hidden="true"></i>
+                        } @else {
+                        <i class="pi pi-times text-sm font-bold text-[var(--p-text-muted-color)]" aria-hidden="true"></i>
+                        }
+                        <span>{{ "admin.team.overview.plans.features.externalReportRecipients" | transloco }}</span>
+                    </div>
+                    <div class="flex items-center gap-2 text-sm"><i class="pi pi-check text-sm font-bold text-primary" aria-hidden="true"></i><span>{{ "admin.team.overview.plans.features.customDomains" | transloco }}</span></div>
+                    @if (tier.entitlements.allow_sso) {
+                    <div class="flex items-center gap-2 text-sm"><i class="pi pi-check text-sm font-bold text-primary" aria-hidden="true"></i><span>{{ "admin.team.overview.plans.features.sso" | transloco }}</span></div>
+                    }
+                </div>
+
+                <div class="mt-auto pt-2">
+                    <p-button
+                        [label]="'admin.team.overview.plans.upgradeAction' | transloco: { plan: tier.name }"
+                        [loading]="checkoutPending()"
+                        [disabled]="checkoutPending()"
+                        [severity]="tier.code === 'pro' || upgradeTiers().length === 1 ? 'primary' : 'secondary'"
+                        [fluid]="true"
+                        (onClick)="startCheckoutForPlan($any(tier.code))"
+                    />
+                </div>
+            </p-card>
+            }
+        </div>
+
+        <div class="grid gap-1 border-t border-[var(--p-content-border-color)] pt-3 text-sm leading-5 text-[var(--p-text-muted-color)]">
+            <p class="m-0">{{ "admin.team.overview.plans.openSource.note" | transloco }}</p>
+            <p class="m-0">
+                {{ "admin.team.overview.plans.openSource.support" | transloco }}
+                <a href="https://hitkeep.com/support/funding/" target="_blank" rel="noreferrer" class="font-semibold text-primary no-underline hover:underline">{{ "admin.team.overview.plans.openSource.sponsor" | transloco }}</a>
+                · <a href="https://x.com/gethitkeep" target="_blank" rel="noreferrer" class="font-semibold text-primary no-underline hover:underline">X</a> ·
+                <a href="https://www.linkedin.com/company/hitkeep" target="_blank" rel="noreferrer" class="font-semibold text-primary no-underline hover:underline">LinkedIn</a>
+                · {{ "admin.team.overview.plans.openSource.spread" | transloco }}
+            </p>
+        </div>
+    </section>
+    } @if (showUsageSection()) {
+    <app-settings-card [title]="'admin.team.overview.usage.title' | transloco" [subtitle]="'admin.team.overview.usage.description' | transloco" icon="pi pi-chart-bar">
+        <div settings-card-header>
+            <p-tag [value]="pendingInviteLabel(t.usage?.current_pending_invites ?? 0)" severity="secondary" [rounded]="true" />
+        </div>
+
+        <div settings-card-body class="divide-y divide-[var(--p-content-border-color)]">
+            @for (card of usageCards(); track card.key) {
+            <div class="grid gap-2 py-3 first:pt-0 last:pb-0">
+                <div class="flex min-w-0 items-start justify-between gap-4">
+                    <div class="grid min-w-0 gap-1">
+                        <strong class="text-sm leading-5 font-semibold text-[var(--p-text-color)]">{{ ("admin.team.overview.usage.metrics." + card.key) | transloco }}</strong>
+                        <span class="text-xs leading-5 text-[var(--p-text-muted-color)]">{{ card.description }}</span>
+                    </div>
+                    <div class="grid shrink-0 justify-items-end gap-1 text-right">
+                        <strong class="text-base leading-5 font-semibold text-[var(--p-text-color)] tabular-nums">{{ card.displayValue }}</strong>
+                        <span class="text-xs leading-5 text-[var(--p-text-muted-color)]">{{ card.limitLabel }}</span>
+                    </div>
+                </div>
+                @if (card.hasFiniteLimit) {
+                <p-progressbar [value]="card.percentage" [showValue]="false" [styleClass]="card.className" [attr.aria-label]="('admin.team.overview.usage.metrics.' + card.key) | transloco" />
+                <span class="text-xs leading-5 text-[var(--p-text-muted-color)]">{{ "admin.team.overview.usage.progressLabel" | transloco: { count: card.percentage } }}</span>
+                } @else {
+                <span class="text-xs leading-5 font-semibold text-primary">{{ "admin.team.overview.usage.unlimitedFootnote" | transloco }}</span>
+                }
+            </div>
+            }
+        </div>
+    </app-settings-card>
+    }
+</div>
+}

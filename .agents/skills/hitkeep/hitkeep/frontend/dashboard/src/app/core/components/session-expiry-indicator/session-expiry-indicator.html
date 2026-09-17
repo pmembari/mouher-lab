@@ -1,0 +1,30 @@
+@if (auth.session(); as session) {
+<app-dialog-shell
+    [title]="'session.warningTitle' | transloco"
+    [visible]="warningVisible()"
+    [closable]="false"
+    [closeOnEscape]="false"
+    role="alertdialog"
+    width="28rem"
+    [secondaryLabel]="'session.signOutAction' | transloco"
+    [primaryLabel]="'session.extendAction' | transloco"
+    primaryIcon="pi pi-refresh"
+    [primaryLoading]="auth.sessionExtending()"
+    [primaryDisabled]="auth.sessionExtending()"
+    (secondaryAction)="signOut()"
+    (primaryAction)="extendSession()"
+>
+    <section aria-describedby="session-expiry-description" class="hk-session-dialog">
+        <div class="hk-session-dialog__icon" aria-hidden="true">
+            <i class="pi pi-clock"></i>
+        </div>
+        <div class="hk-session-dialog__body">
+            <p id="session-expiry-description">{{ "session.warningDescription" | transloco : { remaining: remainingLabel() } }}</p>
+            <p class="hk-session-dialog__meta">{{ "session.policyDescription" | transloco : { duration: policyDurationLabel() } }}</p>
+            @if (extendError()) {
+            <p class="hk-session-dialog__error" role="alert">{{ "session.extendError" | transloco }}</p>
+            }
+        </div>
+    </section>
+</app-dialog-shell>
+}

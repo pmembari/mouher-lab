@@ -1,0 +1,29 @@
+{{ define "content" -}}
+{{ t "cloud.welcome.heading" }}
+==================
+
+{{ tf "cloud.welcome.body" .TeamName .SiteDomain }}
+
+{{ t "cloud.welcome.dashboard_button" }}: {{ .DashboardURL }}
+
+{{ t "cloud.welcome.docs" }}
+{{ t "cloud.welcome.docs_button" }}: {{ .DocsURL }}
+
+{{ t "cloud.welcome.wordpress" }}
+{{ t "cloud.welcome.wordpress_button" }}: {{ .WordPressURL }}
+
+{{- if .IsFreePlan }}
+
+{{ tf "cloud.welcome.free_retention" .RetentionDays }}
+{{ t "cloud.welcome.plans_link" }}: {{ .UpgradeURL }}
+{{- end }}
+
+{{ t "cloud.welcome.feedback" }}
+{{ t "cloud.welcome.feedback_button" }}: {{ .FeedbackURL }}
+
+--
+
+{{ t "cloud.opensource.note" }}
+{{ t "cloud.opensource.support" }} {{ t "cloud.opensource.sponsor" }}: {{ .FundingURL }}
+{{ t "cloud.opensource.spread" }}
+{{- end }}

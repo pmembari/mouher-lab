@@ -1,0 +1,12 @@
+:host {
+    display: block;
+}
+
+.hk-auth-actions-stack {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-inline: auto;
+    width: min(100%, 18rem);
+}

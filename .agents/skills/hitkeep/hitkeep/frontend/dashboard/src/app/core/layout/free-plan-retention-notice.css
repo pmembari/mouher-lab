@@ -1,0 +1,101 @@
+.free-plan-retention-notice {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    padding: 0.875rem 1rem;
+    border: 1px solid color-mix(in srgb, var(--p-primary-color) 24%, var(--p-surface-border));
+    border-radius: 8px;
+    background: linear-gradient(120deg, color-mix(in srgb, var(--p-primary-color) 11%, var(--p-surface-card)) 0%, color-mix(in srgb, var(--p-primary-color) 4%, var(--p-surface-card)) 55%, var(--p-surface-card) 100%);
+    box-shadow: 0 1px 2px rgb(15 23 42 / 0.04);
+    color: var(--p-text-color);
+}
+
+.free-plan-retention-notice__copy,
+.free-plan-retention-notice__actions {
+    display: flex;
+    align-items: center;
+}
+
+.free-plan-retention-notice__copy {
+    min-width: 0;
+    gap: 0.8rem;
+}
+
+.free-plan-retention-notice__icon {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 1px solid color-mix(in srgb, var(--p-primary-color) 28%, transparent);
+    border-radius: 8px;
+    background: color-mix(in srgb, var(--p-primary-color) 14%, var(--p-surface-card));
+    color: var(--p-primary-color);
+}
+
+.free-plan-retention-notice__text {
+    display: grid;
+    gap: 0.15rem;
+    min-width: 0;
+}
+
+.free-plan-retention-notice__headline {
+    margin: 0;
+    font-size: 0.925rem;
+    font-weight: 700;
+    line-height: 1.35;
+}
+
+.free-plan-retention-notice__hint {
+    margin: 0;
+    color: var(--p-text-muted-color);
+    font-size: 0.8125rem;
+    line-height: 1.45;
+}
+
+.free-plan-retention-notice__actions {
+    flex: 0 0 auto;
+    gap: 0.375rem;
+}
+
+.free-plan-retention-notice__dismiss {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--p-text-muted-color);
+    cursor: pointer;
+}
+
+.free-plan-retention-notice__dismiss:hover {
+    background: var(--p-surface-hover);
+    color: var(--p-text-color);
+}
+
+:host-context(.p-dark) .free-plan-retention-notice {
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.28);
+}
+
+@media (max-width: 720px) {
+    .free-plan-retention-notice {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .free-plan-retention-notice__actions {
+        justify-content: space-between;
+    }
+
+    .free-plan-retention-notice__actions p-button,
+    .free-plan-retention-notice__actions .p-button {
+        flex: 1 1 auto;
+        justify-content: center;
+    }
+}

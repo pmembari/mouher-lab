@@ -1,0 +1,773 @@
+package system
+
+func eventRangeParams(prefix ...any) []any {
+	params := append([]any{}, prefix...)
+	return append(params, paramRef("#/components/parameters/from"), paramRef("#/components/parameters/to"))
+}
+
+func eventNameParams(prefix ...any) []any {
+	return append(eventRangeParams(prefix...), paramRef("#/components/parameters/eventName"))
+}
+
+func eventFilteredParams(prefix ...any) []any {
+	return append(eventNameParams(prefix...),
+		paramRef("#/components/parameters/eventPropertyKey"),
+		paramRef("#/components/parameters/eventPropertyValue"),
+		paramRef("#/components/parameters/filter"),
+		paramRef("#/components/parameters/eventDimensionKey"),
+		paramRef("#/components/parameters/eventDimensionValue"),
+	)
+}
+
+func openAPIV1AdminSitePaths() map[string]any {
+	return map[string]any{
+		"/api/admin/system": map[string]any{
+			"get": op([]string{"Admin"}, "Get system overview", "Returns version, runtime mode, uptime, public URL, and operator feature switch status.", secCookie(), nil, nil,
+				map[string]any{"200": jsonRefResp("System overview", "#/components/schemas/SystemInfo")}),
+		},
+		"/api/admin/system/health": map[string]any{
+			"get": op([]string{"Admin"}, "Get system health", "Returns instance health, database status, worker status, and cluster leader state.", secCookie(), nil, nil,
+				map[string]any{"200": jsonRefResp("System health", "#/components/schemas/SystemHealth")}),
+		},
+		"/api/admin/system/search-console": map[string]any{
+			"get": op([]string{"Admin"}, "Get Search Console system status", "Returns Google Search Console credential, worker, and sync health without exposing OAuth secrets or raw Google payloads.", secCookie(), nil, nil,
+				map[string]any{"200": jsonRefResp("Search Console system status", "#/components/schemas/SystemSearchConsoleStatus")}),
+		},
+		"/api/admin/system/ai": map[string]any{
+			"get": op([]string{"Admin"}, "Get AI system status", "Returns non-sensitive AI gateway configuration status, provider/model labels, local budget usage, and the latest safe run state without exposing provider secrets, prompts, or raw provider payloads.", secCookie(), nil, nil,
+				map[string]any{"200": jsonRefResp("AI system status", "#/components/schemas/SystemAIStatus")}),
+		},
+		"/api/admin/system/report": map[string]any{
+			"get": op([]string{"Admin"}, "Get system report", "Returns a markdown system report with instance, configuration, storage, DuckDB memory, ingest, and feature information for support requests.", secCookie(), nil, nil,
+				map[string]any{"200": desc("System report (text/markdown)")}),
+		},
+		"/api/admin/system/storage": map[string]any{
+			"get": op([]string{"Admin"}, "Get system storage", "Returns configured data paths, shared and tenant database sizes, backup path, spam cache path, disk capacity fields when available, and the shared database's DuckDB memory breakdown.", secCookie(), nil, nil,
+				map[string]any{"200": jsonRefResp("System storage", "#/components/schemas/SystemStorage")}),
+		},
+		"/api/admin/system/ingest": map[string]any{
+			"get": op([]string{"Admin"}, "Get ingest volume", "Returns recent hit, event, rejection, spam, and hit-rate counters across the instance, including tenant analytics databases.", secCookie(), nil, nil,
+				map[string]any{"200": jsonRefResp("System ingest stats", "#/components/schemas/SystemIngestStats")}),
+		},
+		"/api/admin/system/backups": map[string]any{
+			"get": op([]string{"Admin"}, "Get backup status", "Returns automatic backup configuration and recent backup status.", secCookie(), nil, nil,
+				map[string]any{"200": jsonRefResp("System backup status", "#/components/schemas/SystemBackupStatus")}),
+		},
+		"/api/admin/system/database": map[string]any{
+			"get": op([]string{"Admin"}, "Get database resilience status", "Returns sanitized recovery configuration, retained recovery history, and checkpoint state while the database is available. Live recovery state is reported through readiness and 503 responses.", secCookie(), nil, nil,
+				map[string]any{
+					"200": jsonRefResp("System database status", "#/components/schemas/SystemDatabaseStatus"),
+					"503": errResp("Database recovery is in progress or requires operator attention"),
+				}),
+		},
+		"/api/admin/system/database/checkpoint": map[string]any{
+			"post": op([]string{"Admin"}, "Checkpoint the shared database", "Runs an immediate serialized DuckDB checkpoint and records the operator action in the instance audit log.", secCookie(), nil, nil,
+				map[string]any{
+					"200": jsonRefResp("Checkpoint result", "#/components/schemas/SystemActionResponse"),
+					"500": errResp("Database checkpoint failed"),
+					"503": errResp("Database recovery is in progress or requires operator attention"),
+				}),
+		},
+		"/api/admin/system/spam-filter": map[string]any{
+			"get": op([]string{"Admin"}, "Get spam filter status", "Returns spam database path, rule count, auto-update state, last refresh time, and last error.", secCookie(), nil, nil,
+				map[string]any{"200": jsonRefResp("Spam filter status", "#/components/schemas/SystemSpamStatus")}),
+		},
+		"/api/admin/system/spam-filter/refresh": map[string]any{
+			"post": op([]string{"Admin"}, "Refresh spam database", "Downloads and rebuilds the spam database from the configured feeds. Writes an instance audit log entry with the actor and outcome.", secCookie(), nil, nil,
+				map[string]any{
+					"200": jsonRefResp("Refresh result", "#/components/schemas/SystemActionResponse"),
+					"503": errResp("Spam filter not available"),
+				}),
+		},
+		"/api/admin/system/import-stage-cleanup": map[string]any{
+			"get": op([]string{"Admin"}, "Get import staging cleanup status", "Returns stale staged import file counts, byte totals, retention policy, and the latest cleanup run state.", secCookie(), nil, nil,
+				map[string]any{
+					"200": jsonRefResp("Import staging cleanup status", "#/components/schemas/SystemImportStageCleanupStatus"),
+					"503": errResp("Store not available"),
+				}),
+		},
+		"/api/admin/system/import-stage-cleanup/run": map[string]any{
+			"post": op([]string{"Admin"}, "Run import staging cleanup", "Removes stale staged import upload files immediately and writes an instance audit log entry with the actor and outcome.", secCookie(), nil, nil,
+				map[string]any{
+					"200": jsonRefResp("Import staging cleanup result", "#/components/schemas/SystemImportStageCleanupRunResponse"),
+					"409": errResp("Cleanup disabled"),
+					"500": jsonRefResp("Cleanup failed", "#/components/schemas/SystemImportStageCleanupRunResponse"),
+					"503": errResp("Store not available"),
+				}),
+		},
+		"/api/admin/system/caches": map[string]any{
+			"get": op([]string{"Admin"}, "Get cache status", "Returns LRU cache sizes, maximum sizes, TTLs, and pressure status for permissions, API clients, and API rate limiting.", secCookie(), nil, nil,
+				map[string]any{"200": jsonRefResp("System cache status", "#/components/schemas/SystemCacheStatus")}),
+		},
+		"/api/admin/system/mail": map[string]any{
+			"get": op([]string{"Admin"}, "Get mail status", "Returns configured mail driver, host, port, encryption, sender identity, masked username, password presence, and last test result.", secCookie(), nil, nil,
+				map[string]any{"200": jsonRefResp("System mail status", "#/components/schemas/SystemMailStatus")}),
+		},
+		"/api/admin/system/mail/test": map[string]any{
+			"post": op([]string{"Admin"}, "Send test email", "Sends a real test email to the specified recipient using the configured mail transport. Writes an instance audit log entry with the actor and outcome.", secCookie(), nil,
+				jsonBody(map[string]any{"type": "object", "properties": map[string]any{"email": map[string]any{"type": "string", "format": "email"}}}),
+				map[string]any{
+					"200": jsonRefResp("Mail test result", "#/components/schemas/SystemActionResponse"),
+					"400": errResp("Invalid recipient"),
+					"503": errResp("Mailer not configured"),
+				}),
+		},
+		"/api/admin/system/audit": map[string]any{
+			"get": op([]string{"Admin"}, "List instance audit log", "Lists instance-level audit entries for system maintenance and admin operations. Malformed actor, date, limit, and offset filters return 400.", secCookie(), instanceAuditQueryParams(false), nil,
+				map[string]any{
+					"200": jsonRefResp("Instance audit entries", "#/components/schemas/InstanceAuditListResponse"),
+					"400": errResp("Invalid audit filter"),
+				}),
+		},
+		"/api/admin/system/audit/export": map[string]any{
+			"get": op([]string{"Admin"}, "Export instance audit log", "Exports matching instance-level audit entries as JSON or CSV. The export limit defaults to 10000 rows and is capped at 50000 rows.", secCookie(), instanceAuditQueryParams(true), nil,
+				map[string]any{
+					"200": desc("Audit export"),
+					"400": errResp("Invalid audit filter"),
+					"403": errResp("Forbidden"),
+				}),
+		},
+		"/api/admin/system/activation": map[string]any{
+			"get": op([]string{"Admin"}, "List user activation", "Owner-only operational activation view for teams and sites. Returns setup status, aggregate hit/event counts, owner email, plan, and timestamps without visitor-level details.", secCookie(), activationQueryParams(), nil,
+				map[string]any{
+					"200": jsonRefResp("Activation rows", "#/components/schemas/SystemActivationResponse"),
+					"400": errResp("Invalid activation filter"),
+					"403": errResp("Forbidden"),
+				}),
+		},
+		"/api/admin/users": map[string]any{
+			"get": op([]string{"Admin"}, "List users", "Lists users for admin management.", secCookie(), nil, nil, map[string]any{"200": jsonSchemaResp("User list", map[string]any{"type": "array", "items": map[string]any{"type": "object", "additionalProperties": true}})}),
+		},
+		"/api/admin/users/{id}/role": map[string]any{
+			"post": op([]string{"Admin"}, "Update user role", "Updates instance role for target user.", secCookie(), []any{paramRef("#/components/parameters/adminUserID")},
+				jsonBody(map[string]any{"type": "object", "properties": map[string]any{"role": map[string]any{"type": "string"}}, "required": []string{"role"}}),
+				map[string]any{"200": jsonRefResp("Status", "#/components/schemas/Status")}),
+		},
+		"/api/admin/users/{id}/disable-2fa": map[string]any{
+			"post": op([]string{"Admin"}, "Disable user MFA", "Owner-only recovery action that clears TOTP, passkeys, pending MFA challenges, and remember-me sessions for the target user.", secCookie(), []any{paramRef("#/components/parameters/adminUserID")}, nil, map[string]any{
+				"200": jsonRefResp("Disable user MFA response", "#/components/schemas/AdminDisableUserMFAResponse"),
+				"403": errResp("Forbidden"),
+				"404": errResp("Not found"),
+			}),
+		},
+		"/api/admin/users/{id}": map[string]any{
+			"delete": op([]string{"Admin"}, "Delete user", "Deletes user account (cannot delete self). Deletion is blocked if the target user is the sole owner of any team.", secCookie(), []any{paramRef("#/components/parameters/adminUserID")}, nil, map[string]any{
+				"200": jsonRefResp("Status", "#/components/schemas/Status"),
+				"409": jsonRefResp("Delete user blocked response", "#/components/schemas/AdminDeleteUserBlockedResponse"),
+			}),
+		},
+		"/api/admin/sites": map[string]any{
+			"get": op([]string{"Admin"}, "List all sites", "Lists all sites for admin management.", secCookie(), nil, nil, map[string]any{"200": jsonSchemaResp("Site list", map[string]any{"type": "array", "items": map[string]any{"$ref": "#/components/schemas/Site"}})}),
+		},
+		"/api/admin/sites/{id}": map[string]any{
+			"delete": op([]string{"Admin"}, "Delete site (admin)", "Deletes site by admin endpoint.", secCookie(), []any{paramRef("#/components/parameters/siteID")}, nil, map[string]any{"200": jsonRefResp("Status", "#/components/schemas/Status")}),
+		},
+		"/api/admin/teams": map[string]any{
+			"get": op([]string{"Admin"}, "List all teams", "Lists teams for instance-level administration, including default/archive state and member/site counts.", secCookie(), nil, nil, map[string]any{
+				"200": jsonSchemaResp("Admin team list", map[string]any{"type": "array", "items": map[string]any{"$ref": "#/components/schemas/AdminTeam"}}),
+			}),
+		},
+		"/api/admin/teams/{id}/archive": map[string]any{
+			"post": op([]string{"Admin"}, "Archive team (admin)", "Archives a non-default team from the instance admin surface after its sites have been moved or deleted.", secCookie(), []any{paramRef("#/components/parameters/teamID")}, nil, map[string]any{
+				"200": jsonRefResp("Status", "#/components/schemas/Status"),
+				"400": errResp("The default team cannot be archived, or the team is not found or already archived"),
+			}),
+		},
+		"/api/admin/teams/{id}": map[string]any{
+			"delete": op([]string{"Admin"}, "Delete archived team", "Permanently deletes an archived non-default team and removes its per-tenant analytics database directory.", secCookie(), []any{paramRef("#/components/parameters/teamID")}, nil, map[string]any{
+				"200": jsonRefResp("Delete archived team response", "#/components/schemas/AdminDeleteTeamResponse"),
+				"400": errResp("Archive the team first, and ensure it has no sites"),
+				"404": errResp("Team not found"),
+			}),
+		},
+		"/api/admin/exclusions": map[string]any{
+			"get": op([]string{"Admin"}, "List global exclusions", "Lists instance-level CIDR, country, user-agent, and path exclusions used by forward-only ingest-time filtering. Requires instance.manage_site_exclusions.", secCookie(), nil, nil,
+				map[string]any{"200": jsonSchemaResp("Global exclusions", map[string]any{"type": "array", "items": map[string]any{"$ref": "#/components/schemas/IPExclusion"}})}),
+			"post": op([]string{"Admin"}, "Create global exclusion", "Creates an instance-level CIDR, country, user-agent, or path exclusion for all sites. Rules affect new traffic only. Requires instance.manage_site_exclusions.", secCookie(), nil,
+				jsonBody(map[string]any{"$ref": "#/components/schemas/IPExclusionCreateRequest"}),
+				map[string]any{"201": jsonRefResp("Created exclusion", "#/components/schemas/IPExclusion"), "400": errResp("Invalid exclusion rule")}),
+		},
+		"/api/admin/exclusions/{ruleID}": map[string]any{
+			"delete": op([]string{"Admin"}, "Delete global exclusion", "Deletes an instance-level traffic exclusion rule. Requires instance.manage_site_exclusions.", secCookie(), []any{paramRef("#/components/parameters/ruleID")}, nil,
+				map[string]any{"204": desc("Deleted"), "404": errResp("Not found")}),
+		},
+		"/api/sites/{id}/members": map[string]any{
+			"get": op([]string{"Admin"}, "List site members", "Lists site members and roles.", secCookie(), []any{paramRef("#/components/parameters/siteID")}, nil, map[string]any{"200": jsonSchemaResp("Members", map[string]any{"type": "array", "items": map[string]any{"$ref": "#/components/schemas/SiteMember"}})}),
+			"post": op([]string{"Admin"}, "Add site member", "Adds member to site and optionally sends invite.", secCookie(), []any{paramRef("#/components/parameters/siteID")},
+				jsonBody(map[string]any{"type": "object", "properties": map[string]any{"email": map[string]any{"type": "string", "format": "email"}, "role": map[string]any{"type": "string"}}, "required": []string{"email", "role"}}),
+				map[string]any{"200": jsonRefResp("Status", "#/components/schemas/Status")}),
+		},
+		"/api/sites/{id}/members/{userId}": map[string]any{
+			"delete": op([]string{"Admin"}, "Remove site member", "Removes a user from site membership.", secCookie(), []any{paramRef("#/components/parameters/siteID"), paramRef("#/components/parameters/userID")}, nil, map[string]any{"200": jsonRefResp("Status", "#/components/schemas/Status")}),
+		},
+
+		"/api/sites": map[string]any{
+			"get": op([]string{"Sites"}, "List accessible sites", "Lists sites visible to caller (session or API key scope).", secAnyAuth(), nil, nil, map[string]any{"200": jsonSchemaResp("Sites", map[string]any{"type": "array", "items": map[string]any{"$ref": "#/components/schemas/Site"}})}),
+			"post": op([]string{"Sites"}, "Create site", "Creates a new tracked site using an apex domain or subdomain without protocol, port, path, query, fragment, or www prefix.", secCookie(), nil,
+				jsonBody(map[string]any{"type": "object", "properties": map[string]any{"domain": map[string]any{"type": "string", "description": "Apex domain or subdomain without protocol, port, path, query, fragment, or www prefix (e.g. example.com or blog.example.com)."}}, "required": []string{"domain"}}),
+				map[string]any{"200": jsonRefResp("Site", "#/components/schemas/Site"), "400": errResp("Invalid domain"), "409": errResp("Domain exists")}),
+		},
+		"/api/sites/overview": map[string]any{
+			"get": op([]string{"Sites"}, "Get sites overview stats", "Returns lightweight overview metrics and chart data for all sites visible to the caller.", secAnyAuth(), []any{
+				paramRef("#/components/parameters/from"), paramRef("#/components/parameters/to"),
+			}, nil, map[string]any{"200": jsonRefResp("Sites overview stats", "#/components/schemas/SitesOverviewStatsResponse")}),
+		},
+		"/api/sites/{id}": map[string]any{
+			"delete": op([]string{"Sites"}, "Delete site", "Deletes a site and associated analytics data.", secCookie(), []any{paramRef("#/components/parameters/siteID")}, nil, map[string]any{"200": jsonRefResp("Status", "#/components/schemas/Status")}),
+		},
+		"/api/sites/{id}/setup-state": map[string]any{
+			"get": op([]string{"Sites"}, "Get setup state", "Reports whether a site has ever recorded AI fetches, chatbot events, custom events, ecommerce events, or web vitals so the dashboard can show setup guidance instead of empty reports. Requires site.view.", secCookie(), []any{paramRef("#/components/parameters/siteID")}, nil,
+				map[string]any{
+					"200": jsonRefResp("Site setup state", "#/components/schemas/SiteSetupState"),
+					"403": errResp("Access denied"),
+				}),
+		},
+		"/api/sites/{id}/tracking/status": map[string]any{
+			"get": op([]string{"Sites"}, "Get tracking status", "Returns privacy-safe operational tracking metadata for a site, including live/waiting/dormant/domain-mismatch status and the latest accepted tracker source.", secCookie(), []any{paramRef("#/components/parameters/siteID")}, nil,
+				map[string]any{
+					"200": jsonRefResp("Tracking status", "#/components/schemas/SiteTrackingStatus"),
+					"404": errResp("Site not found"),
+				}),
+		},
+		"/api/sites/{id}/tracking-domain-options": map[string]any{
+			"get": op([]string{"Sites"}, "List tracking domain options", "Returns the default tracker URL and team custom tracking domains available to the site. Requires site.view.", secCookie(), []any{paramRef("#/components/parameters/siteID")}, nil,
+				map[string]any{
+					"200": jsonRefResp("Tracking domain options", "#/components/schemas/SiteTrackingDomainOptions"),
+					"403": errResp("Access denied"),
+					"404": errResp("Site not found"),
+				}),
+		},
+		"/api/sites/{id}/ask-ai": map[string]any{
+			"post": op([]string{"Sites"}, "Ask AI", "Runs the session-only, site-scoped dashboard assistant over read-only aggregate analytics tools. Requires a human dashboard session with site.view; API client bearer tokens and shared dashboard routes are rejected.", secCookie(), []any{paramRef("#/components/parameters/siteID")},
+				jsonBody(map[string]any{"$ref": "#/components/schemas/AskAIRequest"}),
+				map[string]any{
+					"200": jsonRefResp("Ask AI response", "#/components/schemas/AskAIResponse"),
+					"400": errResp("Invalid Ask AI request"),
+					"403": errResp("Dashboard session required or forbidden"),
+					"409": jsonRefResp("Ask AI unavailable", "#/components/schemas/AskAIStatus"),
+					"429": jsonRefResp("Ask AI budget exhausted", "#/components/schemas/AskAIStatus"),
+					"502": errResp("Ask AI provider or validation failure"),
+				}),
+		},
+		"/api/sites/{id}/ask-ai/events": map[string]any{
+			"post": op([]string{"Sites"}, "Stream Ask AI", "Runs the same audited, session-only Ask AI workflow and streams safe Server-Sent Events for progress, answer deltas, and the final validated response. Requires a human dashboard session with site.view; API client bearer tokens and shared dashboard routes are rejected.", secCookie(), []any{paramRef("#/components/parameters/siteID")},
+				jsonBody(map[string]any{"$ref": "#/components/schemas/AskAIRequest"}),
+				map[string]any{
+					"200": map[string]any{
+						"description": "Ask AI Server-Sent Events stream",
+						"content": map[string]any{
+							"text/event-stream": map[string]any{"schema": map[string]any{"$ref": "#/components/schemas/AskAIStreamEvent"}},
+						},
+					},
+					"400": errResp("Invalid Ask AI request"),
+					"403": errResp("Dashboard session required or forbidden"),
+					"409": jsonRefResp("Ask AI unavailable", "#/components/schemas/AskAIStatus"),
+					"429": jsonRefResp("Ask AI budget exhausted", "#/components/schemas/AskAIStatus"),
+				}),
+		},
+		"/api/sites/{id}/ask-ai/history": map[string]any{
+			"get": op([]string{"Sites"}, "List Ask AI history", "Returns audit-safe Ask AI run summaries for the selected site. The response includes run metadata, hashes, usage, and validated summary counts only; raw prompts, full answers, provider payloads, headers, and credentials are not returned. Requires a human dashboard session with site.view; API client bearer tokens and shared dashboard routes are rejected.", secCookie(), []any{
+				paramRef("#/components/parameters/siteID"),
+				map[string]any{"name": "limit", "in": "query", "description": "Maximum runs to return.", "schema": map[string]any{"type": "integer", "minimum": 1, "maximum": 100, "default": 20}},
+				map[string]any{"name": "offset", "in": "query", "description": "Number of runs to skip.", "schema": map[string]any{"type": "integer", "minimum": 0, "default": 0}},
+			}, nil, map[string]any{
+				"200": jsonRefResp("Ask AI history", "#/components/schemas/AskAIHistoryResponse"),
+				"400": errResp("Invalid Ask AI history request"),
+				"403": errResp("Dashboard session required or forbidden"),
+				"409": jsonRefResp("Ask AI unavailable", "#/components/schemas/AskAIStatus"),
+			}),
+		},
+		"/api/sites/{id}/stats": map[string]any{
+			"get": op([]string{"Sites"}, "Get site stats", "Aggregated site metrics and charts.", secAnyAuth(), []any{
+				paramRef("#/components/parameters/siteID"), paramRef("#/components/parameters/from"), paramRef("#/components/parameters/to"),
+				paramRef("#/components/parameters/filter"), paramRef("#/components/parameters/filterType"), paramRef("#/components/parameters/filterValue"),
+				paramRef("#/components/parameters/goalIDQuery"), paramRef("#/components/parameters/funnelIDQuery"),
+			}, nil, map[string]any{"200": jsonRefResp("Site stats", "#/components/schemas/SiteStats")}),
+		},
+		"/api/sites/{id}/stats/reset": map[string]any{
+			"post": op([]string{"Sites"}, "Reset site stats", "Irreversibly clears currently stored measured stats for a site while preserving the site configuration. Requires a human dashboard session with site.delete; API client bearer tokens are rejected.", secCookie(), []any{paramRef("#/components/parameters/siteID")},
+				jsonBody(map[string]any{"$ref": "#/components/schemas/SiteStatsResetRequest"}),
+				map[string]any{
+					"200": jsonRefResp("Reset summary", "#/components/schemas/SiteStatsResetResponse"),
+					"400": errResp("Invalid request or confirmation mismatch"),
+					"403": errResp("Dashboard session required or forbidden"),
+					"404": errResp("Site not found"),
+					"500": errResp("Reset failed"),
+				}),
+		},
+		"/api/sites/{id}/realtime": map[string]any{
+			"get": internalOp(op([]string{"Sites"}, "Stream site realtime changes", "Streams privacy-safe site-scoped analytics invalidation events using server-sent events. Requires site.view.", secCookie(), []any{paramRef("#/components/parameters/siteID")}, nil,
+				map[string]any{"200": desc("Server-sent event stream with analytics.changed and analytics.resync events")})),
+		},
+		"/api/sites/{id}/opportunities": map[string]any{
+			"get": op([]string{"Opportunities"}, "List opportunities", "Lists saved opportunity recommendations for a site. Requires site.view and returns only validated customer-visible outputs with cited evidence.", secAnyAuth(), []any{paramRef("#/components/parameters/siteID")}, nil,
+				map[string]any{"200": jsonRefResp("Opportunity list", "#/components/schemas/OpportunityListResponse")}),
+		},
+		"/api/sites/{id}/opportunities/digest-preview": map[string]any{
+			"get": op([]string{"Opportunities"}, "Preview opportunity digest", "Returns the safe daily or weekly digest payload that would be emailed for saved opportunity recommendations. Requires site.view and returns translation keys, placeholders, scores, and cited aggregate evidence only.", secAnyAuth(), []any{
+				paramRef("#/components/parameters/siteID"),
+				map[string]any{"name": "frequency", "in": "query", "required": false, "schema": map[string]any{"type": "string", "enum": []string{"daily", "weekly"}, "default": "weekly"}},
+			}, nil, map[string]any{
+				"200": jsonRefResp("Opportunity digest preview", "#/components/schemas/OpportunityDigestPreviewResponse"),
+				"400": errResp("Unsupported opportunity digest frequency"),
+			}),
+		},
+		"/api/sites/{id}/opportunities/generate": map[string]any{
+			"post": op([]string{"Opportunities"}, "Generate opportunities", "Runs deterministic opportunity detectors for the selected range and, when AI is configured and budget is available, asks the provider only for structured copy from cited evidence. Requires site.manage_data.", secAnyAuth(), []any{paramRef("#/components/parameters/siteID"), paramRef("#/components/parameters/from"), paramRef("#/components/parameters/to")}, nil,
+				map[string]any{"200": jsonRefResp("Generated opportunities", "#/components/schemas/OpportunityGenerateResponse")}),
+		},
+		"/api/sites/{id}/opportunities/{opportunityID}": map[string]any{
+			"patch": op([]string{"Opportunities"}, "Update opportunity status", "Marks an opportunity saved, done, or dismissed. Requires site.manage_data.", secAnyAuth(), []any{
+				paramRef("#/components/parameters/siteID"),
+				map[string]any{"name": "opportunityID", "in": "path", "required": true, "schema": map[string]any{"type": "string", "format": "uuid"}},
+			}, jsonBody(map[string]any{"$ref": "#/components/schemas/OpportunityStatusUpdateRequest"}),
+				map[string]any{"200": jsonRefResp("Opportunity", "#/components/schemas/Opportunity")}),
+		},
+		"/api/sites/{id}/importers": map[string]any{
+			"get": op([]string{"Imports"}, "List site importers", "Lists available historical data import providers for the selected site.", secAnyAuth(), []any{paramRef("#/components/parameters/siteID")}, nil,
+				map[string]any{"200": jsonSchemaResp("Importers", map[string]any{
+					"type": "array",
+					"items": map[string]any{
+						"type":                 "object",
+						"additionalProperties": false,
+						"properties": map[string]any{
+							"key":                 map[string]any{"type": "string"},
+							"name":                map[string]any{"type": "string"},
+							"accepted_extensions": map[string]any{"type": "array", "items": map[string]any{"type": "string"}},
+							"capabilities":        map[string]any{"type": "array", "items": map[string]any{"type": "string"}},
+						},
+						"required": []string{"key", "name", "accepted_extensions", "capabilities"},
+					},
+				})}),
+		},
+		"/api/sites/{id}/imports/{provider}/uploads": map[string]any{
+			"post": op([]string{"Imports"}, "Create import upload", "Creates a staged import upload session. Use chunk upload endpoints to send the declared ZIP or CSV files.", secAnyAuth(), []any{
+				paramRef("#/components/parameters/siteID"),
+				map[string]any{"name": "provider", "in": "path", "required": true, "schema": map[string]any{"type": "string", "enum": []string{"plausible", "simpleanalytics"}}},
+			}, jsonBody(map[string]any{"type": "object", "properties": map[string]any{"files": map[string]any{"type": "array", "items": map[string]any{"type": "object", "properties": map[string]any{"filename": map[string]any{"type": "string"}, "size_bytes": map[string]any{"type": "integer"}, "sha256": map[string]any{"type": "string", "description": "Optional lowercase or uppercase hex SHA-256 checksum for the staged file."}}, "required": []string{"filename", "size_bytes"}}}}, "required": []string{"files"}}),
+				map[string]any{"200": jsonSchemaResp("Upload session", map[string]any{"type": "object", "additionalProperties": true}), "400": errResp("Invalid upload"), "413": errResp("Import exceeds maximum staged size")}),
+		},
+		"/api/sites/{id}/imports/uploads/{importID}/files/{fileID}/chunks": map[string]any{
+			"put": op([]string{"Imports"}, "Upload import chunk", "Uploads one raw file chunk at the requested byte offset.", secAnyAuth(), []any{
+				paramRef("#/components/parameters/siteID"),
+				map[string]any{"name": "importID", "in": "path", "required": true, "schema": map[string]any{"type": "string", "format": "uuid"}},
+				map[string]any{"name": "fileID", "in": "path", "required": true, "schema": map[string]any{"type": "string", "format": "uuid"}},
+				map[string]any{"name": "offset", "in": "query", "required": true, "schema": map[string]any{"type": "integer", "minimum": 0}},
+			}, map[string]any{"required": true, "content": map[string]any{"application/octet-stream": map[string]any{"schema": map[string]any{"type": "string", "format": "binary"}}}},
+				map[string]any{"200": jsonSchemaResp("Chunk progress", map[string]any{"type": "object", "additionalProperties": true}), "409": errResp("Upload not accepting chunks")}),
+		},
+		"/api/sites/{id}/imports/uploads/{importID}/validate": map[string]any{
+			"post": op([]string{"Imports"}, "Validate import upload", "Scans staged files row by row and returns the validation manifest without committing analytics rows.", secAnyAuth(), []any{
+				paramRef("#/components/parameters/siteID"),
+				map[string]any{"name": "importID", "in": "path", "required": true, "schema": map[string]any{"type": "string", "format": "uuid"}},
+			}, nil, map[string]any{"200": jsonRefResp("Import job", "#/components/schemas/ImportJob"), "400": errResp("Validation failed")}),
+		},
+		"/api/sites/{id}/imports": map[string]any{
+			"get": op([]string{"Imports"}, "List site imports", "Lists import jobs for the site.", secAnyAuth(), []any{paramRef("#/components/parameters/siteID")}, nil,
+				map[string]any{"200": jsonSchemaResp("Import list", map[string]any{"type": "object", "properties": map[string]any{"imports": map[string]any{"type": "array", "items": map[string]any{"$ref": "#/components/schemas/ImportJob"}}}})}),
+		},
+		"/api/sites/{id}/imports/{importID}": map[string]any{
+			"get": op([]string{"Imports"}, "Get import", "Returns import status, files, and validation manifest.", secAnyAuth(), []any{
+				paramRef("#/components/parameters/siteID"),
+				map[string]any{"name": "importID", "in": "path", "required": true, "schema": map[string]any{"type": "string", "format": "uuid"}},
+			}, nil, map[string]any{"200": jsonRefResp("Import job", "#/components/schemas/ImportJob")}),
+			"delete": op([]string{"Imports"}, "Delete import", "Deletes imported aggregate rows for the selected import and marks its history row deleted.", secAnyAuth(), []any{
+				paramRef("#/components/parameters/siteID"),
+				map[string]any{"name": "importID", "in": "path", "required": true, "schema": map[string]any{"type": "string", "format": "uuid"}},
+			}, nil, map[string]any{"200": jsonRefResp("Status", "#/components/schemas/Status"), "409": errResp("Import still running")}),
+		},
+		"/api/sites/{id}/imports/{importID}/start": map[string]any{
+			"post": op([]string{"Imports"}, "Start validated import", "Starts a previously validated import job in the background.", secAnyAuth(), []any{
+				paramRef("#/components/parameters/siteID"),
+				map[string]any{"name": "importID", "in": "path", "required": true, "schema": map[string]any{"type": "string", "format": "uuid"}},
+			}, nil, map[string]any{"200": jsonRefResp("Import job", "#/components/schemas/ImportJob"), "409": errResp("Import is not validated")}),
+		},
+		"/api/sites/{id}/hits": map[string]any{
+			"get": op([]string{"Sites"}, "Get site hits", "Returns paginated raw hits.", secAnyAuth(), []any{
+				paramRef("#/components/parameters/siteID"), paramRef("#/components/parameters/from"), paramRef("#/components/parameters/to"),
+				paramRef("#/components/parameters/limit"), paramRef("#/components/parameters/offset"), paramRef("#/components/parameters/query"),
+				paramRef("#/components/parameters/sort"), paramRef("#/components/parameters/order"),
+				paramRef("#/components/parameters/filter"), paramRef("#/components/parameters/filterType"), paramRef("#/components/parameters/filterValue"),
+				paramRef("#/components/parameters/goalIDQuery"), paramRef("#/components/parameters/funnelIDQuery"),
+			}, nil, map[string]any{"200": jsonRefResp("Paginated hits", "#/components/schemas/PaginatedHits")}),
+		},
+		"/api/sites/{id}/hits/export": map[string]any{
+			"get": op([]string{"Sites"}, "Export site hits", "Exports filtered site hits in csv/xlsx/parquet/json/ndjson.", secAnyAuth(), []any{
+				paramRef("#/components/parameters/siteID"), paramRef("#/components/parameters/from"), paramRef("#/components/parameters/to"),
+				paramRef("#/components/parameters/query"), paramRef("#/components/parameters/filter"), paramRef("#/components/parameters/filterType"), paramRef("#/components/parameters/filterValue"), paramRef("#/components/parameters/goalIDQuery"), paramRef("#/components/parameters/funnelIDQuery"), paramRef("#/components/parameters/format"),
+			}, nil, map[string]any{"200": desc("Export file stream")}),
+		},
+		"/api/sites/{id}/events/names": map[string]any{
+			"get": op([]string{"Sites"}, "List event names", "Lists custom and automatic event names observed for a site in the selected date range.", secAnyAuth(), eventRangeParams(paramRef("#/components/parameters/siteID")), nil,
+				map[string]any{"200": jsonSchemaResp("Event names", map[string]any{"type": "array", "items": map[string]any{"type": "string"}})}),
+		},
+		"/api/sites/{id}/events/properties": map[string]any{
+			"get": op([]string{"Sites"}, "List event property keys", "Lists JSON property keys observed for an event name in the selected date range.", secAnyAuth(), eventNameParams(paramRef("#/components/parameters/siteID")), nil,
+				map[string]any{"200": jsonSchemaResp("Event property keys", map[string]any{"type": "array", "items": map[string]any{"type": "string"}})}),
+		},
+		"/api/sites/{id}/events/breakdown": map[string]any{
+			"get": op([]string{"Sites"}, "Get event property breakdown", "Returns distinct property values for one event property key, ordered by session count.", secAnyAuth(), append(eventNameParams(paramRef("#/components/parameters/siteID")), paramRef("#/components/parameters/eventPropertyKeyRequired")), nil,
+				map[string]any{"200": jsonSchemaResp("Event property breakdown", map[string]any{"type": "array", "items": map[string]any{"$ref": "#/components/schemas/MetricStat"}})}),
+		},
+		"/api/sites/{id}/events/timeseries": map[string]any{
+			"get": op([]string{"Sites"}, "Get event timeseries", "Returns event occurrence counts over time. Optional property filters and repeatable filter=type:value hit-dimension filters restrict the sessions counted.", secAnyAuth(), eventFilteredParams(paramRef("#/components/parameters/siteID")), nil,
+				map[string]any{"200": jsonSchemaResp("Event timeseries", map[string]any{"type": "array", "items": map[string]any{"$ref": "#/components/schemas/EventSeriesPoint"}})}),
+		},
+		"/api/sites/{id}/events/audience": map[string]any{
+			"get": op([]string{"Sites"}, "Get event audience", "Returns top pages, referrers, devices, countries, cities, providers, and ASNs for sessions containing the selected event. Optional property filters and repeatable filter=type:value hit-dimension filters restrict the sessions included.", secAnyAuth(), eventFilteredParams(paramRef("#/components/parameters/siteID")), nil,
+				map[string]any{"200": jsonRefResp("Event audience", "#/components/schemas/EventAudience")}),
+		},
+		"/api/sites/{id}/ecommerce": map[string]any{
+			"get": op([]string{"Sites"}, "Get ecommerce summary", "Returns revenue, orders, average order value, checkout starts, checkout conversion, and aggregate city, provider, and ASN breakdowns for a site.", secAnyAuth(), []any{
+				paramRef("#/components/parameters/siteID"), paramRef("#/components/parameters/from"), paramRef("#/components/parameters/to"),
+				paramRef("#/components/parameters/filter"), paramRef("#/components/parameters/filterType"), paramRef("#/components/parameters/filterValue"),
+				paramRef("#/components/parameters/itemID"), paramRef("#/components/parameters/itemName"),
+			}, nil, map[string]any{"200": jsonRefResp("Ecommerce summary", "#/components/schemas/EcommerceSummary")}),
+		},
+		"/api/sites/{id}/ecommerce/timeseries": map[string]any{
+			"get": op([]string{"Sites"}, "Get ecommerce timeseries", "Returns revenue and order counts over time for a site.", secAnyAuth(), []any{
+				paramRef("#/components/parameters/siteID"), paramRef("#/components/parameters/from"), paramRef("#/components/parameters/to"),
+				paramRef("#/components/parameters/filter"), paramRef("#/components/parameters/filterType"), paramRef("#/components/parameters/filterValue"),
+				paramRef("#/components/parameters/itemID"), paramRef("#/components/parameters/itemName"),
+			}, nil, map[string]any{"200": jsonSchemaResp("Ecommerce timeseries", map[string]any{"type": "array", "items": map[string]any{"$ref": "#/components/schemas/EcommerceSeriesPoint"}})}),
+		},
+		"/api/sites/{id}/ecommerce/products": map[string]any{
+			"get": op([]string{"Sites"}, "Get top ecommerce products", "Returns top products by revenue from purchase events.", secAnyAuth(), []any{
+				paramRef("#/components/parameters/siteID"), paramRef("#/components/parameters/from"), paramRef("#/components/parameters/to"),
+				paramRef("#/components/parameters/filter"), paramRef("#/components/parameters/filterType"), paramRef("#/components/parameters/filterValue"),
+				paramRef("#/components/parameters/itemID"), paramRef("#/components/parameters/itemName"), paramRef("#/components/parameters/limit"),
+			}, nil, map[string]any{"200": jsonSchemaResp("Ecommerce products", map[string]any{"type": "array", "items": map[string]any{"$ref": "#/components/schemas/EcommerceProductStat"}})}),
+		},
+		"/api/sites/{id}/ecommerce/sources": map[string]any{
+			"get": op([]string{"Sites"}, "Get ecommerce sources", "Returns revenue and order counts grouped by UTM source, medium, campaign, and referrer.", secAnyAuth(), []any{
+				paramRef("#/components/parameters/siteID"), paramRef("#/components/parameters/from"), paramRef("#/components/parameters/to"),
+				paramRef("#/components/parameters/filter"), paramRef("#/components/parameters/filterType"), paramRef("#/components/parameters/filterValue"),
+				paramRef("#/components/parameters/itemID"), paramRef("#/components/parameters/itemName"), paramRef("#/components/parameters/limit"),
+			}, nil, map[string]any{"200": jsonSchemaResp("Ecommerce sources", map[string]any{"type": "array", "items": map[string]any{"$ref": "#/components/schemas/EcommerceSourceStat"}})}),
+		},
+		"/api/sites/{id}/ingest/ai-fetch": map[string]any{
+			"post": op([]string{"Sites"}, "Record AI fetch", "Accepts a server-side AI crawler fetch record for a site. The user agent must match a known AI bot. Intended for edge or log-forwarded fetch analytics.", secAnyAuth(), []any{
+				paramRef("#/components/parameters/siteID"),
+			}, jsonBody(map[string]any{"$ref": "#/components/schemas/AIFetchIngestPayload"}), map[string]any{
+				"202": desc("Accepted"),
+			}),
+		},
+		"/api/sites/{id}/ai-fetch/overview": map[string]any{
+			"get": op([]string{"Sites"}, "Get AI fetch overview", "Returns aggregate AI fetch metrics for a site including request counts, error rates, response time, assistant breakdowns, and resource type split.", secAnyAuth(), []any{
+				paramRef("#/components/parameters/siteID"), paramRef("#/components/parameters/from"), paramRef("#/components/parameters/to"),
+				map[string]any{"name": "assistant_name", "in": "query", "description": "Optional AI assistant bot name filter.", "schema": map[string]any{"type": "string"}},
+				map[string]any{"name": "assistant_family", "in": "query", "description": "Optional AI assistant family filter.", "schema": map[string]any{"type": "string"}},
+				map[string]any{"name": "resource_type", "in": "query", "description": "Optional AI fetch resource type filter.", "schema": map[string]any{"type": "string", "enum": []string{"html", "document", "image", "other"}}},
+				map[string]any{"name": "path", "in": "query", "description": "Optional exact fetched path filter.", "schema": map[string]any{"type": "string"}},
+			}, nil, map[string]any{"200": jsonRefResp("AI fetch overview", "#/components/schemas/AIFetchOverview")}),
+		},
+		"/api/sites/{id}/ai-fetch/timeseries": map[string]any{
+			"get": op([]string{"Sites"}, "Get AI fetch timeseries", "Returns AI fetch request counts over time for the selected site and filter set.", secAnyAuth(), []any{
+				paramRef("#/components/parameters/siteID"), paramRef("#/components/parameters/from"), paramRef("#/components/parameters/to"),
+				map[string]any{"name": "assistant_name", "in": "query", "description": "Optional AI assistant bot name filter.", "schema": map[string]any{"type": "string"}},
+				map[string]any{"name": "assistant_family", "in": "query", "description": "Optional AI assistant family filter.", "schema": map[string]any{"type": "string"}},
+				map[string]any{"name": "resource_type", "in": "query", "description": "Optional AI fetch resource type filter.", "schema": map[string]any{"type": "string", "enum": []string{"html", "document", "image", "other"}}},
+				map[string]any{"name": "path", "in": "query", "description": "Optional exact fetched path filter.", "schema": map[string]any{"type": "string"}},
+			}, nil, map[string]any{"200": jsonSchemaResp("AI fetch timeseries", map[string]any{"type": "array", "items": map[string]any{"$ref": "#/components/schemas/AIFetchSeriesPoint"}})}),
+		},
+		"/api/sites/{id}/ai-activity": map[string]any{
+			"get": op([]string{"Sites"}, "Get AI activity report", "Returns the unified AI activity report for a site: one merged view over tracked AI hits (classified at query time from the user agent and referrer) and server-log AI fetch records. Every count is tracked hits plus fetch records, and each row keeps the provenance split. Repeatable filter=type:value params narrow both sides where the dimension exists on both: ai_bot maps to the fetch assistant name, ai_bot_category to the fetch assistant category (falling back to the agent name for records ingested before that column existed), and path to both. An ai_source filter excludes the fetch side outright because fetch records carry no referrer, while hit-only dimensions such as country or device leave the fetch side unrestricted. The pageviews denominator applies the non-AI filters only. Repeatable goal_id and funnel_id parameters select session cohorts for tracked hits, pageviews, series, and comparison windows; fetch records are never cohort-filtered.", secAnyAuth(), []any{
+				paramRef("#/components/parameters/siteID"), paramRef("#/components/parameters/from"), paramRef("#/components/parameters/to"),
+				paramRef("#/components/parameters/filter"), paramRef("#/components/parameters/filterType"), paramRef("#/components/parameters/filterValue"),
+				paramRef("#/components/parameters/goalIDQuery"), paramRef("#/components/parameters/funnelIDQuery"),
+				map[string]any{"name": "compare_from", "in": "query", "description": "Start of an optional comparison window. Malformed values are ignored rather than rejected.", "schema": map[string]any{"type": "string", "format": "date-time"}},
+				map[string]any{"name": "compare_to", "in": "query", "description": "End of an optional comparison window.", "schema": map[string]any{"type": "string", "format": "date-time"}},
+			}, nil, map[string]any{"200": jsonRefResp("AI activity report", "#/components/schemas/AIActivityReport")}),
+		},
+		"/api/sites/{id}/ai-fetch/correlation": map[string]any{
+			"get": op([]string{"Sites"}, "Get AI fetch correlation report", "Returns directional AI fetch correlation metrics for a site by matching AI crawler fetches to later AI-referred visits on the same path within a bounded window. Assistant filters apply to the fetch side only; correlated visit counts include any AI assistant referrer that later drove a human visit to the same path.", secAnyAuth(), []any{
+				paramRef("#/components/parameters/siteID"), paramRef("#/components/parameters/from"), paramRef("#/components/parameters/to"),
+				map[string]any{"name": "assistant_name", "in": "query", "description": "Optional AI assistant bot name filter.", "schema": map[string]any{"type": "string"}},
+				map[string]any{"name": "assistant_family", "in": "query", "description": "Optional AI assistant family filter.", "schema": map[string]any{"type": "string"}},
+				map[string]any{"name": "resource_type", "in": "query", "description": "Optional AI fetch resource type filter.", "schema": map[string]any{"type": "string", "enum": []string{"html", "document", "image", "other"}}},
+				map[string]any{"name": "path", "in": "query", "description": "Optional exact fetched path filter.", "schema": map[string]any{"type": "string"}},
+				map[string]any{"name": "window_days", "in": "query", "description": "Directional correlation window in days. Must be between 1 and 90. Defaults to 30.", "schema": map[string]any{"type": "integer", "minimum": 1, "maximum": 90, "default": 30}},
+			}, nil, map[string]any{"200": jsonRefResp("AI fetch correlation report", "#/components/schemas/AIFetchCorrelationReport")}),
+		},
+		"/api/sites/{id}/ai-fetch/export": map[string]any{
+			"get": op([]string{"Sites"}, "Export AI fetch records", "Exports AI fetch records for the selected site and date range in csv/xlsx/parquet/json/ndjson. Optional assistant and resource filters restrict the export to a subset of crawler traffic.", secAnyAuth(), []any{
+				paramRef("#/components/parameters/siteID"),
+				paramRef("#/components/parameters/from"),
+				paramRef("#/components/parameters/to"),
+				paramRef("#/components/parameters/format"),
+				map[string]any{"name": "assistant_name", "in": "query", "description": "Optional AI assistant bot name filter.", "schema": map[string]any{"type": "string"}},
+				map[string]any{"name": "assistant_family", "in": "query", "description": "Optional AI assistant family filter.", "schema": map[string]any{"type": "string"}},
+				map[string]any{"name": "resource_type", "in": "query", "description": "Optional AI fetch resource type filter.", "schema": map[string]any{"type": "string", "enum": []string{"html", "document", "image", "other"}}},
+				map[string]any{"name": "path", "in": "query", "description": "Optional exact fetched path filter.", "schema": map[string]any{"type": "string"}},
+			}, nil, map[string]any{"200": desc("Export file stream")}),
+		},
+		"/api/sites/{id}/ai-chatbots/export": map[string]any{
+			"get": op([]string{"Sites"}, "Export AI chatbot events", "Exports AI chatbot instrumentation events for the selected site and date range in csv/xlsx/parquet/json/ndjson. Optional scope filters restrict the export to a single provider, bot, surface, or model. Repeatable hit-dimension filters restrict the export to matching audience sessions.", secAnyAuth(), []any{
+				paramRef("#/components/parameters/siteID"),
+				paramRef("#/components/parameters/from"),
+				paramRef("#/components/parameters/to"),
+				paramRef("#/components/parameters/format"),
+				paramRef("#/components/parameters/filter"),
+				map[string]any{"name": "scope_key", "in": "query", "description": "Optional chatbot scope filter key.", "schema": map[string]any{"type": "string", "enum": []string{"provider", "bot_id", "surface", "model"}}},
+				map[string]any{"name": "scope_value", "in": "query", "description": "Optional chatbot scope filter value. Requires scope_key.", "schema": map[string]any{"type": "string"}},
+			}, nil, map[string]any{"200": desc("Export file stream")}),
+		},
+		"/api/favicon/{domain}": map[string]any{
+			"get": op([]string{"Sites"}, "Get favicon", "Proxies favicon by domain.", nil, []any{paramRef("#/components/parameters/domain")}, nil, map[string]any{"200": desc("Favicon image")}),
+		},
+		"/api/ai-agents": map[string]any{
+			"get": op([]string{"Sites"}, "Get AI agent catalog", "Returns the embedded AI agent master list as display metadata including agent names, operator families, categories, and favicon-lookup hosts derived from each agent's documentation URL, plus the known AI referrer surfaces. The catalog is static per release.", secAnyAuth(), nil, nil, map[string]any{"200": jsonRefResp("AI agent catalog", "#/components/schemas/AIAgentCatalog")}),
+		},
+		"/api/sites/{id}/domain": map[string]any{
+			"put": op([]string{"Sites"}, "Rename site domain", "Renames the tracked domain of a site while keeping its analytics history. Requires site.manage_data (site admin or higher). The tracker only matches hits for the new domain after the rename.", secAnyAuth(), []any{paramRef("#/components/parameters/siteID")},
+				jsonBody(map[string]any{
+					"type":       "object",
+					"properties": map[string]any{"domain": map[string]any{"type": "string", "description": "Apex domain or subdomain without protocol, port, path, query, fragment, or www prefix (e.g. example.com or blog.example.com)."}},
+					"required":   []string{"domain"},
+				}),
+				map[string]any{
+					"200": jsonRefResp("Renamed site", "#/components/schemas/Site"),
+					"400": errResp("Invalid domain"),
+					"404": errResp("Site not found"),
+					"409": errResp("Domain already in use by another site"),
+				}),
+		},
+		"/api/sites/{id}/retention": map[string]any{
+			"put": op([]string{"Sites"}, "Update retention policy", "Updates per-site retention days.", secCookie(), []any{paramRef("#/components/parameters/siteID")},
+				jsonBody(map[string]any{"type": "object", "properties": map[string]any{"days": map[string]any{"type": "integer", "minimum": 0}}, "required": []string{"days"}}),
+				map[string]any{"200": desc("Updated")}),
+		},
+		"/api/sites/{id}/transfer-team": map[string]any{
+			"post": op([]string{"Sites"}, "Transfer site to another team", "Moves a site into another team the caller can administer and migrates analytics data to the destination tenant store.", secCookie(), []any{paramRef("#/components/parameters/siteID")},
+				jsonBody(map[string]any{
+					"type": "object",
+					"properties": map[string]any{
+						"team_id": map[string]any{"type": "string", "format": "uuid"},
+					},
+					"required": []string{"team_id"},
+				}),
+				map[string]any{
+					"200": jsonRefResp("Site transferred", "#/components/schemas/SiteTransferResponse"),
+					"403": errResp("Access denied"),
+				}),
+		},
+		"/api/sites/{id}/exclusions": map[string]any{
+			"get": op([]string{"Sites"}, "List site exclusions", "Lists traffic exclusions owned by the site. Set effective=true to include inherited instance and current-team rules in instance, team, site order, newest-first within each scope. Inherited rows are read-only and omit cross-scope creator IDs. Requires site data-control permission or the narrow instance site-exclusion permission.", secCookie(), []any{
+				paramRef("#/components/parameters/siteID"),
+				map[string]any{"name": "effective", "in": "query", "description": "Include inherited instance and current-team rules.", "schema": map[string]any{"type": "boolean", "default": false}},
+			}, nil,
+				map[string]any{"200": jsonSchemaResp("Site exclusions", map[string]any{"type": "array", "items": map[string]any{"$ref": "#/components/schemas/IPExclusion"}})}),
+			"post": op([]string{"Sites"}, "Create site exclusion", "Creates a forward-only CIDR, country, user-agent, or path exclusion for this site. Requires site data-control permission or the narrow instance site-exclusion permission.", secCookie(), []any{paramRef("#/components/parameters/siteID")},
+				jsonBody(map[string]any{"$ref": "#/components/schemas/IPExclusionCreateRequest"}),
+				map[string]any{"201": jsonRefResp("Created exclusion", "#/components/schemas/IPExclusion"), "400": errResp("Invalid exclusion rule")}),
+		},
+		"/api/sites/{id}/exclusions/{ruleID}": map[string]any{
+			"delete": op([]string{"Sites"}, "Delete site exclusion", "Deletes a rule owned by this site. Inherited instance or team rules returned by effective reads cannot be deleted through this route. Requires site data-control permission or the narrow instance site-exclusion permission.", secCookie(), []any{paramRef("#/components/parameters/siteID"), paramRef("#/components/parameters/ruleID")}, nil,
+				map[string]any{"204": desc("Deleted"), "404": errResp("Not found")}),
+		},
+
+		"/api/sites/{id}/goals": map[string]any{
+			"get": op([]string{"Goals"}, "List goals", "Lists goals for a site.", secAnyAuth(), []any{paramRef("#/components/parameters/siteID")}, nil, map[string]any{"200": jsonSchemaResp("Goals", map[string]any{"type": "array", "items": map[string]any{"$ref": "#/components/schemas/Goal"}})}),
+			"post": op([]string{"Goals"}, "Create goal", "Creates a conversion goal.", secCookie(), []any{paramRef("#/components/parameters/siteID")},
+				jsonBody(map[string]any{"$ref": "#/components/schemas/Goal"}),
+				map[string]any{"201": desc("Created")}),
+		},
+		"/api/sites/{id}/goals/{goalID}": map[string]any{
+			"put":    op([]string{"Goals"}, "Update goal", "Updates a site-scoped goal in place and invalidates its rollups.", secCookie(), []any{paramRef("#/components/parameters/siteID"), paramRef("#/components/parameters/goalID")}, jsonBody(map[string]any{"$ref": "#/components/schemas/Goal"}), map[string]any{"200": jsonRefResp("Updated goal", "#/components/schemas/Goal"), "404": errResp("Goal not found")}),
+			"delete": op([]string{"Goals"}, "Delete goal", "Deletes goal from site.", secCookie(), []any{paramRef("#/components/parameters/siteID"), paramRef("#/components/parameters/goalID")}, nil, map[string]any{"200": desc("Deleted")}),
+		},
+		"/api/sites/{id}/goals/timeseries": map[string]any{
+			"get": op([]string{"Goals"}, "Goal timeseries", "Returns goal conversion timeseries.", secAnyAuth(), []any{paramRef("#/components/parameters/siteID"), paramRef("#/components/parameters/from"), paramRef("#/components/parameters/to"), paramRef("#/components/parameters/goalIDQuery")}, nil,
+				map[string]any{"200": jsonSchemaResp("Goal timeseries", map[string]any{"type": "array", "items": map[string]any{"$ref": "#/components/schemas/GoalSeriesPoint"}})}),
+		},
+
+		"/api/sites/{id}/funnels": map[string]any{
+			"get": op([]string{"Funnels"}, "List funnels", "Lists funnels for a site.", secAnyAuth(), []any{paramRef("#/components/parameters/siteID")}, nil, map[string]any{"200": jsonSchemaResp("Funnels", map[string]any{"type": "array", "items": map[string]any{"$ref": "#/components/schemas/Funnel"}})}),
+			"post": op([]string{"Funnels"}, "Create funnel", "Creates a multi-step funnel.", secCookie(), []any{paramRef("#/components/parameters/siteID")},
+				jsonBody(map[string]any{"$ref": "#/components/schemas/Funnel"}),
+				map[string]any{"201": desc("Created")}),
+		},
+		"/api/sites/{id}/funnels/{funnelID}": map[string]any{
+			"put":    op([]string{"Funnels"}, "Update funnel", "Updates a site-scoped funnel in place and invalidates its rollups.", secCookie(), []any{paramRef("#/components/parameters/siteID"), paramRef("#/components/parameters/funnelID")}, jsonBody(map[string]any{"$ref": "#/components/schemas/Funnel"}), map[string]any{"200": jsonRefResp("Updated funnel", "#/components/schemas/Funnel"), "404": errResp("Funnel not found")}),
+			"delete": op([]string{"Funnels"}, "Delete funnel", "Deletes funnel from site.", secCookie(), []any{paramRef("#/components/parameters/siteID"), paramRef("#/components/parameters/funnelID")}, nil, map[string]any{"200": desc("Deleted")}),
+		},
+		"/api/sites/{id}/funnels/timeseries": map[string]any{
+			"get": op([]string{"Funnels"}, "Funnel timeseries", "Returns funnel entry/completion timeseries.", secAnyAuth(), []any{paramRef("#/components/parameters/siteID"), paramRef("#/components/parameters/from"), paramRef("#/components/parameters/to"), paramRef("#/components/parameters/funnelIDQuery")}, nil,
+				map[string]any{"200": jsonSchemaResp("Funnel timeseries", map[string]any{"type": "array", "items": map[string]any{"$ref": "#/components/schemas/FunnelSeriesPoint"}})}),
+		},
+		"/api/sites/{id}/funnels/{funnelID}/stats": map[string]any{
+			"get": op([]string{"Funnels"}, "Funnel stats", "Returns full funnel step stats.", secAnyAuth(), []any{paramRef("#/components/parameters/siteID"), paramRef("#/components/parameters/funnelID"), paramRef("#/components/parameters/from"), paramRef("#/components/parameters/to")}, nil,
+				map[string]any{"200": jsonRefResp("Funnel stats", "#/components/schemas/FunnelStats")}),
+		},
+
+		"/api/user/takeout": map[string]any{
+			"get": op([]string{"Takeout"}, "User takeout", "Exports all user data across sites as xlsx/csv/parquet/json/ndjson.", secCookie(), []any{paramRef("#/components/parameters/format")}, nil, map[string]any{"200": desc("Export file stream")}),
+		},
+		"/api/sites/{id}/takeout": map[string]any{
+			"get": op([]string{"Takeout"}, "Site takeout", "Exports site data as xlsx/csv/parquet/json/ndjson.", secCookie(), []any{paramRef("#/components/parameters/siteID"), paramRef("#/components/parameters/format")}, nil, map[string]any{"200": desc("Export file stream")}),
+		},
+
+		"/api/reports": map[string]any{
+			"get": op([]string{"Reports"}, "List reports", "Lists personal and team reports visible to the authenticated user, including schedule, recipients, next run, and last outcome.", secCookie(), nil, nil,
+				map[string]any{"200": jsonSchemaResp("Reports", map[string]any{"type": "array", "items": map[string]any{"$ref": "#/components/schemas/ReportDefinition"}})}),
+			"post": op([]string{"Reports"}, "Create report", "Creates a personal or authorized team report. Active reports require configured mail delivery.", secCookie(), nil,
+				jsonBody(map[string]any{"$ref": "#/components/schemas/ReportDefinitionInput"}),
+				map[string]any{"201": jsonRefResp("Created report", "#/components/schemas/ReportDefinition"), "400": errResp("Invalid report"), "409": errResp("Mail unavailable")}),
+		},
+		"/api/reports/preview": map[string]any{
+			"post": op([]string{"Reports"}, "Preview report", "Validates a draft report and returns its resolved schedule and reporting period without persisting rendered email content.", secCookie(), nil,
+				jsonBody(map[string]any{"type": "object", "properties": map[string]any{"definition": map[string]any{"$ref": "#/components/schemas/ReportDefinitionInput"}, "report_id": map[string]any{"type": "string", "format": "uuid"}}, "required": []string{"definition"}}),
+				map[string]any{"200": jsonRefResp("Report preview", "#/components/schemas/ReportPreview"), "400": errResp("Invalid report")}),
+		},
+		"/api/reports/{report_id}": map[string]any{
+			"get": op([]string{"Reports"}, "Get report", "Returns one report visible to the authenticated user.", secCookie(), []any{paramRef("#/components/parameters/reportID")}, nil,
+				map[string]any{"200": jsonRefResp("Report", "#/components/schemas/ReportDefinition"), "404": errResp("Not found")}),
+			"patch": op([]string{"Reports"}, "Update report", "Updates an owned personal report or an authorized team report and recalculates its next UTC run.", secCookie(), []any{paramRef("#/components/parameters/reportID")},
+				jsonBody(map[string]any{"$ref": "#/components/schemas/ReportDefinitionUpdate"}), map[string]any{"200": jsonRefResp("Updated report", "#/components/schemas/ReportDefinition"), "400": errResp("Invalid report"), "409": errResp("Mail unavailable")}),
+			"delete": op([]string{"Reports"}, "Delete report", "Deletes a manageable report and its delivery ledger.", secCookie(), []any{paramRef("#/components/parameters/reportID")}, nil,
+				map[string]any{"204": desc("Deleted"), "404": errResp("Not found")}),
+		},
+		"/api/reports/{report_id}/test-send": map[string]any{
+			"post": op([]string{"Reports"}, "Test report delivery", "Builds the current report content for its latest completed period and sends it only to the current user. Team tests are audited.", secCookie(), []any{paramRef("#/components/parameters/reportID")}, nil,
+				map[string]any{"200": jsonRefResp("Accepted by mail server", "#/components/schemas/ReportTestSendResponse"), "409": errResp("Mail unavailable"), "422": errResp("Report content unavailable or suppressed"), "502": errResp("Mail server did not accept message")}),
+		},
+		"/api/reports/{report_id}/runs": map[string]any{
+			"get": op([]string{"Reports"}, "List report runs", "Lists recent runs and recipient delivery outcomes without rendered bodies or raw SMTP errors.", secCookie(), []any{paramRef("#/components/parameters/reportID")}, nil,
+				map[string]any{"200": jsonSchemaResp("Report runs", map[string]any{"type": "array", "items": map[string]any{"$ref": "#/components/schemas/ReportRun"}})}),
+		},
+		"/api/reports/{report_id}/resubscribe": map[string]any{
+			"post": op([]string{"Reports"}, "Resubscribe to report", "Clears the current user's opt-out for this report. Team managers cannot resubscribe another recipient.", secCookie(), []any{paramRef("#/components/parameters/reportID")}, nil,
+				map[string]any{"204": desc("Resubscribed"), "404": errResp("Not found")}),
+		},
+		"/api/reports/{report_id}/recipients/{recipient_id}/confirmation": map[string]any{
+			"post": op([]string{"Reports"}, "Resend external recipient confirmation", "Rotates and resends an external recipient's confirmation token. Requires team owner or admin access and enforces a 15-minute cooldown.", secCookie(), []any{paramRef("#/components/parameters/reportID"), paramRef("#/components/parameters/reportRecipientID")}, nil,
+				map[string]any{"202": desc("Confirmation accepted by mail server"), "404": errResp("Not found"), "409": errResp("Mail unavailable"), "429": errResp("Confirmation sent recently"), "502": errResp("Mail server did not accept message")}),
+		},
+		"/api/report-recipient-confirmations/{opaque_token}": map[string]any{
+			"get": op([]string{"Reports"}, "Inspect report recipient confirmation", "Returns non-sensitive team, report, cadence, site-domain, and expiry metadata without changing consent.", nil, []any{paramRef("#/components/parameters/reportConfirmationToken")}, nil,
+				map[string]any{"200": jsonRefResp("Confirmation metadata", "#/components/schemas/ReportRecipientConfirmation"), "400": errResp("Invalid confirmation"), "410": errResp("Expired confirmation")}),
+			"post": op([]string{"Reports"}, "Decide report recipient confirmation", "Confirms or declines external report delivery by explicit POST. The token is single-use.", nil, []any{paramRef("#/components/parameters/reportConfirmationToken")},
+				jsonBody(map[string]any{"type": "object", "properties": map[string]any{"action": map[string]any{"type": "string", "enum": []string{"confirm", "decline"}}}, "required": []string{"action"}}),
+				map[string]any{"204": desc("Consent decision recorded"), "400": errResp("Invalid confirmation"), "410": errResp("Expired confirmation")}),
+		},
+		"/api/report-runs/{run_id}/retry": map[string]any{
+			"post": op([]string{"Reports"}, "Retry failed report run", "Queues failed deliveries from a manageable report run for retry with the stable message ID.", secCookie(), []any{paramRef("#/components/parameters/reportRunID")}, nil,
+				map[string]any{"202": desc("Retry queued"), "409": errResp("Mail unavailable"), "404": errResp("Not found")}),
+		},
+		"/api/reports/unsubscribe/{opaque_token}": map[string]any{
+			"get": op([]string{"Reports"}, "Unsubscribe from report", "Visible unsubscribe target that opts the signed recipient out of one report.", nil, []any{paramRef("#/components/parameters/unsubscribeToken")}, nil,
+				map[string]any{"200": desc("Unsubscribed"), "400": errResp("Invalid token")}),
+			"post": op([]string{"Reports"}, "One-click unsubscribe", "RFC 8058 one-click unsubscribe endpoint. The opaque token is signed and only its hash is stored.", nil, []any{paramRef("#/components/parameters/unsubscribeToken")}, nil,
+				map[string]any{"204": desc("Unsubscribed"), "400": errResp("Invalid token")}),
+		},
+
+		"/api/sites/{id}/share": map[string]any{
+			"get": op([]string{"Share"}, "List share links", "Lists share links for site.", secCookie(), []any{paramRef("#/components/parameters/siteID")}, nil, map[string]any{"200": jsonSchemaResp("Share links", map[string]any{"type": "array", "items": map[string]any{"$ref": "#/components/schemas/ShareLink"}})}),
+			"post": op([]string{"Share"}, "Create share link", "Creates new read-only share token URL.", secCookie(), []any{paramRef("#/components/parameters/siteID")}, nil,
+				map[string]any{"200": jsonSchemaResp("Share link created", map[string]any{"type": "object", "properties": map[string]any{"id": map[string]any{"type": "string", "format": "uuid"}, "url": map[string]any{"type": "string"}, "token": map[string]any{"type": "string"}, "token_hint": map[string]any{"type": "string"}, "created_at": map[string]any{"type": "string", "format": "date-time"}}})}),
+		},
+		"/api/sites/{id}/share/{shareID}": map[string]any{
+			"delete": op([]string{"Share"}, "Delete share link", "Revokes a share link.", secCookie(), []any{paramRef("#/components/parameters/siteID"), paramRef("#/components/parameters/shareID")}, nil, map[string]any{"204": desc("Deleted")}),
+		},
+		"/api/share/{token}/site": map[string]any{
+			"get": op([]string{"Share"}, "Get shared site", "Gets site metadata from share token.", nil, []any{paramRef("#/components/parameters/token")}, nil, map[string]any{"200": jsonRefResp("Site", "#/components/schemas/Site")}),
+		},
+		"/api/share/{token}/sites/{id}/stats": map[string]any{
+			"get": op([]string{"Share"}, "Shared site stats", "Returns stats through share token.", nil, []any{paramRef("#/components/parameters/token"), paramRef("#/components/parameters/siteID"), paramRef("#/components/parameters/from"), paramRef("#/components/parameters/to"), paramRef("#/components/parameters/filter"), paramRef("#/components/parameters/filterType"), paramRef("#/components/parameters/filterValue"), paramRef("#/components/parameters/goalIDQuery"), paramRef("#/components/parameters/funnelIDQuery")}, nil, map[string]any{"200": jsonRefResp("Site stats", "#/components/schemas/SiteStats")}),
+		},
+		"/api/share/{token}/sites/{id}/opportunities": map[string]any{
+			"get": op([]string{"Share"}, "Shared opportunities", "Lists saved opportunity recommendations through a read-only share token. Returns only validated customer-visible outputs with cited evidence.", nil, []any{paramRef("#/components/parameters/token"), paramRef("#/components/parameters/siteID")}, nil,
+				map[string]any{"200": jsonRefResp("Opportunity list", "#/components/schemas/SharedOpportunityListResponse")}),
+		},
+		"/api/share/{token}/sites/{id}/ai-activity": map[string]any{
+			"get": op([]string{"Share"}, "Shared AI activity report", "Returns the unified AI activity report through a read-only share token, including the server-log fetch side: the query runs under the token grant for the shared site. Repeatable goal_id and funnel_id parameters select session cohorts for tracked hits, pageviews, series, and comparison windows; fetch records are never cohort-filtered.", nil, []any{
+				paramRef("#/components/parameters/token"), paramRef("#/components/parameters/siteID"), paramRef("#/components/parameters/from"), paramRef("#/components/parameters/to"),
+				paramRef("#/components/parameters/filter"), paramRef("#/components/parameters/filterType"), paramRef("#/components/parameters/filterValue"),
+				paramRef("#/components/parameters/goalIDQuery"), paramRef("#/components/parameters/funnelIDQuery"),
+				map[string]any{"name": "compare_from", "in": "query", "description": "Start of an optional comparison window. Malformed values are ignored rather than rejected.", "schema": map[string]any{"type": "string", "format": "date-time"}},
+				map[string]any{"name": "compare_to", "in": "query", "description": "End of an optional comparison window.", "schema": map[string]any{"type": "string", "format": "date-time"}},
+			}, nil, map[string]any{"200": jsonRefResp("AI activity report", "#/components/schemas/AIActivityReport")}),
+		},
+		"/api/share/{token}/sites/{id}/hits": map[string]any{
+			"get": op([]string{"Share"}, "Shared hits", "Returns paginated raw hits through share token.", nil, []any{paramRef("#/components/parameters/token"), paramRef("#/components/parameters/siteID"), paramRef("#/components/parameters/from"), paramRef("#/components/parameters/to"), paramRef("#/components/parameters/limit"), paramRef("#/components/parameters/offset"), paramRef("#/components/parameters/query"), paramRef("#/components/parameters/sort"), paramRef("#/components/parameters/order"), paramRef("#/components/parameters/filter"), paramRef("#/components/parameters/filterType"), paramRef("#/components/parameters/filterValue"), paramRef("#/components/parameters/goalIDQuery"), paramRef("#/components/parameters/funnelIDQuery")}, nil, map[string]any{"200": jsonRefResp("Paginated hits", "#/components/schemas/PaginatedHits")}),
+		},
+		"/api/share/{token}/sites/{id}/hits/export": map[string]any{
+			"get": op([]string{"Share"}, "Export shared hits", "Exports hits through share token in csv/xlsx/parquet/json/ndjson.", nil, []any{paramRef("#/components/parameters/token"), paramRef("#/components/parameters/siteID"), paramRef("#/components/parameters/from"), paramRef("#/components/parameters/to"), paramRef("#/components/parameters/query"), paramRef("#/components/parameters/filter"), paramRef("#/components/parameters/filterType"), paramRef("#/components/parameters/filterValue"), paramRef("#/components/parameters/goalIDQuery"), paramRef("#/components/parameters/funnelIDQuery"), paramRef("#/components/parameters/format")}, nil, map[string]any{"200": desc("Export file stream")}),
+		},
+		"/api/share/{token}/sites/{id}/realtime": map[string]any{
+			"get": internalOp(op([]string{"Share"}, "Stream shared realtime changes", "Streams privacy-safe site-scoped analytics invalidation events through a read-only share token using server-sent events.", nil, []any{paramRef("#/components/parameters/token"), paramRef("#/components/parameters/siteID")}, nil,
+				map[string]any{"200": desc("Server-sent event stream with analytics.changed and analytics.resync events")})),
+		},
+		"/api/share/{token}/sites/{id}/events/names": map[string]any{
+			"get": op([]string{"Share"}, "Shared event names", "Lists event names through share token.", nil, eventRangeParams(paramRef("#/components/parameters/token"), paramRef("#/components/parameters/siteID")), nil,
+				map[string]any{"200": jsonSchemaResp("Event names", map[string]any{"type": "array", "items": map[string]any{"type": "string"}})}),
+		},
+		"/api/share/{token}/sites/{id}/events/properties": map[string]any{
+			"get": op([]string{"Share"}, "Shared event property keys", "Lists event property keys through share token.", nil, eventNameParams(paramRef("#/components/parameters/token"), paramRef("#/components/parameters/siteID")), nil,
+				map[string]any{"200": jsonSchemaResp("Event property keys", map[string]any{"type": "array", "items": map[string]any{"type": "string"}})}),
+		},
+		"/api/share/{token}/sites/{id}/events/breakdown": map[string]any{
+			"get": op([]string{"Share"}, "Shared event property breakdown", "Returns event property value breakdown through share token.", nil, append(eventNameParams(paramRef("#/components/parameters/token"), paramRef("#/components/parameters/siteID")), paramRef("#/components/parameters/eventPropertyKeyRequired")), nil,
+				map[string]any{"200": jsonSchemaResp("Event property breakdown", map[string]any{"type": "array", "items": map[string]any{"$ref": "#/components/schemas/MetricStat"}})}),
+		},
+		"/api/share/{token}/sites/{id}/events/timeseries": map[string]any{
+			"get": op([]string{"Share"}, "Shared event timeseries", "Returns event timeseries through share token. Optional property filters and repeatable filter=type:value hit-dimension filters restrict the sessions counted.", nil, eventFilteredParams(paramRef("#/components/parameters/token"), paramRef("#/components/parameters/siteID")), nil,
+				map[string]any{"200": jsonSchemaResp("Event timeseries", map[string]any{"type": "array", "items": map[string]any{"$ref": "#/components/schemas/EventSeriesPoint"}})}),
+		},
+		"/api/share/{token}/sites/{id}/events/audience": map[string]any{
+			"get": op([]string{"Share"}, "Shared event audience", "Returns event audience through share token, including aggregate pages, referrers, devices, countries, cities, providers, and ASNs. Optional property filters and repeatable filter=type:value hit-dimension filters restrict the sessions included.", nil, eventFilteredParams(paramRef("#/components/parameters/token"), paramRef("#/components/parameters/siteID")), nil,
+				map[string]any{"200": jsonRefResp("Event audience", "#/components/schemas/EventAudience")}),
+		},
+		"/api/share/{token}/sites/{id}/goals": map[string]any{
+			"get": op([]string{"Share"}, "Shared goals", "Lists goals through share token.", nil, []any{paramRef("#/components/parameters/token"), paramRef("#/components/parameters/siteID")}, nil, map[string]any{"200": jsonSchemaResp("Goals", map[string]any{"type": "array", "items": map[string]any{"$ref": "#/components/schemas/Goal"}})}),
+		},
+		"/api/share/{token}/sites/{id}/goals/timeseries": map[string]any{
+			"get": op([]string{"Share"}, "Shared goal timeseries", "Returns goal timeseries through share token.", nil, []any{paramRef("#/components/parameters/token"), paramRef("#/components/parameters/siteID"), paramRef("#/components/parameters/from"), paramRef("#/components/parameters/to"), paramRef("#/components/parameters/goalIDQuery")}, nil, map[string]any{"200": jsonSchemaResp("Goal timeseries", map[string]any{"type": "array", "items": map[string]any{"$ref": "#/components/schemas/GoalSeriesPoint"}})}),
+		},
+		"/api/share/{token}/sites/{id}/funnels": map[string]any{
+			"get": op([]string{"Share"}, "Shared funnels", "Lists funnels through share token.", nil, []any{paramRef("#/components/parameters/token"), paramRef("#/components/parameters/siteID")}, nil, map[string]any{"200": jsonSchemaResp("Funnels", map[string]any{"type": "array", "items": map[string]any{"$ref": "#/components/schemas/Funnel"}})}),
+		},
+		"/api/share/{token}/sites/{id}/funnels/timeseries": map[string]any{
+			"get": op([]string{"Share"}, "Shared funnel timeseries", "Returns funnel timeseries through share token.", nil, []any{paramRef("#/components/parameters/token"), paramRef("#/components/parameters/siteID"), paramRef("#/components/parameters/from"), paramRef("#/components/parameters/to"), paramRef("#/components/parameters/funnelIDQuery")}, nil, map[string]any{"200": jsonSchemaResp("Funnel timeseries", map[string]any{"type": "array", "items": map[string]any{"$ref": "#/components/schemas/FunnelSeriesPoint"}})}),
+		},
+		"/api/share/{token}/sites/{id}/funnels/{funnelID}/stats": map[string]any{
+			"get": op([]string{"Share"}, "Shared funnel stats", "Returns funnel stats through share token.", nil, []any{paramRef("#/components/parameters/token"), paramRef("#/components/parameters/siteID"), paramRef("#/components/parameters/funnelID"), paramRef("#/components/parameters/from"), paramRef("#/components/parameters/to")}, nil, map[string]any{"200": jsonRefResp("Funnel stats", "#/components/schemas/FunnelStats")}),
+		},
+	}
+}
+
+func activationQueryParams() []any {
+	return []any{
+		map[string]any{"name": "status", "in": "query", "schema": map[string]any{"type": "string", "enum": []string{"waiting", "live", "dormant", "domain_mismatch"}}},
+		map[string]any{"name": "team", "in": "query", "schema": map[string]any{"type": "string"}},
+		map[string]any{"name": "domain", "in": "query", "schema": map[string]any{"type": "string"}},
+		map[string]any{"name": "last_seen_from", "in": "query", "schema": map[string]any{"type": "string", "format": "date-time"}},
+		map[string]any{"name": "last_seen_to", "in": "query", "schema": map[string]any{"type": "string", "format": "date-time"}},
+		paramRef("#/components/parameters/limit"),
+		paramRef("#/components/parameters/offset"),
+	}
+}
+
+func instanceAuditQueryParams(includeFormat bool) []any {
+	params := []any{
+		map[string]any{"name": "action", "in": "query", "schema": map[string]any{"type": "string"}, "description": "Optional exact action filter."},
+		map[string]any{"name": "target_type", "in": "query", "schema": map[string]any{"type": "string"}, "description": "Optional target type filter."},
+		map[string]any{"name": "outcome", "in": "query", "schema": map[string]any{"type": "string"}, "description": "Optional outcome filter, for example success or failure."},
+		map[string]any{"name": "actor_id", "in": "query", "schema": map[string]any{"type": "string", "format": "uuid"}, "description": "Optional actor user ID filter."},
+		map[string]any{"name": "from", "in": "query", "schema": map[string]any{"type": "string", "format": "date-time"}, "description": "Optional RFC3339 lower time bound."},
+		map[string]any{"name": "to", "in": "query", "schema": map[string]any{"type": "string", "format": "date-time"}, "description": "Optional RFC3339 upper time bound."},
+		map[string]any{"name": "query", "in": "query", "schema": map[string]any{"type": "string"}, "description": "Optional free-text search over action, actor, target, outcome, IP, request ID, and details."},
+	}
+	if includeFormat {
+		params = append(params,
+			map[string]any{"name": "format", "in": "query", "schema": map[string]any{"type": "string", "enum": []string{"json", "csv"}}, "description": "Export format. Defaults to json."},
+			map[string]any{"name": "limit", "in": "query", "schema": map[string]any{"type": "integer", "minimum": 1, "maximum": 50000}, "description": "Maximum number of exported rows. Defaults to 10000."},
+		)
+	} else {
+		params = append(params,
+			map[string]any{"name": "limit", "in": "query", "schema": map[string]any{"type": "integer", "minimum": 1, "maximum": 200}, "description": "Maximum number of rows to return."},
+			map[string]any{"name": "offset", "in": "query", "schema": map[string]any{"type": "integer", "minimum": 0}, "description": "Zero-based row offset."},
+		)
+	}
+	return params
+}

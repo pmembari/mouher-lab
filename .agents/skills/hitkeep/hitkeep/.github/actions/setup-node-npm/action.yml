@@ -1,0 +1,38 @@
+name: Setup canonical Node and npm
+description: Install and verify the exact Node.js and npm versions declared by HitKeep
+
+runs:
+  using: composite
+  steps:
+    - name: Setup canonical Node.js
+      uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+      with:
+        node-version-file: frontend/dashboard/.node-version
+        package-manager-cache: false
+    - name: Restore npm download cache
+      uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+      with:
+        path: ~/.npm
+        key: npm-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('frontend/dashboard/.node-version', 'frontend/dashboard/package.json', 'frontend/dashboard/package-lock.json') }}
+        restore-keys: |
+          npm-${{ runner.os }}-${{ runner.arch }}-
+    - name: Install canonical npm
+      shell: bash
+      run: | # zizmor: ignore[adhoc-packages] npm is the bootstrapped tool and its exact version comes from repository policy.
+        set -euo pipefail
+        toolchain="$(./hk ci toolchain --output json)"
+        expected_node="$(jq -r '.data.node' <<<"$toolchain")"
+        expected_npm="$(jq -r '.data.npm' <<<"$toolchain")"
+        actual_node="$(node --version)"
+        actual_node="${actual_node#v}"
+        if [[ "$actual_node" != "$expected_node" ]]; then
+          echo "Node.js $actual_node does not match canonical version $expected_node" >&2
+          exit 1
+        fi
+        cd "$RUNNER_TEMP"
+        npm install --global "npm@${expected_npm}" --no-audit --no-fund
+        actual_npm="$(npm --version)"
+        if [[ "$actual_npm" != "$expected_npm" ]]; then
+          echo "npm $actual_npm does not match canonical version $expected_npm" >&2
+          exit 1
+        fi

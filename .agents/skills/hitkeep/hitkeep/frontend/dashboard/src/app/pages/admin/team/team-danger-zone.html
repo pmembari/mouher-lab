@@ -1,0 +1,60 @@
+@if (team(); as t) {
+<div class="grid gap-4">
+    <app-settings-card titleId="team-danger-leave-heading" [title]="'admin.team.settings.leaveSectionTitle' | transloco" [subtitle]="'admin.team.settings.leaveSectionDescription' | transloco" icon="pi pi-sign-out" tone="danger">
+        @if (leaveSuccessKey() || leaveErrorKey()) {
+        <div settings-card-body class="grid gap-3">
+            @if (leaveSuccessKey(); as key) {
+            <p-message severity="success">{{ key | transloco }}</p-message>
+            } @if (leaveErrorKey(); as key) {
+            <p-message severity="error">{{ key | transloco }}</p-message>
+            }
+        </div>
+        }
+        <div settings-card-footer>
+            <p-button severity="danger" icon="pi pi-sign-out" [label]="'admin.team.settings.leaveAction' | transloco" [loading]="isLeaving()" [disabled]="isBusy()" (onClick)="openConfirmDialog('leave')" />
+        </div>
+    </app-settings-card>
+
+    @if (canArchive()) {
+    <app-settings-card
+        titleId="team-danger-archive-heading"
+        [title]="'admin.team.settings.archiveSectionTitle' | transloco"
+        [subtitle]="('admin.team.settings.archiveSectionDescription' | transloco) + ' ' + ('admin.team.settings.archiveSectionHint' | transloco)"
+        icon="pi pi-box"
+        tone="danger"
+    >
+        @if (archiveSuccessKey() || archiveErrorKey()) {
+        <div settings-card-body class="grid gap-3">
+            @if (archiveSuccessKey(); as key) {
+            <p-message severity="success">{{ key | transloco }}</p-message>
+            } @if (archiveErrorKey(); as key) {
+            <p-message severity="error">{{ key | transloco }}</p-message>
+            }
+        </div>
+        }
+        <div settings-card-footer>
+            <p-button severity="danger" icon="pi pi-box" [label]="'admin.team.settings.archiveAction' | transloco" [loading]="isArchiving()" [disabled]="isBusy()" (onClick)="openConfirmDialog('archive')" />
+        </div>
+    </app-settings-card>
+    }
+
+    <app-dialog-shell
+        [title]="confirmTitleKey() | transloco"
+        [visible]="confirmDialogVisible()"
+        [busy]="isBusy()"
+        role="alertdialog"
+        [secondaryLabel]="'common.actions.cancel' | transloco"
+        [primaryLabel]="confirmActionKey() | transloco"
+        primarySeverity="danger"
+        [primaryDisabled]="!canSubmitConfirm()"
+        [primaryLoading]="isBusy()"
+        (visibleChange)="onConfirmDialogVisibleChange($event)"
+        (primaryAction)="runConfirmedAction()"
+    >
+        <div class="site-settings-field">
+            <label for="team-danger-confirm">{{ "admin.team.danger.confirmNameLabel" | transloco: { name: t.name } }}</label>
+            <input id="team-danger-confirm" pInputText class="w-full" [ngModel]="confirmValue()" (ngModelChange)="confirmValue.set($event)" [placeholder]="t.name" autocomplete="off" />
+        </div>
+    </app-dialog-shell>
+</div>
+}

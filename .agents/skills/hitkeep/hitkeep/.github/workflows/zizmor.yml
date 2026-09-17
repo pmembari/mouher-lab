@@ -1,0 +1,44 @@
+name: GitHub Actions Security Analysis
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  zizmor:
+    name: Run zizmor
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup Go
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: go.mod
+          cache: false
+
+      - name: Resolve canonical zizmor version
+        id: tool-version
+        shell: bash
+        run: |
+          echo "version=$(jq -r '.zizmor' internal/devtool/tool-versions.json)" >> "$GITHUB_OUTPUT"
+          ./hk ci qa-matrix --profile pr --group zizmor --output json >/dev/null
+
+      - name: Run zizmor
+        uses: zizmorcore/zizmor-action@70fb788f84895a7701f5643d103d587e460b5c99 # v0.6.3
+        with:
+          advanced-security: false
+          annotations: true
+          version: ${{ steps.tool-version.outputs.version }}

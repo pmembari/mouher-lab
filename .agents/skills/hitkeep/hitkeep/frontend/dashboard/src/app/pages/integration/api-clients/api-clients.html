@@ -1,0 +1,14 @@
+<div class="flex flex-col w-full">
+    <app-page-header>
+        <ng-template appPageHeaderLeft>
+            <div>
+                <app-page-breadcrumb [items]="breadcrumbItems()" />
+                <p class="text-sm text-[var(--p-text-muted-color)]">{{ "integration.apiClients.subtitle" | transloco }}</p>
+            </div>
+        </ng-template>
+    </app-page-header>
+
+    <div class="integration-content max-w-5xl mx-auto w-full">
+        <app-settings-api-clients [showTeamClientsLink]="canManageTeamAPIClients()" />
+    </div>
+</div>

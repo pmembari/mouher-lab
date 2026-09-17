@@ -1,0 +1,93 @@
+<app-page-frame [breadcrumbItems]="breadcrumbItems()">
+    <app-report-range-toolbar [loading]="false">
+        @if (canManageActiveSite()) {
+        <p-button
+            toolbar-right
+            size="small"
+            severity="secondary"
+            icon="pi pi-refresh"
+            [outlined]="true"
+            [label]="isGenerating() ? ('opportunities.actions.generating' | transloco) : ('opportunities.actions.generate' | transloco)"
+            [ariaLabel]="'opportunities.actions.generate' | transloco"
+            [loading]="isGenerating()"
+            (onClick)="refreshOpportunities()"
+        />
+        }
+    </app-report-range-toolbar>
+
+    @if (siteService.isLoading()) {
+    <div class="opportunities-loading">
+        <i class="pi pi-spin pi-spinner" aria-hidden="true"></i>
+        <span>{{ "common.loadingSiteData" | transloco }}</span>
+    </div>
+    } @else if (siteService.activeSite()) { @if (errorState() !== 'idle') {
+    <p-message severity="error" [text]="('opportunities.errors.' + errorState()) | transloco" />
+    }
+
+    <div class="opportunities-shell">
+        <app-opportunity-filter-rail
+            [ariaLabel]="'opportunities.filters.ariaLabel' | transloco"
+            [typeTitle]="'opportunities.filters.typeTitle' | transloco"
+            [statusTitle]="'opportunities.filters.statusTitle' | transloco"
+            [typeItems]="typeFilterItems()"
+            [statusItems]="statusFilterItems()"
+            (typeSelected)="setTypeFilter($event)"
+            (statusSelected)="setStatusFilter($event)"
+        />
+
+        <main class="opportunities-inbox" [attr.aria-label]="'opportunities.inbox.ariaLabel' | transloco">
+            <div class="opportunities-inbox__header">
+                <div>
+                    <h2>{{ "opportunities.inbox.title" | transloco }}</h2>
+                    <p>{{ "opportunities.inbox.subtitle" | transloco: { count: visibleOpportunityViews().length } }}</p>
+                </div>
+                @if (aiStatus()) {
+                <p-tag [value]="aiStatusLabel()" [severity]="aiStatusSeverity()" [icon]="aiStatusIcon()" />
+                }
+            </div>
+            @if (aiStatusMessageKey(); as messageKey) {
+            <p-message styleClass="opportunities-ai-message" [severity]="aiStatusMessageSeverity()" [text]="messageKey | transloco" />
+            } @if (visibleOpportunityViews().length) {
+            <div class="opportunities-list">
+                @for (opportunity of visibleOpportunityViews(); track opportunity.id) {
+                <app-opportunity-card
+                    [opportunity]="opportunity"
+                    [canManage]="canManageActiveSite()"
+                    [pending]="pendingStatusId() === opportunity.id"
+                    [priorityLabel]="'opportunities.card.priority' | transloco"
+                    [saveLabel]="'opportunities.actions.save' | transloco"
+                    [inspectLabel]="'opportunities.actions.inspect' | transloco"
+                    (saveClicked)="setStatus($event, 'saved')"
+                    (inspectClicked)="openOpportunity($event)"
+                />
+                }
+            </div>
+            } @else {
+            <app-empty-state icon="pi-inbox" [title]="'opportunities.empty.title' | transloco" [description]="'opportunities.empty.body' | transloco" />
+            }
+        </main>
+    </div>
+    } @else {
+    <app-empty-state icon="pi-sparkles" [title]="'common.noSiteSelected' | transloco" [description]="'opportunities.noSiteDescription' | transloco" />
+    }
+</app-page-frame>
+
+<app-opportunity-detail-drawer
+    [visible]="isDetailOpen()"
+    [opportunity]="selectedOpportunityView()"
+    [canManage]="canManageActiveSite()"
+    [estimatedImpactLabel]="'opportunities.detail.estimatedImpact' | transloco"
+    [priorityScoreLabel]="'opportunities.detail.priorityScore' | transloco"
+    [priorityHintLabel]="'opportunities.detail.priorityHint' | transloco"
+    [whyLabel]="'opportunities.detail.why' | transloco"
+    [nextBestActionLabel]="'opportunities.detail.nextBestAction' | transloco"
+    [markDoneLabel]="'opportunities.actions.markDone' | transloco"
+    [saveLabel]="'opportunities.actions.save' | transloco"
+    [dismissLabel]="'opportunities.actions.dismiss' | transloco"
+    [readOnlyLabel]="'opportunities.detail.readOnly' | transloco"
+    [pending]="selectedOpportunityView()?.id === pendingStatusId()"
+    (visibleChange)="isDetailOpen.set($event)"
+    (markDoneClicked)="setStatus($event, 'done')"
+    (saveClicked)="setStatus($event, 'saved')"
+    (dismissClicked)="setStatus($event, 'dismissed')"
+/>

@@ -1,0 +1,3880 @@
+{
+  "nav": {
+    "mainSidebarAria": "Main sidebar",
+    "primaryNavigationAria": "Primary navigation",
+    "contentAreaAria": "Content area",
+    "analytics": "Analytics",
+    "overview": "Overview",
+    "integration": "Integration",
+    "dashboardAria": "Go to dashboard",
+    "overviewAria": "Go to site overview",
+    "opportunitiesAria": "Go to opportunities",
+    "goalsAria": "Go to goals",
+    "funnelsAria": "Go to funnels",
+    "eventsAria": "Go to events",
+    "events": "Events",
+    "aiAgents": "AI Agents",
+    "aiChatbots": "Chatbots",
+    "utmAria": "Go to UTM dashboard",
+    "utmBuilder": "UTM Builder",
+    "utmBuilderAria": "Go to UTM Builder",
+    "apiClientsAria": "Go to API clients",
+    "apiReferenceAria": "Go to API reference",
+    "dashboard": "Dashboard",
+    "opportunities": "Opportunities",
+    "goals": "Goals",
+    "funnels": "Funnels",
+    "utm": "UTM",
+    "apiClients": "API Clients",
+    "webhooks": "Webhooks",
+    "apiReference": "API Reference",
+    "expandItem": "Expand {{item}}",
+    "collapseItem": "Collapse {{item}}",
+    "imports": "Imports",
+    "importsAria": "Go to imports",
+    "importExport": "Import & Export",
+    "importExportAria": "Go to import and export",
+    "account": "Account",
+    "resources": "Resources",
+    "docs": "Docs",
+    "docsAria": "Open HitKeep docs in a new tab",
+    "support": "Support",
+    "supportAria": "Open HitKeep support in a new tab",
+    "settings": "Settings",
+    "settingsAria": "Go to settings",
+    "emailReports": "Reporting",
+    "emailReportsAria": "Go to reporting",
+    "administration": "Administration",
+    "systemSettings": "System Settings",
+    "systemSettingsAria": "Go to system settings",
+    "teamOverview": "Team Overview",
+    "teamOverviewAria": "Go to team overview",
+    "teamMembers": "Team Members",
+    "teamMembersAria": "Go to team members",
+    "team": "Team",
+    "teamAria": "Go to team management",
+    "teamSectionToggleAria": "Toggle team navigation",
+    "teamSettings": "Team Settings",
+    "teamSettingsAria": "Go to team settings",
+    "ecommerce": "Ecommerce",
+    "ecommerceAria": "Go to ecommerce analytics",
+    "systemStatus": "System status",
+    "systemStatusAria": "Go to system status",
+    "googleSearchConsole": "Search Console",
+    "googleSearchConsoleAria": "Go to Google Search Console integration",
+    "webVitals": "Web Vitals",
+    "webVitalsAria": "Open Web Vitals analytics",
+    "qrCodes": "QR codes"
+  },
+  "overview": {
+    "title": "Overview",
+    "toolbarAria": "Site overview controls",
+    "gridAria": "Sites overview",
+    "chartAria": "Traffic trend for {{site}}",
+    "searchPlaceholder": "Filter sites",
+    "searchLabel": "Filter sites",
+    "sortLabel": "Sort sites",
+    "sort": {
+      "domain": "Name",
+      "pageviews": "Pageviews",
+      "visitors": "Visitors"
+    },
+    "metrics": {
+      "pageviews": "Pageviews",
+      "visitors": "Visitors",
+      "bounceRate": "Bounce"
+    },
+    "actions": {
+      "addSite": "Add site",
+      "openDashboard": "Open dashboard",
+      "openDashboardFor": "Open dashboard for {{site}}"
+    },
+    "empty": {
+      "noSitesTitle": "No sites yet",
+      "noSitesDescription": "Add a site to start collecting analytics.",
+      "noMatchesTitle": "No matching sites",
+      "noMatchesDescription": "Adjust the filter to show more sites.",
+      "noTraffic": "No traffic"
+    },
+    "errors": {
+      "siteStatsFailed": "Stats unavailable"
+    }
+  },
+  "applicationError": {
+    "loading": {
+      "title": "Loading HitKeep",
+      "message": "Checking the application status and preparing your workspace."
+    },
+    "routeUnavailable": {
+      "title": "This page could not be opened",
+      "message": "Navigation stopped before the page was ready. Reload HitKeep and try again."
+    },
+    "notFound": {
+      "title": "Page not found",
+      "message": "The address may be outdated or the page may have moved."
+    },
+    "offline": {
+      "title": "HitKeep is unreachable",
+      "message": "Check your connection and try loading the page again."
+    },
+    "client": {
+      "title": "The request could not be completed",
+      "message": "HitKeep could not load this page because the request was rejected."
+    },
+    "server": {
+      "title": "HitKeep is temporarily unavailable",
+      "message": "The server could not finish loading this page. Try again in a moment."
+    },
+    "navigation": {
+      "title": "This page could not be loaded",
+      "message": "A page resource failed to load. Reloading can usually resolve this."
+    },
+    "generic": {
+      "title": "Something prevented this page from loading",
+      "message": "Reload HitKeep or return to the dashboard."
+    },
+    "status": {
+      "http": "HTTP {{status}}",
+      "offline": "Offline",
+      "navigation": "Navigation error"
+    },
+    "context": {
+      "setupStatus": "HitKeep could not confirm whether setup is complete. Try again when the server is available.",
+      "dashboardBootstrap": "HitKeep could not load your dashboard session. Try again without signing in again.",
+    "cloudSignupStatus": "HitKeep could not check whether cloud signup is available. Try again in a moment.",
+    "cloudSignupProfile": "HitKeep could not confirm your cloud session. Try again in a moment."
+    },
+    "actions": {
+      "tryAgain": "Try again",
+      "reloadPage": "Reload page",
+      "reloadApplication": "Reload HitKeep",
+      "dashboard": "Go to dashboard",
+      "goBack": "Go back"
+    }
+  },
+  "askAi": {
+    "triggerPlaceholder": "Ask AI",
+    "triggerAria": "Ask AI about this site",
+    "submitAria": "Send Ask AI question",
+    "title": "Ask AI",
+    "promptAria": "Ask AI prompt",
+    "promptPlaceholder": "Ask about this site",
+    "followUpTriggerPlaceholder": "Ask a follow-up",
+    "followUpPlaceholder": "Ask a follow-up about this result",
+    "askAction": "Ask",
+    "stop": "Stop",
+    "stopAria": "Stop Ask AI response",
+    "stopped": "Response stopped.",
+    "newChat": "New chat",
+    "newChatAria": "Start a new Ask AI chat",
+    "dictation": {
+      "startAria": "Start voice dictation",
+      "stopAria": "Stop voice dictation"
+    },
+    "currentQuestion": "Current question",
+    "conversation": "Conversation",
+    "questionLabel": "You",
+    "answerLabel": "Ask AI",
+    "loading": "Working on it...",
+    "progress": {
+      "accepted": "Starting request...",
+      "generating": "Checking site analytics...",
+      "readingAnalytics": "Reading analytics...",
+      "composing": "Writing answer...",
+      "complete": "Ready."
+    },
+    "tools": {
+      "siteOverview": "Site overview",
+      "eventNames": "Event names",
+      "eventBreakdown": "Event breakdown",
+      "ecommerce": "Ecommerce",
+      "webVitals": "Web Vitals",
+      "aiVisibility": "AI visibility",
+      "analytics": "Analytics"
+    },
+    "status": {
+      "ready": "Ready"
+    },
+    "answer": "Answer",
+    "citations": "Sources",
+    "charts": "Charts",
+    "actions": "Actions",
+    "emptyTitle": "Suggested prompts",
+    "suggestionsLabel": "Ask AI suggested prompts",
+    "suggestions": {
+      "traffic": "What changed in traffic?",
+      "events": "Which events drove conversions?",
+      "export": "Prepare an export for the current view"
+    },
+    "exportSuccess": "Export download started.",
+    "disabled": {
+      "notConfigured": "Ask AI not configured",
+      "budget": "AI budget exhausted",
+      "unavailable": "Ask AI unavailable"
+    },
+    "errors": {
+      "request": "Ask AI could not answer right now.",
+      "notConfigured": "Ask AI is not configured.",
+      "budget": "AI budget exhausted.",
+      "action": "Action could not be opened.",
+      "export": "Export could not be downloaded."
+    }
+  },
+  "auditTable": {
+    "empty": "No audit entries found",
+    "filters": {
+      "aria": "Audit filters",
+      "action": "Action",
+      "outcome": "Outcome",
+      "targetType": "Target type",
+      "dateRange": "Date range",
+      "dateRangePlaceholder": "Date range",
+      "search": "Search",
+      "searchPlaceholder": "Search actors, targets, IPs, request IDs...",
+      "allActions": "All actions",
+      "allTargets": "All targets",
+      "allOutcomes": "All outcomes"
+    },
+    "actions": {
+      "refresh": "Refresh",
+      "export": "Export",
+      "clearFilters": "Clear filters",
+      "expandRow": "Show evidence",
+      "collapseRow": "Hide evidence",
+      "roleUpdated": "Role changed",
+      "mfaDisabled": "MFA disabled",
+      "backupTriggered": "Backup triggered",
+      "backupCompleted": "Backup completed",
+      "backupFailed": "Backup failed",
+      "databaseCheckpointRequested": "Database checkpoint",
+      "spamRefreshed": "Spam refresh",
+      "mailTested": "Mail test",
+      "diagnosticsExported": "Diagnostics exported",
+      "accessDenied": "Access denied",
+      "authLoginSucceeded": "Login succeeded",
+      "authLoginFailed": "Login failed",
+      "authSSOLoginSucceeded": "SSO login succeeded",
+      "authSSOLoginFailed": "SSO login failed",
+      "authMfaRequired": "MFA required",
+      "authMfaSucceeded": "MFA succeeded",
+      "authLogout": "Logout",
+      "authSessionExtended": "Session extended",
+      "teamCreated": "Team created",
+      "teamUpdated": "Team updated",
+      "teamArchived": "Team archived",
+      "teamActiveChanged": "Active team changed",
+      "ssoConfigurationUpdated": "SSO configuration updated",
+      "ssoConnectionTested": "SSO connection tested",
+      "ssoConfigurationDeleted": "SSO configuration deleted",
+      "memberInvited": "Member invited",
+      "memberInviteAccepted": "Invite accepted",
+      "memberInviteResent": "Invite resent",
+      "memberInviteRevoked": "Invite revoked",
+      "memberAdded": "Member added",
+      "memberRoleUpdated": "Member role updated",
+      "memberRemoved": "Member removed",
+      "memberLeft": "Member left",
+      "ownershipTransferred": "Ownership transferred",
+      "siteCreated": "Site created",
+      "siteDeleted": "Site deleted",
+      "siteStatsReset": "Stats reset",
+      "siteDomainRenamed": "Domain renamed",
+      "siteRetentionUpdated": "Retention updated",
+      "siteTransferredIn": "Site moved in",
+      "siteTransferredOut": "Site moved out",
+      "siteExclusionCreated": "Exclusion created",
+      "siteExclusionDeleted": "Exclusion deleted",
+      "permissionSiteMemberGranted": "Site access granted",
+      "permissionSiteMemberRoleUpdated": "Site access role changed",
+      "permissionSiteMemberRevoked": "Site access revoked",
+      "importUploadCreated": "Import upload created",
+      "importFileUploaded": "Import file uploaded",
+      "importValidationStarted": "Import validation started",
+      "importValidated": "Import validated",
+      "importValidationFailed": "Import validation failed",
+      "importQueued": "Import queued",
+      "importRequeued": "Import requeued",
+      "importStarted": "Import started",
+      "importFailed": "Import failed",
+      "importCompleted": "Import completed",
+      "importDeleted": "Import deleted",
+      "importDataCleared": "Imported data cleared",
+      "importDataWritten": "Imported data written",
+      "googleSearchConsoleConnected": "Search Console connected",
+      "googleSearchConsoleConnectFailed": "Search Console connection failed",
+      "googleSearchConsoleDisconnected": "Search Console disconnected",
+      "googleSearchConsolePropertiesRefreshed": "Search Console properties refreshed",
+      "googleSearchConsolePropertiesRefreshFailed": "Search Console property refresh failed",
+      "googleSearchConsolePropertyMapped": "Search Console property mapped",
+      "googleSearchConsolePropertyUnmapped": "Search Console property unmapped",
+      "googleSearchConsoleSyncRequested": "Search Console sync requested",
+      "googleSearchConsoleSyncStarted": "Search Console sync started",
+      "googleSearchConsoleSyncImportPrepared": "Search Console import prepared",
+      "googleSearchConsoleSyncImported": "Search Console data imported",
+      "googleSearchConsoleSyncFailed": "Search Console sync failed",
+      "askAIRequested": "Ask AI requested",
+      "askAIResponded": "Ask AI responded",
+      "askAIHistoryViewed": "Ask AI history viewed",
+      "reportCreated": "Report created",
+      "reportUpdated": "Report updated",
+      "reportDeleted": "Report deleted",
+      "reportTestSent": "Report test sent",
+      "reportRetryRequested": "Report retry requested"
+    },
+    "columns": {
+      "evidence": "Evidence",
+      "time": "Time",
+      "actor": "Actor",
+      "action": "Action",
+      "targetType": "Area",
+      "target": "Target",
+      "outcome": "Outcome",
+      "ipAddress": "IP address",
+      "country": "Country",
+      "details": "Details"
+    },
+    "outcomes": {
+      "success": "Success",
+      "failure": "Failure",
+      "denied": "Denied"
+    },
+    "targetTypes": {
+      "system": "System",
+      "mail": "Email",
+      "user": "User",
+      "team": "Team",
+      "site": "Site",
+      "import": "Import",
+      "siteExclusion": "Site exclusion",
+      "apiClient": "API client",
+      "ssoConfiguration": "SSO configuration",
+      "backup": "Backup",
+      "spamFilter": "Spam filter",
+      "diagnostics": "Diagnostics",
+      "permission": "Permission",
+      "googleSearchConsoleConnection": "Search Console connection",
+      "googleSearchConsoleProperty": "Search Console property",
+      "googleSearchConsoleSync": "Search Console sync",
+      "report": "Report"
+    },
+    "roles": {
+      "owner": "Owner",
+      "admin": "Admin",
+      "member": "Member",
+      "user": "User"
+    },
+    "evidence": {
+      "details": "Full details",
+      "actorId": "Actor ID",
+      "actorRole": "Actor role",
+      "teamId": "Team ID",
+      "targetType": "Target type",
+      "targetId": "Target ID",
+      "targetUserId": "Target user ID",
+      "requestId": "Request ID",
+      "userAgent": "User agent",
+      "askAIStatus": "AI status",
+      "askAIHTTPStatus": "HTTP status",
+      "askAIRunId": "AI run ID",
+      "askAIRequestHash": "Request hash",
+      "askAIQueryHash": "Query hash",
+      "askAIQueryChars": "Query length",
+      "askAIRouteHash": "Route hash",
+      "askAIRouteChars": "Route length",
+      "askAIHistory": "History messages",
+      "askAIFrom": "From",
+      "askAITo": "To",
+      "askAIFilters": "Filters",
+      "askAIFilterTypes": "Filter types",
+      "askAIOutputHash": "Output hash",
+      "askAIAnswerHash": "Answer hash",
+      "askAIAnswerChars": "Answer length",
+      "askAICitations": "Citations",
+      "askAICharts": "Charts",
+      "askAIActions": "Actions",
+      "askAIActionTypes": "Action types",
+      "askAIChartTypes": "Chart types",
+      "askAIErrorCategory": "Error category",
+      "askAIHistoryLimit": "History limit",
+      "askAIHistoryOffset": "History offset",
+      "askAIHistoryTotal": "History total"
+    },
+    "pagination": {
+      "summary": "Showing {{start}}-{{end}} of {{total}} entries",
+      "empty": "No entries to show"
+    }
+  },
+  "importExport": {
+    "title": "Import & Export",
+    "tabs": {
+      "import": "Import",
+      "export": "Export"
+    },
+    "import": {
+      "title": "Import"
+    },
+    "export": {
+      "title": "Export",
+      "allSites": {
+        "title": "All accessible sites",
+        "description": "Download analytics data for every site you can access.",
+        "primaryAction": "Download all sites",
+        "otherFormats": "Other formats",
+        "success": "All accessible site analytics export downloaded.",
+        "error": "Export failed. Try again."
+      },
+      "siteExports": {
+        "title": "Site exports",
+        "description": "Download one site at a time when you only need a specific property.",
+        "primaryAction": "Download site",
+        "loading": "Loading sites...",
+        "empty": "No sites available to export.",
+        "success": "Site export downloaded.",
+        "error": "Export failed. Try again or choose another format."
+      }
+    }
+  },
+  "imports": {
+    "title": "Imports",
+    "noSiteDescription": "Select a site before importing historical data.",
+    "providerFallback": "Selected importer",
+    "running": "Import is running. This page will update automatically.",
+    "completed": "Import completed.",
+    "flow": {
+      "title": "Site import"
+    },
+    "permission": {
+      "title": "Import access required",
+      "description": "Site owners, site admins, and instance admins can import data."
+    },
+    "providers": {
+      "title": "Choose importer",
+      "loading": "Loading importers...",
+      "selectAria": "Select {{provider}} importer",
+      "guide": "Import guide",
+      "guideAria": "Open {{provider}} import guide",
+      "empty": "No importers are available for this site."
+    },
+    "dropzone": {
+      "title": "Drop files here"
+    },
+    "files": {
+      "count": "files",
+      "addMore": "Add files",
+      "rejectedUnsupportedSummary": "{0}:",
+      "rejectedUnsupportedDetail": "Expected {{expected}}."
+    },
+    "actions": {
+      "removeFile": "Remove file",
+      "clearFiles": "Clear",
+      "uploadValidate": "Upload and validate",
+      "startImport": "Start import",
+      "newImport": "New import",
+      "changeProvider": "Change importer",
+      "delete": "Delete"
+    },
+    "validation": {
+      "title": "Validation manifest"
+    },
+    "metrics": {
+      "rowsAccepted": "Rows accepted",
+      "rowsSkipped": "Rows skipped",
+      "files": "Files",
+      "range": "Date range"
+    },
+    "datasets": {
+      "title": "Datasets",
+      "dataset": "Dataset",
+      "rows": "Rows",
+      "pageviews": "Pageviews",
+      "events": "Events"
+    },
+    "events": {
+      "title": "Event coverage",
+      "total": "Events",
+      "names": "Names",
+      "properties": "Properties"
+    },
+    "properties": {
+      "title": "Event properties",
+      "attributed": "Attributed rows",
+      "unattributed": "Unattributed rows",
+      "unattributedEvents": "Unattributed events"
+    },
+    "dimensions": {
+      "title": "Event dimensions",
+      "available": "Available",
+      "unavailable": "Unavailable"
+    },
+    "overlap": {
+      "title": "Native data overlap",
+      "description": "{{rows}} imported rows overlap existing HitKeep data and will be skipped."
+    },
+    "warnings": {
+      "title": "Warnings"
+    },
+    "history": {
+      "title": "Import history",
+      "empty": "No imports yet.",
+      "importer": "Importer",
+      "status": "Status",
+      "rows": "Rows",
+      "created": "Created"
+    },
+    "status": {
+      "uploading": "Uploading",
+      "validating": "Validating",
+      "validated": "Validated",
+      "validation_failed": "Validation failed",
+      "queued": "Queued",
+      "running": "Running",
+      "completed": "Completed",
+      "failed": "Failed",
+      "deleted": "Deleted"
+    },
+    "errors": {
+      "generic": "Import failed. Please try again.",
+      "loadImporters": "Failed to load importers.",
+      "loadHistory": "Failed to load import history."
+    }
+  },
+  "teams": {
+    "switcher": {
+      "label": "Teams",
+      "regionAria": "Team selector",
+      "selectAria": "Select active team",
+      "placeholder": "Select a team",
+      "currentTeamAria": "Current team: {{name}}",
+      "addTeamAria": "Create a new team",
+      "openMenuAria": "Open team menu for {{name}}",
+      "menuAria": "Team menu",
+      "currentLabel": "Current team"
+    },
+    "roles": {
+      "owner": "Owner",
+      "admin": "Admin",
+      "member": "Member"
+    },
+    "management": {
+      "title": "Team members",
+      "subtitle": "Manage access and roles for {{team}}.",
+      "openAction": "Manage team",
+      "openAria": "Open team management",
+      "dialogTitle": "Manage {{team}}",
+      "inviteDialogTitle": "Invite team member",
+      "noTeam": "No active team selected.",
+      "readOnly": "You can view members but cannot manage team membership with your current role.",
+      "notAllowed": "Not allowed",
+      "empty": "No team members found.",
+      "removeAction": "Remove",
+      "removeAria": "Remove {{email}} from team",
+      "resendAction": "Resend invite",
+      "revokeInviteAction": "Revoke invite",
+      "transferOwnershipAction": "Transfer ownership",
+      "transferOwnershipAria": "Transfer team ownership to {{email}}",
+      "resendInviteAria": "Resend invite for {{email}}",
+      "revokeInviteAria": "Revoke invite for {{email}}",
+      "confirmRemove": "Remove {{email}} from this team?",
+      "confirmResendInvite": "Resend the invite for {{email}}?",
+      "confirmRevokeInvite": "Revoke the invite for {{email}}?",
+      "confirmTransferOwnership": "Transfer team ownership to {{email}}? You will become an admin.",
+      "pendingTitle": "Pending invites",
+      "pendingSubtitle": "Invites that have not been accepted yet.",
+      "pendingEmpty": "No pending invites.",
+      "expiresLabel": "Expires",
+      "invite": {
+        "emailLabel": "Email address",
+        "emailPlaceholder": "user@example.com",
+        "emailInvalid": "Enter a valid email address.",
+        "roleLabel": "Role",
+        "submitAction": "Invite member"
+      },
+      "status": {
+        "inviteSent": "Invite sent successfully.",
+        "inviteResent": "Invite resent successfully.",
+        "inviteRevoked": "Invite revoked successfully.",
+        "memberUpdated": "Member updated successfully.",
+        "roleUpdated": "Role updated successfully.",
+        "memberRemoved": "Member removed successfully.",
+        "ownershipTransferred": "Ownership transferred successfully."
+      },
+      "errors": {
+        "loadFailed": "Failed to load team members.",
+        "inviteFailed": "Failed to invite member.",
+        "inviteForbidden": "You do not have permission to invite team members.",
+        "inviteResendFailed": "Failed to resend invite.",
+        "inviteRevokeFailed": "Failed to revoke invite.",
+        "roleUpdateFailed": "Failed to update member role.",
+        "ownershipTransferFailed": "Failed to transfer ownership.",
+        "removeFailed": "Failed to remove member.",
+        "forbidden": "You do not have permission to manage this team.",
+        "alreadyMember": "This user is already a member of the team.",
+        "lastOwner": "At least one owner must remain in the team.",
+        "transferRequired": "Use the dedicated ownership transfer action to assign the owner role.",
+        "transferTargetInvalid": "Ownership can only be transferred to an existing team member.",
+        "ownershipTransferConflict": "Ownership transfer could not be completed."
+      }
+    },
+    "createDialog": {
+      "title": "Create team",
+      "nameLabel": "Team name",
+      "namePlaceholder": "e.g. Marketing",
+      "nameRequired": "Team name is required.",
+      "createAction": "Create team",
+      "errors": {
+        "createFailed": "Failed to create team. Please try again.",
+        "limitReached": "Team limit reached. Upgrade your plan to create more teams."
+      }
+    }
+  },
+  "common": {
+    "aiCategories": {
+      "ai_training_crawler": "Training crawlers",
+      "ai_search_indexer": "AI search crawlers",
+      "ai_assistant": "AI assistants",
+      "ai_agent": "AI agents",
+      "ai_coding_agent": "AI coding agents",
+      "other_ai": "Other AI"
+    },
+    "actions": {
+      "apply": "Apply",
+      "cancel": "Cancel",
+      "clearAll": "Clear all",
+      "close": "Close",
+      "downloadXlsx": "Download XLSX",
+      "exportCsv": "Export CSV",
+      "open": "Open",
+      "refresh": "Refresh",
+      "retry": "Retry",
+      "save": "Save",
+      "remove": "Remove",
+      "more": "More actions",
+      "edit": "Edit",
+      "delete": "Delete",
+      "archive": "Archive"
+    },
+    "yes": "Yes",
+    "no": "No",
+    "previous": "Previous",
+    "next": "Next",
+    "enabled": "Enabled",
+    "disabled": "Disabled",
+    "unknown": "Unknown",
+    "saved": "Saved",
+    "saveFailed": "Save failed. Please try again.",
+    "loading": "Loading...",
+    "columns": {
+      "actions": "Actions",
+      "added": "Added",
+      "created": "Created",
+      "device": "Device",
+      "domain": "Domain",
+      "email": "Email",
+      "name": "Name",
+      "owner": "Owner",
+      "path": "Path",
+      "referrer": "Referrer",
+      "members": "Members",
+      "role": "Role",
+      "sites": "Sites",
+      "status": "Status",
+      "time": "Time",
+      "type": "Type",
+      "value": "Value",
+      "createdAt": "Created",
+      "updated": "Updated"
+    },
+    "devices": {
+      "desktop": "Desktop",
+      "mobile": "Mobile"
+    },
+    "direct": "Direct",
+    "durationMinutesSeconds": "{{minutes}}m {{seconds}}s",
+    "durationSeconds": "{{seconds}}s",
+    "emailAddress": "Email address",
+    "emailPlaceholder": "you@example.com",
+    "empty": {
+      "noDataDescription": "There is no data for this time range.",
+      "noDataTitle": "No data yet"
+    },
+    "exportFormats": {
+      "csv": "CSV",
+      "xlsx": "XLSX",
+      "parquet": "Parquet",
+      "json": "JSON",
+      "ndjson": "NDJSON"
+    },
+    "filters": {
+      "aiBot": "AI agent: {{value}}",
+      "aiBotCategory": "AI category: {{value}}",
+      "aiSource": "AI source: {{value}}",
+      "country": "Country: {{value}}",
+      "city": "City: {{value}}",
+      "provider": "Provider: {{value}}",
+      "asn": "ASN: {{value}}",
+      "device": "Device: {{value}}",
+      "language": "Language: {{value}}",
+      "page": "Page: {{value}}",
+      "source": "Source: {{value}}",
+      "browser": "Browser: {{value}}"
+    },
+    "kpis": {
+      "conversionRate": "Conversion rate"
+    },
+    "loadingSiteData": "Loading site data...",
+    "metricGroups": {
+      "ai": "AI",
+      "bots": "Bots",
+      "content": "Content",
+      "acquisition": "Acquisition",
+      "audience": "Audience",
+      "location": "Location",
+      "network": "Network"
+    },
+    "metrics": {
+      "aiBots": "AI agents",
+      "aiBotCategories": "AI agent categories",
+      "aiSources": "AI sources",
+      "audience": "Audience",
+      "browsers": "Browsers",
+      "countries": "Countries",
+      "cities": "Cities",
+      "providers": "Providers",
+      "asns": "ASNs",
+      "devices": "Devices",
+      "languages": "Languages",
+      "pages": "Pages",
+      "landingPages": "Landing pages",
+      "exitPages": "Exit pages",
+      "geoModeAria": "Select audience metric",
+      "pageModeAria": "Select page metric",
+      "topPages": "Top pages",
+      "topSources": "Top sources",
+      "topReferrers": "Top referrers"
+    },
+    "noActiveFilter": "No active filter",
+    "noSiteSelected": "No site selected",
+    "openInNewTabAria": "Open in new tab",
+    "openUserMenuAria": "Open user menu",
+    "password": "Password",
+    "passwordPlaceholder": "••••••••",
+    "preparing": "Preparing...",
+    "refreshDataTooltip": "Refresh data",
+    "removeFilterAria": "Remove filter",
+    "searchPlaceholder": "Search...",
+    "selectDateRange": "Select date range",
+    "seriesChartAria": "Time series chart with data for the last {{count}} intervals",
+    "chartDesign": {
+      "label": "Chart style",
+      "area": "Area",
+      "line": "Line",
+      "bar": "Bars"
+    },
+    "switchToDarkModeAria": "Switch to dark mode",
+    "switchToLightModeAria": "Switch to light mode",
+    "timeRangeSelectorAria": "Time range selector",
+    "timeRanges": {
+      "today": "Today",
+      "todayShort": "Today",
+      "yesterday": "Yesterday",
+      "yesterdayShort": "Yesterday",
+      "lastMinute": "Last minute",
+      "lastMinutes": "Last {{count}} minutes",
+      "lastHour": "Last hour",
+      "lastHours": "Last {{count}} hours",
+      "lastDay": "Last day",
+      "lastDays": "Last {{count}} days",
+      "thisWeek": "This week",
+      "thisWeekShort": "This week",
+      "lastWeek": "Last week",
+      "lastWeekShort": "Last week",
+      "thisMonth": "This month",
+      "thisMonthShort": "This month",
+      "lastMonth": "Last month",
+      "lastMonthShort": "Last month",
+      "thisYear": "This year",
+      "thisYearShort": "YTD",
+      "lastYear": "Last year",
+      "lastYearShort": "1y",
+      "moreRanges": "More ranges",
+      "searchRanges": "Search ranges",
+      "customRange": "Custom range",
+      "customShort": "Custom",
+      "customRangeSummary": "{{start}} - {{end}}",
+      "customRangeHint": "Choose an exact start and end time down to the minute.",
+      "customStart": "From",
+      "customEnd": "To",
+      "openCustomRangeAria": "Open custom time range"
+    },
+    "unknownError": "Unknown error",
+    "unspecified": "Unspecified",
+    "visitors": "visitors",
+    "copied": "Copied!",
+    "copyControl": {
+      "copy": "Copy",
+      "copied": "Copied",
+      "failed": "Copy failed",
+      "ariaLabel": "Copy to clipboard"
+    }
+  },
+  "dashboard": {
+    "conversions": {
+      "title": "Conversions",
+      "description": "Filter the entire workspace by a goal or funnel cohort.",
+      "filters": { "goal": "Goal: {{name}}", "funnel": "Funnel: {{name}}" },
+      "invalidSubject": "That goal or funnel is no longer available for this site."
+    },
+    "breadcrumbOverview": "Overview",
+    "filteredBadge": "Filtered",
+    "rawHitsTitle": "Latest Hits",
+    "noSiteDescription": "Select or create a site to view analytics.",
+    "openPageInNewTabAria": "Open page in new tab",
+    "openReferrerInNewTabAria": "Open referrer in new tab",
+    "exportStatus": {
+      "success": "Export download started.",
+      "error": "Failed to export filtered data. Please try again."
+    },
+    "chartTitleWithRange": "Traffic: {{range}}",
+    "chartTitleCustomRange": "Traffic: {{start}} - {{end}}",
+    "chartTitleOverview": "Traffic overview",
+    "trafficChartAria": "Traffic chart with data for the last {{count}} intervals",
+    "traffic": {
+      "visitors": "Visitors",
+      "trendLine": "Trend line"
+    },
+    "kpis": {
+      "liveVisitors": "Live visitors",
+      "pageviews": "Pageviews",
+      "uniqueSessions": "Unique sessions",
+      "bounceRate": "Bounce rate",
+      "avgDuration": "Avg. duration",
+      "pagesPerSession": "Pages / session"
+    },
+    "empty": {
+      "noTrafficTitle": "No traffic recorded yet",
+      "noTrafficDescription": "Install the tracking snippet on your website to start collecting analytics data.",
+      "teamTitle": "No sites in {{team}} yet",
+      "teamDescription": "Create the first site in {{team}} to start collecting analytics data for this team.",
+      "getTrackingCode": "Get tracking code",
+      "createSite": "Create site"
+    },
+    "onboarding": {
+      "title": "Installation checklist",
+      "progress": "{{complete}} of {{total}} complete",
+      "dismiss": "Dismiss checklist",
+      "done": "Complete",
+      "current": "Current step",
+      "steps": {
+        "create_site": "Create first site",
+        "verify_tracking": "Receive first hit",
+        "automatic_events": "Confirm automatic events",
+        "invite_teammate": "Invite a teammate",
+        "schedule_report": "Schedule email report"
+      },
+      "actions": {
+        "create_site": "Create site",
+        "verify_tracking": "Verify tracking",
+        "automatic_events": "Open tracking",
+        "invite_teammate": "Invite",
+        "schedule_report": "Schedule"
+      }
+    }
+  },
+  "trafficRecords": {
+    "unavailableTitle": "No conversion traffic yet",
+    "unavailableDescription": "Create a goal or funnel to define the traffic shown here.",
+    "errorTitle": "Traffic unavailable",
+    "errorDescription": "Traffic records could not be loaded. Try again.",
+    "empty": "No matching traffic records found."
+  },
+  "goals": {
+    "manageAction": "Manage goals",
+    "noSiteDescription": "Select or create a site to view goals.",
+    "series": {
+      "title": "Goals",
+      "description": "Filter the series by goal.",
+      "workspaceDescription": "Conversions over time for the selected reporting subject.",
+      "addFilterPlaceholder": "Add goal filter",
+      "emptyTitle": "No goal conversions yet",
+      "emptyDescription": "Create a goal and drive traffic to see conversions over time."
+    },
+    "kpis": {
+      "totalGoals": "Total goals",
+      "conversions": "Conversions",
+      "convertingSessions": "Converting sessions"
+    },
+    "subject": { "label": "Reporting subject", "all": "All goals" },
+    "traffic": { "title": "Matching traffic", "selectedDescription": "Page views from sessions that completed this goal.", "allDescription": "Page views from sessions that completed any goal.", "unavailableTitle": "No goals to match", "unavailableDescription": "Create a goal to see matching session traffic." },
+    "states": { "errorTitle": "Goals unavailable", "errorDescription": "Goals could not be loaded. Try again." },
+    "notices": { "unavailable": "That goal is no longer available for this site." },
+    "definitions": { "title": "Goal definitions", "count": "{{count}} goals", "steps": "Steps" },
+    "types": { "path": "Path", "event": "Event" },
+    "list": {
+      "title": "Goals",
+      "manageTooltip": "Manage goals",
+      "emptyTitle": "No goals yet",
+      "emptyDescription": "Track specific conversion events like signups or purchases.",
+      "createAction": "Create goal",
+      "conversionsSuffix": "conversions",
+      "conversionRateShort": "CR"
+      ,"dashboardDescription": "Completed actions and their conversion rates.",
+      "detailsAria": "Open details for {{name}}"
+    },
+    "manager": {
+      "dialogTitle": "Manage goals",
+      "dialogDescription": "Define conversion goals to track specific user actions or page visits.",
+      "empty": "No goals defined yet.",
+      "newAction": "New goal",
+      "addTitle": "Add new goal",
+      "editTitle": "Edit goal",
+      "editTooltip": "Edit goal",
+      "deleteTooltip": "Delete goal",
+      "confirmDelete": "Delete goal \"{{name}}\"?",
+      "namePlaceholder": "e.g. Signup Success",
+      "typePagePath": "Path",
+      "typeCustomEvent": "Event",
+      "urlPathLabel": "Path",
+      "eventNameLabel": "Event",
+      "urlPathPlaceholder": "/thank-you",
+      "eventNamePlaceholder": "signup_completed",
+      "urlPathHelp": "Triggers when a user visits a specific URL.",
+      "eventNameHelpPrefix": "Triggers when you call",
+      "eventNameHelpSuffix": ".",
+      "createAction": "Create goal",
+      "saveAction": "Save changes",
+      "suggestionsHelp": "Choose an observed value or enter an exact future value.",
+      "errors": { "save": "Goal could not be saved. Check the form and try again." },
+      "messages": {
+        "createSuccess": "Goal created.",
+        "createError": "Goal could not be created.",
+        "updateSuccess": "Goal updated.",
+        "updateError": "Goal could not be updated.",
+        "deleteSuccess": "Goal deleted.",
+        "deleteError": "Goal could not be deleted."
+      }
+    }
+  },
+  "funnels": {
+    "manageAction": "Manage funnels",
+    "createAction": "Create funnel",
+    "noSiteDescription": "Select or create a site to view funnels.",
+    "series": {
+      "title": "Funnels",
+      "description": "Filter the series by funnel.",
+      "workspaceDescription": "Entries and completions over time for the selected reporting subject.",
+      "addFilterPlaceholder": "Add funnel filter",
+      "emptyTitle": "No funnel activity yet",
+      "emptyDescription": "Create a funnel and drive traffic to see entries and completions over time."
+    },
+    "kpis": {
+      "funnels": "Funnels",
+      "entries": "Entries",
+      "completions": "Completions",
+      "completionRate": "Completion rate"
+    },
+    "subject": { "label": "Reporting subject", "all": "All funnels" },
+    "traffic": { "title": "Matching traffic", "selectedDescription": "Page views from sessions that entered this funnel.", "allDescription": "Page views from sessions that entered any funnel.", "unavailableTitle": "No funnels to match", "unavailableDescription": "Create a funnel to see matching session traffic." },
+    "states": { "errorTitle": "Funnels unavailable", "errorDescription": "Funnels could not be loaded. Try again." },
+    "notices": { "unavailable": "That funnel is no longer available for this site." },
+    "definitions": { "title": "Funnel definitions", "count": "{{count}} funnels", "steps": "Ordered steps" },
+    "steps": { "title": "Step performance", "retention": "{{rate}}% retained", "dropoff": "{{count}} dropped" },
+    "list": {
+      "title": "Funnels",
+      "manageTooltip": "Manage funnels",
+      "emptyTitle": "No funnels yet",
+      "emptyDescription": "Build a path of events to measure drop-off and conversions.",
+      "createAction": "Create funnel",
+      "stepsCount": "{{count}} steps"
+      ,"dashboardDescription": "Journeys that reveal progression and drop-off.",
+      "detailsAria": "Open details for {{name}}"
+    },
+    "manager": {
+      "dialogTitle": "Manage funnels",
+      "dialogDescription": "Track user journeys across multiple steps.",
+      "stepsLabel": "Steps",
+      "viewStats": "View stats",
+      "empty": "No funnels defined yet.",
+      "newAction": "New funnel",
+      "createTitle": "Create new funnel",
+      "editTitle": "Edit funnel",
+      "editTooltip": "Edit funnel",
+      "deleteTooltip": "Delete funnel",
+      "confirmDelete": "Delete funnel \"{{name}}\"?",
+      "namePlaceholder": "e.g. Checkout Flow",
+      "stepPathPlaceholder": "/path",
+      "stepEventPlaceholder": "event_name",
+      "addStep": "Add step",
+      "createAction": "Create funnel",
+      "saveAction": "Save changes",
+      "stepsTitle": "Ordered steps",
+      "reorderHelp": "Drag steps or use the move controls. At least two steps are required.",
+      "dragStepAria": "Drag step {{index}}",
+      "stepValueAria": "Value for step {{index}}",
+      "moveUpAria": "Move step up",
+      "moveDownAria": "Move step down",
+      "removeStepAria": "Remove step",
+      "errors": { "save": "Funnel could not be saved. Check the form and try again." },
+      "typePagePath": "Path",
+      "typeCustomEvent": "Event",
+      "messages": {
+        "createSuccess": "Funnel created.",
+        "createError": "Funnel could not be created.",
+        "updateSuccess": "Funnel updated.",
+        "updateError": "Funnel could not be updated.",
+        "deleteSuccess": "Funnel deleted.",
+        "deleteError": "Funnel could not be deleted."
+      }
+    },
+    "viewer": {
+      "dialogTitle": "Funnel analysis",
+      "editAction": "Edit funnel",
+      "droppedSuffix": "dropped",
+      "retention": "retention",
+      "entry": "Entry"
+    }
+  },
+  "utm": {
+    "noSiteDescription": "Select or create a site to view UTM metrics.",
+    "series": {
+      "title": "UTM performance",
+      "description": "Track UTM-driven traffic over time.",
+      "emptyTitle": "No UTM activity yet",
+      "emptyDescription": "Tag campaign links with UTM parameters to see their performance."
+    },
+    "metrics": {
+      "topCampaigns": "Top campaigns",
+      "topContents": "Top contents",
+      "topMediums": "Top mediums",
+      "topSources": "Top sources",
+      "topTerms": "Top terms"
+    },
+    "filters": {
+      "campaign": "Campaign: {{value}}",
+      "content": "Content: {{value}}",
+      "medium": "Medium: {{value}}",
+      "source": "Source: {{value}}",
+      "term": "Term: {{value}}"
+    },
+    "kpis": {
+      "campaign": "Campaign",
+      "content": "Content",
+      "medium": "Medium",
+      "source": "Source",
+      "term": "Term"
+    }
+  },
+  "utmBuilder": {
+    "breadcrumb": "UTM Builder",
+    "subtitle": "Generate tagged campaign links to track traffic sources in your analytics.",
+    "form": {
+      "title": "Build your link",
+      "siteSelectLabel": "Pre-fill from site",
+      "siteSelectPlaceholder": "Select a site…",
+      "siteSelectHint": "Selecting a site fills the website URL field below.",
+      "websiteUrlLabel": "Website URL",
+      "websiteUrlHint": "The full URL you want to track, including https://.",
+      "sourceLabel": "Campaign source",
+      "sourceHint": "Where the traffic comes from — e.g. google, newsletter, twitter.",
+      "mediumLabel": "Campaign medium",
+      "mediumHint": "The marketing channel — e.g. cpc, email, social.",
+      "campaignLabel": "Campaign name",
+      "campaignHint": "Name to identify this campaign — e.g. summer_sale.",
+      "termLabel": "Campaign term",
+      "termHint": "Identifies paid search keywords.",
+      "contentLabel": "Campaign content",
+      "contentHint": "Differentiates ads or links within the same campaign."
+    },
+    "preview": {
+      "title": "Generated URL",
+      "description": "Fill in the Website URL and Campaign source to generate a tagged link."
+    },
+    "reference": {
+      "title": "Parameter reference",
+      "source": "Identifies where the traffic comes from (e.g. google, newsletter).",
+      "medium": "The marketing channel (e.g. cpc, email, social).",
+      "campaign": "Associates one or more links with a specific campaign.",
+      "term": "Identifies paid search keywords.",
+      "content": "Differentiates ads or links within the same campaign."
+    },
+    "validation": {
+      "urlRequired": "Website URL is required.",
+      "urlInvalid": "Enter a valid URL starting with https:// or http://.",
+      "sourceRequired": "Campaign source is required."
+    }
+  },
+  "social": {
+    "continueWith": {
+      "google": "Continue with Google",
+      "github": "Continue with GitHub",
+      "microsoft": "Continue with Microsoft"
+    },
+    "signupMethods": "Social signup methods",
+    "confirmEmailSubtitle": "Confirm which HitKeep account this Microsoft identity should access.",
+    "confirmEmailPrompt": "Microsoft email claims can change. Review the HitKeep email below before we send a confirmation link.",
+    "confirmEmailAction": "Send confirmation link",
+    "completeSignupTitle": "Finish creating your team",
+    "completeSignupSubtitle": "Signed in with {{provider}}. Add the few details HitKeep still needs.",
+    "createTeam": "Create team",
+    "regionLocked": "The region is locked for this authorization. Restart signup to change it.",
+    "microsoftEmailHelp": "Microsoft email claims can change. Confirm the HitKeep email you own; we will send a verification link.",
+    "confirmationTitle": "Confirm your email",
+    "confirmationSent": "Check your inbox and follow the secure link to finish.",
+    "confirmedSignIn": "Your provider is linked. Sign in once more to continue.",
+    "mfaSignInRequired": "Your invitation was accepted. Sign in again to complete multi-factor authentication.",
+    "errors": {
+      "failed": "Social sign-in could not be completed. Please try again.",
+      "unavailable": "This sign-in provider is unavailable right now.",
+      "cancelled": "Social sign-in was cancelled.",
+      "emailUnverified": "The provider did not supply a verified email address.",
+      "emailRequired": "Enter the HitKeep email address you want to confirm.",
+      "identityConflict": "This provider account is already linked to another HitKeep account.",
+      "accountNotFound": "No HitKeep account matches this sign-in. Create an account or use another method.",
+      "confirmationFailed": "We could not send the confirmation email. Please try again.",
+      "completionExpired": "This social sign-in has expired. Restart signup.",
+      "regionMismatch": "The selected region does not match this authorization. Restart signup in the correct region.",
+      "signupFailed": "Your team could not be created. Please try again."
+    }
+  },
+  "settings": {
+    "security": {
+      "title": "Security",
+      "loading": "Loading security settings...",
+      "changePasswordTitle": "Change password",
+      "changePasswordDescription": "Update the password for this account.",
+      "setPasswordTitle": "Set a password",
+      "setPasswordDescription": "Add password sign-in as another way to access this account.",
+      "setPasswordHelp": "HitKeep will send a secure password setup link to your account email.",
+      "setPasswordAction": "Send password setup email",
+      "setPasswordSent": "Password setup email sent.",
+      "passwordUpdated": "Password updated successfully.",
+      "currentPasswordLabel": "Current password",
+      "newPasswordLabel": "New password",
+      "minimumLengthHint": "Minimum 8 characters",
+      "updatePassword": "Update password",
+      "social": {
+        "title": "Social sign-in",
+        "description": "Connect provider accounts you can use to sign in to HitKeep.",
+        "empty": "No social sign-in providers are linked.",
+        "linkedDate": "Linked",
+        "lastUsed": "Last used",
+        "connectAction": "Connect {{provider}}",
+        "unlinkAction": "Unlink",
+        "passwordConfirmationHint": "Enter your current password in the password section before unlinking your only social provider.",
+        "linked": "Provider linked successfully.",
+        "unlinked": "Provider unlinked successfully.",
+        "errors": {
+          "linkFailed": "Unable to link this provider.",
+          "unlinkFailed": "Unable to unlink this provider.",
+          "lastMethod": "Add another social provider or passkey, or confirm an enabled password before unlinking."
+        }
+      },
+      "twoFactor": {
+        "title": "Two-factor authentication",
+        "description": "Protect your account with a one-time code from an authenticator app.",
+        "setupDescription": "Start setup to generate a secret and verify a 6-digit TOTP code.",
+        "enabledDescription": "Two-factor authentication is currently enabled on your account.",
+        "secretLabel": "Manual setup key",
+        "otpauthLabel": "OTPAuth URI",
+        "verifyCodeLabel": "Verification code",
+        "disableCodeLabel": "Current authenticator code",
+        "disableHint": "Enter a valid 6-digit code to disable two-factor authentication.",
+        "startSetupAction": "Start setup",
+        "verifyAction": "Enable two-factor",
+        "disableAction": "Disable two-factor",
+        "enabled": "Two-factor authentication enabled.",
+        "disabled": "Two-factor authentication disabled.",
+        "errors": {
+          "startFailed": "Failed to start two-factor setup. Please try again.",
+          "verifyFailed": "Verification failed. Check your code and try again.",
+          "disableFailed": "Failed to disable two-factor authentication."
+        }
+      },
+      "passkeys": {
+        "title": "Passkeys",
+        "description": "Register a passkey to use device-based authentication.",
+        "empty": "No passkeys registered yet.",
+        "nameLabel": "Passkey name",
+        "namePlaceholder": "e.g. Work laptop",
+        "nameHint": "Optional label to identify the device.",
+        "addAction": "Add passkey",
+        "removeAction": "Remove",
+        "registered": "Passkey registered.",
+        "deleted": "Passkey removed.",
+        "errors": {
+          "notSupported": "This browser does not support passkey registration.",
+          "registrationFailed": "Passkey registration failed. Please try again.",
+          "deleteFailed": "Unable to remove this passkey right now."
+        }
+      },
+      "recoveryCodes": {
+        "title": "Recovery codes",
+        "description": "Generate single-use backup codes for account recovery if you lose your authenticator or passkey.",
+        "remainingLabel": "Backup codes",
+        "remainingValue": "{{count}} codes left",
+        "generatedBadge": "Generated",
+        "requiresMfa": "Enable TOTP or register a passkey before generating recovery codes.",
+        "codesTitle": "Store these recovery codes now",
+        "codesHint": "Each code can be used once. They are only shown when you generate or regenerate them.",
+        "copyAction": "Copy all",
+        "downloadAction": "Download .txt",
+        "generateAction": "Generate codes",
+        "regenerateAction": "Regenerate codes",
+        "generated": "Recovery codes regenerated.",
+        "copied": "Recovery codes copied.",
+        "downloaded": "Recovery codes downloaded.",
+        "errors": {
+          "copyFailed": "Failed to copy recovery codes.",
+          "downloadFailed": "Failed to download recovery codes.",
+          "generateFailed": "Failed to generate recovery codes. Please try again.",
+          "mfaRequired": "Enable TOTP or register a passkey before generating recovery codes."
+        }
+      },
+      "errors": {
+        "loadFailed": "Failed to load security settings.",
+        "invalidCurrentPassword": "Incorrect current password.",
+        "updateFailed": "Failed to update password. Please try again."
+      }
+    },
+    "user": {
+      "breadcrumb": "Settings",
+      "title": "Settings",
+      "subtitle": "Manage your account security and preferences.",
+      "profile": {
+        "title": "Profile",
+        "description": "Update your personal details and sign-in email.",
+        "emailLabel": "Email address",
+        "emailPlaceholder": "you@example.com",
+        "givenNameLabel": "Given name",
+        "givenNamePlaceholder": "Ada",
+        "lastNameLabel": "Last name",
+        "lastNamePlaceholder": "Lovelace",
+        "userIdLabel": "User ID",
+        "saveAction": "Save profile",
+        "status": {
+          "saved": "Profile saved"
+        },
+        "validation": {
+          "emailRequired": "Email is required.",
+          "emailInvalid": "Please enter a valid email address.",
+          "emailTooLong": "Email must be 320 characters or fewer.",
+          "nameTooLong": "Names must be 120 characters or fewer."
+        },
+        "errors": {
+          "loadFailed": "Failed to load your profile.",
+          "invalidInput": "Please check the highlighted fields and try again.",
+          "emailTaken": "That email is already in use.",
+          "notFound": "Your account could not be found.",
+          "updateFailed": "Failed to update profile. Please try again."
+        }
+      },
+      "dataExportTitle": "Data export",
+      "exportAllTitle": "Export all data",
+      "exportAllDescription": "Download all your data across all sites as CSV, XLSX, Parquet, JSON, or NDJSON.",
+      "exportStatus": {
+        "success": "Download started.",
+        "error": "Failed to export data. Please try again."
+      },
+      "exportShortcut": {
+        "title": "Analytics export",
+        "description": "Export all accessible sites or individual site takeouts from the Import & Export hub.",
+        "action": "Open Import & Export"
+      }
+    },
+    "reports": {
+      "breadcrumb": "Reporting",
+      "subtitle": "Create reliable, scheduled analytics reports for yourself or your team.",
+      "newReport": "New report",
+      "mailUnavailable": "SMTP is unavailable. You can create and edit drafts, but reports cannot be activated, tested, or retried.",
+      "mailUnavailableDraft": "Mail delivery is unavailable. Save this report as a draft until SMTP is configured.",
+            "saved": "Report saved.",
+            "deleted": "Report deleted.",
+            "emptyFiltered": "No reports match your search.",
+      "previewSuppressed": "No email would be sent because this report has no eligible content for the selected period.",
+      "previewDeliverable": "{{count}} confirmed recipient(s) would receive this report.",
+      "previewPending": "{{count}} external recipient(s) are pending confirmation.",
+      "testAccepted": "Test message accepted by the mail server.",
+      "retryQueued": "Delivery retry queued.",
+      "resubscribed": "You are subscribed to this report again.",
+      "copyName": "{{name}} copy",
+      "name": "Report name",
+      "namePlaceholder": "e.g. Monday growth review",
+      "nextRun": "Next run",
+      "lastOutcome": "Last outcome",
+      "notAvailable": "Not yet",
+      "allAccessibleSites": "All accessible sites",
+      "siteCount": "{{count}} sites",
+      "selectedSites": "Selected sites",
+      "personalRecipient": "Personal reports are sent only to your HitKeep account.",
+      "deliveryTime": "Delivery time",
+      "timezone": "Timezone",
+      "weekday": "Weekday",
+      "monthDay": "Day of month",
+      "scheduleHint": "Times use 15-minute increments. New reports default to 08:00 in your browser timezone.",
+      "deleteConfirm": "Delete report “{{name}}”? Delivery history will also be removed.",
+      "optedOut": "You opted out of this report.",
+      "resubscribe": "Resubscribe",
+      "empty": {
+        "title": "No reports yet",
+        "description": "Create a named report with the sites, recipients, and delivery time that fit your workflow.",
+        "action": "Create report"
+      },
+      "filteredEmpty": { "title": "No matching reports" },
+      "presets": {
+        "site_summary": { "title": "Site Summary", "description": "KPIs, goals, trend, top pages, and referrers for one site." },
+        "portfolio_digest": { "title": "Portfolio Digest", "description": "A compact comparison across selected or all accessible sites." },
+        "opportunity_brief": { "title": "Opportunity Brief", "description": "Validated saved opportunities with cited evidence; empty emails are suppressed." }
+      },
+      "scope": { "label": "Scope", "personal": "Personal", "team": "Team" },
+      "scopeSites": "Scope and sites",
+      "sort": { "label": "Sort by", "ascending": "Sort ascending", "descending": "Sort descending" },
+      "sites": { "label": "Sites", "placeholder": "Select sites" },
+      "recipients": {
+        "label": "Recipients",
+        "placeholder": "Select HitKeep users",
+        "externalLabel": "External email recipients",
+        "externalPlaceholder": "client@example.com",
+        "externalHint": "External recipients must confirm before receiving reports. Up to 25 per report.",
+        "proNudge": "External scheduled-report recipients are available on Pro and Business. On Free, remove existing external addresses before saving changes.",
+        "proRequired": "External report recipients require the Pro plan or higher.",
+        "upgradeToPro": "Upgrade to Pro",
+        "add": "Add email",
+        "invalidEmail": "Enter a valid email address.",
+        "limit": "A report can have at most 25 external recipients.",
+        "removeEmail": "Remove {{email}}",
+        "resend": "Resend",
+        "resent": "Confirmation email resent.",
+        "resendFailed": "The confirmation email could not be resent yet.",
+        "removeConfirm": "Remove {{email}} from this report?",
+        "removed": "External recipient removed."
+      },
+      "recipientStatus": { "confirmed": "Confirmed", "pending_confirmation": "Pending confirmation", "opted_out": "Opted out", "expired": "Confirmation expired", "invitation_failed": "Invitation failed" },
+      "schedule": { "label": "Schedule" },
+      "frequency": {
+        "label": "Cadence",
+        "daily": {
+          "label": "Daily",
+          "hint": "Previous day"
+        },
+        "weekly": {
+          "label": "Weekly",
+          "hint": "Previous seven days"
+        },
+        "monthly": {
+          "label": "Monthly",
+          "hint": "Previous calendar month"
+        }
+      },
+      "weekdays": { "0": "Sunday", "1": "Monday", "2": "Tuesday", "3": "Wednesday", "4": "Thursday", "5": "Friday", "6": "Saturday" },
+      "status": { "draft": "Draft", "active": "Active", "paused": "Paused" },
+      "runStatus": { "queued": "Queued", "running": "Sending", "sending": "Sending", "completed": "Accepted by mail server", "accepted": "Accepted by mail server", "partial": "Partly accepted by mail server", "failed": "Failed", "skipped": "Skipped" },
+      "actions": { "preview": "Generate preview", "test": "Test send", "history": "History", "duplicate": "Duplicate", "pause": "Pause", "resume": "Resume", "retry": "Retry" },
+      "editor": { "createTitle": "Create report", "editTitle": "Edit report", "presetStep": "Choose a preset", "sitesStep": "Choose sites", "recipientsStep": "Choose recipients", "scheduleStep": "Set the schedule", "previewStep": "Preview" },
+      "saveDraft": "Save draft",
+      "activate": "Save & activate",
+      "history": { "title": "Delivery history", "empty": "No scheduled runs yet.", "deliveries": "deliveries", "attempts": "attempts", "acceptedAt": "Accepted", "retryAt": "Next retry" },
+      "errors": { "loadTitle": "Reports are unavailable", "load": "Reports could not be loaded.", "save": "The report could not be saved.", "preview": "The preview could not be generated.", "members": "Team members could not be loaded. Try again before choosing recipients.", "history": "Delivery history could not be loaded.", "test": "The mail server did not accept the test message.", "action": "The report action failed." }
+    },
+    "apiClients": {
+      "title": "API clients",
+      "description": "Create delegated API clients with permissions capped to your own access.",
+      "loading": "Loading API clients...",
+      "empty": "No API clients yet.",
+      "createDialogTitle": "Add API client",
+      "editDialogTitle": "Edit API client",
+      "confirmDelete": "Delete API client \"{{name}}\"?",
+      "confirmRotate": "Roll token for API client \"{{name}}\"? The old token will stop working immediately.",
+      "noSiteAccess": "No site access",
+      "noSiteAccessInstanceOnly": "Instance/admin only; no site access",
+      "siteGrantCount": "{{count}} site grants",
+      "siteGrantPopoverTitle": "Site grants",
+      "status": {
+        "active": "Active",
+        "inactive": "Inactive",
+        "revoked": "Revoked",
+        "expired": "Expired"
+      },
+      "meta": {
+        "instanceRole": "Instance role",
+        "created": "Created",
+        "lastUsed": "Last used",
+        "expires": "Expires"
+      },
+      "actions": {
+        "add": "Add API client",
+        "create": "Create client",
+        "save": "Save changes",
+        "edit": "Edit",
+        "revoke": "Revoke",
+        "reactivate": "Reactivate",
+        "delete": "Delete",
+        "addScope": "Add grant",
+        "refresh": "Refresh",
+        "rollToken": "Roll token"
+      },
+      "form": {
+        "nameLabel": "Client name",
+        "namePlaceholder": "e.g. CI analytics sync",
+        "descriptionLabel": "Description",
+        "descriptionPlaceholder": "What this client is used for",
+        "instanceRoleLabel": "Instance role",
+        "expiresAtLabel": "Expiration",
+        "expiresAtHint": "Leaving this blank creates a token with no expiration, which is not recommended.",
+        "siteScopesLabel": "Site grants",
+        "siteScopesHint": "Site analytics, MCP, and ingest access require an explicit site grant.",
+        "selectSitePlaceholder": "Select site",
+        "validation": {
+          "nameRequired": "Client name is required.",
+          "nameTooLong": "Client name must be 120 characters or fewer.",
+          "instanceRoleRequired": "Instance role is required.",
+          "expiresAtPast": "Expiration must be in the future.",
+          "expiresAtInvalid": "Expiration timestamp is invalid.",
+          "scopeSiteRequired": "Select a site before adding a grant."
+        },
+        "teamSiteScopesHint": "Team clients can access only sites added here with a site role."
+      },
+      "tokenNotice": {
+        "title": "Copy this token now",
+        "description": "For security, the token is only shown once. Store it in your secret manager."
+      },
+      "messages": {
+        "created": "API client created.",
+        "updated": "API client updated.",
+        "deleted": "API client deleted.",
+        "revoked": "API client revoked.",
+        "reactivated": "API client reactivated.",
+        "rotated": "API token rolled. Copy the new token now."
+      },
+      "errors": {
+        "loadFailed": "Failed to load API clients.",
+        "createFailed": "Failed to create API client.",
+        "updateFailed": "Failed to update API client.",
+        "rotateFailed": "Failed to roll API token.",
+        "deleteFailed": "Failed to delete API client.",
+        "invalidExpiration": "Expiration timestamp is invalid.",
+        "notFound": "API client not found."
+      },
+      "teamTitle": "Team API clients",
+      "teamDescription": "Create team-owned API clients for shared automations without tying them to one user account."
+    }
+  },
+  "setup": {
+    "description": "Create your administrator account to get started.",
+    "givenNameLabel": "Given name",
+    "givenNamePlaceholder": "Ada",
+    "lastNameLabel": "Last name",
+    "lastNamePlaceholder": "Lovelace",
+    "emailPlaceholder": "admin@example.com",
+    "createAdminAction": "Create admin account",
+    "createAdminAndContinueAction": "Create admin account and continue",
+    "errors": {
+      "unexpected": "An unexpected error occurred. Please try again."
+    }
+  },
+  "password": {
+    "forgot": {
+      "title": "Reset password",
+      "description": "Enter your email address and we'll send you a link to reset your password.",
+      "successTitle": "Check your inbox!",
+      "successDescription": "If an account exists for {{email}}, we have sent a reset link.",
+      "returnToSignIn": "Return to sign in",
+      "sendResetLink": "Send reset link",
+      "backToSignIn": "Back to sign in",
+      "errors": {
+        "unexpected": "Something went wrong. Please try again later."
+      }
+    },
+    "reset": {
+      "title": "Set new password",
+      "success": "Password updated successfully!",
+      "signInNow": "Sign in now",
+      "newPasswordLabel": "New password",
+      "minimumLength": "Must be at least 8 characters.",
+      "submit": "Reset password",
+      "errors": {
+        "tokenMissing": "Invalid link. The token is missing.",
+        "invalidLink": "Invalid password reset link.",
+        "expiredOrInvalid": "This link has expired or is invalid.",
+        "resetFailed": "Failed to reset password. Please try again."
+      }
+    }
+  },
+  "invite": {
+    "accept": {
+      "title": "Accept invitation",
+      "description": "Set a password or sign in with the email address that received this invite.",
+      "passwordLabel": "Password",
+      "minimumLength": "Must be at least 8 characters.",
+      "submit": "Accept invitation",
+      "checkingSession": "Checking invitation...",
+      "loginRequired": "Sign in with the email address that received this invite to accept it.",
+      "signIn": "Sign in",
+      "errors": {
+        "tokenMissing": "Invalid invitation link. The token is missing.",
+        "expiredOrInvalid": "This invitation link has expired or is invalid.",
+        "teamLimit": "This invitation cannot be accepted because the account is already linked to another team.",
+        "acceptFailed": "We could not accept this invitation. Please try again.",
+        "ssoFailed": "We could not complete SSO for this invitation. Try again or use your password."
+      }
+    }
+  },
+  "share": {
+    "dialog": {
+      "title": "Share dashboard",
+      "description": "Anyone with this link can view the dashboard in read-only mode.",
+      "generateAction": "Generate link",
+      "shareUrlLabel": "Share URL",
+      "tokenHintLabel": "Token",
+      "urlUnavailable": "URL hidden for existing links",
+      "empty": "No share links yet.",
+      "generateFailed": "Unable to create a share link right now. Please try again.",
+      "loadFailed": "Unable to load share links right now. Please try again.",
+      "deleteAction": "Delete",
+      "deleteConfirmTitle": "Delete share link",
+      "deleteConfirmMessage": "Anyone using this link will lose access immediately.",
+      "createSuccess": "Share link created.",
+      "deleteSuccess": "Share link deleted.",
+      "deleteFailed": "Unable to delete share link right now."
+    },
+    "page": {
+      "loading": "Loading shared dashboard...",
+      "missingToken": "Missing share token.",
+      "invalidOrExpired": "Share link is invalid or expired."
+    }
+  },
+  "sites": {
+    "addDialog": {
+      "title": "Add site",
+      "instructionsLine1": "Enter your root or subdomain (e.g., {{apex}}, {{subdomain}}).",
+      "instructionsLine2": "We automatically track {{www}} with your apex domain.",
+      "domainLabel": "Domain name",
+      "domainPlaceholder": "example.com",
+      "addAction": "Add site",
+      "errors": {
+        "domainRequired": "Domain is required.",
+        "domainInvalid": "Invalid domain format.",
+        "removeProtocol": "Please remove http:// or https://",
+        "removeWww": "Please remove 'www.'. Enter the domain without the 'www.' prefix.",
+        "createFailed": "Failed to create site. Domain might already exist."
+      }
+    },
+    "danger": {
+      "resetTitle": "Reset stats",
+      "resetDescription": "Permanently clears this site's measured stats while keeping settings, access, goals, funnels, and tracking setup.",
+      "resetConfirmTitle": "Reset stats",
+      "resetConfirmMessage": "Type \"{{domain}}\" to reset stats for this site.",
+      "resetConfirmHint": "Tracking stays active. New data collected after the reset will appear normally.",
+      "resetAction": "Reset stats",
+      "resetSuccess": "Stats reset. Cleared {{rows}} row(s) and marked {{imports}} completed import(s) deleted.",
+      "resetFailed": "Failed to reset site stats.",
+      "deleteTitle": "Delete site",
+      "deleteDescription": "Permanently deletes this site and all associated analytics data.",
+      "deleteConfirmTitle": "Delete site",
+      "deleteConfirmMessage": "Type \"{{domain}}\" to delete this site.",
+      "deleteAction": "Delete site",
+      "deleteFailed": "Failed to delete site."
+    },
+    "retention": {
+      "infoTitle": "How retention works",
+      "infoDescription": "Raw hits older than the retention period are archived to Parquet files for long-term storage and removed from the hot database to improve performance.",
+      "periodLabel": "Retention period (days)",
+      "hotDataSuffix": "days of hot data",
+      "defaultHint": "Default is 365 days.",
+      "savePolicy": "Save policy"
+    },
+    "exclusions": {
+      "description": "Exclude internal, monitoring, bot, country, user-agent, or path traffic so it never reaches analytics storage.",
+      "typeLabel": "Rule type",
+      "cidrLabel": "IP or CIDR",
+      "cidrPlaceholder": "203.0.113.5 or 192.168.0.0/24",
+      "countryLabel": "Country",
+      "countryPlaceholder": "Select a country",
+      "userAgentLabel": "User-agent contains",
+      "userAgentPlaceholder": "monitoring-bot",
+      "pathLabel": "Path",
+      "pathPlaceholder": "/admin",
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "Office VPN, synthetic monitor, etc.",
+      "addAction": "Add exclusion",
+      "loading": "Loading exclusions...",
+      "empty": "No exclusions configured for this site.",
+      "confirmDelete": "Delete exclusion {{value}}?",
+      "suggestionsTitle": "Your current IP",
+      "suggestionsHint": "Copy this CIDR and paste it into the IP or CIDR field.",
+      "currentIpLoading": "Resolving your IP...",
+      "currentIpUnavailable": "Unable to resolve your current IP.",
+      "inheritedHint": "Instance and team filters also apply to this site. Inherited filters are read-only here.",
+      "inheritedReadOnly": "Inherited",
+      "ruleTypes": {
+        "cidr": "IP/CIDR",
+        "country": "Country",
+        "userAgent": "User agent",
+        "path": "Path"
+      },
+      "scopes": {
+        "instance": "Instance",
+        "team": "Team",
+        "site": "Site"
+      },
+      "columns": {
+        "type": "Type",
+        "value": "Value",
+        "description": "Description",
+        "created": "Created"
+      },
+      "errors": {
+        "invalidCidr": "Enter a valid IP or CIDR value.",
+        "invalidCountry": "Select a country.",
+        "invalidUserAgent": "Enter a user-agent substring.",
+        "invalidPath": "Enter a path.",
+        "descriptionTooLong": "Description must be 255 characters or fewer.",
+        "loadFailed": "Failed to load exclusions.",
+        "createFailed": "Failed to create exclusion.",
+        "deleteFailed": "Failed to delete exclusion."
+      },
+      "status": {
+        "createSuccess": "Created exclusion {{value}}.",
+        "deleteSuccess": "Deleted exclusion {{value}}."
+      }
+    },
+    "selector": {
+      "regionAria": "Site selection",
+      "sitesLabel": "Sites",
+      "addSiteAria": "Add a new site",
+      "selectPlaceholder": "Select site",
+      "selectSiteAria": "Select a site to view stats",
+      "siteSettingsAria": "Site settings",
+      "trackingCodeAria": "Tracking code",
+      "shareDashboardAria": "Share dashboard"
+    },
+    "settings": {
+      "breadcrumb": {
+        "sites": "Sites",
+        "settings": "Settings"
+      },
+      "title": "Site settings",
+      "tabs": {
+        "general": "General",
+        "tracking": "Tracking",
+        "filtering": "Filtering",
+        "retention": "Retention",
+        "access": "Access",
+        "dangerZone": "Danger zone"
+      },
+      "notices": {
+        "siteUnavailable": "This site is unavailable or you no longer have access.",
+        "sectionUnavailable": "You do not have permission to open that settings section.",
+        "siteDeleted": "Site deleted.",
+        "siteTransferred": "Site transferred to the selected team."
+      },
+      "general": {
+        "title": "General settings",
+        "domainLabel": "Domain",
+        "renameAction": "Save domain",
+        "renameHint": "Renaming changes which domain the tracker matches. Existing analytics stay with this site.",
+        "renameErrors": {
+          "domainTaken": "This domain is already used by another site.",
+          "renameFailed": "Failed to rename the domain. Please try again."
+        },
+        "siteIdLabel": "Site ID",
+        "dataExportTitle": "Data export",
+        "exportSiteDataTitle": "Export site data",
+        "exportSiteDataDescription": "Download all hits and events for this site as CSV, XLSX, Parquet, JSON, or NDJSON.",
+        "exportStatus": {
+          "success": "Download started.",
+          "error": "Failed to export site data. Please try again."
+        },
+        "exportShortcutTitle": "Analytics export",
+        "exportShortcutDescription": "Export this site, or any other accessible site, from the Import & Export hub.",
+        "exportShortcutAction": "Open Import & Export"
+      },
+      "unsavedChangesConfirm": "You have unsaved changes. Discard them?"
+    },
+    "team": {
+      "emailPlaceholder": "user@example.com",
+      "addMemberAction": "Add site member",
+      "addMemberDialogTitle": "Add site member",
+      "addMemberSuccess": "Site member added.",
+      "removeMemberSuccess": "Site member removed.",
+      "confirmRemove": "Remove {{email}} from site?",
+      "transfer": {
+        "title": "Transfer site",
+        "description": "Move this site and its analytics data into another team you can administer.",
+        "teamLabel": "Destination team",
+        "teamPlaceholder": "Select a destination team",
+        "action": "Transfer site",
+        "success": "Site transferred successfully.",
+        "errors": {
+          "forbidden": "You do not have permission to transfer this site to the selected team.",
+          "generic": "Failed to transfer site."
+        }
+      },
+      "errors": {
+        "addFailed": "Failed to add member. Ensure user exists.",
+        "removeFailed": "Failed to remove member: {{error}}"
+      }
+    },
+    "tracking": {
+      "install": {
+        "title": "Install HitKeep on {{ domain }}",
+        "titleFallback": "Install HitKeep",
+        "subtitle": "Pick how this site sends data. Every method reports into the same dashboard.",
+        "methodLabel": "Installation method",
+        "methods": {
+          "script": "Script tag",
+          "npm": "npm",
+          "wordpress": "WordPress",
+          "server": "Server-side"
+        },
+        "script": {
+          "description": "Copy and paste the code below into your website's HTML. Automatic tracking is enabled by default for outbound clicks, downloads, and form submissions.",
+          "docsAction": "Tracker guide"
+        },
+        "npm": {
+          "description": "Bundle the typed tracker into a React, Vue, Angular, or Astro app. No script tag, full TypeScript types, and content blockers do not filter it.",
+          "installStep": "1. Install the package",
+          "initStep": "2. Initialize it once at startup",
+          "docsAction": "npm package guide",
+          "registryAction": "View on npm"
+        },
+        "wordpress": {
+          "description": "Install the HitKeep Analytics plugin from the WordPress plugin directory, then paste this instance URL under Settings → HitKeep. No theme editing and no tag manager required.",
+          "urlLabel": "HitKeep instance URL",
+          "urlHint": "Do not add /hk.js — the plugin appends it automatically.",
+          "directoryAction": "Get the plugin",
+          "docsAction": "WordPress guide"
+        },
+        "server": {
+          "description": "Send trusted pageviews and events from a backend, CMS, reverse proxy, or log replay job. The caller supplies the original timestamp, visitor IP, and user agent.",
+          "tokenHint": "Requires an API client token with the site.manage_data permission for this site. Keep the token server-side.",
+          "docsAction": "Server-side tracking guide",
+          "tokenAction": "API clients guide"
+        }
+      },
+      "options": {
+        "title": "Advanced options",
+        "description": "These options only change the code above. They are not saved in HitKeep — the settings live in the script tag on your own pages.",
+        "badge": "{{ count }} changed",
+        "deliveryTitle": "Delivery and privacy"
+      },
+      "collectDntLabel": "Collect DNT",
+      "collectDntDescription": "Track users even if \"Do Not Track\" is enabled in their browser.",
+      "disableBeaconLabel": "Disable sendBeacon",
+      "disableBeaconDescription": "Use standard fetch requests instead of navigator.sendBeacon.",
+      "webVitalsLabel": "Web Vitals",
+      "webVitalsDescription": "Load the separate Web Vitals bundle and send LCP, INP, CLS, FCP, and TTFB samples. Off by default.",
+      "autoTrackingTitle": "Automatic event tracking",
+      "autoTrackingDescription": "HitKeep can automatically send privacy-safe outbound_click, file_download, and form_submit events from hk.js.",
+      "outboundTrackingLabel": "Track outbound clicks",
+      "outboundTrackingDescription": "Send outbound_click when visitors follow links to a different hostname.",
+      "downloadTrackingLabel": "Track file downloads",
+      "downloadTrackingDescription": "Send file_download for links with download attributes or known file extensions.",
+      "formTrackingLabel": "Track form submissions",
+      "formTrackingDescription": "Send form_submit for browser-observed form submissions without capturing form values.",
+      "domains": {
+        "label": "Tracker host",
+        "description": "Choose which available host to use in the generated browser tracker snippet.",
+        "defaultOption": "HitKeep instance URL",
+        "selectedHint": "Tracker URL: https://{{ hostname }}/hk.js"
+      },
+      "verifier": {
+        "title": "Live tracking verifier",
+        "status": {
+          "waiting": "Waiting",
+          "live": "Live",
+          "dormant": "Dormant",
+          "domain_mismatch": "Domain mismatch"
+        },
+        "waitingHint": "Waiting for the first accepted hit. This panel refreshes automatically for two minutes.",
+        "mismatchHint": "The latest detected hostname does not match this site's configured domain.",
+        "fields": {
+          "firstHit": "First hit",
+          "lastHit": "Last hit",
+          "lastEvent": "Last event",
+          "detectedHostname": "Detected hostname",
+          "automaticEvent": "Last automatic event",
+          "tracker": "Tracker"
+        },
+        "empty": "Not seen yet",
+        "showDetails": "Details",
+        "hideDetails": "Hide details"
+      }
+    }
+  },
+  "admin": {
+    "breadcrumb": "Instance administration",
+    "tabs": {
+      "users": "Users",
+      "sites": "Sites",
+      "teams": "Teams",
+      "globalFilters": "Global filters",
+      "overview": "Overview",
+      "health": "Health",
+      "storage": "Storage",
+      "ingest": "Ingest",
+      "backups": "Backups",
+      "spam": "Spam",
+      "caches": "Caches",
+      "mail": "Mail",
+      "audit": "Audit"
+    },
+    "users": {
+      "title": "Users",
+      "roleSelfLocked": "You cannot change your own instance role.",
+      "disable2faAction": "Disable MFA"
+    },
+    "sites": {
+      "title": "Sites",
+      "ownerUnknown": "Unknown owner"
+    },
+    "exclusions": {
+      "title": "Global traffic filters",
+      "description": "Drop traffic from selected networks, countries, user agents, or paths for every site in this HitKeep instance.",
+      "typeLabel": "Rule type",
+      "cidrLabel": "IP or CIDR",
+      "cidrPlaceholder": "203.0.113.5 or 192.168.0.0/24",
+      "countryLabel": "Country",
+      "countryPlaceholder": "Select a country",
+      "userAgentLabel": "User-agent contains",
+      "userAgentPlaceholder": "monitoring-bot",
+      "pathLabel": "Path",
+      "pathPlaceholder": "/admin",
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "Uptime monitor, office range, etc.",
+      "addAction": "Add global filter",
+      "loading": "Loading global filters...",
+      "empty": "No global filters configured.",
+      "confirmDelete": "Delete global filter {{value}}?",
+      "suggestionsTitle": "Your current IP",
+      "suggestionsHint": "Copy this CIDR and paste it into the IP or CIDR field.",
+      "currentIpLoading": "Resolving your IP...",
+      "currentIpUnavailable": "Unable to resolve your current IP.",
+      "ruleTypes": {
+        "cidr": "IP/CIDR",
+        "country": "Country",
+        "userAgent": "User agent",
+        "path": "Path"
+      },
+      "columns": {
+        "type": "Type",
+        "value": "Value",
+        "description": "Description",
+        "created": "Created"
+      },
+      "errors": {
+        "invalidCidr": "Enter a valid IP or CIDR value.",
+        "invalidCountry": "Select a country.",
+        "invalidUserAgent": "Enter a user-agent substring.",
+        "invalidPath": "Enter a path.",
+        "descriptionTooLong": "Description must be 255 characters or fewer.",
+        "loadFailed": "Failed to load global filters.",
+        "createFailed": "Failed to create global filter.",
+        "deleteFailed": "Failed to delete global filter."
+      },
+      "status": {
+        "createSuccess": "Created global filter {{value}}.",
+        "deleteSuccess": "Deleted global filter {{value}}."
+      }
+    },
+    "roles": {
+      "instanceOwner": "Instance owner",
+      "instanceAdmin": "Instance admin",
+      "user": "User"
+    },
+    "errors": {
+      "deleteUserBlockedOwnership": "Cannot delete {{email}} until ownership is transferred for: {{teams}}.",
+      "deleteUserFailed": "Could not delete user {{email}}.",
+      "deleteSiteFailed": "Could not delete site {{domain}}.",
+      "deleteTeamFailed": "Could not delete team \"{{name}}\".",
+      "deleteForbidden": "You do not have permission to delete this resource.",
+      "deleteNotFound": "This resource no longer exists.",
+      "deleteUnavailable": "Deletion is only available on the active instance node.",
+      "deleteDefaultTeam": "The default team cannot be deleted.",
+      "deleteTeamNotArchived": "Archive the team before deleting it.",
+      "deleteTeamHasSites": "Transfer or delete all sites before deleting this team.",
+      "disable2faFailed": "Failed to disable MFA for {{email}}."
+    },
+    "status": {
+      "deleteUserSuccess": "Deleted user {{email}}.",
+      "deleteSiteSuccess": "Deleted site {{domain}}.",
+      "deleteTeamSuccess": "Deleted team \"{{name}}\".",
+      "disable2faSuccess": "MFA was disabled for {{email}}."
+    },
+    "confirmDisable2fa": "Disable all MFA methods for {{email}}? This also invalidates remembered sessions.",
+    "confirmDeleteUser": "Delete user {{email}}?",
+    "confirmDeleteSite": "Delete site {{domain}}? This action cannot be undone.",
+    "confirmDeleteTeam": "Permanently delete team \"{{name}}\"? This cannot be undone.",
+    "confirmDeleteTeamWithSites": "Permanently delete team \"{{name}}\" and its {{sites}} site(s)? All analytics data will be lost. This cannot be undone.",
+    "teams": {
+      "title": "Teams",
+      "status": {
+        "active": "Active",
+        "archived": "Archived",
+        "default": "Default"
+      }
+    },
+    "team": {
+      "tabs": {
+        "overview": "Overview",
+        "members": "Members",
+        "sso": "SSO",
+        "apiClients": "API Clients",
+        "exclusions": "Traffic Filters",
+        "customDomains": "Custom Domains",
+        "branding": "Branding",
+        "dangerZone": "Danger Zone",
+        "activity": "Activity"
+      },
+      "exclusions": {
+        "title": "Team traffic filters",
+        "description": "Drop matching traffic for every site currently owned by this team.",
+        "typeLabel": "Rule type",
+        "cidrLabel": "IP or CIDR",
+        "cidrPlaceholder": "203.0.113.5 or 192.168.0.0/24",
+        "countryLabel": "Country",
+        "countryPlaceholder": "Select a country",
+        "userAgentLabel": "User-agent contains",
+        "userAgentPlaceholder": "monitoring-bot",
+        "pathLabel": "Path",
+        "pathPlaceholder": "/admin",
+        "descriptionLabel": "Description",
+        "descriptionPlaceholder": "Office VPN, synthetic monitor, etc.",
+        "addAction": "Add team filter",
+        "loading": "Loading team filters...",
+        "empty": "No traffic filters configured for this team.",
+        "confirmDelete": "Delete team filter {{value}}?",
+        "suggestionsTitle": "Your current IP",
+        "currentIpLoading": "Resolving your IP...",
+        "currentIpUnavailable": "Unable to resolve your current IP.",
+        "inheritedHint": "Instance filters also apply to this team. Inherited filters are read-only here.",
+        "inheritedReadOnly": "Inherited",
+        "ruleTypes": {
+          "cidr": "IP/CIDR",
+          "country": "Country",
+          "userAgent": "User agent",
+          "path": "Path"
+        },
+        "scopes": {
+          "instance": "Instance",
+          "team": "Team",
+          "site": "Site"
+        },
+        "columns": {
+          "type": "Type",
+          "value": "Value",
+          "description": "Description",
+          "created": "Created"
+        },
+        "errors": {
+          "invalidCidr": "Enter a valid IP or CIDR value.",
+          "invalidCountry": "Select a country.",
+          "invalidUserAgent": "Enter a user-agent substring.",
+          "invalidPath": "Enter a path.",
+          "descriptionTooLong": "Description must be 255 characters or fewer.",
+          "loadFailed": "Failed to load team filters.",
+          "createFailed": "Failed to create team filter.",
+          "deleteFailed": "Failed to delete team filter."
+        },
+        "status": {
+          "createSuccess": "Created team filter {{value}}.",
+          "deleteSuccess": "Deleted team filter {{value}}."
+        }
+      },
+      "overview": {
+        "breadcrumb": "Team Overview",
+        "title": "Team",
+        "teamIdLabel": "Team ID",
+        "memberCount": "Members",
+        "quickActions": "Quick actions",
+        "manageMembers": "Manage members",
+        "teamSettings": "Team settings",
+        "usage": {
+          "title": "Usage and limits",
+          "description": "Track current team usage against plan limits before ingestion gets blocked.",
+          "currentUsage": "{{count}} used",
+          "unlimited": "Unlimited",
+          "unlimitedFootnote": "Unlimited on the current plan",
+          "limitValue": "Limit {{count}}",
+          "progressLabel": "{{count}}% of limit",
+          "pendingInviteOne": "1 pending invite",
+          "pendingInviteMany": "{{count}} pending invites",
+          "metrics": {
+            "sites": "Sites",
+            "members": "Members"
+          }
+        },
+        "cloud": {
+          "title": "Cloud plan",
+          "managed": "Managed cloud",
+          "description": "This team is running on the hosted HitKeep cloud footprint. Keep the free plan for validation or upgrade when you need more retention, members, or volume.",
+          "operatorPlan": "Operator",
+          "operatorDescription": "This operator-owned team is internal to HitKeep Cloud and is not limited by customer plan entitlements.",
+          "jurisdiction": "Jurisdiction",
+          "region": "Region",
+          "retention": "Retention",
+          "retentionDays": "{{count}} days",
+          "unlimitedRetention": "Unlimited retention",
+          "manageBillingAction": "Manage billing",
+          "upgradeAction": "Upgrade plan",
+          "supportAction": "Contact support"
+        },
+        "plans": {
+          "title": "Upgrade your plan",
+          "description": "Unlock longer retention, more sites, team capacity, and SSO on Business.",
+          "currentPlan": "Current plan",
+          "recommended": "Recommended",
+          "perMonth": "/mo",
+          "perYear": "/yr",
+          "billingLabel": "Billing interval",
+          "monthly": "Monthly",
+          "annual": "Annual",
+          "annualSaving": "2 months free",
+          "openSource": {
+            "note": "HitKeep is fully open source — including every paid feature. Cloud plans fund hosting and ongoing development.",
+            "support": "Prefer to support us another way?",
+            "sponsor": "Sponsor the open-source development",
+            "spread": "Or simply spread the word — it helps more than you think."
+          },
+          "upgradeAction": "Upgrade to {{plan}}",
+          "features": {
+            "sites": "Up to {{count}} sites",
+            "members": "Up to {{count}} team members",
+            "retention": "{{count}}-year data retention",
+            "retentionDays": "{{count}}-day data retention",
+            "externalReportRecipients": "External scheduled-report recipients",
+            "customDomains": "Custom tracking domains",
+            "sso": "Single sign-on (SSO)"
+          }
+        }
+      },
+      "members": {
+        "breadcrumb": "Team Members",
+        "title": "Team Members"
+      },
+      "sso": {
+        "title": "Single sign-on",
+        "description": "Connect this team to its OpenID Connect identity provider.",
+        "status": {
+          "enabled": "Enabled",
+          "disabled": "Disabled"
+        },
+        "provider": {
+          "title": "Identity provider",
+          "description": "HitKeep currently supports standards-based OpenID Connect."
+        },
+        "callbackURL": {
+          "label": "Callback URL",
+          "hint": "Add this exact redirect URI to your identity provider.",
+          "copy": "Copy URL"
+        },
+        "issuerURL": {
+          "label": "Issuer URL",
+          "hint": "The HTTPS issuer from your provider's OpenID configuration."
+        },
+        "clientID": {
+          "label": "Client ID",
+          "hint": "The public identifier for the HitKeep application."
+        },
+        "clientSecret": {
+          "label": "Client secret",
+          "requiredHint": "Required before this connection can be saved.",
+          "configuredHint": "A secret is stored. Enter a new one only to rotate it.",
+          "placeholder": "Enter client secret",
+          "keepPlaceholder": "Leave blank to keep the current secret"
+        },
+        "allowedDomains": {
+          "label": "Allowed email domains",
+          "hint": "One domain per line. Each domain can belong to only one team's SSO connection."
+        },
+        "claimMapping": {
+          "title": "Claim mapping",
+          "description": "Keep the defaults unless your provider uses different claim paths.",
+          "email": "Email claim",
+          "name": "Display name claim"
+        },
+        "securityNote": "HitKeep verifies the provider signature, issuer, audience, state, nonce, PKCE challenge, and verified email. Provider tokens are never stored.",
+        "autoProvision": {
+          "label": "Automatically provision trusted-domain users",
+          "hint": "Let verified users from these domains join as Members without an invitation. Cloud seat and team limits still apply."
+        },
+        "enable": {
+          "label": "Enable SSO login",
+          "hint": "Shows SSO for existing members and invited users from trusted domains. Password login stays available."
+        },
+        "docsAction": "Setup guide",
+        "saveAction": "Save SSO configuration",
+        "testAction": "Test SSO connection",
+        "saveSuccess": "SSO configuration saved.",
+        "testSuccess": "The identity provider is reachable and its discovery document is valid.",
+        "errors": {
+          "loadFailed": "SSO configuration could not be loaded.",
+          "saveFailed": "SSO configuration could not be saved. Check the provider details and try again.",
+          "testFailed": "The identity provider could not be reached or returned an invalid discovery document.",
+          "domainConflict": "One of these email domains is already assigned to another team's SSO connection.",
+          "issuerRequired": "Enter a valid HTTPS issuer URL.",
+          "clientIDRequired": "Enter the client ID.",
+          "domainRequired": "Enter at least one email domain."
+        }
+      },
+      "settings": {
+        "breadcrumb": "Team Settings",
+        "title": "Team Settings",
+        "nameSectionTitle": "Team name",
+        "nameSectionDescription": "The display name for this team. Owners and admins can update it.",
+        "nameRequired": "Team name is required.",
+        "logoSectionTitle": "Team logo",
+        "logoSectionDescription": "A URL pointing to this team's logo image.",
+        "logoPlaceholder": "https://example.com/logo.png",
+        "logoPreviewAlt": "Team logo preview",
+        "saveAction": "Save settings",
+        "saveSuccess": "Team settings saved.",
+        "saveError": "Failed to save team settings. Please try again.",
+        "leaveSectionTitle": "Leave team",
+        "leaveSectionDescription": "Remove yourself from this team and switch to another team you belong to.",
+        "leaveConfirm": "Leave this team? Your active team context will switch immediately.",
+        "leaveAction": "Leave team",
+        "leaveSuccess": "You left the team.",
+        "archiveSectionTitle": "Archive team",
+        "archiveSectionDescription": "Archive this team after all of its sites have been transferred or removed.",
+        "archiveSectionHint": "Archiving hides the team from normal team lists. Transfer or delete every site in this team first.",
+        "archiveConfirm": "Archive this team? Members will lose access to it in the active team switcher.",
+        "archiveAction": "Archive team",
+        "archiveSuccess": "The team was archived.",
+        "archiveErrors": {
+          "hasSites": "Transfer or delete all team sites before archiving.",
+          "defaultTeam": "The default team cannot be archived.",
+          "forbidden": "Only team owners can archive this team.",
+          "generic": "Failed to archive team. Please try again."
+        },
+        "leaveErrors": {
+          "lastOwner": "You cannot leave as the last owner.",
+          "onlyTeam": "You cannot leave your only team.",
+          "generic": "Failed to leave team. Please try again."
+        },
+        "trackingDomains": {
+          "title": "Custom domains",
+          "description": "Verify custom domains once, then use any active domain as a tracker host for this team’s sites.",
+          "hostnamePlaceholder": "analytics.example.com",
+          "addAction": "Add domain",
+          "hostnameLabel": "Hostname",
+          "setupAction": "DNS setup",
+          "setupDescription": "Add these DNS records at your DNS provider, then run verification.",
+          "hostnameRequired": "Enter a hostname.",
+          "hostnameInvalid": "Use a valid hostname such as analytics.example.com.",
+          "hostnameTooLong": "Hostnames can be at most 253 characters.",
+          "empty": "No tracking domains have been added yet.",
+          "enabled": "Enabled",
+          "disabled": "Disabled",
+          "active": "Active",
+          "notActive": "Not active",
+          "added": "Tracking domain added. Add the DNS records, then verify it.",
+          "checked": "Verification checked. Review the status details below.",
+          "verified": "Tracking domain verified and ready to use.",
+          "enabledSuccess": "Tracking domain enabled.",
+          "disabledSuccess": "Tracking domain disabled. Sites using it were reset to the default URL.",
+          "deleted": "Tracking domain removed.",
+          "verifyAction": "Verify",
+          "disableAction": "Disable",
+          "enableAction": "Enable",
+          "deleteConfirm": "Remove {{ hostname }}? Sites using it will reset to the default tracker URL.",
+          "dns": {
+            "txtName": "TXT name",
+            "txtValue": "TXT value",
+            "target": "CNAME, A, or AAAA target"
+          },
+          "checks": {
+            "ownership": "Ownership",
+            "target": "Target",
+            "tls": "TLS"
+          },
+          "checksLabel": "Verification checks",
+          "lastChecked": "Last checked",
+          "lastTLSAsk": "Last TLS ask",
+          "status": {
+            "pending": "Pending",
+            "verified": "Verified",
+            "failed": "Failed"
+          },
+          "tlsMode": {
+            "external": "External TLS",
+            "caddy-on-demand": "Caddy on-demand TLS"
+          },
+          "errors": {
+            "load": "Failed to load tracking domains.",
+            "add": "Failed to add tracking domain.",
+            "conflict": "That hostname is already used by another site or tracking domain.",
+            "verify": "Failed to verify tracking domain.",
+            "update": "Failed to update tracking domain.",
+            "delete": "Failed to remove tracking domain."
+          }
+        }
+      },
+      "danger": {
+        "leaveConfirmTitle": "Leave team",
+        "archiveConfirmTitle": "Archive team",
+        "confirmNameLabel": "Type {{name}} to confirm"
+      },
+      "audit": {
+        "readOnly": "You do not have permission to view team activity.",
+        "empty": "No team activity yet.",
+        "loadError": "Failed to load team activity.",
+        "loadMore": "Load more activity",
+        "forbidden": "You do not have permission to view team activity.",
+        "filterLabel": "Filter activity",
+        "filters": {
+          "all": "All activity"
+        },
+        "summary": {
+          "empty": "No entries loaded yet.",
+          "partial": "Showing {{loaded}} of {{total}} activities",
+          "complete": "Showing all {{total}} activities"
+        },
+        "columns": {
+          "actor": "Actor",
+          "action": "Action",
+          "target": "Target",
+          "details": "Details"
+        },
+        "actions": {
+          "teamCreated": "Team created",
+          "teamUpdated": "Team updated",
+          "teamActiveChanged": "Active team changed",
+          "memberInvited": "Member invited",
+          "memberInviteAccepted": "Invite accepted",
+          "memberInviteResent": "Invite resent",
+          "memberInviteRevoked": "Invite revoked",
+          "memberAdded": "Member added",
+          "memberRoleUpdated": "Member role updated",
+          "memberRemoved": "Member removed",
+          "memberLeft": "Member left",
+          "ownershipTransferred": "Ownership transferred",
+          "teamArchived": "Team archived",
+          "siteCreated": "Site created",
+          "siteDeleted": "Site deleted",
+          "siteRetentionUpdated": "Retention updated",
+          "siteTransferredIn": "Site moved in",
+          "siteTransferredOut": "Site moved out",
+          "siteExclusionCreated": "Exclusion created",
+          "siteExclusionDeleted": "Exclusion deleted",
+          "authLoginSucceeded": "Login succeeded",
+          "authLoginFailed": "Login failed",
+          "authMfaRequired": "MFA required",
+          "authMfaSucceeded": "MFA succeeded",
+          "authLogout": "Logout",
+          "authSessionExtended": "Session extended",
+          "importUploadCreated": "Import upload created",
+          "importFileUploaded": "Import file uploaded",
+          "importValidationStarted": "Import validation started",
+          "importValidated": "Import validated",
+          "importValidationFailed": "Import validation failed",
+          "importQueued": "Import queued",
+          "importRequeued": "Import requeued",
+          "importStarted": "Import started",
+          "importFailed": "Import failed",
+          "importCompleted": "Import completed",
+          "importDeleted": "Import deleted",
+          "importDataCleared": "Imported data cleared",
+          "importDataWritten": "Imported data written",
+          "unknown": "Unknown action"
+        }
+      }
+    },
+    "system": {
+      "overview": {
+        "title": "System Overview",
+        "version": "Version",
+        "uptime": "Uptime",
+        "publicUrl": "Public URL",
+        "runtimeMode": "Mode",
+        "healthStatus": "Health",
+        "enabledFeatures": "Feature switches",
+        "actions": {
+          "refresh": "Refresh"
+        }
+      },
+      "features": {
+        "mcp": {
+          "label": "MCP server"
+        },
+        "mcp_docs": {
+          "label": "MCP docs tools"
+        },
+        "automatic_backups": {
+          "label": "Automatic backups"
+        },
+        "spam_auto_update": {
+          "label": "Spam auto-update"
+        },
+        "mail_delivery": {
+          "label": "Mail delivery"
+        },
+        "google_search_console": {
+          "label": "Google Search Console"
+        },
+        "managed_cloud": {
+          "label": "Managed cloud"
+        },
+        "cloud_signup": {
+          "label": "Cloud signup"
+        },
+        "social_google": {
+          "label": "Google sign-in"
+        },
+        "social_github": {
+          "label": "GitHub sign-in"
+        },
+        "social_microsoft": {
+          "label": "Microsoft sign-in"
+        },
+        "social_signup": {
+          "label": "Social signup"
+        },
+        "ai": {
+          "label": "AI gateway"
+        },
+        "ai_opportunities": {
+          "label": "AI opportunities"
+        },
+        "billing": {
+          "label": "Billing"
+        }
+      },
+      "featureDetails": {
+        "backup": {
+          "local": "Local target",
+          "s3": "S3 target"
+        },
+        "driver": "{{driver}} driver",
+        "interval": "Every {{interval}}",
+        "stripe": "Stripe configured",
+        "plan": "{{plan}} plan",
+		"social": {
+		  "configured": "Configured",
+		  "partial_configuration": "Degraded: configuration incomplete",
+		  "not_configured": "Not configured",
+		  "soleMethodUser": "Sole login method for {{count}} user",
+		  "soleMethodUsers": "Sole login method for {{count}} users"
+		}
+      },
+      "mcp": {
+        "title": "MCP access",
+        "connection": "Connection",
+        "readiness": "MCP readiness",
+        "server": "Server",
+        "docsTools": "Docs tools",
+        "endpoint": "Endpoint",
+        "docsUrl": "Docs URL",
+        "copyEndpoint": "Copy endpoint",
+        "copyDocsUrl": "Copy docs URL",
+        "summary": {
+          "readyWithDocs": "Server and docs tools are available.",
+          "ready": "Server is available; docs tools are disabled.",
+          "disabled": "MCP access is disabled.",
+          "unknown": "MCP status has not loaded yet."
+        }
+      },
+      "health": {
+        "title": "Health Check",
+        "status": "Status",
+        "database": "Database",
+        "workers": "Workers",
+        "isLeader": "Is Leader",
+        "ip2locationAttribution": "HitKeep uses the IP2Location LITE database for IP geolocation.",
+        "actions": {
+          "check": "Run check"
+        }
+      },
+      "searchConsole": {
+        "title": "Search Console",
+        "credentials": "Credentials",
+        "worker": "Worker",
+        "sync": "Sync",
+        "connectedTeams": "Connected teams",
+        "mappedSites": "Mapped sites",
+        "inFlight": "In flight",
+        "issues": "Issues",
+        "lastAttempt": "Last attempt",
+        "lastSuccess": "Last success",
+        "nextRetry": "Next retry",
+        "status": {
+          "healthy": "Healthy",
+          "idle": "Idle",
+          "syncing": "Syncing",
+          "degraded": "Degraded",
+          "needs_attention": "Needs attention",
+          "not_configured": "Not configured"
+        },
+        "credentialsStatus": {
+          "configured": "Configured",
+          "missing": "Missing"
+        },
+        "workerStatus": {
+          "enabled": "Enabled",
+          "disabled": "Disabled"
+        },
+        "syncStatus": {
+          "healthy": "Healthy",
+          "idle": "Idle",
+          "pending": "Pending",
+          "running": "Running",
+          "failed": "Failed",
+          "needs_attention": "Needs attention"
+        }
+      },
+      "ai": {
+        "title": "AI Gateway",
+        "configuration": "Configuration",
+        "enabled": "Enabled",
+        "disabled": "Disabled",
+        "configured": "Configured",
+        "notConfigured": "Not configured",
+        "configMode": "Config mode",
+        "provider": "Provider",
+        "model": "Model",
+        "budgetWindow": "Budget window",
+        "requests": "Requests",
+        "tokens": "Tokens",
+        "lastAttempt": "Last attempt",
+        "lastSuccess": "Last success",
+        "lastError": "Last error",
+        "readiness": "AI gateway readiness",
+        "summary": {
+          "ready": "Configured and within local budget.",
+          "disabled": "Disabled by runtime configuration.",
+          "notConfigured": "Enabled after provider and model settings are present.",
+          "budgetExhausted": "Local request or token budget is exhausted.",
+          "needsAttention": "Recent provider calls need operator review.",
+          "unknown": "Status has not loaded yet."
+        },
+        "status": {
+          "disabled": "Disabled",
+          "not_configured": "Not configured",
+          "configured": "Configured",
+          "budget_exhausted": "Budget exhausted",
+          "needs_attention": "Needs attention"
+        },
+        "configModes": {
+          "cloud_managed": "Cloud managed",
+          "self_hosted": "Self-hosted"
+        }
+      },
+      "storage": {
+        "title": "Storage",
+        "sharedDb": "Shared database",
+        "sharedDbSize": "Size",
+        "dataPath": "Data path",
+        "tenantDbs": "Tenant databases",
+        "diskUsage": "Disk usage",
+        "diskAvailable": "Available",
+        "columns": {
+          "tenant": "Tenant",
+          "size": "Size",
+          "path": "Path"
+        },
+        "memory": "DuckDB memory",
+        "memoryOther": "Other"
+      },
+      "ingest": {
+        "title": "Ingest",
+        "hits": "Hits (24h)",
+        "events": "Events (24h)",
+        "rejections": "Rejections",
+        "spam": "Spam blocked",
+        "hitsPerSecond": "Hits/sec"
+      },
+      "database": {
+        "title": "Database",
+        "recoverySection": "Recovery and checkpoints",
+        "filesSection": "Database files",
+        "autoRecovery": "Automatic index recovery",
+        "automaticWalRecovery": "Automatic WAL bypass",
+        "checkpointInterval": "Checkpoint interval",
+        "lastCheckpoint": "Last checkpoint this run",
+        "lastRecovery": "Last recovery",
+        "removedUnsafeIndexes": "Removed unsafe indexes",
+        "recoveryBundle": "Recovery bundle retained",
+        "actions": {
+          "checkpoint": "Checkpoint now"
+        },
+        "statusUnavailable": "Database status is unavailable while recovery is running or requires operator attention.",
+        "checkpointSuccess": "Database checkpoint completed.",
+        "checkpointFailed": "Database checkpoint failed."
+      },
+      "backups": {
+        "title": "Backups",
+        "configPath": "Path / target",
+        "enabled": "Enabled",
+        "disabled": "Disabled",
+        "interval": "Interval",
+        "retention": "Retention",
+        "lastBackup": "Last backup",
+        "nextBackup": "Next backup",
+        "lastFailed": "Last failure",
+        "lastError": "Last error",
+        "recentFailures": "Recent failures",
+        "actions": {
+          "backupNow": "Backup now",
+          "backupNowConfirm": "Start a backup now?"
+        },
+        "backupTriggered": "Backup started",
+        "backupFailed": "Backup failed"
+      },
+      "spam": {
+        "title": "Spam Filter",
+        "dbPath": "Database path",
+        "lastRefresh": "Last refresh",
+        "ruleCount": "Rules",
+        "autoUpdate": "Auto-update",
+        "lastError": "Last error",
+        "actions": {
+          "refresh": "Refresh spam database"
+        },
+        "refreshTriggered": "Spam filter refreshed",
+        "refreshFailed": "Could not refresh spam filter"
+      },
+      "importCleanup": {
+        "title": "Import Staging",
+        "enabled": "Cleanup enabled",
+        "retention": "Retention days",
+        "staleImports": "Stale imports",
+        "staleFiles": "Stale files",
+        "staleBytes": "Stale bytes",
+        "lastRun": "Last cleanup",
+        "lastCleaned": "Last cleaned",
+        "actions": {
+          "run": "Clean staged files"
+        },
+        "runSuccess": "Cleaned {{files}} staged file(s), freeing {{bytes}}.",
+        "runFailed": "Could not clean staged import files."
+      },
+      "caches": {
+        "title": "Caches",
+        "status": {
+          "healthy": "Healthy",
+          "pressure": "Under pressure"
+        },
+        "permissions": "Permissions",
+        "apiClients": "API clients",
+        "rateLimiter": "Rate limiter",
+        "columns": {
+          "cache": "Cache",
+          "size": "Size",
+          "maxSize": "Max size",
+          "ttl": "TTL"
+        }
+      },
+      "mail": {
+        "title": "Mail",
+        "configured": "Configured",
+        "notConfigured": "Not configured",
+        "driver": "Driver",
+        "host": "Host",
+        "port": "Port",
+        "encryption": "Encryption",
+        "fromAddress": "From address",
+        "username": "Username",
+        "passwordSet": "Password configured",
+        "lastTest": "Last test",
+        "actions": {
+          "test": "Send test email"
+        },
+        "testSuccess": "Test email sent",
+        "testFailed": "Test email failed",
+        "recipientLabel": "Test recipient",
+        "recipientPlaceholder": "ops@example.com",
+        "recipientInvalid": "Enter a valid email address."
+      },
+      "audit": {
+        "title": "Instance Audit Log",
+        "filters": {
+          "all": "All"
+        },
+        "filter": {
+          "action": "Action",
+          "targetType": "Target type",
+          "outcome": "Outcome",
+          "dateRange": "Date range",
+          "search": "Search..."
+        },
+        "empty": "No audit entries found",
+        "loadError": "Failed to load audit entries",
+        "exportSuccess": "Audit export downloaded",
+        "exportFailed": "Could not export audit log",
+        "loadMore": "Load more",
+        "columns": {
+          "created": "Time",
+          "actor": "Actor",
+          "action": "Action",
+          "targetType": "Area",
+          "target": "Target",
+          "outcome": "Outcome",
+          "ipAddress": "IP address",
+          "country": "Country",
+          "details": "Details"
+        },
+        "outcome": {
+          "success": "Success",
+          "failure": "Failure",
+          "denied": "Denied"
+        },
+        "targetTypes": {
+          "system": "System",
+          "mail": "Email",
+          "user": "User",
+          "team": "Team",
+          "site": "Site",
+          "import": "Import",
+          "siteExclusion": "Site exclusion",
+          "apiClient": "API client",
+          "backup": "Backup",
+          "spamFilter": "Spam filter",
+          "diagnostics": "Diagnostics"
+        },
+        "actions": {
+          "export": "Export",
+          "roleUpdated": "Role changed",
+          "mfaDisabled": "MFA disabled",
+          "backupTriggered": "Backup triggered",
+          "backupCompleted": "Backup completed",
+          "backupFailed": "Backup failed",
+          "spamRefreshed": "Spam refresh",
+          "mailTested": "Mail test",
+          "diagnosticsExported": "Diagnostics exported",
+          "accessDenied": "Access denied",
+          "authLoginSucceeded": "Login succeeded",
+          "authLoginFailed": "Login failed",
+          "authMfaRequired": "MFA required",
+          "authMfaSucceeded": "MFA succeeded",
+          "authLogout": "Logout",
+          "authSessionExtended": "Session extended",
+          "teamCreated": "Team created",
+          "teamUpdated": "Team updated",
+          "teamArchived": "Team archived",
+          "teamActiveChanged": "Active team changed",
+          "memberInvited": "Member invited",
+          "memberInviteAccepted": "Invite accepted",
+          "memberInviteResent": "Invite resent",
+          "memberInviteRevoked": "Invite revoked",
+          "memberAdded": "Member added",
+          "memberRoleUpdated": "Member role updated",
+          "memberRemoved": "Member removed",
+          "memberLeft": "Member left",
+          "ownershipTransferred": "Ownership transferred",
+          "siteCreated": "Site created",
+          "siteDeleted": "Site deleted",
+          "siteRetentionUpdated": "Retention updated",
+          "siteTransferredIn": "Site moved in",
+          "siteTransferredOut": "Site moved out",
+          "siteExclusionCreated": "Exclusion created",
+          "siteExclusionDeleted": "Exclusion deleted",
+          "importUploadCreated": "Import upload created",
+          "importFileUploaded": "Import file uploaded",
+          "importValidationStarted": "Import validation started",
+          "importValidated": "Import validated",
+          "importValidationFailed": "Import validation failed",
+          "importQueued": "Import queued",
+          "importRequeued": "Import requeued",
+          "importStarted": "Import started",
+          "importFailed": "Import failed",
+          "importCompleted": "Import completed",
+          "importDeleted": "Import deleted",
+          "importDataCleared": "Imported data cleared",
+          "importDataWritten": "Imported data written"
+        },
+        "pagination": {
+          "total": "Showing {{ loaded }} of {{ total }} entries"
+        }
+      },
+      "console": {
+        "eyebrow": "Instance operations",
+        "title": "System status",
+        "subtitle": "Monitor runtime health, storage posture, mail delivery, spam protection, and administrator activity from one operator surface.",
+        "runtimePosture": "Runtime posture",
+        "summaryAria": "System status summary",
+        "healthHint": "Database, workers, and node readiness",
+        "managedData": "managed data",
+        "noRecentRun": "No recent run",
+        "autoUpdated": "Auto-updated",
+        "manualOnly": "Manual refresh",
+        "refreshCard": "Refresh status",
+        "cloudStatus": "Cloud status",
+        "leader": "Leader",
+        "follower": "Follower",
+        "loadFailed": "System status could not be loaded.",
+        "noFeatures": "No feature switches reported.",
+        "noTenantDbs": "No tenant databases reported.",
+        "pressure": "Pressure",
+        "tabs": {
+          "runtime": "Runtime",
+          "operations": "Operations",
+          "access": "Access",
+          "activation": "Activation",
+          "audit": "Audit"
+        },
+        "status": {
+          "healthy": "Healthy",
+          "attention": "Needs attention",
+          "loading": "Loading",
+          "unknown": "Unknown"
+        },
+        "healthDescription": "Readiness signals for the current node and embedded data store.",
+        "searchConsoleDescription": "Credential, worker, and sync readiness across connected teams.",
+        "aiDescription": "Provider readiness and local request and token budgets.",
+        "overviewDescription": "Build, version, public URL, and runtime mode.",
+        "featuresDescription": "Operator feature switches and runtime capabilities reported by the instance.",
+        "mcpDescription": "Read-only assistant access, endpoint, and documentation tools.",
+        "storageDescription": "DuckDB files, tenant storage, and disk availability.",
+        "databaseDescription": "DuckDB recovery, checkpoints, files, memory, and disk availability.",
+        "ingestDescription": "Recent tracking volume and blocked traffic across the instance.",
+        "cachesDescription": "LRU cache occupancy for auth, API clients, and rate limiting.",
+        "backupsDescription": "Configured backup target, retention, and recent execution health.",
+        "spamDescription": "Spam filter cache freshness and manual refresh control.",
+        "importCleanupDescription": "Staged import retention, pending cleanup, and last-run results.",
+        "mailDescription": "Redacted mail transport configuration and a safe test-send action.",
+        "usersDescription": "Instance roles, recovery actions, and administrator access.",
+        "sitesDescription": "All sites visible to instance administrators.",
+        "teamsDescription": "Team containers and their operational status.",
+        "auditDescription": "Append-only activity for sensitive instance operations.",
+        "settingsSubtitle": "Manage instance users, sites, teams, and global filters.",
+        "copyReport": "Copy system report",
+        "copyReportAria": "Copy the system report for support requests",
+        "reportHint": "Share this console's state when reporting an issue."
+      },
+      "activation": {
+        "title": "User activation",
+        "subtitle": "See which teams and sites are live, waiting, dormant, or stuck without inspecting tenant data.",
+        "empty": "No activation rows match the current filters.",
+        "copySuccess": "Support context copied.",
+        "copyError": "Support context could not be copied.",
+        "pagination": "Showing {{loaded}} of {{total}} rows",
+        "filters": {
+          "anyStatus": "Any status",
+          "team": "Filter team",
+          "domain": "Filter domain"
+        },
+        "metrics": {
+          "liveSites": "Live loaded sites",
+          "loadedRows": "Loaded rows",
+          "totalRows": "Total rows"
+        },
+        "columns": {
+          "team": "Team",
+          "lastHit": "Last hit",
+          "lastEvent": "Last event",
+          "hits24h": "Hits 24h",
+          "hits7d": "Hits 7d",
+          "events7d": "Events 7d"
+        },
+        "status": {
+          "waiting": "Waiting",
+          "live": "Live",
+          "dormant": "Dormant",
+          "domain_mismatch": "Domain mismatch"
+        },
+        "actions": {
+          "filterTeam": "Filter to this team",
+          "copyContext": "Copy support context",
+          "openTeam": "Open team admin"
+        }
+      }
+    }
+  },
+  "roles": {
+    "owner": "Owner",
+    "admin": "Admin",
+    "member": "Member",
+    "editor": "Editor",
+    "viewer": "Viewer"
+  },
+  "userMenu": {
+    "administration": "Administration",
+    "userSettings": "Settings",
+    "preferences": "Preferences",
+    "sessionStatus": "Session: {{remaining}} left",
+    "rememberedSessionStatus": "Remember me: {{remaining}} left",
+    "extendSession": "Extend session",
+    "signOut": "Sign out"
+  },
+  "session": {
+    "label": "Session",
+    "rememberedLabel": "Remember me",
+    "tooltip": "Your dashboard session lasts {{duration}}. HitKeep warns you {{warning}} before expiry.",
+    "rememberedTooltip": "Remember me is active. The timer follows the remembered sign-in period.",
+    "warningTitle": "Your session is about to expire",
+    "warningDescription": "You will be signed out in {{remaining}} unless you extend the session.",
+    "policyDescription": "This instance is configured for {{duration}} dashboard sessions.",
+    "extendAction": "Stay signed in",
+    "signOutAction": "Sign out",
+    "extendError": "We could not extend the session. Sign in again if it expires."
+  },
+  "login": {
+    "subtitle": "Sign in to your dashboard",
+    "sessionEnded": {
+      "signedOut": "You have been signed out.",
+      "expired": "Your session has ended. Sign in again to continue."
+    },
+    "ssoSubtitle": "Enter your work email to continue to your team's identity provider.",
+    "authenticationMethods": "Sign-in options",
+    "cloudSignupPrompt": "New to HitKeep Cloud?",
+    "cloudSignupAction": "Create a workspace",
+    "emailLabel": "Email address",
+    "emailPlaceholder": "you@example.com",
+    "emailInvalid": "Please enter a valid email address.",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "••••••••",
+    "passwordRequired": "Password is required.",
+    "forgotPassword": "Forgot password?",
+    "rememberMe": "Remember me",
+    "sessionHelp": "Keeps you signed in on this device according to the instance policy. HitKeep still shows expiry warnings and asks before extending when action is needed.",
+    "signIn": "Sign in",
+    "or": "or",
+    "signInWithPasskey": "Sign in with passkey",
+    "continueWithSSO": "Continue with SSO",
+    "continueWithPassword": "Continue with password",
+    "mfaTitle": "Two-factor verification",
+    "mfaSubtitle": "Complete sign-in with your authenticator code, a recovery code, a sign-in link, or a passkey.",
+    "sendEmailLink": "Email me a sign-in link",
+    "emailLinkSent": "We sent a sign-in link to your email address.",
+    "totpCodeLabel": "Authenticator code",
+    "recoveryCodeLabel": "Recovery code",
+    "recoveryCodePlaceholder": "ABCD-EFGH",
+    "verifyTotp": "Verify code",
+    "verifyRecoveryCode": "Use recovery code",
+    "footerRights": "HitKeep. All rights reserved.",
+    "errors": {
+      "invalidCredentials": "Invalid email or password.",
+      "passkeyNotSupported": "Passkey login is not supported on this device.",
+      "passkeyFailed": "Passkey login failed. Please try again.",
+      "ssoProviderError": "Your identity provider cancelled or denied the login. Try again or use your password.",
+      "ssoEmailUnverified": "Your identity provider did not return a verified email address. Contact your team administrator.",
+      "ssoEmailNotAllowed": "The identity provider account does not match the email address or team domain you entered.",
+      "ssoUnavailable": "SSO is not configured for this email domain. Check the address or use your password.",
+      "ssoAccessDenied": "Your account does not have access to this team. Ask a team administrator for an invitation or use another sign-in method.",
+      "ssoFailed": "SSO login could not be completed. Try again or use your password.",
+      "invalidTotp": "Invalid authenticator code.",
+      "invalidRecoveryCode": "Invalid recovery code.",
+      "emailLinkFailed": "We could not send your sign-in link. Please try again.",
+      "mfaEmailLinkInvalid": "This sign-in link is invalid or has expired. Request a new one to continue.",
+      "unexpected": "An unexpected error occurred. Please try again."
+    }
+  },
+  "signup": {
+    "title": "Start tracking your sites for free",
+    "subtitle": "Create your workspace and start tracking in under a minute. No credit card required.",
+    "paidIntentNote": "After email verification, we'll open secure checkout. You can continue on Free instead.",
+    "billing": {
+      "monthly": "Monthly billing",
+      "annual": "Annual billing"
+    },
+    "verified": {
+      "title": "Your workspace is verified",
+      "subtitle": "{{plan}} with {{billing}} is ready. We're opening secure checkout.",
+      "openingCheckout": "Opening Stripe Checkout…",
+      "checkoutFailed": "Checkout did not open. Your workspace is active on Free and you can retry safely.",
+      "retryCheckout": "Retry checkout",
+      "continueFree": "Continue on Free",
+      "freeNote": "No card is charged unless you finish checkout."
+    },
+    "jurisdictionLabel": "Jurisdiction",
+    "jurisdictions": {
+      "eu": "EU",
+      "us": "US"
+    },
+    "givenNameLabel": "Given name",
+    "givenNamePlaceholder": "Ada",
+    "lastNameLabel": "Last name",
+    "lastNamePlaceholder": "Lovelace",
+    "teamNameLabel": "Team name",
+    "teamNamePlaceholder": "Acme Analytics",
+    "teamNameRequired": "Team name is required.",
+    "emailPlaceholder": "you@example.com",
+    "submit": "Create workspace",
+    "haveAccount": "Already have an account?",
+    "signInAction": "Sign in",
+    "plans": {
+      "free": {
+        "name": "Free",
+        "description": "60-day retention to validate your sites before you upgrade."
+      },
+      "pro": {
+        "name": "Pro",
+        "description": "Longer retention and more room for a small team."
+      },
+      "business": {
+        "name": "Business",
+        "description": "For agencies managing multiple client sites, shared reporting, and larger teams."
+      }
+    },
+    "selfHostLink": "Want to self-host? See the docs →",
+    "trust": {
+      "noCard": "No credit card required",
+      "region": "Your data stays in the region you pick",
+      "export": "Export or self-host anytime",
+      "openSource": "HitKeep is fully open source.",
+      "github": "View the code on GitHub"
+    },
+    "tosLabel": "I agree to the",
+    "tosLink": "Terms of Service",
+    "tosAnd": "and",
+    "privacyLink": "Privacy Policy",
+    "tosRequired": "You must accept the Terms of Service and Privacy Policy.",
+    "verifyTitle": "Check your inbox",
+    "verifySubtitle": "We sent a verification link to {{email}}. Click it to activate your workspace.",
+    "verification": {
+        "spamGuidance": "It may take a moment to arrive. Check your spam folder if you do not see it.",
+        "resendAction": "Resend verification email",
+        "resendCountdown": "Resend available in {{seconds}}s",
+        "resendSuccess": "If the address is eligible, another verification email is on its way.",
+        "resendError": "We could not send the request. Please try again.",
+        "editEmail": "Use a different email"
+    },
+    "errors": {
+      "emailExists": "An account with this email already exists.",
+      "planUnavailable": "This signup option is not available right now.",
+      "unexpected": "An unexpected error occurred. Please try again.",
+      "verificationExpired": "This verification link has expired. Please sign up again."
+    }
+  },
+  "preferences": {
+    "breadcrumb": "Preferences",
+    "subtitle": "Manage your application preferences.",
+    "actions": {
+      "saveChanges": "Save changes"
+    },
+    "status": {
+      "saved": "Saved",
+      "saveFailed": "Save failed"
+    },
+    "errors": {
+      "loadFailed": "Failed to load preferences. Please refresh and try again."
+    },
+    "language": {
+      "heading": "Language preferences",
+      "description": "Your browser language is used by default until you customize these settings.",
+      "defaultLabel": "Default language",
+      "defaultPlaceholder": "Select a default language",
+      "searchPlaceholder": "Search by language or ISO code",
+      "defaultHint": "This is the primary language for the dashboard UI.",
+      "rtlBadge": "RTL"
+    }
+  },
+  "comparison": {
+    "vsLabel": "vs.",
+    "pageviewsLabel": "Pageviews (prev.)",
+    "visitorsLabel": "Visitors (prev.)"
+  },
+  "events": {
+    "setup": {
+      "title": "Send your first custom event",
+      "description": "Custom events need a track call from your snippet or the events API. Once events arrive, this page fills automatically.",
+      "docsAction": "Read the custom events guide"
+    },
+    "title": "Events",
+    "docsAction": "Auto-tracking guide",
+    "noSiteDescription": "Select or create a site to view event analytics.",
+    "eventNameLabel": "Event",
+    "eventNamePlaceholder": "Select an event",
+    "propertyKeyLabel": "Break down by",
+    "propertyKeyPlaceholder": "Select a property",
+    "automatic": {
+      "badge": "Auto"
+    },
+    "series": {
+      "title": "Event activity",
+      "description": "Event occurrences over the selected period.",
+      "emptyTitle": "No event data",
+      "emptyDescription": "Select an event to view activity over time.",
+      "emptySelectedTitle": "No activity for this event",
+      "emptySelectedDescription": "There are no matching events in the selected period."
+    },
+    "breakdown": {
+      "title": "Property breakdown",
+      "selectEventFirst": "Select an event to view a property breakdown.",
+      "selectPropertyFirst": "Select a property to view the breakdown."
+    },
+    "kpis": {
+      "totalEvents": "Total events"
+    },
+    "importedLimitations": {
+      "title": "Imported aggregate limitations"
+    }
+  },
+  "aiAgents": {
+    "title": "AI Agents",
+    "hero": {
+      "title": "AI agent traffic over time",
+      "description": "How AI agents crawl your pages and how many human visits their answers send back.",
+      "series": {
+        "aiRequests": "AI requests",
+        "referralVisits": "AI referral visits",
+        "crawlerFetches": "Crawler fetches (log ingest)"
+      }
+    },
+    "kpis": {
+      "aiRequests": "AI requests",
+      "referralVisits": "AI referral visits",
+      "pathsCrawled": "Pages crawled",
+      "shareOfPageviews": "Share of pageviews",
+      "note": "AI requests merge tracked hits with forwarded crawler logs."
+    },
+    "groups": {
+      "activity": "AI activity",
+      "byCategory": "By category",
+      "fetchDepth": "Fetch depth (log ingest)"
+    },
+    "cards": {
+      "paths": "Pages crawled",
+      "families": "Top operators",
+      "resourceTypes": "Resource type split",
+      "errorPaths": "Top error paths"
+    },
+    "provenance": {
+      "hint": "tracked {{tracked}} · logs {{fetched}}"
+    },
+    "filters": {
+      "scopeHits": "tracked visits only"
+    },
+    "enrich": {
+      "title": "Set up crawler fetch tracking",
+      "description": "Fetch analytics needs CDN, edge, or server log forwarding to HitKeep's AI fetch endpoint. Once records arrive, this section shows the crawlers your tracking cannot see, with status codes, response times, bytes served, and fetch-to-visit correlation.",
+      "docsAction": "Read the setup guide"
+    },
+    "fetchDepth": {
+      "title": "Crawler fetch depth",
+      "description": "What forwarded CDN, edge and server logs add on top: crawlers your tracking never sees, their status codes, response times, bytes served and how fetches turn into visits.",
+      "docsAction": "Setup guide",
+      "note": "Correlated visits count later AI-referred visits on the same path inside the selected range.",
+      "groups": {
+        "volume": "Fetch volume",
+        "correlation": "Fetch-to-visit",
+        "health": "Delivery health"
+      },
+      "kpis": {
+        "totalFetches": "Total fetches",
+        "correlatedPaths": "Correlated paths",
+        "aiReferredVisits": "Later AI-referred visits",
+        "uncorrelatedFetches": "Uncorrelated fetches",
+        "errorRate4xx": "4xx rate",
+        "errorRate5xx": "5xx rate",
+        "medianResponse": "Median response",
+        "bytesServed": "Bytes served"
+      },
+      "tables": {
+        "title": "Correlation breakdowns",
+        "citationYield": {
+          "title": "Citation yield"
+        },
+        "opportunityPages": {
+          "title": "Opportunity pages"
+        },
+        "failureHotspots": {
+          "title": "Failure hotspots"
+        }
+      },
+      "exportStatus": {
+        "success": "Export download started.",
+        "error": "Failed to export AI fetch data. Please try again."
+      }
+    },
+    "noSiteDescription": "Select a site to see AI agent traffic."
+  },
+  "aiChatbots": {
+    "title": "AI Chatbots",
+    "docsAction": "Instrumentation guide",
+    "setup": {
+      "title": "Instrument your chatbot",
+      "description": "Send assistant.* custom events from your chatbot to fill this page — conversation starts, prompts, responses, citations, handoffs, and assisted conversions.",
+      "docsAction": "Read the instrumentation guide"
+    },
+    "noSiteDescription": "Select or create a site to view AI chatbot analytics.",
+    "header": {
+      "title": "On-site AI chatbot analytics",
+      "description": "Track conversation starts, prompts, responses, handoffs, and assisted conversions from your chatbot instrumentation."
+    },
+    "filters": {
+      "groupBy": "Scope",
+      "value": "Value",
+      "allValues": "All values",
+      "unfiltered": "Showing all chatbot traffic",
+      "provider": "Provider",
+      "botId": "Bot",
+      "surface": "Surface",
+      "model": "Model"
+    },
+    "kpis": {
+      "conversations": "Conversations",
+      "prompts": "Prompts",
+      "responses": "Responses",
+      "assistedConversions": "Assisted conversions",
+      "handoffRate": "Handoff rate",
+      "citationCtr": "Citation CTR",
+      "handoffs": "Handoffs"
+    },
+    "chart": {
+      "title": "Conversation activity",
+      "description": "See how chatbot sessions progress over time, from the first message to handoff and assisted outcomes.",
+      "emptyTitle": "No chatbot activity",
+      "emptyDescription": "Track assistant.chat_started and related events to populate this report."
+    },
+    "breakdowns": {
+      "intents": "Top intents",
+      "providers": "Top providers",
+      "surfaces": "Top surfaces"
+    },
+    "exportStatus": {
+      "success": "Export download started.",
+      "error": "Failed to export AI chatbot data. Please try again."
+    }
+  },
+  "integration": {
+    "apiClients": {
+      "subtitle": "Create and manage API clients for integrations.",
+      "manageTeamClients": "Manage team API clients"
+    },
+    "webhooks": {
+      "subtitle": "Send signed operational events to your systems without delaying product actions.",
+      "listLabel": "Configured webhooks",
+      "scopes": {
+        "label": "Webhook scope",
+        "site": "Site",
+        "instance": "Instance"
+      },
+      "actions": {
+        "create": "Create webhook",
+        "refresh": "Refresh",
+        "deliveries": "Deliveries",
+        "test": "Send test",
+        "edit": "Edit",
+        "rotate": "Rotate secret",
+        "delete": "Delete",
+        "cancel": "Cancel",
+        "save": "Save webhook"
+      },
+      "empty": {
+        "title": "No webhooks yet",
+        "message": "Create a webhook to start delivering operational events.",
+        "noSiteTitle": "Select a site",
+        "noSiteMessage": "Choose a site to manage its webhooks.",
+        "forbiddenTitle": "Webhook access required",
+        "forbiddenMessage": "Only instance, site owners, and site admins can manage webhooks."
+      },
+      "status": { "enabled": "Enabled", "disabled": "Disabled" },
+      "events": {
+        "count": "{{count}} events",
+        "none": "No events",
+        "popoverTitle": "Subscribed events"
+      },
+      "secret": {
+        "title": "Save this signing secret now",
+        "message": "It is shown once. Use it to verify the timestamp and exact request body.",
+        "copy": "Copy secret"
+      },
+      "form": {
+        "createTitle": "Create webhook",
+        "editTitle": "Edit webhook",
+        "name": "Name",
+        "url": "Destination URL",
+        "urlHint": "HTTPS is required unless development targets are explicitly enabled.",
+        "description": "Description",
+        "enabled": "Deliver events",
+        "events": "Events",
+        "eventsHint": "Choose the operational events this endpoint should receive.",
+        "eventsRequired": "Select at least one event."
+      },
+      "deliveries": {
+        "title": "Deliveries for {{name}}",
+        "subtitle": "Automatic attempts are at-least-once and may arrive out of order.",
+        "event": "Event",
+        "status": "Status",
+        "attempts": "Attempts",
+        "response": "Response",
+        "created": "Created",
+        "empty": "No deliveries recorded yet."
+      },
+      "deliveryStatus": {
+        "pending": "Pending",
+        "processing": "Delivering",
+        "retrying": "Retrying",
+        "succeeded": "Succeeded",
+        "failed": "Failed"
+      },
+      "feedback": {
+        "loadError": "Webhooks could not be loaded.",
+        "created": "Webhook created. Save the signing secret now.",
+        "updated": "Webhook updated.",
+        "saveError": "Webhook could not be saved.",
+        "rotated": "Signing secret rotated. Save the new secret now.",
+        "rotateError": "Signing secret could not be rotated.",
+        "testQueued": "Test delivery queued.",
+        "testError": "Test delivery could not be queued.",
+        "deliveryError": "Delivery history could not be loaded.",
+        "deleted": "Webhook deleted.",
+        "deleteError": "Webhook could not be deleted."
+      },
+      "confirm": {
+        "rotateTitle": "Rotate signing secret",
+        "rotateMessage": "Rotate the secret for {{name}}? Pending deliveries will use the new secret; a request already in flight may still use the current one.",
+        "deleteTitle": "Delete webhook",
+        "deleteMessage": "Delete {{name}}? Pending deliveries keep their existing endpoint snapshot."
+      }
+    },
+    "apiReference": {
+      "subtitle": "Versioned REST API reference with session and API-key authentication details.",
+      "versionLabel": "API version",
+      "searchLabel": "Search endpoints",
+      "searchPlaceholder": "Search by method, path, tag, or summary",
+      "refresh": "Refresh",
+      "latest": "latest",
+      "operationsTitle": "Operations",
+      "loading": "Loading API reference...",
+      "empty": "No API operations match your search.",
+      "noSummary": "No summary",
+      "auth": {
+        "title": "Authentication",
+        "description": "Use one of these credentials depending on the endpoint security requirements.",
+        "bearerLabel": "Bearer token",
+        "apiKeyLabel": "X-API-Key header",
+        "cookieLabel": "Session cookie"
+      },
+      "errors": {
+        "loadVersions": "Failed to load API doc versions.",
+        "loadSpec": "Failed to load API reference for this version."
+      }
+    },
+    "googleSearchConsole": {
+      "title": "Google Search Console",
+      "subtitle": "Connect properties.",
+      "status": {
+        "credentials_missing": "Credentials missing",
+        "connected": "Connected",
+        "disconnected": "Disconnected",
+        "loading": "Loading",
+        "mapped": "Mapped",
+        "unmapped": "Unmapped"
+      },
+      "labels": {
+        "connection": "Connection",
+        "account": "Account",
+        "site": "Site",
+        "property": "Property",
+        "searchProperties": "Search properties",
+        "propertyMapping": "Property mapping",
+        "permission": "Permission",
+        "syncStatus": "Sync status",
+        "lastSuccess": "Last success",
+        "lastAttempt": "Last attempt",
+        "importedRange": "Imported range",
+        "nextRetry": "Next retry",
+        "lastError": "Last error"
+      },
+      "actions": {
+        "refresh": "Refresh",
+        "docs": "Setup docs",
+        "connect": "Connect",
+        "reconnect": "Reconnect",
+        "disconnect": "Disconnect",
+        "confirmDisconnect": "Disconnect Search Console?",
+        "mapProperty": "Map property",
+        "removeMapping": "Remove mapping",
+        "confirmRemoveMapping": "Remove mapping?",
+        "syncNow": "Sync now",
+        "syncRequesting": "Requesting...",
+        "syncQueued": "Queued",
+        "syncRunning": "Running"
+      },
+      "sync": {
+        "pending": "Pending",
+        "running": "Running",
+        "succeeded": "Succeeded",
+        "failed": "Failed",
+        "needs_attention": "Needs attention",
+        "idle": "No sync yet",
+        "manualPending": "Manual sync queued.",
+        "queuedFeedback": "Sync queued.",
+        "runningFeedback": "Sync running.",
+        "succeededWithRange": "{{start}}-{{end}} imported.",
+        "noHistory": "No imports yet.",
+        "quota_limited": "Quota limited",
+        "authorization_revoked": "Authorization revoked",
+        "token_refresh_failed": "Token refresh failed",
+        "property_access_lost": "Property access lost",
+        "credentials_invalid": "Invalid credentials",
+        "credentials_missing": "Credentials missing",
+        "api_disabled": "Search Console API disabled",
+        "google_unavailable": "Google unavailable",
+        "unknown": "Unknown sync error"
+      },
+      "states": {
+        "missingCredentials": "OAuth credentials required.",
+        "connected": "Connected.",
+        "disconnected": "Not connected.",
+        "propertyMapped": "Mapped to {{property}}.",
+        "propertyUnmapped": "No property mapped.",
+        "loadingMapping": "Loading mapping.",
+        "noProperties": "No properties returned.",
+        "noMatchingProperties": "No matching Search Console properties for this site.",
+        "noSite": "Select a site first.",
+        "readonly": "Read-only for your role.",
+        "noMappingSync": "Map a Search Console property before syncing.",
+        "syncRequested": "Sync requested.",
+        "disconnectSuccess": "Disconnected.",
+        "reconnectHint": "Reconnect to refresh access."
+      },
+      "confirm": {
+        "disconnectMessage": "Future imports stop. Imported data stays.",
+        "removeMappingMessage": "Future imports stop for this site.",
+        "disconnectAccept": "Disconnect",
+        "removeMappingAccept": "Remove mapping",
+        "cancel": "Cancel"
+      },
+      "errors": {
+        "load": "Status unavailable.",
+        "connect": "Connection failed.",
+        "disconnect": "Disconnect failed.",
+        "properties": "Properties unavailable.",
+        "apiDisabled": "Enable the Search Console API, then refresh.",
+        "reconnect": "Reconnect to refresh access.",
+        "propertyAccess": "Property access lost.",
+        "mapping": "Mapping unavailable.",
+        "mapProperty": "Mapping failed.",
+        "unmapProperty": "Unmap failed.",
+        "sync": "Sync request failed."
+      }
+    }
+  },
+  "searchConsole": {
+    "title": "Search Console",
+    "description": "Aggregated Search Console data.",
+    "kpis": {
+      "clicks": "Clicks",
+      "impressions": "Impressions",
+      "ctr": "CTR",
+      "position": "Avg. position"
+    },
+    "sections": {
+      "trend": "Trend",
+      "topQueries": "Top queries",
+      "topPages": "Top pages",
+      "countries": "Countries",
+      "devices": "Devices"
+    },
+    "context": {
+      "label": "Search Console scope",
+      "range": "Range: {{value}}"
+    },
+    "states": {
+      "pending": "Importing Search Console data.",
+      "empty": "No rows for this range.",
+      "error": "Search Console data unavailable."
+    },
+    "setup": {
+      "title": "Connect Search Console",
+      "manageText": "Connect or map Search Console to add search query data here.",
+      "readonlyText": "Ask your team or site operator to connect Search Console.",
+      "action": "Set up Search Console"
+    }
+  },
+  "ecommerce": {
+    "setup": {
+      "title": "Set up ecommerce tracking",
+      "description": "Revenue analytics needs purchase and checkout events from your shop. Once events arrive, this page fills automatically.",
+      "docsAction": "Read the ecommerce guide"
+    },
+    "docsAction": "Set up ecommerce",
+    "kpis": {
+      "revenue": "Revenue",
+      "orders": "Orders",
+      "averageOrderValue": "Avg. order value",
+      "checkoutConversion": "Checkout conversion"
+    },
+    "chart": {
+      "title": "Revenue over time",
+      "description": "Track revenue and completed purchases for the active date range.",
+      "revenue": "Revenue",
+      "orders": "Orders"
+    },
+    "filters": {
+      "product": "Product: {{value}}",
+      "utmSource": "UTM source: {{value}}"
+    },
+    "filtersPanels": {
+      "sources": "Top sources",
+      "referrers": "Top referrers",
+      "devices": "Top devices",
+      "countries": "Top countries"
+    },
+    "breakdowns": {
+      "title": "Revenue breakdown",
+      "description": "Compare product performance and revenue attribution in one place."
+    },
+    "products": {
+      "title": "Top products",
+      "description": "See which products drive the most revenue and completed orders.",
+      "empty": "No purchase items matched the current filters."
+    },
+    "sources": {
+      "title": "Revenue sources",
+      "description": "Attribute revenue to source, medium, campaign, and referrer.",
+      "empty": "No revenue sources matched the current filters."
+    },
+    "columns": {
+      "product": "Product",
+      "quantity": "Quantity",
+      "orders": "Orders",
+      "revenue": "Revenue",
+      "source": "Source",
+      "campaign": "Campaign",
+      "referrer": "Referrer"
+    },
+    "actions": {
+      "filterProduct": "Filter",
+      "clearProductFilter": "Clear",
+      "filterSource": "Filter",
+      "clearSourceFilter": "Clear"
+    },
+    "empty": {
+      "title": "No ecommerce data yet",
+      "description": "Track purchase, begin_checkout, add_to_cart, and view_item events to populate ecommerce analytics."
+    },
+    "noSiteDescription": "Select a site to view ecommerce analytics."
+  },
+  "opportunities": {
+    "filters": {
+      "ariaLabel": "Opportunity filters",
+      "typeTitle": "Opportunity type",
+      "statusTitle": "Workflow status",
+      "types": {
+        "all": "All",
+        "conversion": "Conversion leaks",
+        "ai": "AI visibility",
+        "search": "Search",
+        "setup": "Setup",
+        "performance": "Performance",
+        "traffic": "Traffic signals"
+      },
+      "statuses": {
+        "all": "All",
+        "new": "New",
+        "saved": "Saved",
+        "done": "Done",
+        "dismissed": "Dismissed"
+      }
+    },
+    "confidence": {
+      "high": "High confidence",
+      "medium": "Medium confidence"
+    },
+    "actions": {
+      "previewDigest": "Preview digest",
+      "previewOn": "Digest preview on",
+      "generate": "Refresh opportunities",
+      "generating": "Refreshing",
+      "save": "Save",
+      "inspect": "Inspect",
+      "markDone": "Mark done",
+      "dismiss": "Dismiss"
+    },
+    "errors": {
+      "load": "Could not load opportunities.",
+      "generate": "Could not refresh opportunities.",
+      "status": "Could not update the opportunity."
+    },
+    "digest": {
+      "title": "Weekly digest preview",
+      "subtitle": "Top recommendations that would be emailed for this site.",
+      "statusReady": "Would send",
+      "frequency": {
+        "daily": "Daily",
+        "weekly": "Weekly"
+      },
+      "nextAction": "Next action",
+      "evidence": "Evidence",
+      "confidence": "Confidence",
+      "noSend": "No opportunity email would be sent for this site yet.",
+      "error": "Could not load digest preview."
+    },
+    "inbox": {
+      "ariaLabel": "Opportunity inbox",
+      "title": "Opportunity inbox",
+      "subtitle": "{{count}} ranked suggestions for this range",
+      "cloudBadge": "Cloud-ready AI copy"
+    },
+    "impact": {
+      "monthlyRevenue": "activity",
+      "qualifiedVisits": "qualified visits",
+      "conversionLift": "conversion lift",
+      "searchClicks": "search clicks",
+      "blindSpots": "blind spots",
+      "ai_touched_pages": "AI-touched pages",
+      "pageviews_to_route": "pageviews to route",
+      "estimated_search_clicks": "estimated search clicks",
+      "conversion_signal_coverage": "traffic needing a conversion signal",
+      "tracked_conversion_events": "tracked conversion events",
+      "conversion_events_to_measure": "conversion events to measure",
+      "funnel_steps_to_measure": "funnel steps to measure",
+      "web_vitals_samples": "Web Vitals samples",
+      "checkout_starts": "Checkout starts"
+    },
+    "routes": {
+      "checkout": "Checkout: {{path}}",
+      "path": "{{path}}",
+      "source": "{{source}}",
+      "search_console": "Search Console",
+      "events": "Events",
+      "event": "Event: {{event_name}}",
+      "funnel": "Funnel: {{start_path}}",
+      "web_vitals": "Web Vitals: {{metric}} on {{path}}",
+      "tracker": "{{asset}}"
+    },
+    "evidence": {
+      "checkout_starts": "Checkout starts",
+      "orders": "Orders",
+      "checkout_conversion_rate": "Checkout conversion",
+      "ai_requests": "AI crawler requests",
+      "ai_paths": "Unique crawled paths",
+      "top_ai_path": "Top AI path",
+      "ai_referrals": "AI referral visits",
+      "ai_path_pageviews": "Pageviews on AI-touched path",
+      "pageviews": "Pageviews",
+      "sessions": "Sessions",
+      "top_source": "Top source",
+      "top_city": "Overall top city",
+      "top_provider": "Overall top provider",
+      "top_asn": "Overall top ASN",
+      "search_impressions": "Search impressions",
+      "search_ctr": "Search CTR",
+      "search_position": "Average position",
+      "event_names": "Tracked event names",
+      "tracked_events": "Tracked events",
+      "suggested_goal_event": "Suggested goal event",
+      "suggested_goal_event_count": "Observed event count",
+      "suggested_funnel_start": "Suggested funnel start",
+      "suggested_funnel_start_pageviews": "Start pageviews",
+      "suggested_funnel_conversion_event": "Suggested conversion step",
+      "suggested_funnel_event_count": "Observed conversion events",
+      "source_hits": "Source visits",
+      "web_vital_metric": "Web Vital metric",
+      "web_vital_p75": "p75 value",
+      "web_vital_rating": "Rating",
+      "web_vital_samples": "Samples",
+      "web_vital_poor_samples": "Poor samples",
+      "web_vital_top_page": "Slowest page",
+      "web_vital_top_page_p75": "Slowest page p75",
+      "total_pageviews": "Total pageviews"
+    },
+    "catalog": {
+      "checkout_conversion": {
+        "title": "Review checkout drop-off",
+        "summary": "Checkout starts are converting at {{conversion_rate}} across {{checkout_starts}} starts.",
+        "action": "Inspect checkout friction before adding more traffic.",
+        "digest": "Checkout conversion is {{conversion_rate}}."
+      },
+      "ai_visibility": {
+        "title": "Review AI crawler attention",
+        "summary": "AI assistants requested {{requests}} pages; the strongest path is {{top_path}}.",
+        "action": "Strengthen the crawled page with clearer answers and conversion context.",
+        "digest": "AI crawlers focused on {{top_path}}."
+      },
+      "traffic_quality": {
+        "title": "Review traffic from {{source}}",
+        "summary": "{{source}} produced {{source_hits}} visits out of {{total_pageviews}} pageviews in this window.",
+        "action": "Inspect the landing pages and intent for visitors from {{source}}.",
+        "digest": "Review traffic from {{source}}."
+      },
+      "web_vitals_performance": {
+        "title": "Review {{metric}} performance on {{path}}",
+        "summary": "{{metric}} p75 is {{p75}} with a {{rating}} rating across {{samples}} samples.",
+        "action": "Prioritize the slowest page before it drags more visitor sessions into poor Web Vitals.",
+        "digest": "{{metric}} p75 is {{p75}} on {{path}}."
+      },
+      "search_visibility": {
+        "title": "Review pages already visible in search",
+        "summary": "Search shows {{impressions}} impressions at {{ctr}} CTR; estimated missed clicks: {{estimated_clicks}}.",
+        "action": "Improve the snippet, title, and on-page answer for the queries already earning impressions.",
+        "digest": "Search visibility shows about {{estimated_clicks}} missed clicks."
+      },
+      "conversion_signal": {
+        "title": "Review tracked events as conversion signals",
+        "summary": "{{event_names}} are tracked across {{pageviews}} pageviews, but no conversion event is ranking opportunities yet.",
+        "action": "Pick the event that best represents a lead, signup, or purchase and mark it as a conversion signal.",
+        "digest": "Tracked events need a conversion signal."
+      },
+      "setup_goal_suggestion": {
+        "title": "Create a goal for {{event_name}}",
+        "summary": "{{event_name}} fired {{event_count}} times, but it is not saved as a goal yet.",
+        "action": "Create an event goal with value {{goal_value}} so HitKeep can rank conversion opportunities around it.",
+        "digest": "{{event_name}} should become a goal."
+      },
+      "setup_funnel_suggestion": {
+        "title": "Create a funnel from {{start_path}} to {{conversion_event}}",
+        "summary": "{{start_path}} has traffic and {{conversion_event}} fired {{event_count}} times, but those steps are not saved as a funnel yet.",
+        "action": "Create a {{step_count}}-step funnel for {{funnel_steps}} so HitKeep can monitor drop-off before the conversion.",
+        "digest": "{{start_path}} to {{conversion_event}} should become a funnel."
+      },
+      "tracking_setup": {
+        "title": "Collect enough signal for recommendations",
+        "summary": "Add conversion events so opportunities can be ranked.",
+        "action": "Verify the tracker and add one conversion event.",
+        "digest": "Tracking needs more signal."
+      }
+    },
+    "aiStatus": {
+      "disabled": "AI disabled",
+      "selfHosted": "Self-hosted AI: {{provider}} {{model}}",
+      "cloudManaged": "Cloud-managed AI",
+      "notConfigured": "AI not configured",
+      "providerUnknown": "provider unknown",
+      "modelUnknown": "model unknown",
+      "disabledHint": "Saved opportunities remain available. New AI-written explanations are skipped until an instance owner enables AI.",
+      "notConfiguredHint": "Saved opportunities remain available. Configure an AI provider to refresh summaries with model-written context.",
+      "budgetExhaustedHint": "AI refreshes are paused because the configured request or token budget is exhausted for this window."
+    },
+    "card": {
+      "priority": "Priority"
+    },
+    "detail": {
+      "estimatedImpact": "Estimated impact",
+      "priorityScore": "Priority score",
+      "priorityHint": "Evidence weighted",
+      "why": "Why HitKeep thinks this matters",
+      "nextBestAction": "Next best action",
+      "readOnly": "You have read-only access to this site. Ask a site admin to save, dismiss, or mark opportunities done."
+    },
+    "empty": {
+      "title": "No opportunities match this view",
+      "body": "Try a different type or status filter."
+    },
+    "noSiteDescription": "Select a site to view opportunity recommendations."
+  },
+  "webVitals": {
+    "setup": {
+      "title": "Turn on Web Vitals collection",
+      "description": "Web Vitals need performance collection enabled in your tracking snippet. Once samples arrive, this page fills automatically.",
+      "docsAction": "Read the Web Vitals guide"
+    },
+    "docsAction": "Setup guide",
+    "error": "Web Vitals data could not be loaded.",
+    "noSiteDescription": "Select or create a site to inspect Web Vitals over time.",
+    "metrics": {
+      "LCP": "LCP",
+      "INP": "INP",
+      "CLS": "CLS",
+      "FCP": "FCP",
+      "TTFB": "TTFB"
+    },
+    "ratings": {
+      "good": "Good",
+      "needs_improvement": "Needs work",
+      "poor": "Poor",
+      "none": "No samples"
+    },
+    "cards": {
+      "samples": "{{count}} samples",
+      "selectMetricAria": "Inspect {{metric}} over time",
+      "goodUntil": "Good to {{value}}"
+    },
+    "filters": {
+      "metric": "Metric",
+      "rating": "Rating",
+      "path": "Page path",
+      "allRatings": "All ratings",
+      "ratingChip": "Rating: {{rating}}",
+      "pathChip": "Path: {{path}}"
+    },
+    "chart": {
+      "title": "{{metric}} p75 trend",
+      "description": "The 75th percentile over the selected range, bucketed for fast incident review.",
+      "p75": "{{metric}} p75"
+    },
+    "distribution": {
+      "title": "Rating mix",
+      "description": "Site-wide {{metric}} samples. Click a rating to find pages in that quality band."
+    },
+    "pages": {
+      "title": "Page breakdown",
+      "description": "All paths with {{metric}} samples in the selected range. Click a rating in the mix above to rank the pages that need attention.",
+      "filteredTitle": "{{rating}} {{metric}} pages",
+      "filteredDescription": "Showing paths that produced {{rating}} {{metric}} samples in the selected range. Narrow the time range above to inspect a specific incident window.",
+      "empty": "No Web Vitals samples match the current filters."
+    },
+    "breakdown": {
+      "title": "{{dimension}} breakdown",
+      "description": "{{metric}} p75 by visitor context for the selected path and rating scope.",
+      "empty": "No breakdown rows match the current filters.",
+      "unknown": "Unknown",
+      "tabs": {
+        "pages": "Pages",
+        "countries": "Countries",
+        "languages": "Languages",
+        "browsers": "Browsers",
+        "devices": "Devices",
+        "cities": "Cities",
+        "providers": "Providers",
+        "asns": "ASNs"
+      }
+    },
+    "columns": {
+      "path": "Path",
+      "p75": "p75",
+      "samples": "Samples",
+      "ratingSamples": "{{rating}} samples",
+      "rating": "Rating"
+    },
+    "empty": {
+      "title": "No Web Vitals yet",
+      "description": "Enable Web Vitals in the tracking snippet to start collecting opt-in performance samples."
+    }
+  },
+  "qrCodes": {
+    "breadcrumb": "QR codes",
+    "actions": {
+      "create": "Create QR code",
+      "exportSvg": "Export SVG",
+      "exportPng": "Export PNG",
+      "removeAsset": "Remove graphic",
+      "viewAnalytics": "View analytics",
+      "backToList": "Back to QR campaigns",
+      "takeout": "Export data",
+      "addParam": "Add parameter",
+      "chooseAsset": "Choose graphic",
+      "exportArtwork": "Export artwork",
+      "exportPngSize": "PNG {{size}} px"
+    },
+    "list": {
+      "title": "QR campaigns",
+      "count": "{{count}} saved codes"
+    },
+    "empty": {
+      "title": "No QR campaigns yet",
+      "description": "Create a dynamic QR code with campaign attribution, print-ready exports, and dedicated analytics."
+    },
+    "fields": {
+      "name": "Name",
+      "destinationUrl": "Destination URL",
+      "redirectUrl": "Redirect URL",
+      "finalUrl": "Final tracked URL",
+      "customParams": "Custom parameters",
+      "asset": "Graphic",
+      "paramKey": "Parameter",
+      "paramValue": "Value"
+    },
+    "asset": {
+      "present": "Graphic",
+      "none": "None"
+    },
+    "kpis": {
+      "opens": "Opens"
+    },
+    "analytics": {
+      "fullAnalytics": "Full analytics",
+      "opensTitle": "QR opens",
+      "opensDescription": "Redirect opens for this code before the visitor reaches the tracked destination.",
+      "emptyTitle": "No QR opens yet",
+      "emptyDescription": "Scans will appear here after this QR code is used."
+    },
+    "share": {
+      "title": "Share QR stats",
+      "description": "Create a read-only link that exposes only this QR code and its exports.",
+      "create": "Create QR share link",
+      "dialogTitle": "QR share links",
+      "created": "Share link created",
+      "createSuccess": "QR share link created.",
+      "deleteSuccess": "QR share link deleted.",
+      "deleteConfirmTitle": "Delete QR share link",
+      "deleteConfirmMessage": "Delete this QR-only share link? Existing visitors will lose access to the shared stats page.",
+      "tokenHint": "Token hint",
+      "url": "Share URL",
+      "urlUnavailable": "URL is only shown when a link is first generated.",
+      "empty": "No QR-only share links yet.",
+      "invalid": "This QR share link is invalid or expired.",
+      "readOnlyBadge": "Read-only QR analytics",
+      "sharedStats": "Shared stats"
+    },
+    "editor": {
+      "createTitle": "Create QR campaign",
+      "editTitle": "Edit QR campaign",
+      "subtitle": "Saved QR codes use a dynamic HitKeep redirect URL so campaign fields can change after print.",
+      "destination": "Destination and campaign",
+      "style": "Style and graphic",
+      "saveError": "QR code could not be saved. Please check the fields and try again.",
+      "assetError": "The QR graphic could not be uploaded.",
+      "assetDeleteError": "The QR graphic could not be removed.",
+      "redirectAfterSave": "Available after save",
+      "customParamsHint": "Add optional query parameters that travel with this printed campaign.",
+      "assetHint": "PNG, JPEG, or WebP. Maximum 2 MB."
+    },
+    "style": {
+      "foreground": "Foreground",
+      "background": "Background",
+      "dotsLabel": "Dot style",
+      "cornersLabel": "Corner style",
+      "dots": {
+        "square": "Square",
+        "dots": "Dots",
+        "rounded": "Rounded",
+        "extra-rounded": "Extra rounded",
+        "classy": "Classy",
+        "classy-rounded": "Classy rounded"
+      },
+      "corners": {
+        "square": "Square",
+        "dot": "Dot",
+        "extra-rounded": "Extra rounded"
+      }
+    },
+    "warnings": {
+      "invalidDestination": "Enter a valid HTTPS or HTTP destination before exporting.",
+      "missingCampaign": "Add a UTM source or campaign so the print asset is easy to reconcile later.",
+      "longUrl": "The final URL is long enough to make dense QR codes harder to scan.",
+      "reservedParam": "hk_qr is reserved for HitKeep attribution and will be overwritten by the redirect."
+    },
+    "errors": {
+      "load": "QR campaigns could not be loaded.",
+      "retry": "Refresh the page or try again in a moment.",
+      "archive": "QR code could not be archived.",
+      "notFound": "QR campaign not found.",
+      "stats": "QR analytics could not be loaded.",
+      "share": "QR share links could not be updated.",
+      "takeout": "QR takeout could not be exported."
+    },
+    "status": {
+      "archiveSuccess": "QR campaign archived.",
+      "takeoutSuccess": "QR data export started."
+    },
+    "confirm": {
+      "archiveTitle": "Archive QR campaign",
+      "archiveMessage": "Archive {{name}}? Printed codes will still redirect, but marketers will no longer see this campaign in the active list."
+    }
+  },
+  "cloud": {
+    "retentionHint": {
+      "message": "The Free plan keeps {{count}} days of data — older hits aren't included in this view.",
+      "upgradeAction": "Upgrade for more history"
+    },
+    "retentionNotice": {
+      "message": "Free plan data is retained for {{count}} days.",
+      "hint": "Upgrade to keep your full visitor history and unlock more sites and team seats.",
+      "usageMessageSites": "Your team is using {{current}} of {{limit}} sites on the Free plan.",
+      "usageMessageMembers": "Your team is using {{current}} of {{limit}} team members on the Free plan.",
+      "upgradeAction": "Upgrade to Pro",
+      "dismissAction": "Dismiss retention notice"
+    },
+    "planChip": {
+      "free": "Free plan",
+      "aria": "You are on the Free plan — view plans and upgrade"
+    }
+  },
+  "reportConfirmation": {
+    "title": "Confirm scheduled report",
+    "subtitle": "Review exactly what you are agreeing to receive.",
+    "team": "Team",
+    "report": "Report",
+    "cadence": "Cadence",
+    "sites": "Sites",
+    "disclaimer": "Confirming does not create an account or grant access to HitKeep, the team, or its dashboards. You can unsubscribe from any report email.",
+    "confirm": "Confirm reports",
+    "decline": "Decline",
+    "invalid": { "title": "This confirmation link is unavailable", "description": "It may be invalid, expired, already used, or replaced by a newer invitation. Ask the report manager to resend it." },
+    "confirmed": { "title": "Report delivery confirmed", "description": "You will receive future scheduled reports. Reports sent before confirmation are not resent." },
+    "declined": { "title": "Report delivery declined", "description": "You will not receive this report unless you accept a fresh confirmation later." }
+  }
+}

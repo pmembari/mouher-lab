@@ -1,0 +1,88 @@
+package system
+
+import "hitkeep/exportfmt"
+
+func openAPIV1Parameters() map[string]any {
+	return map[string]any{
+		"siteID":   map[string]any{"name": "id", "in": "path", "required": true, "schema": map[string]any{"type": "string", "format": "uuid"}},
+		"goalID":   map[string]any{"name": "goalID", "in": "path", "required": true, "schema": map[string]any{"type": "string", "format": "uuid"}},
+		"funnelID": map[string]any{"name": "funnelID", "in": "path", "required": true, "schema": map[string]any{"type": "string", "format": "uuid"}},
+		"qrID":     map[string]any{"name": "qrID", "in": "path", "required": true, "schema": map[string]any{"type": "string", "format": "uuid"}},
+		"shareID":  map[string]any{"name": "shareID", "in": "path", "required": true, "schema": map[string]any{"type": "string", "format": "uuid"}},
+		"ruleID":   map[string]any{"name": "ruleID", "in": "path", "required": true, "schema": map[string]any{"type": "string", "format": "uuid"}},
+		"userID":   map[string]any{"name": "userId", "in": "path", "required": true, "schema": map[string]any{"type": "string", "format": "uuid"}},
+		"teamID":   map[string]any{"name": "id", "in": "path", "required": true, "schema": map[string]any{"type": "string", "format": "uuid"}},
+		"trackingDomainID": map[string]any{
+			"name": "domainId", "in": "path", "required": true, "schema": map[string]any{"type": "string", "format": "uuid"},
+		},
+		"adminUserID":     map[string]any{"name": "id", "in": "path", "required": true, "schema": map[string]any{"type": "string", "format": "uuid"}},
+		"apiClientID":     map[string]any{"name": "id", "in": "path", "required": true, "schema": map[string]any{"type": "string", "format": "uuid"}},
+		"teamAPIClientID": map[string]any{"name": "clientId", "in": "path", "required": true, "schema": map[string]any{"type": "string", "format": "uuid"}},
+		"passkeyID":       map[string]any{"name": "id", "in": "path", "required": true, "schema": map[string]any{"type": "string", "format": "uuid"}},
+		"token":           map[string]any{"name": "token", "in": "path", "required": true, "schema": map[string]any{"type": "string"}},
+		"domain":          map[string]any{"name": "domain", "in": "path", "required": true, "schema": map[string]any{"type": "string"}},
+		"from":            map[string]any{"name": "from", "in": "query", "schema": map[string]any{"type": "string", "format": "date-time"}},
+		"to":              map[string]any{"name": "to", "in": "query", "schema": map[string]any{"type": "string", "format": "date-time"}},
+		"limit":           map[string]any{"name": "limit", "in": "query", "schema": map[string]any{"type": "integer", "minimum": 1, "maximum": 100}},
+		"offset":          map[string]any{"name": "offset", "in": "query", "schema": map[string]any{"type": "integer", "minimum": 0}},
+		"query":           map[string]any{"name": "q", "in": "query", "schema": map[string]any{"type": "string"}},
+		"sort":            map[string]any{"name": "sort", "in": "query", "schema": map[string]any{"type": "string"}},
+		"order":           map[string]any{"name": "order", "in": "query", "schema": map[string]any{"type": "string", "enum": []string{"asc", "desc"}}},
+		"filter":          map[string]any{"name": "filter", "in": "query", "description": "Filter in form type:value (repeatable). Supported types: path, hostname, referrer, referrer_host, device, country, city, provider, asn, browser, language, ai_bot, ai_bot_category, ai_source, utm_campaign, utm_content, utm_medium, utm_source, utm_term, qr_code_id.", "schema": map[string]any{"type": "string"}},
+		"filterType":      map[string]any{"name": "filter_type", "in": "query", "schema": map[string]any{"type": "string"}},
+		"filterValue":     map[string]any{"name": "filter_value", "in": "query", "schema": map[string]any{"type": "string"}},
+		"eventName":       map[string]any{"name": "event_name", "in": "query", "required": true, "schema": map[string]any{"type": "string"}},
+		"eventPropertyKey": map[string]any{
+			"name": "property_key",
+			"in":   "query",
+			"schema": map[string]any{
+				"type": "string",
+			},
+		},
+		"eventPropertyKeyRequired": map[string]any{"name": "property_key", "in": "query", "required": true, "schema": map[string]any{"type": "string"}},
+		"eventPropertyValue":       map[string]any{"name": "property_value", "in": "query", "schema": map[string]any{"type": "string"}},
+		"eventDimensionKey": map[string]any{
+			"name":        "dimension_key",
+			"in":          "query",
+			"deprecated":  true,
+			"description": "Deprecated single event dimension filter. Prefer repeatable filter=type:value.",
+			"schema":      map[string]any{"type": "string", "enum": []string{"path", "hostname", "referrer", "referrer_host", "device", "country", "city", "provider", "asn", "browser", "language", "utm_campaign", "utm_content", "utm_medium", "utm_source", "utm_term"}},
+		},
+		"eventDimensionValue": map[string]any{
+			"name":        "dimension_value",
+			"in":          "query",
+			"deprecated":  true,
+			"description": "Deprecated single event dimension value. Requires dimension_key.",
+			"schema":      map[string]any{"type": "string"},
+		},
+		"itemID":   map[string]any{"name": "item_id", "in": "query", "schema": map[string]any{"type": "string"}},
+		"itemName": map[string]any{"name": "item_name", "in": "query", "schema": map[string]any{"type": "string"}},
+		"webVitalMetric": map[string]any{
+			"name":        "metric",
+			"in":          "query",
+			"description": "Web Vital metric.",
+			"schema":      map[string]any{"type": "string", "enum": []string{"LCP", "INP", "CLS", "FCP", "TTFB"}},
+		},
+		"webVitalPath": map[string]any{"name": "path", "in": "query", "schema": map[string]any{"type": "string"}, "description": "Exact normalized page path."},
+		"webVitalRating": map[string]any{
+			"name":        "rating",
+			"in":          "query",
+			"description": "Web Vital threshold rating.",
+			"schema":      map[string]any{"type": "string", "enum": []string{"good", "needs_improvement", "poor"}},
+		},
+		"goalIDQuery":   map[string]any{"name": "goal_id", "in": "query", "description": "Repeatable goal definition UUID used to select matching-session cohorts.", "schema": map[string]any{"type": "array", "items": map[string]any{"type": "string", "format": "uuid"}}},
+		"funnelIDQuery": map[string]any{"name": "funnel_id", "in": "query", "description": "Repeatable funnel definition UUID used to select first-step session cohorts.", "schema": map[string]any{"type": "array", "items": map[string]any{"type": "string", "format": "uuid"}}},
+		"format": map[string]any{
+			"name":        "format",
+			"in":          "query",
+			"description": "Export format. Supported values: xlsx, csv, parquet, json, ndjson. Defaults: xlsx for takeout endpoints, csv for hits export endpoints.",
+			"schema":      map[string]any{"type": "string", "enum": exportfmt.SupportedFormats()},
+		},
+		"avatarSize":              map[string]any{"name": "s", "in": "query", "schema": map[string]any{"type": "integer", "minimum": 32, "maximum": 256}},
+		"reportID":                map[string]any{"name": "report_id", "in": "path", "required": true, "schema": map[string]any{"type": "string", "format": "uuid"}, "description": "Report definition UUID."},
+		"reportRunID":             map[string]any{"name": "run_id", "in": "path", "required": true, "schema": map[string]any{"type": "string", "format": "uuid"}, "description": "Report run UUID."},
+		"reportRecipientID":       map[string]any{"name": "recipient_id", "in": "path", "required": true, "schema": map[string]any{"type": "string", "format": "uuid"}, "description": "Stable report recipient UUID."},
+		"reportConfirmationToken": map[string]any{"name": "opaque_token", "in": "path", "required": true, "schema": map[string]any{"type": "string"}, "description": "Single-use opaque report-recipient confirmation token."},
+		"unsubscribeToken":        map[string]any{"name": "opaque_token", "in": "path", "required": true, "schema": map[string]any{"type": "string"}, "description": "Opaque signed unsubscribe token."},
+	}
+}

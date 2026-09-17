@@ -1,0 +1,950 @@
+package config
+
+import (
+	"bytes"
+	"flag"
+	"log/slog"
+	"net/netip"
+	"path/filepath"
+	"strings"
+	"testing"
+)
+
+func TestConfigValidationLogsDoNotIncludeRawValues(t *testing.T) {
+	var logs bytes.Buffer
+	logger := slog.New(slog.NewTextHandler(&logs, nil))
+	env := map[string]string{
+		"HITKEEP_MAIL_PORT":    "secret-value",
+		"HITKEEP_MCP_DOCS_URL": "secret-value",
+	}
+
+	load(nil, func(key, fallback string) string {
+		if value, ok := env[key]; ok {
+			return value
+		}
+		return fallback
+	}, logger)
+
+	if strings.Contains(logs.String(), "secret-value") {
+		t.Fatalf("config validation logs raw environment values: %s", logs.String())
+	}
+}
+
+func TestLoadConfig(t *testing.T) {
+	tests := []struct {
+		name       string
+		args       []string
+		env        map[string]string
+		check      func(*Config) bool
+		errMessage string
+	}{
+		{
+			name: "Defaults",
+			args: []string{},
+			env:  map[string]string{},
+			check: func(c *Config) bool {
+				return c.HTTPAddr == ":8080" &&
+					c.MailDriver == "smtp" &&
+					c.IngestBurst == 40 &&
+					c.WebhookRateLimit == 30.0 &&
+					c.WebhookBurst == 60 &&
+					c.AuthRememberMeDays == 30 &&
+					c.AuthSessionMinutes == 15 &&
+					c.AuthSessionWarningSeconds == 120 &&
+					c.ImportStageRetentionDays == 7 &&
+					len(c.JWTSecret) >= 32
+			},
+			errMessage: "Defaults failed",
+		},
+		{
+			name: "Environment Variables Override Defaults",
+			args: []string{},
+			env: map[string]string{
+				"HITKEEP_HTTP_ADDR":                    ":9000",
+				"HITKEEP_MAIL_PORT":                    "25",
+				"HITKEEP_INGEST_RATE_LIMIT":            "100.5",
+				"HITKEEP_MAIL_DRIVER":                  "log",
+				"HITKEEP_WEBHOOK_RATE_LIMIT":           "55.5",
+				"HITKEEP_WEBHOOK_BURST":                "80",
+				"HITKEEP_AUTH_REMEMBER_ME_DAYS":        "14",
+				"HITKEEP_AUTH_SESSION_MINUTES":         "45",
+				"HITKEEP_AUTH_SESSION_WARNING_SECONDS": "180",
+				"HITKEEP_IMPORT_STAGE_RETENTION_DAYS":  "14",
+			},
+			check: func(c *Config) bool {
+				return c.HTTPAddr == ":9000" &&
+					c.MailPort == 25 &&
+					c.IngestRateLimit == 100.5 &&
+					c.MailDriver == "log" &&
+					c.WebhookRateLimit == 55.5 &&
+					c.WebhookBurst == 80 &&
+					c.AuthRememberMeDays == 14 &&
+					c.AuthSessionMinutes == 45 &&
+					c.AuthSessionWarningSeconds == 180 &&
+					c.ImportStageRetentionDays == 14
+			},
+			errMessage: "Environment variables did not override defaults",
+		},
+		{
+			name: "Flags Override Environment Variables",
+			args: []string{"-http", ":9999", "-mail-port", "1025", "-auth-session-minutes", "30", "-auth-remember-me-days", "7"},
+			env: map[string]string{
+				"HITKEEP_HTTP_ADDR":             ":8080",
+				"HITKEEP_MAIL_PORT":             "587",
+				"HITKEEP_AUTH_SESSION_MINUTES":  "45",
+				"HITKEEP_AUTH_REMEMBER_ME_DAYS": "30",
+			},
+			check: func(c *Config) bool {
+				return c.HTTPAddr == ":9999" && c.MailPort == 1025 && c.AuthSessionMinutes == 30 && c.AuthRememberMeDays == 7
+			},
+			errMessage: "Flags did not override environment variables",
+		},
+		{
+			name: "Boolean Flags and Env",
+			args: []string{"-healthcheck"},
+			env: map[string]string{
+				"HITKEEP_MAIL_INSECURE_SKIP_VERIFY": "true",
+			},
+			check: func(c *Config) bool {
+				return c.Healthcheck == true && c.MailInsecureSkipVerify == true
+			},
+			errMessage: "Boolean logic failed",
+		},
+		{
+			name: "JWT Secret Supplied",
+			args: []string{},
+			env: map[string]string{
+				"HITKEEP_JWT_SECRET": "super-secret-key",
+			},
+			check: func(c *Config) bool {
+				return c.JWTSecret == "super-secret-key"
+			},
+			errMessage: "Supplied JWT secret was ignored",
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			// Mock Env Lookup
+			mockEnv := func(key, fallback string) string {
+				if val, ok := tc.env[key]; ok {
+					return val
+				}
+				return fallback
+			}
+
+			// Run Logic
+			conf := load(tc.args, mockEnv)
+
+			if !tc.check(conf) {
+				t.Errorf("%s: %s", tc.name, tc.errMessage)
+			}
+		})
+	}
+}
+
+func TestJWTSecretGeneratedWhenMissing(t *testing.T) {
+	conf := load([]string{}, func(key, fallback string) string {
+		return fallback
+	})
+	if conf.JWTSecret == "" {
+		t.Fatal("expected JWT secret to be generated")
+	}
+}
+
+func TestNormalizeAuthSessionConfig(t *testing.T) {
+	conf := &Config{AuthSessionMinutes: -1, AuthRememberMeDays: -2, AuthSessionWarningSeconds: 5}
+	NormalizeAuthSessionConfig(conf)
+	if conf.AuthSessionMinutes != 15 {
+		t.Fatalf("expected default session minutes, got %d", conf.AuthSessionMinutes)
+	}
+	if conf.AuthRememberMeDays != 30 {
+		t.Fatalf("expected default remember-me days, got %d", conf.AuthRememberMeDays)
+	}
+	if conf.AuthSessionWarningSeconds != 20 {
+		t.Fatalf("expected warning to normalize to WCAG-safe minimum, got %d", conf.AuthSessionWarningSeconds)
+	}
+
+	conf = &Config{AuthSessionMinutes: 10, AuthSessionWarningSeconds: 900}
+	NormalizeAuthSessionConfig(conf)
+	if conf.AuthSessionWarningSeconds != 300 {
+		t.Fatalf("expected warning to stay before expiry, got %d", conf.AuthSessionWarningSeconds)
+	}
+}
+
+func TestLoadAIConfigDefaultsDisabled(t *testing.T) {
+	conf := load([]string{}, func(key, fallback string) string {
+		return fallback
+	})
+
+	if conf.AIEnabled {
+		t.Fatal("expected AI to be disabled by default")
+	}
+	if conf.AskAIEnabled {
+		t.Fatal("expected Ask AI to be disabled by default")
+	}
+	if conf.AIProvider != "" {
+		t.Fatalf("expected empty AIProvider by default, got %q", conf.AIProvider)
+	}
+	if conf.AIModel != "" {
+		t.Fatalf("expected empty AIModel by default, got %q", conf.AIModel)
+	}
+	if conf.AITimeoutSeconds != 30 {
+		t.Fatalf("expected default AITimeoutSeconds=30, got %d", conf.AITimeoutSeconds)
+	}
+	if conf.AIRequestLimit != 100 {
+		t.Fatalf("expected default AIRequestLimit=100, got %d", conf.AIRequestLimit)
+	}
+	if conf.AITokenLimit != 100000 {
+		t.Fatalf("expected default AITokenLimit=100000, got %d", conf.AITokenLimit)
+	}
+	if conf.AIBudgetWindowMinutes != 1440 {
+		t.Fatalf("expected default AIBudgetWindowMinutes=1440, got %d", conf.AIBudgetWindowMinutes)
+	}
+}
+
+func TestLoadAIConfigFromEnv(t *testing.T) {
+	env := map[string]string{
+		"HITKEEP_AI_ENABLED":         "true",
+		"HITKEEP_ASK_AI_ENABLED":     "true",
+		"HITKEEP_AI_PROVIDER":        "openai-compatible",
+		"HITKEEP_AI_MODEL":           "gpt-4.1-mini",
+		"HITKEEP_AI_BASE_URL":        "https://ai-gateway.example/v1",
+		"HITKEEP_AI_REGION":          "eu-central-1",
+		"HITKEEP_AI_API_KEY":         "provider-secret",
+		"HITKEEP_AI_TIMEOUT_SECONDS": "45",
+		"HITKEEP_AI_REQUEST_LIMIT":   "25",
+		"HITKEEP_AI_TOKEN_LIMIT":     "50000",
+		"HITKEEP_AI_BUDGET_WINDOW":   "60",
+	}
+	conf := load([]string{}, func(key, fallback string) string {
+		if val, ok := env[key]; ok {
+			return val
+		}
+		return fallback
+	})
+
+	if !conf.AIEnabled {
+		t.Fatal("expected AIEnabled true")
+	}
+	if !conf.AskAIEnabled {
+		t.Fatal("expected AskAIEnabled true")
+	}
+	if conf.AIProvider != "openai-compatible" || conf.AIModel != "gpt-4.1-mini" {
+		t.Fatalf("unexpected AI provider/model: %q/%q", conf.AIProvider, conf.AIModel)
+	}
+	if conf.AIBaseURL != "https://ai-gateway.example/v1" || conf.AIRegion != "eu-central-1" {
+		t.Fatalf("unexpected AI route config: base=%q region=%q", conf.AIBaseURL, conf.AIRegion)
+	}
+	if conf.AIAPIKey != "provider-secret" {
+		t.Fatalf("expected AIAPIKey to load from env")
+	}
+	if conf.AITimeoutSeconds != 45 || conf.AIRequestLimit != 25 || conf.AITokenLimit != 50000 || conf.AIBudgetWindowMinutes != 60 {
+		t.Fatalf("unexpected AI caps: timeout=%d requests=%d tokens=%d window=%d", conf.AITimeoutSeconds, conf.AIRequestLimit, conf.AITokenLimit, conf.AIBudgetWindowMinutes)
+	}
+}
+
+func TestTrustedProxiesDefaultIsWildcard(t *testing.T) {
+	conf := load([]string{}, func(key, fallback string) string {
+		return fallback
+	})
+
+	if conf.TrustedProxies != "*" {
+		t.Fatalf("expected default trusted proxies to be '*', got %q", conf.TrustedProxies)
+	}
+	if len(conf.GetTrustedProxyNetworks()) == 0 {
+		t.Fatalf("expected trust-all proxy networks to be loaded by default")
+	}
+	if !conf.IsTrustedProxy(netip.MustParseAddr("203.0.113.10")) {
+		t.Fatalf("expected default trusted proxies to trust public ipv4")
+	}
+}
+
+func TestParseTrustedProxiesWildcard(t *testing.T) {
+	networks := parseTrustedProxies("*")
+	if len(networks) == 0 {
+		t.Fatalf("expected wildcard to parse into trust-all proxy networks")
+	}
+
+	if !isIPInNetworksForTest(netip.MustParseAddr("198.51.100.20"), networks) {
+		t.Fatalf("expected wildcard trusted proxies to include public ipv4")
+	}
+	if !isIPInNetworksForTest(netip.MustParseAddr("2001:db8::1"), networks) {
+		t.Fatalf("expected wildcard trusted proxies to include ipv6")
+	}
+}
+
+func TestLoadDuckDBSettingsFromEnv(t *testing.T) {
+	env := map[string]string{
+		"HITKEEP_DUCKDB_MEMORY_LIMIT": "512MB",
+		"HITKEEP_DUCKDB_THREADS":      "4",
+	}
+
+	conf := load([]string{}, func(key, fallback string) string {
+		if val, ok := env[key]; ok {
+			return val
+		}
+		return fallback
+	})
+
+	if conf.DuckDBMemoryLimit != "512MB" {
+		t.Fatalf("expected DuckDBMemoryLimit 512MB, got %q", conf.DuckDBMemoryLimit)
+	}
+	if conf.DuckDBThreads != 4 {
+		t.Fatalf("expected DuckDBThreads 4, got %d", conf.DuckDBThreads)
+	}
+}
+
+func TestLoadS3ConfigDefaults(t *testing.T) {
+	conf := load([]string{}, func(key, fallback string) string {
+		return fallback
+	})
+
+	if conf.S3AccessKeyID != "" {
+		t.Fatalf("expected empty S3AccessKeyID by default, got %q", conf.S3AccessKeyID)
+	}
+	if conf.S3SecretAccessKey != "" {
+		t.Fatalf("expected empty S3SecretAccessKey by default, got %q", conf.S3SecretAccessKey)
+	}
+	if conf.S3Region != "us-east-1" {
+		t.Fatalf("expected S3Region default us-east-1, got %q", conf.S3Region)
+	}
+	if conf.S3Endpoint != "" {
+		t.Fatalf("expected empty S3Endpoint by default, got %q", conf.S3Endpoint)
+	}
+	if conf.S3URLStyle != "" {
+		t.Fatalf("expected empty S3URLStyle by default, got %q", conf.S3URLStyle)
+	}
+	if !conf.S3UseSSL {
+		t.Fatalf("expected S3UseSSL default true, got false")
+	}
+}
+
+func TestLoadS3ConfigFromEnv(t *testing.T) {
+	env := map[string]string{
+		"HITKEEP_S3_ACCESS_KEY_ID":     "AKIAEXAMPLE",
+		"HITKEEP_S3_SECRET_ACCESS_KEY": "secretkey123",
+		"HITKEEP_S3_SESSION_TOKEN":     "tokenXYZ",
+		"HITKEEP_S3_REGION":            "eu-central-1",
+		"HITKEEP_S3_ENDPOINT":          "minio.local:9000",
+		"HITKEEP_S3_URL_STYLE":         "path",
+		"HITKEEP_S3_USE_SSL":           "false",
+	}
+
+	conf := load([]string{}, func(key, fallback string) string {
+		if val, ok := env[key]; ok {
+			return val
+		}
+		return fallback
+	})
+
+	if conf.S3AccessKeyID != "AKIAEXAMPLE" {
+		t.Fatalf("expected S3AccessKeyID=AKIAEXAMPLE, got %q", conf.S3AccessKeyID)
+	}
+	if conf.S3SecretAccessKey != "secretkey123" {
+		t.Fatalf("expected S3SecretAccessKey=secretkey123, got %q", conf.S3SecretAccessKey)
+	}
+	if conf.S3SessionToken != "tokenXYZ" {
+		t.Fatalf("expected S3SessionToken=tokenXYZ, got %q", conf.S3SessionToken)
+	}
+	if conf.S3Region != "eu-central-1" {
+		t.Fatalf("expected S3Region=eu-central-1, got %q", conf.S3Region)
+	}
+	if conf.S3Endpoint != "minio.local:9000" {
+		t.Fatalf("expected S3Endpoint=minio.local:9000, got %q", conf.S3Endpoint)
+	}
+	if conf.S3URLStyle != "path" {
+		t.Fatalf("expected S3URLStyle=path, got %q", conf.S3URLStyle)
+	}
+	if conf.S3UseSSL {
+		t.Fatalf("expected S3UseSSL=false, got true")
+	}
+}
+
+func TestLoadBackupConfigDefaults(t *testing.T) {
+	conf := load([]string{}, func(key, fallback string) string {
+		return fallback
+	})
+
+	if conf.BackupPath != "" {
+		t.Fatalf("expected empty BackupPath by default, got %q", conf.BackupPath)
+	}
+	if conf.BackupIntervalMinutes != 60 {
+		t.Fatalf("expected BackupIntervalMinutes default 60, got %d", conf.BackupIntervalMinutes)
+	}
+	if conf.BackupRetentionCount != 24 {
+		t.Fatalf("expected BackupRetentionCount default 24, got %d", conf.BackupRetentionCount)
+	}
+}
+
+func TestLoadBackupConfigFromEnv(t *testing.T) {
+	env := map[string]string{
+		"HITKEEP_BACKUP_PATH":      "/tmp/backups",
+		"HITKEEP_BACKUP_INTERVAL":  "30",
+		"HITKEEP_BACKUP_RETENTION": "48",
+	}
+
+	conf := load([]string{}, func(key, fallback string) string {
+		if val, ok := env[key]; ok {
+			return val
+		}
+		return fallback
+	})
+
+	if conf.BackupPath != "/tmp/backups" {
+		t.Fatalf("expected BackupPath=/tmp/backups, got %q", conf.BackupPath)
+	}
+	if conf.BackupIntervalMinutes != 30 {
+		t.Fatalf("expected BackupIntervalMinutes=30, got %d", conf.BackupIntervalMinutes)
+	}
+	if conf.BackupRetentionCount != 48 {
+		t.Fatalf("expected BackupRetentionCount=48, got %d", conf.BackupRetentionCount)
+	}
+}
+
+func TestLoadMCPConfigDefaults(t *testing.T) {
+	conf := load([]string{}, func(key, fallback string) string {
+		return fallback
+	})
+
+	if conf.MCPEnabled {
+		t.Fatalf("expected MCP disabled by default")
+	}
+	if conf.MCPPath != "/mcp" {
+		t.Fatalf("expected default MCPPath /mcp, got %q", conf.MCPPath)
+	}
+	if conf.MCPMaxRangeDays != 366 {
+		t.Fatalf("expected default MCPMaxRangeDays 366, got %d", conf.MCPMaxRangeDays)
+	}
+	if !conf.MCPDocsEnabled {
+		t.Fatalf("expected MCP docs enabled by default")
+	}
+	if conf.MCPDocsURL != "https://hitkeep.com" {
+		t.Fatalf("expected default MCPDocsURL, got %q", conf.MCPDocsURL)
+	}
+	if conf.MCPDocsCacheMinutes != 60 {
+		t.Fatalf("expected default MCPDocsCacheMinutes 60, got %d", conf.MCPDocsCacheMinutes)
+	}
+}
+
+func TestLoadMCPConfigFromEnvAndFlags(t *testing.T) {
+	env := map[string]string{
+		"HITKEEP_MCP_ENABLED":            "true",
+		"HITKEEP_MCP_PATH":               "agent",
+		"HITKEEP_MCP_MAX_RANGE_DAYS":     "90",
+		"HITKEEP_MCP_DOCS_ENABLED":       "false",
+		"HITKEEP_MCP_DOCS_URL":           "https://docs.example.com/",
+		"HITKEEP_MCP_DOCS_CACHE_MINUTES": "15",
+	}
+
+	conf := load([]string{"-mcp-path", "/custom-mcp"}, func(key, fallback string) string {
+		if val, ok := env[key]; ok {
+			return val
+		}
+		return fallback
+	})
+
+	if !conf.MCPEnabled {
+		t.Fatalf("expected MCP enabled from env")
+	}
+	if conf.MCPPath != "/custom-mcp" {
+		t.Fatalf("expected flag MCPPath to win, got %q", conf.MCPPath)
+	}
+	if conf.MCPMaxRangeDays != 90 {
+		t.Fatalf("expected MCPMaxRangeDays 90, got %d", conf.MCPMaxRangeDays)
+	}
+	if conf.MCPDocsEnabled {
+		t.Fatalf("expected MCP docs disabled from env")
+	}
+	if conf.MCPDocsURL != "https://docs.example.com" {
+		t.Fatalf("expected trimmed MCPDocsURL, got %q", conf.MCPDocsURL)
+	}
+	if conf.MCPDocsCacheMinutes != 15 {
+		t.Fatalf("expected MCPDocsCacheMinutes 15, got %d", conf.MCPDocsCacheMinutes)
+	}
+}
+
+func TestLoadMCPConfigNormalizesInvalidValues(t *testing.T) {
+	env := map[string]string{
+		"HITKEEP_MCP_PATH":               "",
+		"HITKEEP_MCP_MAX_RANGE_DAYS":     "-2",
+		"HITKEEP_MCP_DOCS_URL":           "://bad",
+		"HITKEEP_MCP_DOCS_CACHE_MINUTES": "0",
+	}
+
+	conf := load([]string{}, func(key, fallback string) string {
+		if val, ok := env[key]; ok {
+			return val
+		}
+		return fallback
+	})
+
+	if conf.MCPPath != "/mcp" {
+		t.Fatalf("expected normalized MCPPath, got %q", conf.MCPPath)
+	}
+	if conf.MCPMaxRangeDays != 366 {
+		t.Fatalf("expected normalized MCPMaxRangeDays, got %d", conf.MCPMaxRangeDays)
+	}
+	if conf.MCPDocsURL != "https://hitkeep.com" {
+		t.Fatalf("expected normalized MCPDocsURL, got %q", conf.MCPDocsURL)
+	}
+	if conf.MCPDocsCacheMinutes != 60 {
+		t.Fatalf("expected normalized MCPDocsCacheMinutes, got %d", conf.MCPDocsCacheMinutes)
+	}
+}
+
+func TestLoadMCPConfigRejectsRootPath(t *testing.T) {
+	env := map[string]string{
+		"HITKEEP_MCP_PATH": "/",
+	}
+
+	conf := load([]string{}, func(key, fallback string) string {
+		if val, ok := env[key]; ok {
+			return val
+		}
+		return fallback
+	})
+
+	if conf.MCPPath != "/mcp" {
+		t.Fatalf("expected root MCPPath to normalize to /mcp, got %q", conf.MCPPath)
+	}
+}
+
+func TestDeprecatedFlagsStillWork(t *testing.T) {
+	conf := load([]string{"-http", ":3000", "-db", "/tmp/test.db"}, func(key, fallback string) string {
+		return fallback
+	})
+	if conf.HTTPAddr != ":3000" {
+		t.Fatalf("expected deprecated --http to set HTTPAddr, got %q", conf.HTTPAddr)
+	}
+	if conf.DBPath != "/tmp/test.db" {
+		t.Fatalf("expected deprecated --db to set DBPath, got %q", conf.DBPath)
+	}
+}
+
+func TestNewAndDeprecatedFlagsFollowArgumentOrder(t *testing.T) {
+	tests := []struct {
+		name string
+		args []string
+		want string
+	}{
+		{
+			name: "canonical follows deprecated",
+			args: []string{"--http", ":3000", "--http-addr", ":4000"},
+			want: ":4000",
+		},
+		{
+			name: "deprecated follows canonical",
+			args: []string{"--http-addr", ":4000", "--http", ":3000"},
+			want: ":3000",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			conf := load(tt.args, func(key, fallback string) string {
+				return fallback
+			})
+			if conf.HTTPAddr != tt.want {
+				t.Fatalf("HTTPAddr = %q, want %q", conf.HTTPAddr, tt.want)
+			}
+		})
+	}
+}
+
+func TestEnvMappedToCorrectFields(t *testing.T) {
+	env := map[string]string{
+		"HITKEEP_HTTP_ADDR":        ":5000",
+		"HITKEEP_MAIL_DRIVER":      "log",
+		"HITKEEP_S3_REGION":        "eu-west-2",
+		"HITKEEP_MCP_ENABLED":      "true",
+		"HITKEEP_SPAM_FILTER_PATH": "/data/spam.json",
+	}
+	conf := load([]string{}, func(key, fallback string) string {
+		if val, ok := env[key]; ok {
+			return val
+		}
+		return fallback
+	})
+	if conf.HTTPAddr != ":5000" {
+		t.Fatalf("expected HTTPAddr :5000, got %q", conf.HTTPAddr)
+	}
+	if conf.MailDriver != "log" {
+		t.Fatalf("expected MailDriver log, got %q", conf.MailDriver)
+	}
+	if conf.S3Region != "eu-west-2" {
+		t.Fatalf("expected S3Region eu-west-2, got %q", conf.S3Region)
+	}
+	if !conf.MCPEnabled {
+		t.Fatalf("expected MCPEnabled true")
+	}
+	if conf.SpamFilterPath != "/data/spam.json" {
+		t.Fatalf("expected SpamFilterPath /data/spam.json, got %q", conf.SpamFilterPath)
+	}
+}
+
+func TestDeprecatedFlagsDoNotAppearInNewHelp(t *testing.T) {
+	fs := flag.NewFlagSet("test", flag.ContinueOnError)
+	var conf Config
+	registerFlags(fs, &conf)
+	displayedFlags := make(map[string]bool)
+	fs.VisitAll(func(f *flag.Flag) {
+		displayedFlags[f.Name] = true
+	})
+	if !displayedFlags["http-addr"] {
+		t.Fatal("expected --http-addr in registered flags")
+	}
+	if !displayedFlags["http"] {
+		t.Fatal("expected --http (deprecated) in registered flags")
+	}
+}
+
+func TestLogValueRedactsSecrets(t *testing.T) {
+	conf := &Config{
+		JWTSecret:                       "my-secret-key-12345",
+		MailPassword:                    "smtp-pass",
+		S3AccessKeyID:                   "AKIA123456",
+		S3SecretAccessKey:               "super-secret",
+		GoogleSearchConsoleClientSecret: "google-client-secret",
+		AIAPIKey:                        "ai-provider-secret",
+		SocialGoogleClientSecret:        "social-google-secret",
+		SocialGitHubClientSecret:        "social-github-secret",
+		SocialMicrosoftClientSecret:     "social-microsoft-secret",
+	}
+	logVal := conf.LogValue()
+	got := logVal.String()
+
+	if strings.Contains(got, "my-secret-key-12345") {
+		t.Fatal("LogValue leaked JWTSecret")
+	}
+	if strings.Contains(got, "smtp-pass") {
+		t.Fatal("LogValue leaked MailPassword")
+	}
+	if strings.Contains(got, "super-secret") {
+		t.Fatal("LogValue leaked S3SecretAccessKey")
+	}
+	if strings.Contains(got, "google-client-secret") {
+		t.Fatal("LogValue leaked GoogleSearchConsoleClientSecret")
+	}
+	if strings.Contains(got, "ai-provider-secret") {
+		t.Fatal("LogValue leaked AIAPIKey")
+	}
+	for _, secret := range []string{"social-google-secret", "social-github-secret", "social-microsoft-secret"} {
+		if strings.Contains(got, secret) {
+			t.Fatalf("LogValue leaked social provider secret %q", secret)
+		}
+	}
+	if !strings.Contains(got, "AKIA") {
+		t.Fatal("LogValue should show masked S3AccessKeyID prefix")
+	}
+	if !strings.Contains(got, "[redacted]") {
+		t.Fatal("LogValue should contain [redacted] markers")
+	}
+}
+
+func TestLogValueRedactsURLCredentialsAndQueries(t *testing.T) {
+	conf := &Config{
+		PublicURL:  "https://operator:public-secret@example.com/hitkeep?token=query-secret",
+		AIBaseURL:  "https://gateway.example/v1?api_key=base-secret",
+		S3Endpoint: "https://access:s3-secret@storage.example",
+	}
+	output := conf.LogValue().String()
+
+	for _, secret := range []string{"public-secret", "query-secret", "base-secret", "s3-secret", "operator", "access"} {
+		if strings.Contains(output, secret) {
+			t.Fatalf("LogValue leaked URL credential or query value %q: %s", secret, output)
+		}
+	}
+	for _, safeURL := range []string{"https://example.com/hitkeep", "https://gateway.example/v1", "https://storage.example"} {
+		if !strings.Contains(output, safeURL) {
+			t.Fatalf("LogValue should preserve safe URL %q: %s", safeURL, output)
+		}
+	}
+}
+
+func TestLoadSocialAuthConfigFromEnv(t *testing.T) {
+	env := map[string]string{
+		"HITKEEP_SOCIAL_GOOGLE_CLIENT_ID":        "google-client",
+		"HITKEEP_SOCIAL_GOOGLE_CLIENT_SECRET":    "google-secret",
+		"HITKEEP_SOCIAL_GITHUB_CLIENT_ID":        "github-client",
+		"HITKEEP_SOCIAL_GITHUB_CLIENT_SECRET":    "github-secret",
+		"HITKEEP_SOCIAL_MICROSOFT_CLIENT_ID":     "microsoft-client",
+		"HITKEEP_SOCIAL_MICROSOFT_CLIENT_SECRET": "microsoft-secret",
+		"HITKEEP_SOCIAL_MICROSOFT_TENANT":        "organizations",
+		"HITKEEP_SOCIAL_SIGNUP_ENABLED":          "true",
+	}
+	conf := load([]string{}, func(key, fallback string) string {
+		if value, ok := env[key]; ok {
+			return value
+		}
+		return fallback
+	})
+	if conf.SocialGoogleClientID != "google-client" || conf.SocialGoogleClientSecret != "google-secret" {
+		t.Fatalf("unexpected Google social config: %+v", conf)
+	}
+	if conf.SocialGitHubClientID != "github-client" || conf.SocialGitHubClientSecret != "github-secret" {
+		t.Fatalf("unexpected GitHub social config: %+v", conf)
+	}
+	if conf.SocialMicrosoftClientID != "microsoft-client" || conf.SocialMicrosoftClientSecret != "microsoft-secret" || conf.SocialMicrosoftTenant != "organizations" {
+		t.Fatalf("unexpected Microsoft social config: %+v", conf)
+	}
+	if !conf.SocialSignupEnabled {
+		t.Fatal("expected social signup flag from environment")
+	}
+}
+
+func TestSocialAuthDefaultsAreClosed(t *testing.T) {
+	conf := load([]string{}, func(_ string, fallback string) string { return fallback })
+	if conf.SocialSignupEnabled {
+		t.Fatal("social signup should default to disabled")
+	}
+	if conf.SocialMicrosoftTenant != "common" {
+		t.Fatalf("expected Microsoft common tenant default, got %q", conf.SocialMicrosoftTenant)
+	}
+}
+
+func TestLoadGoogleSearchConsoleConfigFromEnv(t *testing.T) {
+	env := map[string]string{
+		"HITKEEP_GOOGLE_SEARCH_CONSOLE_CLIENT_ID":     "gsc-client-id",
+		"HITKEEP_GOOGLE_SEARCH_CONSOLE_CLIENT_SECRET": "gsc-client-secret",
+		"HITKEEP_GOOGLE_SEARCH_CONSOLE_REDIRECT_URL":  "https://analytics.example.com/api/integrations/google-search-console/oauth/callback",
+	}
+
+	conf := load([]string{}, func(key, fallback string) string {
+		if val, ok := env[key]; ok {
+			return val
+		}
+		return fallback
+	})
+
+	if conf.GoogleSearchConsoleClientID != "gsc-client-id" {
+		t.Fatalf("expected GoogleSearchConsoleClientID from env, got %q", conf.GoogleSearchConsoleClientID)
+	}
+	if conf.GoogleSearchConsoleClientSecret != "gsc-client-secret" {
+		t.Fatalf("expected GoogleSearchConsoleClientSecret from env, got %q", conf.GoogleSearchConsoleClientSecret)
+	}
+	if conf.GoogleSearchConsoleRedirectURL != "https://analytics.example.com/api/integrations/google-search-console/oauth/callback" {
+		t.Fatalf("expected GoogleSearchConsoleRedirectURL from env, got %q", conf.GoogleSearchConsoleRedirectURL)
+	}
+}
+
+func TestFlagHealthcheckRegistered(t *testing.T) {
+	fs := flag.NewFlagSet("test", flag.ContinueOnError)
+	var conf Config
+	registerFlags(fs, &conf)
+	f := fs.Lookup("healthcheck")
+	if f == nil {
+		t.Fatal("expected --healthcheck flag to be registered")
+	}
+	if f.DefValue != "false" {
+		t.Fatalf("expected default false, got %q", f.DefValue)
+	}
+}
+
+func TestHealthcheckLoadSkipsRuntimeNormalization(t *testing.T) {
+	conf := load([]string{"-healthcheck", "-http-addr", ":9090"}, func(key, fallback string) string {
+		return fallback
+	})
+
+	if !conf.Healthcheck {
+		t.Fatal("expected healthcheck mode")
+	}
+	if conf.HTTPAddr != ":9090" {
+		t.Fatalf("expected HTTPAddr from flag, got %q", conf.HTTPAddr)
+	}
+	if conf.JWTSecret != "" {
+		t.Fatal("expected healthcheck config load to skip JWT secret generation")
+	}
+	if conf.NodeName != "" {
+		t.Fatal("expected healthcheck config load to skip node name generation")
+	}
+	if len(conf.GetTrustedProxyNetworks()) != 0 {
+		t.Fatal("expected healthcheck config load to skip trusted proxy parsing")
+	}
+}
+
+func TestLogValueDefaultConfig(t *testing.T) {
+	conf := load([]string{}, func(key, fallback string) string {
+		return fallback
+	})
+	_ = conf.LogValue() // must not panic
+}
+
+func TestS3UseSSLDefaultsTrue(t *testing.T) {
+	conf := load([]string{}, func(key, fallback string) string {
+		return fallback
+	})
+	if !conf.S3UseSSL {
+		t.Fatal("expected S3UseSSL to default to true")
+	}
+}
+
+func TestS3UseSSLCanBeDisabledByEnv(t *testing.T) {
+	conf := load([]string{}, func(key, fallback string) string {
+		if key == "HITKEEP_S3_USE_SSL" {
+			return "false"
+		}
+		return fallback
+	})
+	if conf.S3UseSSL {
+		t.Fatal("expected S3UseSSL to be false when env set to false")
+	}
+}
+
+func TestCustomTrackingConfigNormalizesTLSModeAndTarget(t *testing.T) {
+	conf := load([]string{}, func(key, fallback string) string {
+		switch key {
+		case "HITKEEP_PUBLIC_URL":
+			return "https://Analytics.Example.com/hitkeep/"
+		case "HITKEEP_CUSTOM_TRACKING_TLS_MODE":
+			return " CADDY-ON-DEMAND "
+		case "HITKEEP_CUSTOM_TRACKING_DNS_TARGET":
+			return " https://Edge.Example.com "
+		default:
+			return fallback
+		}
+	})
+	if conf.CustomTrackingTLSMode != "caddy-on-demand" {
+		t.Fatalf("expected caddy-on-demand TLS mode, got %q", conf.CustomTrackingTLSMode)
+	}
+	target := conf.CustomTrackingDNSTargetValue()
+	if target != "edge.example.com" {
+		t.Fatalf("expected custom tracking DNS target %q, got %q", "edge.example.com", target)
+	}
+}
+
+func TestCustomTrackingDNSTargetDefaultsToPublicURLHost(t *testing.T) {
+	conf := load([]string{}, func(key, fallback string) string {
+		if key == "HITKEEP_PUBLIC_URL" {
+			return "https://Analytics.Example.com/hitkeep/"
+		}
+		if key == "HITKEEP_CUSTOM_TRACKING_TLS_MODE" {
+			return "unknown"
+		}
+		return fallback
+	})
+	if conf.CustomTrackingTLSMode != "external" {
+		t.Fatalf("expected invalid TLS mode to fall back to external, got %q", conf.CustomTrackingTLSMode)
+	}
+	target := conf.CustomTrackingDNSTargetValue()
+	if target != "analytics.example.com" {
+		t.Fatalf("expected public URL host target %q, got %q", "analytics.example.com", target)
+	}
+}
+
+func TestInvalidEnvVarValueLogsWarning(t *testing.T) {
+	conf := load([]string{}, func(key, fallback string) string {
+		if key == "HITKEEP_MAIL_PORT" {
+			return "not-a-number"
+		}
+		return fallback
+	})
+	if conf.MailPort != 587 {
+		t.Fatalf("expected MailPort to stay at default 587, got %d", conf.MailPort)
+	}
+}
+
+func TestLogValueExcludesCloudFields(t *testing.T) {
+	conf := load([]string{}, func(key, fallback string) string {
+		return fallback
+	})
+	logVal := conf.LogValue()
+	output := logVal.String()
+
+	if strings.Contains(output, "CloudHosted") {
+		t.Fatal("LogValue should not contain CloudHosted in OSS builds")
+	}
+	if strings.Contains(output, "StripeSecretKey") {
+		t.Fatal("LogValue should not contain StripeSecretKey in OSS builds")
+	}
+	if !strings.Contains(output, "HTTPAddr") {
+		t.Fatal("LogValue should contain non-cloud fields")
+	}
+}
+
+func TestFlagDerivationConsistency(t *testing.T) {
+	tests := []struct {
+		env    string
+		expect string
+	}{
+		{"HITKEEP_HTTP_ADDR", "http-addr"},
+		{"HITKEEP_DB_PATH", "db-path"},
+		{"HITKEEP_MAIL_PASSWORD", "mail-password"},
+		{"HITKEEP_S3_SECRET_ACCESS_KEY", "s3-secret-access-key"},
+		{"HITKEEP_CLOUD_MAX_TEAMS", "cloud-max-teams"},
+	}
+	for _, tc := range tests {
+		got := flagName(tc.env)
+		if got != tc.expect {
+			t.Errorf("flagName(%q) = %q, want %q", tc.env, got, tc.expect)
+		}
+	}
+}
+
+func isIPInNetworksForTest(ip netip.Addr, networks []netip.Prefix) bool {
+	for _, network := range networks {
+		if network.Contains(ip.Unmap()) {
+			return true
+		}
+	}
+	return false
+}
+
+func TestLoadDBCompactOnStartFromEnv(t *testing.T) {
+	conf := load([]string{}, func(key, fallback string) string { return fallback })
+	if !conf.DBCompactOnStart {
+		t.Fatal("expected DBCompactOnStart to default to true")
+	}
+
+	env := map[string]string{"HITKEEP_DB_COMPACT_ON_START": "false"}
+	conf = load([]string{}, func(key, fallback string) string {
+		if val, ok := env[key]; ok {
+			return val
+		}
+		return fallback
+	})
+	if conf.DBCompactOnStart {
+		t.Fatal("expected HITKEEP_DB_COMPACT_ON_START=false to disable compaction")
+	}
+}
+
+func TestLoadDatabaseRecoverySettings(t *testing.T) {
+	defaults := load([]string{}, func(key, fallback string) string { return fallback })
+	if !defaults.DBAutoRecover {
+		t.Fatal("expected automatic database recovery to default to enabled")
+	}
+	if defaults.DBAutoRecoverWAL {
+		t.Fatal("expected destructive automatic WAL recovery to default to disabled")
+	}
+	if defaults.DBCheckpointIntervalMinutes != 5 {
+		t.Fatalf("expected five-minute checkpoint interval, got %d", defaults.DBCheckpointIntervalMinutes)
+	}
+	if defaults.DBRecoveryPath != filepath.Join(defaults.DataPath, "recovery") {
+		t.Fatalf("unexpected default recovery path %q", defaults.DBRecoveryPath)
+	}
+
+	env := map[string]string{
+		"HITKEEP_DB_AUTO_RECOVER":        "false",
+		"HITKEEP_DB_AUTO_RECOVER_WAL":    "true",
+		"HITKEEP_DB_CHECKPOINT_INTERVAL": "0",
+		"HITKEEP_DB_RECOVERY_PATH":       "/srv/hitkeep/recovery",
+	}
+	conf := load([]string{}, func(key, fallback string) string {
+		if val, ok := env[key]; ok {
+			return val
+		}
+		return fallback
+	})
+	if conf.DBAutoRecover {
+		t.Fatal("expected automatic database recovery to be disabled")
+	}
+	if !conf.DBAutoRecoverWAL {
+		t.Fatal("expected automatic WAL recovery opt-in to be enabled")
+	}
+	if conf.DBCheckpointIntervalMinutes != 0 {
+		t.Fatalf("expected periodic checkpoints disabled, got %d", conf.DBCheckpointIntervalMinutes)
+	}
+	if conf.DBRecoveryPath != "/srv/hitkeep/recovery" {
+		t.Fatalf("unexpected configured recovery path %q", conf.DBRecoveryPath)
+	}
+}

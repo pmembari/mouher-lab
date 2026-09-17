@@ -1,0 +1,166 @@
+.range-toolbar__range-group {
+    --p-selectbutton-border-radius: 0.8rem;
+    --p-togglebutton-background: transparent;
+    --p-togglebutton-border-color: transparent;
+    --p-togglebutton-checked-background: transparent;
+    --p-togglebutton-checked-border-color: transparent;
+    --p-togglebutton-sm-padding: 0.125rem;
+    --p-togglebutton-font-weight: 650;
+    --p-togglebutton-content-sm-padding: 0.34rem 0.78rem;
+    --p-togglebutton-content-checked-background: var(--p-content-background);
+    --p-togglebutton-content-checked-shadow: 0 4px 12px -6px color-mix(in srgb, var(--p-surface-950) 28%, transparent);
+    --p-button-border-radius: calc(var(--p-selectbutton-border-radius) - 0.25rem);
+    --p-button-sm-padding-x: 0.78rem;
+    --p-button-sm-padding-y: 0.34rem;
+    --p-button-label-font-weight: 650;
+    --p-button-secondary-background: var(--p-content-background);
+    --p-button-secondary-border-color: transparent;
+    --p-button-secondary-color: var(--p-text-color);
+    --p-button-secondary-hover-background: var(--p-content-background);
+    --p-button-outlined-secondary-border-color: transparent;
+    --p-select-background: transparent;
+    --p-select-border-color: transparent;
+    --p-select-hover-border-color: transparent;
+    --p-select-focus-border-color: transparent;
+    --p-select-shadow: none;
+    --p-select-border-radius: calc(var(--p-selectbutton-border-radius) - 0.25rem);
+    --p-select-color: var(--p-text-muted-color);
+    --p-select-placeholder-color: var(--p-text-muted-color);
+    --p-select-dropdown-color: var(--p-text-muted-color);
+    --p-select-sm-font-size: 0.875rem;
+    --p-select-sm-padding-x: 0.78rem;
+    --p-select-sm-padding-y: 0.34rem;
+    --p-select-dropdown-width: 1.75rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.125rem;
+    max-width: 100%;
+    border: 1px solid var(--p-content-border-color);
+    border-radius: var(--p-selectbutton-border-radius);
+    background: var(--p-content-hover-background);
+    padding: 0.2rem;
+}
+
+:host-context(.p-dark) .range-toolbar__range-group {
+    --p-togglebutton-content-checked-background: var(--p-surface-950);
+    --p-togglebutton-content-checked-shadow: none;
+    --p-button-secondary-background: var(--p-surface-950);
+    --p-button-secondary-color: var(--p-surface-0);
+    --p-button-secondary-hover-background: var(--p-surface-950);
+    --p-select-color: var(--p-surface-400);
+    --p-select-placeholder-color: var(--p-surface-400);
+    --p-select-dropdown-color: var(--p-surface-400);
+    border-color: var(--p-surface-700);
+    background: var(--p-surface-800);
+}
+
+:host ::ng-deep .range-toolbar__preset-select.p-selectbutton {
+    flex-wrap: wrap;
+    gap: 0.125rem;
+}
+
+:host ::ng-deep .range-toolbar__preset-select.p-selectbutton .p-togglebutton {
+    min-height: 2.1rem;
+    border-width: 1px;
+    border-radius: calc(var(--p-selectbutton-border-radius) - 0.25rem);
+}
+
+:host ::ng-deep .range-toolbar__more-select-control.p-select,
+:host ::ng-deep .range-toolbar__custom-button {
+    min-height: 2.1rem;
+}
+
+:host ::ng-deep .range-toolbar__more-select-control.p-select {
+    max-width: min(12rem, 44vw);
+}
+
+:host ::ng-deep .range-toolbar__more-select-control.p-select.p-inputwrapper-filled {
+    --p-select-background: var(--p-content-background);
+    --p-select-color: var(--p-text-color);
+    --p-select-placeholder-color: var(--p-text-color);
+    --p-select-dropdown-color: var(--p-text-color);
+    --p-select-shadow: 0 4px 12px -6px color-mix(in srgb, var(--p-surface-950) 28%, transparent);
+}
+
+:host-context(.p-dark) ::ng-deep .range-toolbar__more-select-control.p-select.p-inputwrapper-filled {
+    --p-select-background: var(--p-surface-950);
+    --p-select-shadow: none;
+}
+
+:host ::ng-deep .range-toolbar__more-select-control .p-select-label {
+    font-weight: 650;
+}
+
+:host ::ng-deep .range-toolbar__custom-button .p-button-label {
+    white-space: nowrap;
+}
+
+:host ::ng-deep .range-toolbar__refresh-button {
+    width: 2.35rem;
+    min-width: 2.35rem;
+    min-height: 2.35rem;
+    padding-inline: 0;
+}
+
+@media (max-width: 640px) {
+    .range-toolbar__controls {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) max-content;
+        align-items: start;
+        gap: 0.5rem;
+    }
+
+    .range-toolbar__range-group {
+        --p-togglebutton-content-sm-padding: 0.34rem 0.42rem;
+        --p-button-sm-padding-x: 0.62rem;
+        --p-select-sm-padding-x: 0.62rem;
+        grid-column: 1;
+        grid-row: 1;
+        min-width: 0;
+        width: 100%;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        overscroll-behavior-x: contain;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .range-toolbar__range-group::-webkit-scrollbar {
+        display: none;
+    }
+
+    :host ::ng-deep .range-toolbar__preset-select.p-selectbutton {
+        display: inline-flex;
+        width: auto;
+        flex: 0 0 auto;
+        flex-wrap: nowrap;
+    }
+
+    :host ::ng-deep .range-toolbar__preset-select.p-selectbutton .p-togglebutton {
+        width: auto;
+        flex: 0 0 auto;
+    }
+
+    .range-toolbar__more-select,
+    :host ::ng-deep .range-toolbar__more-select-control.p-select,
+    :host ::ng-deep .range-toolbar__custom-button {
+        flex: 0 0 auto;
+    }
+
+    .range-toolbar__more-select {
+        margin-left: 1.5rem;
+    }
+
+    .range-toolbar__summary {
+        grid-column: 1 / -1;
+    }
+
+    .range-toolbar__refresh {
+        grid-column: 2;
+        grid-row: 1;
+        display: inline-flex;
+        width: max-content;
+        margin-left: 0;
+        justify-self: end;
+    }
+}

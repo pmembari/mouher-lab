@@ -1,0 +1,217 @@
+import { ChangeDetectionStrategy, Component, DestroyRef, computed, effect, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FormsModule } from '@angular/forms';
+import { FormField, form, maxLength, pattern, required } from '@angular/forms/signals';
+import { TranslocoPipe } from '@jsverse/transloco';
+import { ButtonModule } from '@openng/optimus-ui/button';
+import { InputTextModule } from '@openng/optimus-ui/inputtext';
+import { MessageModule } from '@openng/optimus-ui/message';
+import { TagModule } from '@openng/optimus-ui/tag';
+import { TextareaModule } from '@openng/optimus-ui/textarea';
+import { ToggleSwitchModule } from '@openng/optimus-ui/toggleswitch';
+
+import { CopyControl } from '@components/copy-control/copy-control';
+import { TeamSSOConfig, UpdateTeamSSORequest } from '@models/analytics.types';
+import { SettingsCard } from '@features/settings/components/settings-card';
+import { TeamService } from '@services/team.service';
+
+interface TeamSSOFormModel {
+    issuerURL: string;
+    clientID: string;
+    clientSecret: string;
+    allowedDomains: string;
+    emailClaim: string;
+    displayNameClaim: string;
+    autoProvision: boolean;
+    enabled: boolean;
+}
+
+const EMPTY_SSO_FORM: TeamSSOFormModel = {
+    issuerURL: '',
+    clientID: '',
+    clientSecret: '',
+    allowedDomains: '',
+    emailClaim: 'email',
+    displayNameClaim: 'name',
+    autoProvision: false,
+    enabled: false
+};
+
+@Component({
+    selector: 'app-team-sso',
+    imports: [TranslocoPipe, FormsModule, FormField, InputTextModule, ButtonModule, MessageModule, TagModule, TextareaModule, ToggleSwitchModule, SettingsCard, CopyControl],
+    templateUrl: './team-sso.html',
+    host: {
+        class: 'block'
+    },
+    changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class TeamSSOPage {
+    private readonly destroyRef = inject(DestroyRef);
+    protected readonly teamService = inject(TeamService);
+    protected readonly team = this.teamService.activeTeam;
+    protected readonly docsURL = 'https://hitkeep.com/guides/security/single-sign-on/';
+
+    protected readonly model = signal<TeamSSOFormModel>({ ...EMPTY_SSO_FORM });
+    protected readonly ssoForm = form(this.model, (schema) => {
+        required(schema.issuerURL);
+        pattern(schema.issuerURL, /^https:\/\/[^\s]+$/);
+        maxLength(schema.issuerURL, 2048);
+        required(schema.clientID);
+        maxLength(schema.clientID, 512);
+        required(schema.allowedDomains);
+        required(schema.emailClaim);
+        pattern(schema.emailClaim, /^[A-Za-z_][A-Za-z0-9_.-]{0,127}$/);
+        required(schema.displayNameClaim);
+        pattern(schema.displayNameClaim, /^[A-Za-z_][A-Za-z0-9_.-]{0,127}$/);
+    });
+    protected readonly callbackURL = signal('');
+    protected readonly clientSecretConfigured = signal(false);
+    protected readonly persistedEnabled = signal(false);
+    protected readonly isLoading = signal(false);
+    protected readonly isSaving = signal(false);
+    protected readonly isTesting = signal(false);
+    protected readonly loadErrorKey = signal('');
+    protected readonly saveSuccessKey = signal('');
+    protected readonly saveErrorKey = signal('');
+    protected readonly testSuccessKey = signal('');
+    protected readonly testErrorKey = signal('');
+    protected readonly canSave = computed(() => !this.isLoading() && !this.isSaving() && !this.isTesting() && !this.ssoForm().invalid() && (this.clientSecretConfigured() || this.model().clientSecret.trim().length > 0));
+
+    constructor() {
+        effect((onCleanup) => {
+            const teamID = this.team()?.id;
+            if (!teamID) {
+                this.applyConfig(null);
+                return;
+            }
+            this.isLoading.set(true);
+            this.loadErrorKey.set('');
+            this.saveSuccessKey.set('');
+            this.saveErrorKey.set('');
+            this.testSuccessKey.set('');
+            this.testErrorKey.set('');
+            const subscription = this.teamService
+                .getTeamSSO(teamID)
+                .pipe(takeUntilDestroyed(this.destroyRef))
+                .subscribe({
+                    next: (config) => {
+                        this.applyConfig(config);
+                        this.isLoading.set(false);
+                    },
+                    error: () => {
+                        this.isLoading.set(false);
+                        this.loadErrorKey.set('admin.team.sso.errors.loadFailed');
+                    }
+                });
+            onCleanup(() => subscription.unsubscribe());
+        });
+    }
+
+    protected saveSettings(): void {
+        if (this.isSaving()) {
+            return;
+        }
+        if (this.ssoForm().invalid()) {
+            this.touchRequiredFields();
+            return;
+        }
+        const teamID = this.team()?.id;
+        if (!teamID) {
+            return;
+        }
+
+        this.saveSuccessKey.set('');
+        this.saveErrorKey.set('');
+        this.isSaving.set(true);
+        this.teamService.updateTeamSSO(teamID, this.requestPayload()).subscribe({
+            next: (config) => {
+                this.applyConfig(config);
+                this.isSaving.set(false);
+                this.saveSuccessKey.set('admin.team.sso.saveSuccess');
+            },
+            error: (err) => {
+                this.isSaving.set(false);
+                this.saveErrorKey.set(err?.error?.code === 'domain_conflict' ? 'admin.team.sso.errors.domainConflict' : 'admin.team.sso.errors.saveFailed');
+            }
+        });
+    }
+
+    protected testConnection(): void {
+        const teamID = this.team()?.id;
+        if (!teamID || !this.clientSecretConfigured() || this.isTesting()) {
+            return;
+        }
+        this.testSuccessKey.set('');
+        this.testErrorKey.set('');
+        this.isTesting.set(true);
+        this.teamService.testTeamSSO(teamID).subscribe({
+            next: () => {
+                this.isTesting.set(false);
+                this.testSuccessKey.set('admin.team.sso.testSuccess');
+            },
+            error: () => {
+                this.isTesting.set(false);
+                this.testErrorKey.set('admin.team.sso.errors.testFailed');
+            }
+        });
+    }
+
+    protected setAutoProvision(value: boolean): void {
+        this.model.update((current) => ({ ...current, autoProvision: value }));
+    }
+
+    protected setAllowedDomains(value: string): void {
+        this.model.update((current) => ({ ...current, allowedDomains: value }));
+    }
+
+    protected setEnabled(value: boolean): void {
+        this.model.update((current) => ({ ...current, enabled: value }));
+    }
+
+    private requestPayload(): UpdateTeamSSORequest {
+        const value = this.model();
+        return {
+            provider_type: 'oidc',
+            issuer_url: value.issuerURL.trim(),
+            client_id: value.clientID.trim(),
+            client_secret: value.clientSecret,
+            allowed_domains: value.allowedDomains
+                .split(/[\s,]+/)
+                .map((domain) => domain.trim())
+                .filter(Boolean),
+            email_claim: value.emailClaim.trim(),
+            display_name_claim: value.displayNameClaim.trim(),
+            auto_provision: value.autoProvision,
+            enabled: value.enabled
+        };
+    }
+
+    private applyConfig(config: TeamSSOConfig | null): void {
+        this.model.set(
+            config
+                ? {
+                      issuerURL: config.issuer_url,
+                      clientID: config.client_id,
+                      clientSecret: '',
+                      allowedDomains: config.allowed_domains.join('\n'),
+                      emailClaim: config.email_claim || 'email',
+                      displayNameClaim: config.display_name_claim || 'name',
+                      autoProvision: config.auto_provision,
+                      enabled: config.enabled
+                  }
+                : { ...EMPTY_SSO_FORM }
+        );
+        this.callbackURL.set(config?.callback_url ?? '');
+        this.clientSecretConfigured.set(config?.client_secret_configured ?? false);
+        this.persistedEnabled.set(config?.enabled ?? false);
+    }
+
+    private touchRequiredFields(): void {
+        this.ssoForm.issuerURL().markAsTouched();
+        this.ssoForm.clientID().markAsTouched();
+        this.ssoForm.allowedDomains().markAsTouched();
+        this.ssoForm.emailClaim().markAsTouched();
+        this.ssoForm.displayNameClaim().markAsTouched();
+    }
+}

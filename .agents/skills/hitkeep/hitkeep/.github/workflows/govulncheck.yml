@@ -1,0 +1,37 @@
+name: Govulncheck
+
+on:
+  pull_request:
+    branches:
+      - main
+  schedule:
+    - cron: "0 2 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  govulncheck:
+    name: Run govulncheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup Go
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: go.mod
+          cache-dependency-path: go.sum
+
+      - name: Run canonical vulnerability gate
+        run: |
+          gates="$(./hk ci qa-matrix --profile pr --group govulncheck --output json | jq -r '.data.gate_ids | join(",")')"
+          plan_id="$(./hk qa plan pr --output json | jq -r '.data.plan_id')"
+          ./hk qa pr --plan-id "$plan_id" --gate "$gates"

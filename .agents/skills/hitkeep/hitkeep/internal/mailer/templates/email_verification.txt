@@ -1,0 +1,10 @@
+{{ define "content" -}}
+{{ t "signup.verify.heading" }}
+=================
+
+{{ tf "signup.verify.body" .TeamName }}
+
+{{ t "signup.verify.button" }}: {{ .Link }}
+
+{{ t "signup.verify.expires" }}
+{{- end }}

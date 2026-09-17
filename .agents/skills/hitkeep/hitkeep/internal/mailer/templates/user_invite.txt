@@ -1,0 +1,12 @@
+{{ define "content" -}}
+{{ t "invite.user.heading" }}
+====================
+
+{{ t "common.hello" }}
+
+{{ tf "invite.user.body1" .Inviter .SiteName }}
+
+{{ t "invite.user.body2" }}
+
+{{ t "invite.user.button" }}: {{ .Link }}
+{{- end }}

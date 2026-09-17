@@ -1,0 +1,635 @@
+name: Build Pipeline
+
+on:
+  workflow_call:
+    outputs:
+      image_digest:
+        description: "Immutable digest of the exact-version candidate image"
+        value: ${{ jobs.build-and-push-image.outputs.image_digest }}
+    inputs:
+      version:
+        required: true
+        type: string
+        description: "Version string to embed in the binary (e.g., v1.0.0 or snapshot-abc)"
+      meta_config:
+        required: true
+        type: string
+        description: "Configuration for docker/metadata-action tags"
+      checkout_ref:
+        required: false
+        type: string
+        default: ""
+        description: "Git ref or SHA to check out for build jobs (defaults to the workflow SHA)"
+      release_source_tag:
+        required: false
+        type: string
+        default: ""
+        description: "Existing immutable tag whose commit supplies a tagged release build"
+      release_source_sha:
+        required: false
+        type: string
+        default: ""
+        description: "Expected commit SHA for release_source_tag"
+      upload_to_release:
+        required: false
+        type: boolean
+        default: false
+        description: "Whether to upload binaries to a GitHub Release"
+      release_prerelease:
+        required: false
+        type: boolean
+        default: false
+        description: "Whether to create the target GitHub Release as a prerelease before uploading binaries"
+      release_tag_name:
+        required: false
+        type: string
+        description: "The tag name of the release to upload to (required if upload_to_release is true)"
+      release_target_sha:
+        required: false
+        type: string
+        default: ""
+        description: "Commit SHA to target when creating or updating a prerelease"
+      release_title:
+        required: false
+        type: string
+        default: ""
+        description: "Title to use when creating or updating a prerelease"
+      release_notes:
+        required: false
+        type: string
+        default: ""
+        description: "Markdown release notes to use when creating or updating a prerelease"
+      docker_tags_summary:
+        required: false
+        type: string
+        default: ""
+        description: "Markdown list of Docker tags to append to prerelease notes"
+      docker_sha_tag_prefix:
+        required: false
+        type: string
+        default: ""
+        description: "Prefix for the short-SHA Docker tag shown in prerelease notes"
+    secrets:
+      token:
+        required: true
+      DOCKERHUB_USERNAME:
+        required: true
+      DOCKERHUB_TOKEN:
+        required: true
+
+jobs:
+  build-dashboard:
+    name: Build dashboard assets
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          ref: ${{ inputs.checkout_ref || github.sha }}
+
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: go.mod
+          cache: false
+
+      - uses: $/.github/actions/setup-node-npm
+
+      - name: Build deterministic dashboard archive
+        run: ./hk ci build-dashboard
+
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: public-assets-${{ inputs.version }}
+          path: public-assets.tar.gz
+          retention-days: 5
+          compression-level: 0
+
+  build-binaries:
+    name: Build ${{ matrix.label }}
+    needs: build-dashboard
+    runs-on: ${{ matrix.runner }}
+    permissions:
+      contents: read
+      id-token: write
+      attestations: write
+      artifact-metadata: write
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        include:
+          - id: linux-amd64
+            label: Linux amd64
+            runner: ubuntu-22.04
+            goos: linux
+            goarch: amd64
+            artifact_suffix: linux-amd64
+            glibc_baseline: "2.35"
+          - id: linux-arm64
+            label: Linux arm64
+            runner: ubuntu-22.04-arm
+            goos: linux
+            goarch: arm64
+            artifact_suffix: linux-arm64
+            glibc_baseline: "2.35"
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          ref: ${{ inputs.checkout_ref || github.sha }}
+
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: public-assets-${{ inputs.version }}
+          path: artifacts/public
+
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        id: setup-go
+        with:
+          go-version-file: go.mod
+          cache-dependency-path: go.sum
+
+      - name: Restore embedded public assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          archive="$(find artifacts/public -name 'public-assets.tar.gz' -print -quit)"
+          test -n "$archive"
+          ./hk ci restore-dashboard --archive "$archive"
+
+      - name: Build native Linux binaries with GoReleaser on Ubuntu ${{ matrix.glibc_baseline }}
+        shell: bash
+        env:
+          CGO_ENABLED: 1
+          GOOS: ${{ matrix.goos }}
+          GOARCH: ${{ matrix.goarch }}
+          HITKEEP_VERSION: ${{ inputs.version }}
+        run: |
+          set -euo pipefail
+          # DuckDB's prebuilt linux bindings currently need a newer libstdc++
+          # than Bullseye provides; Ubuntu 22.04 satisfies that requirement.
+          export CC=gcc
+          export CXX=g++
+
+          HITKEEP_ARCHIVE_VERSION="${HITKEEP_VERSION#v}" env -u GOROOT go run github.com/goreleaser/goreleaser/v2@v2.18.0 build \
+            --snapshot \
+            --clean \
+            --single-target \
+            --id self-hosted \
+            --output "hitkeep-${{ matrix.artifact_suffix }}"
+          HITKEEP_ARCHIVE_VERSION="${HITKEEP_VERSION#v}" env -u GOROOT go run github.com/goreleaser/goreleaser/v2@v2.18.0 build \
+            --snapshot \
+            --clean \
+            --single-target \
+            --id cloud \
+            --output "hitkeep-cloud-${{ matrix.artifact_suffix }}"
+
+      - name: Verify native binary versions
+        env:
+          HITKEEP_VERSION: ${{ inputs.version }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          for binary in "hitkeep-${{ matrix.artifact_suffix }}" "hitkeep-cloud-${{ matrix.artifact_suffix }}"; do
+            version_output="$("./$binary" --version)"
+            test "$version_output" = "$HITKEEP_VERSION"
+          done
+
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: binaries-${{ matrix.id }}
+          path: |
+            hitkeep-${{ matrix.artifact_suffix }}
+            hitkeep-cloud-${{ matrix.artifact_suffix }}
+          retention-days: 5
+          compression-level: 0
+
+      - name: Attest Binaries
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
+        with:
+          subject-path: |
+            hitkeep-${{ matrix.artifact_suffix }}
+            hitkeep-cloud-${{ matrix.artifact_suffix }}
+
+  build-release-archives:
+    name: Build multi-architecture release archives
+    needs: build-dashboard
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+          ref: ${{ inputs.release_source_tag || inputs.checkout_ref || github.sha }}
+
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: public-assets-${{ inputs.version }}
+          path: ${{ runner.temp }}/public-assets
+
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: go.mod
+          cache-dependency-path: go.sum
+
+      - name: Restore embedded public assets
+        env:
+          PUBLIC_ASSETS_DIR: ${{ runner.temp }}/public-assets
+          PUBLIC_ASSETS_ARCHIVE: public/.public-assets.tar.gz
+        shell: bash
+        run: |
+          set -euo pipefail
+          archive="$(find "$PUBLIC_ASSETS_DIR" -name 'public-assets.tar.gz' -print -quit)"
+          test -n "$archive"
+          mkdir -p "$(dirname "$PUBLIC_ASSETS_ARCHIVE")"
+          cp "$archive" "$PUBLIC_ASSETS_ARCHIVE"
+          ./hk ci restore-dashboard --archive "$PUBLIC_ASSETS_ARCHIVE"
+          rm -f "$PUBLIC_ASSETS_ARCHIVE"
+
+      - name: Install Linux arm64 cross compiler
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install --yes gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
+
+      - name: Generate release configuration inputs
+        env:
+          RELEASE_INPUTS_DIR: ${{ runner.temp }}/hitkeep-release-inputs
+          RELEASE_TAG_NAME: ${{ inputs.release_tag_name }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          release_version="${RELEASE_TAG_NAME#v}"
+          release_inputs="${RELEASE_INPUTS_DIR:?}"
+          mkdir -p "$release_inputs"
+          ./hk catalog configuration --output json \
+            | jq --arg tag "$RELEASE_TAG_NAME" --arg version "$release_version" \
+              '.data + {release_tag: $tag, release_version: $version}' \
+            > "$release_inputs/hitkeep-configuration.json"
+          env -u GOROOT go run ./cmd/hitkeep config init --output "$release_inputs/hitkeep.example.yaml"
+          cmp "$release_inputs/hitkeep.example.yaml" hitkeep.example.yaml
+          ./hk catalog configuration-manifest \
+            --catalog "$release_inputs/hitkeep-configuration.json" \
+            --example "$release_inputs/hitkeep.example.yaml" \
+            --output json \
+            | jq -c '.data' > "$release_inputs/hitkeep-configuration-manifest.json"
+          cp "$release_inputs/hitkeep-configuration.json" .
+          cp "$release_inputs/hitkeep.example.yaml" .
+          cp "$release_inputs/hitkeep-configuration-manifest.json" .
+          printf '%s\n' hitkeep-configuration.json hitkeep-configuration-manifest.json >> .git/info/exclude
+
+      - name: Build and verify GoReleaser release archives
+        id: release-artifacts
+        env:
+          HITKEEP_VERSION: ${{ inputs.version }}
+          RELEASE_ARTIFACT_DIR: ${{ runner.temp }}/hitkeep-release-archives
+          RELEASE_SOURCE_SHA: ${{ inputs.release_source_sha }}
+          RELEASE_SOURCE_TAG: ${{ inputs.release_source_tag }}
+          RELEASE_TAG_NAME: ${{ inputs.release_tag_name }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          release_dir="${RELEASE_ARTIFACT_DIR:?}"
+          mkdir -p "$release_dir"
+          if [[ -n "$RELEASE_SOURCE_TAG" ]]; then
+            test -n "$RELEASE_SOURCE_SHA"
+            tag_commit="$(git rev-parse --verify "refs/tags/${RELEASE_SOURCE_TAG}^{commit}")"
+            test "$tag_commit" = "$RELEASE_SOURCE_SHA"
+            test "$tag_commit" = "$(git rev-parse HEAD)"
+            test "$RELEASE_SOURCE_TAG" = "$RELEASE_TAG_NAME"
+            release_version="${RELEASE_SOURCE_TAG#v}"
+            env -u GOROOT go run github.com/goreleaser/goreleaser/v2@v2.18.0 release --clean --skip=publish --config .goreleaser.yaml
+          else
+            test -n "$RELEASE_TAG_NAME"
+            release_version="${RELEASE_TAG_NAME#v}"
+            HITKEEP_ARCHIVE_VERSION="${RELEASE_TAG_NAME#v}" env -u GOROOT go run github.com/goreleaser/goreleaser/v2@v2.18.0 release --snapshot --clean --skip=publish --config .goreleaser.yaml
+          fi
+          for arch in amd64 arm64; do
+            if [[ -n "$RELEASE_TAG_NAME" ]]; then
+              archive="hitkeep_${release_version}_Linux_${arch}.tar.gz"
+              source="$(find dist -type f -name "$archive" -print -quit)"
+            else
+              source="$(find dist -type f -name "hitkeep_*_Linux_${arch}.tar.gz" -print -quit)"
+              archive="$(basename "$source")"
+            fi
+            test -n "$source"
+            cp "$source" "$release_dir/$archive"
+            archive="$release_dir/$archive"
+            diff -u <(printf '%s\n' LICENSE README.md hitkeep-configuration.json hitkeep.example.yaml hitkeep-configuration-manifest.json "hitkeep-linux-${arch}" | LC_ALL=C sort) <(tar -tzf "$archive" | LC_ALL=C sort)
+            test "$(tar -tvzf "$archive" "hitkeep-linux-${arch}" | awk '{print $1}')" = "-rwxr-xr-x"
+            for file in LICENSE README.md hitkeep-configuration.json hitkeep.example.yaml hitkeep-configuration-manifest.json; do
+              test "$(tar -tvzf "$archive" "$file" | awk '{print $1}')" = "-rw-r--r--"
+              cmp <(tar -xOzf "$archive" "$file") "$file"
+            done
+            binary_dir="$(mktemp -d)"
+            tar -xzf "$archive" -C "$binary_dir" "hitkeep-linux-${arch}"
+            binary="$binary_dir/hitkeep-linux-${arch}"
+            build_metadata="$(go version -m "$binary")"
+            for setting in "GOOS=linux" "GOARCH=${arch}"; do
+              if ! grep -Fq "$setting" <<<"$build_metadata"; then
+                echo "binary build metadata is missing expected target setting: ${setting}" >&2
+                printf '%s\n' "$build_metadata" | grep -E '^[[:space:]]*(path|build.*(GOOS|GOARCH))' >&2 || true
+                exit 1
+              fi
+            done
+            case "$arch" in
+              amd64)
+                version_output="$("$binary" --version)"
+                if [[ "$version_output" != "$HITKEEP_VERSION" ]]; then
+                  printf 'binary version mismatch for %s: got %q, want %q\n' "$arch" "$version_output" "$HITKEEP_VERSION" >&2
+                  exit 1
+                fi
+                ;;
+              arm64)
+                if ! strings "$binary" | grep -Fxq "$HITKEEP_VERSION"; then
+                  echo "arm64 archive binary does not embed expected HitKeep version: ${HITKEEP_VERSION}" >&2
+                  exit 1
+                fi
+                ;;
+              *) echo "unsupported release archive architecture: ${arch}" >&2; exit 1 ;;
+            esac
+            if tar -tzf "$archive" | grep -q 'cloud'; then
+              exit 1
+            fi
+          done
+          mv dist/SHA256SUMS "$release_dir/goreleaser-SHA256SUMS"
+          (cd "$release_dir" && sha256sum --check goreleaser-SHA256SUMS)
+          echo "release_dir=$release_dir" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: release-archives-${{ inputs.version }}
+          path: |
+            ${{ steps.release-artifacts.outputs.release_dir }}/*.tar.gz
+            ${{ steps.release-artifacts.outputs.release_dir }}/goreleaser-SHA256SUMS
+          retention-days: 5
+          compression-level: 0
+
+  upload-release-binaries:
+    name: Upload release binaries
+    needs:
+      - build-binaries
+      - build-release-archives
+    if: ${{ inputs.upload_to_release && inputs.release_tag_name != '' }}
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          ref: ${{ inputs.checkout_ref || github.sha }}
+
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          pattern: binaries-*
+          path: .
+          merge-multiple: true
+
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: release-archives-${{ inputs.version }}
+          path: .
+          merge-multiple: true
+
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: go.mod
+          cache: false
+
+      - name: Generate runtime configuration catalog
+        env:
+          RELEASE_TAG_NAME: ${{ inputs.release_tag_name }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          release_version="${RELEASE_TAG_NAME#v}"
+          ./hk catalog configuration --output json \
+            | jq --arg tag "$RELEASE_TAG_NAME" --arg version "$release_version" \
+              '.data + {release_tag: $tag, release_version: $version}' \
+            > hitkeep-configuration.json
+          ./hk catalog configuration-manifest \
+            --catalog hitkeep-configuration.json \
+            --example hitkeep.example.yaml \
+            --output json \
+            | jq -c '.data' > hitkeep-configuration-manifest.json
+
+      - name: Generate and verify release checksums
+        run: |
+          sha256sum --check goreleaser-SHA256SUMS
+          ./hk ci release-checksums
+          ./hk ci verify-release
+
+      - name: Upload binaries to GitHub Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.token }}
+          RELEASE_NOTES: ${{ inputs.release_notes }}
+          DOCKER_TAGS_SUMMARY: ${{ inputs.docker_tags_summary }}
+          DOCKER_SHA_TAG_PREFIX: ${{ inputs.docker_sha_tag_prefix }}
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          RELEASE_PRERELEASE: ${{ inputs.release_prerelease }}
+          RELEASE_TARGET_SHA: ${{ inputs.release_target_sha || github.sha }}
+          RELEASE_TAG_NAME: ${{ inputs.release_tag_name }}
+          RELEASE_TITLE: ${{ inputs.release_title }}
+        run: |
+          set -euo pipefail
+          release_version="${RELEASE_TAG_NAME#v}"
+          files=(
+            hitkeep-cloud-linux-amd64
+            hitkeep-cloud-linux-arm64
+            hitkeep-linux-amd64
+            hitkeep-linux-arm64
+            "hitkeep_${release_version}_Linux_amd64.tar.gz"
+            "hitkeep_${release_version}_Linux_arm64.tar.gz"
+            hitkeep-configuration.json
+            hitkeep.example.yaml
+            hitkeep-configuration-manifest.json
+            SHA256SUMS
+          )
+          for file in "${files[@]}"; do
+            test -f "$file"
+          done
+
+          if [[ "${RELEASE_PRERELEASE}" == "true" ]]; then
+            short_sha="${RELEASE_TARGET_SHA::7}"
+            release_title="${RELEASE_TITLE:-Snapshot ${short_sha}}"
+
+            if [[ -n "$RELEASE_NOTES" ]]; then
+              printf '%s\n' "$RELEASE_NOTES" > release-notes.md
+            else
+              cat > release-notes.md <<EOF
+          Automated prerelease build for ${RELEASE_TARGET_SHA}.
+
+          - Commit: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${RELEASE_TARGET_SHA}
+          - Workflow run: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}
+          EOF
+            fi
+
+            if [[ -n "$DOCKER_TAGS_SUMMARY" ]]; then
+              {
+                dockerhub_repo="${DOCKERHUB_USERNAME}/hitkeep"
+                ghcr_repo="ghcr.io/${GITHUB_REPOSITORY}"
+                ghcr_package_url="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/pkgs/container/hitkeep"
+                dockerhub_tags_url="https://hub.docker.com/r/${dockerhub_repo}/tags"
+
+                printf '\n## Docker images\n\n'
+                printf -- '- GHCR: [%s](%s)\n' "$ghcr_repo" "$ghcr_package_url"
+                printf -- '- Docker Hub: [%s](%s)\n\n' "$dockerhub_repo" "$dockerhub_tags_url"
+                printf 'Tags:\n\n'
+                printf '%s\n' "$DOCKER_TAGS_SUMMARY"
+
+                if [[ -n "$DOCKER_SHA_TAG_PREFIX" ]]; then
+                  sha_tag="${DOCKER_SHA_TAG_PREFIX}${short_sha}"
+                  printf -- '- `%s`\n' "$sha_tag"
+                fi
+              } >> release-notes.md
+            fi
+
+            if gh release view "${RELEASE_TAG_NAME}" >/dev/null 2>&1; then
+              gh api --method PATCH "repos/${GITHUB_REPOSITORY}/git/refs/tags/${RELEASE_TAG_NAME}" -f sha="${RELEASE_TARGET_SHA}" -F force=true
+              gh release edit "${RELEASE_TAG_NAME}" \
+                --prerelease \
+                --target "${RELEASE_TARGET_SHA}" \
+                --title "${release_title}" \
+                --notes-file release-notes.md
+              gh release upload "${RELEASE_TAG_NAME}" "${files[@]}" --clobber
+            else
+              gh release create "${RELEASE_TAG_NAME}" "${files[@]}" \
+                --target "${RELEASE_TARGET_SHA}" \
+                --prerelease \
+                --latest=false \
+                --title "${release_title}" \
+                --notes-file release-notes.md
+            fi
+
+            exit 0
+          fi
+
+          gh release upload "${RELEASE_TAG_NAME}" "${files[@]}" --clobber
+
+  build-and-push-image:
+    name: Build and push Docker image
+    outputs:
+      image_digest: ${{ steps.push.outputs.digest }}
+    needs:
+      - build-dashboard
+      - build-binaries
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+      attestations: write
+      artifact-metadata: write
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          ref: ${{ inputs.checkout_ref || github.sha }}
+
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: public-assets-${{ inputs.version }}
+          path: artifacts/public
+
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          pattern: binaries-linux-*
+          path: .
+          merge-multiple: true
+
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: go.mod
+          cache: false
+
+      - name: Restore Docker build inputs
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          public_archive="$(find artifacts/public -name 'public-assets.tar.gz' -print -quit)"
+          test -n "$public_archive"
+          ./hk ci restore-dashboard --archive "$public_archive"
+          ./hk ci prepare-public-image
+
+      - name: Resolve exact container toolchain
+        id: toolchain
+        shell: bash
+        run: |
+          echo "go=$(./hk ci toolchain go --output plain)" >> "$GITHUB_OUTPUT"
+          echo "node=$(./hk ci toolchain node --output plain)" >> "$GITHUB_OUTPUT"
+          echo "npm=$(./hk ci toolchain npm --output plain)" >> "$GITHUB_OUTPUT"
+
+      - uses: docker/setup-qemu-action@1f40c72289eff860ee54a304f1438e3cff362e0a # v4.3.0
+        with:
+          platforms: arm64
+      - uses: docker/setup-buildx-action@37fe631027851001ddb9b187196cc803df7f5f0e # v4.3.0
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.token }}
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@dc802804100637a589fabce1cb79ff13a1411302 # v6.2.0
+        with:
+          images: |
+            ghcr.io/${{ github.repository }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/hitkeep
+          tags: ${{ inputs.meta_config }}
+
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7.3.0
+        id: push
+        with:
+          context: .
+          provenance: mode=max
+          sbom: true
+          pull: true
+          build-args: |
+            GOLANG_VERSION=${{ steps.toolchain.outputs.go }}
+            NODE_VERSION=${{ steps.toolchain.outputs.node }}
+            NPM_VERSION=${{ steps.toolchain.outputs.npm }}
+            HITKEEP_VERSION=${{ inputs.version }}
+          platforms: linux/amd64,linux/arm64
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          annotations: ${{ steps.meta.outputs.annotations }}
+
+      - name: Attest GHCR Image
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
+        with:
+          subject-name: ghcr.io/${{ github.repository }}
+          subject-digest: ${{ steps.push.outputs.digest }}
+          push-to-registry: true
+
+      - name: Attest Docker Hub Image
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
+        with:
+          subject-name: index.docker.io/${{ secrets.DOCKERHUB_USERNAME }}/hitkeep
+          subject-digest: ${{ steps.push.outputs.digest }}
+          push-to-registry: true

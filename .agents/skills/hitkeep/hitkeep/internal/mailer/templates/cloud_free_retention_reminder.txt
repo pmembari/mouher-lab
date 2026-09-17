@@ -1,0 +1,19 @@
+{{ define "content" -}}
+{{ t "cloud.retention.heading" }}
+===========================
+
+{{ tf "cloud.retention.body" .TeamName .SiteDomain .RetentionDays }}
+
+{{ t "cloud.retention.reason" }}
+
+{{ t "cloud.retention.plans_button" }}: {{ .UpgradeURL }}
+
+{{ t "cloud.retention.docs" }}
+{{ t "cloud.welcome.dashboard_button" }}: {{ .DashboardURL }}
+
+--
+
+{{ t "cloud.opensource.note" }}
+{{ t "cloud.opensource.support" }} {{ t "cloud.opensource.sponsor" }}: {{ .FundingURL }}
+{{ t "cloud.opensource.spread" }}
+{{- end }}

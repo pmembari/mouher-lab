@@ -1,0 +1,22 @@
+{{ define "content" }}{{ tf "opportunities.digest.title" .FreqLabel }}
+{{ .PeriodLabel }}
+{{ tf "opportunities.digest.subtitle" .SiteDomain }}
+
+{{ range .Items }}{{ .Title }}
+{{ .Digest }}
+{{ t "opportunities.digest.impact" }}: {{ .ImpactValue }} | {{ t "opportunities.digest.score" }}: {{ formatInt .Score }} | {{ t "opportunities.digest.confidence" }}: {{ .Confidence }}
+{{ t "opportunities.digest.next_action" }}: {{ .Action }}
+{{ if .Evidence }}{{ t "opportunities.digest.evidence" }}:
+{{ range .Evidence }}- {{ .Label }}: {{ .Value }}
+{{ end }}{{ end }}{{ if .URL }}{{ .URL }}{{ end }}
+
+{{ end }}{{ if .OpportunitiesURL }}{{ t "opportunities.digest.view_opportunities" }}: {{ .OpportunitiesURL }}
+{{ end }}
+
+---
+{{ t "opportunities.digest.received_because" }}
+{{ if .SettingsURL }}{{ t "reports.manage_preferences" }}: {{ .SettingsURL }}
+{{ end }}
+{{ if .UnsubscribeURL }}{{ t "reports.unsubscribe" }}: {{ .UnsubscribeURL }}
+{{ end }}
+{{ end }}

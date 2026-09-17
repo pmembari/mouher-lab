@@ -1,0 +1,108 @@
+name: ${HK_COMPOSE_PROJECT:-hitkeep-dev}
+
+services:
+  backend:
+    image: golang:${HK_GO_VERSION:?start Compose through ./hk}
+    working_dir: /workspace
+    command: go tool air -c .air.toml
+    ports:
+      - "${HK_BACKEND_PORT:-8080}:8080"
+    volumes:
+      - .:/workspace
+      - hitkeep-dev-go-mod:/go/pkg/mod
+      - hitkeep-dev-go-build:/root/.cache/go-build
+      - hitkeep-dev-data:/var/lib/hitkeep/data
+    environment:
+      HITKEEP_DB_PATH: /var/lib/hitkeep/data/hitkeep.db
+      HITKEEP_DATA_PATH: /var/lib/hitkeep/data
+      HITKEEP_JWT_SECRET: ${HITKEEP_JWT_SECRET:-hitkeep-dev-jwt-secret}
+      HITKEEP_PUBLIC_URL: ${HITKEEP_PUBLIC_URL:-http://localhost:4200}
+      HITKEEP_MAIL_DRIVER: smtp
+      HITKEEP_MAIL_HOST: mailpit
+      HITKEEP_MAIL_PORT: "1025"
+      HITKEEP_MAIL_ENCRYPTION: none
+      HITKEEP_MCP_ENABLED: "true"
+      HITKEEP_GO_BUILD_TAGS: ${HITKEEP_GO_BUILD_TAGS:?start Compose through ./hk dev}
+      HITKEEP_CLOUD_HOSTED: ${HITKEEP_CLOUD_HOSTED:-}
+      HITKEEP_CLOUD_SIGNUP_ENABLED: ${HITKEEP_CLOUD_SIGNUP_ENABLED:-}
+      HITKEEP_SOCIAL_GOOGLE_CLIENT_ID: ${HITKEEP_SOCIAL_GOOGLE_CLIENT_ID:-}
+      HITKEEP_SOCIAL_GOOGLE_CLIENT_SECRET: ${HITKEEP_SOCIAL_GOOGLE_CLIENT_SECRET:-}
+      HITKEEP_SOCIAL_GITHUB_CLIENT_ID: ${HITKEEP_SOCIAL_GITHUB_CLIENT_ID:-}
+      HITKEEP_SOCIAL_GITHUB_CLIENT_SECRET: ${HITKEEP_SOCIAL_GITHUB_CLIENT_SECRET:-}
+      HITKEEP_SOCIAL_MICROSOFT_CLIENT_ID: ${HITKEEP_SOCIAL_MICROSOFT_CLIENT_ID:-}
+      HITKEEP_SOCIAL_MICROSOFT_CLIENT_SECRET: ${HITKEEP_SOCIAL_MICROSOFT_CLIENT_SECRET:-}
+      HITKEEP_SOCIAL_MICROSOFT_TENANT: ${HITKEEP_SOCIAL_MICROSOFT_TENANT:-common}
+      HITKEEP_SOCIAL_SIGNUP_ENABLED: ${HITKEEP_SOCIAL_SIGNUP_ENABLED:-false}
+      HITKEEP_CLOUD_JURISDICTION: ${HITKEEP_CLOUD_JURISDICTION:-}
+      HITKEEP_CLOUD_REGION: ${HITKEEP_CLOUD_REGION:-}
+      HITKEEP_CLOUD_UPGRADE_URL: ${HITKEEP_CLOUD_UPGRADE_URL:-}
+      HITKEEP_CLOUD_SUPPORT_URL: ${HITKEEP_CLOUD_SUPPORT_URL:-}
+      HITKEEP_CLOUD_CHECKOUT_SUCCESS_URL: ${HITKEEP_CLOUD_CHECKOUT_SUCCESS_URL:-}
+      HITKEEP_CLOUD_CHECKOUT_CANCEL_URL: ${HITKEEP_CLOUD_CHECKOUT_CANCEL_URL:-}
+    depends_on:
+      - mailpit
+
+  frontend:
+    image: hitkeep-dev-frontend:${HK_NODE_VERSION:?run through hk}-${HK_NPM_VERSION:?run through hk}
+    build:
+      context: .
+      target: frontend-dev
+      args:
+        GOLANG_VERSION: ${HK_GO_VERSION:?run through hk}
+        NODE_VERSION: ${HK_NODE_VERSION:?run through hk}
+        NPM_VERSION: ${HK_NPM_VERSION:?run through hk}
+    working_dir: /workspace/frontend/dashboard
+    command: sh -c "npm ci --no-fund --no-audit && npm start -- --host 0.0.0.0 --poll 1000 --proxy-config proxy.conf.docker.json"
+    ports:
+      - "${HK_FRONTEND_PORT:-4200}:4200"
+    volumes:
+      - ./frontend/dashboard:/workspace/frontend/dashboard
+      - hitkeep-dev-node-modules:/workspace/frontend/dashboard/node_modules
+      - hitkeep-dev-npm-cache:/root/.npm
+    environment:
+      NG_CLI_ANALYTICS: "false"
+    depends_on:
+      - backend
+
+  mailpit:
+    image: axllent/mailpit@sha256:5a49a77c5bdbe7c5474450b4f46348d09949df3695257729c93a30369382d4f6
+    ports:
+      - "${HK_SMTP_PORT:-1025}:1025"
+      - "${HK_MAIL_UI_PORT:-8025}:8025"
+
+  seed:
+    image: golang:${HK_GO_VERSION:?start Compose through ./hk}
+    profiles:
+      - seed
+    working_dir: /workspace
+    command:
+      - go
+      - run
+      - ./cmd/seed
+      - -db
+      - /var/lib/hitkeep/data/hitkeep.db
+      - -data-path
+      - /var/lib/hitkeep/data
+      - -email
+      - ${HITKEEP_SEED_EMAIL:-demo@example.com}
+      - -password
+      - ${HITKEEP_SEED_PASSWORD:-demo1234}
+      - -domain
+      - ${HITKEEP_SEED_DOMAIN:-acme-analytics.io}
+      - -days
+      - ${HITKEEP_SEED_DAYS:-90}
+    volumes:
+      - .:/workspace
+      - hitkeep-dev-go-mod:/go/pkg/mod
+      - hitkeep-dev-go-build:/root/.cache/go-build
+      - hitkeep-dev-data:/var/lib/hitkeep/data
+
+volumes:
+  hitkeep-dev-go-mod:
+    name: hitkeep-dev-go-mod-cache
+  hitkeep-dev-go-build:
+    name: hitkeep-dev-go-build-cache
+  hitkeep-dev-node-modules: {}
+  hitkeep-dev-npm-cache:
+    name: hitkeep-dev-npm-cache
+  hitkeep-dev-data: {}

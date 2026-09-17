@@ -1,0 +1,37 @@
+:host {
+    display: block;
+}
+
+.site-settings-card__body {
+    display: grid;
+    gap: 1rem;
+}
+
+.site-settings-resource-row {
+    align-items: center;
+    display: flex;
+    gap: 0.5rem;
+    justify-content: space-between;
+    min-width: 0;
+}
+
+.site-settings-resource-value {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.site-settings-card__footer--shortcut {
+    justify-content: flex-start;
+}
+
+.site-settings-action-link {
+    justify-content: center;
+    max-width: 100%;
+}
+
+@media (max-width: 640px) {
+    .site-settings-action-link {
+        width: 100%;
+    }
+}

@@ -1,0 +1,75 @@
+version: "2"
+run:
+  issues-exit-code: 1
+  tests: false
+linters:
+  default: none
+  # Staticcheck (including U1000) runs in the separately pinned go-staticcheck
+  # gate so its analyzer version can track the repository's Go language level.
+  enable:
+    - asasalint
+    - asciicheck
+    - bidichk
+    - bodyclose
+    - canonicalheader
+    - copyloopvar
+    - decorder
+    - dogsled
+    - dupl
+    - dupword
+    - durationcheck
+    - errcheck
+    - errchkjson
+    - errname
+    - exhaustive
+    - gosec
+    - govet
+    - importas
+    - ineffassign
+    - misspell
+    - noctx
+    - prealloc
+    - promlinter
+    - rowserrcheck
+    - sqlclosecheck
+    - testableexamples
+    - tparallel
+    - unconvert
+    - usetesting
+    - wastedassign
+    - whitespace
+  exclusions:
+    generated: lax
+    presets:
+      - comments
+      - common-false-positives
+      - legacy
+      - std-error-handling
+    rules:
+      - path: internal/server/.*/.*handlers.go
+        linters:
+          - gosec
+        text: "G706:"
+    paths:
+      - frontend$
+      - node_modules
+      - examples$
+      - public$
+formatters:
+  enable:
+    - gci
+    - gofmt
+    - goimports
+  settings:
+    gci:
+      sections:
+        - standard
+        - default
+        - prefix(hitkeep)
+      custom-order: true
+  exclusions:
+    generated: lax
+    paths:
+      - frontend$
+      - node_modules
+      - public$

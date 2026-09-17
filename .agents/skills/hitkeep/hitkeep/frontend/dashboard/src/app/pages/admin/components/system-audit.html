@@ -1,0 +1,17 @@
+<app-audit-table
+    [rows]="entries()"
+    [total]="total()"
+    [loading]="isLoading()"
+    [errorKey]="hasError() ? 'admin.system.audit.loadError' : null"
+    emptyTextKey="admin.system.audit.empty"
+    [actionOptions]="actionOptions()"
+    [outcomeOptions]="outcomeOptions()"
+    [targetTypeOptions]="targetTypeOptions()"
+    [query]="query()"
+    [exportEnabled]="canExportAudit()"
+    [exportLoading]="isExporting()"
+    [exportStatus]="exportStatus()"
+    (queryChange)="onQueryChange($event)"
+    (refresh)="refresh()"
+    (exportRequest)="exportAudit()"
+/>

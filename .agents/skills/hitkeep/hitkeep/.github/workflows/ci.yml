@@ -1,0 +1,244 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - .release-please-manifest.json
+      - CHANGELOG.md
+      - server.json
+      - charts/hitkeep/Chart.yaml
+      - charts/hitkeep/README.md
+  pull_request:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  qa-contract:
+    name: Plan canonical QA contract
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      race_gates: ${{ steps.plan.outputs.race_gates }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Setup Go
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: go.mod
+          cache-dependency-path: go.sum
+      - name: Derive matrix from hk
+        id: plan
+        shell: bash
+        run: echo "race_gates=$(./hk ci qa-matrix --profile pr --group go-race --output json | jq -c '.data.gate_ids')" >> "$GITHUB_OUTPUT"
+
+  lint:
+    name: Lint Golang codebase
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Setup Go
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: go.mod
+          cache-dependency-path: go.sum
+      - name: Resolve canonical Go build configuration
+        id: go-build-tags
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "goflags=$(./hk ci go-config goflags --output plain)" >> "$GITHUB_OUTPUT"
+          echo "golangci_args=$(./hk ci go-config golangci --output plain)" >> "$GITHUB_OUTPUT"
+          echo "golangci_version=v$(jq -r '.["golangci-lint"]' internal/devtool/tool-versions.json)" >> "$GITHUB_OUTPUT"
+          ./hk ci qa-matrix --profile pr --group golangci --output json >/dev/null
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@ba0d7d2ec06a0ea1cb5fa41b2e4a3ab91d21278a # v9.3.0
+        with:
+          version: ${{ steps.go-build-tags.outputs.golangci_version }}
+          install-mode: goinstall
+          args: ${{ steps.go-build-tags.outputs.golangci_args }}
+      - name: Run canonical Go and developer-platform checks
+        run: |
+          gates="$(./hk ci qa-matrix --profile pr --group go-checks --output json | jq -r '.data.gate_ids | join(",")')"
+          plan_id="$(./hk qa plan pr --output json | jq -r '.data.plan_id')"
+          ./hk qa pr --plan-id "$plan_id" --gate "$gates"
+
+  test:
+    name: Test API (${{ matrix.gate }})
+    needs: qa-contract
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        gate: ${{ fromJSON(needs.qa-contract.outputs.race_gates) }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Setup Go
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: go.mod
+          cache: false
+      - name: Restore race shard Go cache
+        id: race-cache-restore
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            ~/go/pkg/mod
+            ~/.cache/go-build
+          key: ${{ runner.os }}-hitkeep-go-race-${{ matrix.gate }}-${{ hashFiles('go.mod', 'go.sum', '**/*.go', '**/*.sql') }}
+          restore-keys: |
+            ${{ runner.os }}-hitkeep-go-race-${{ matrix.gate }}-
+      - name: Test API
+        env:
+          GATE_ID: ${{ matrix.gate }}
+        run: |
+          plan_id="$(./hk qa plan pr --output json | jq -r '.data.plan_id')"
+          ./hk qa pr --plan-id "$plan_id" --gate "$GATE_ID"
+      - name: Save race shard Go cache
+        if: success() && steps.race-cache-restore.outputs.cache-hit != 'true'
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            ~/go/pkg/mod
+            ~/.cache/go-build
+          key: ${{ runner.os }}-hitkeep-go-race-${{ matrix.gate }}-${{ hashFiles('go.mod', 'go.sum', '**/*.go', '**/*.sql') }}
+
+  mcp-audit:
+    name: Audit MCP surface
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Setup Go
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: go.mod
+          cache-dependency-path: go.sum
+      - uses: $/.github/actions/setup-node-npm
+      - name: Run canonical MCP contract gates
+        run: |
+          gates="$(./hk ci qa-matrix --profile pr --group production-mcp --output json | jq -r '.data.gate_ids | join(",")')"
+          plan_id="$(./hk qa plan pr --output json | jq -r '.data.plan_id')"
+          ./hk qa pr --plan-id "$plan_id" --gate "$gates"
+
+  lint-dashboard:
+    name: Lint Dashboard (Angular)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Setup Go
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: go.mod
+          cache-dependency-path: go.sum
+      - uses: $/.github/actions/setup-node-npm
+      - name: Install dependencies
+        working-directory: frontend/dashboard
+        run: npm ci --no-audit --no-fund
+      - name: Run canonical dashboard static checks
+        run: |
+          gates="$(./hk ci qa-matrix --profile pr --group frontend-static --output json | jq -r '.data.gate_ids | join(",")')"
+          plan_id="$(./hk qa plan pr --output json | jq -r '.data.plan_id')"
+          ./hk qa pr --plan-id "$plan_id" --gate "$gates"
+
+  test-dashboard:
+    name: Test Dashboard (Angular)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Setup Go
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: go.mod
+          cache-dependency-path: go.sum
+      - uses: $/.github/actions/setup-node-npm
+      - name: Restore Playwright browser cache
+        id: playwright-cache
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('frontend/dashboard/package-lock.json') }}
+      - name: Install dependencies
+        working-directory: frontend/dashboard
+        run: npm ci --no-audit --no-fund
+      - name: Install Playwright system dependencies
+        working-directory: frontend/dashboard
+        run: npx playwright install-deps chromium
+      - name: Install Playwright browser
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        working-directory: frontend/dashboard
+        run: npx playwright install chromium
+      - name: Test dashboard
+        run: |
+          gates="$(./hk ci qa-matrix --profile pr --group frontend-unit --output json | jq -r '.data.gate_ids | join(",")')"
+          plan_id="$(./hk qa plan pr --output json | jq -r '.data.plan_id')"
+          ./hk qa pr --plan-id "$plan_id" --gate "$gates"
+
+  e2e-dashboard:
+    name: E2E Dashboard
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Setup Go
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: go.mod
+          cache-dependency-path: go.sum
+      - uses: $/.github/actions/setup-node-npm
+      - name: Restore Playwright browser cache
+        id: playwright-cache
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('frontend/dashboard/package-lock.json') }}
+      - name: Install dashboard dependencies
+        working-directory: frontend/dashboard
+        run: npm ci --no-audit --no-fund
+      - name: Install Playwright system dependencies
+        working-directory: frontend/dashboard
+        run: npx playwright install-deps chromium
+      - name: Install Playwright browser
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        working-directory: frontend/dashboard
+        run: npx playwright install chromium
+      - name: Run dashboard e2e suite
+        run: |
+          gates="$(./hk ci qa-matrix --profile pr --group frontend-e2e --output json | jq -r '.data.gate_ids | join(",")')"
+          plan_id="$(./hk qa plan pr --output json | jq -r '.data.plan_id')"
+          ./hk qa pr --plan-id "$plan_id" --gate "$gates"
+      - name: Upload Playwright artifacts
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: playwright-report
+          path: |
+            ~/.cache/hitkeep/hk/workspaces/*/e2e/report
+            ~/.cache/hitkeep/hk/workspaces/*/e2e/results
+          if-no-files-found: ignore

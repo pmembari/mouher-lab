@@ -1,0 +1,18 @@
+# Local build and runtime artifacts.
+/tmp/
+/hitkeep
+/main
+*.test
+/hitkeep.db*
+/*-local-*.png
+/archive/
+/public/*
+!/public/embed.go
+/data/
+
+# Frontend test artifacts.
+/frontend/dashboard/test-results/
+/frontend/dashboard/playwright-report/
+
+# @hitkeep/tracker npm package build output.
+/frontend/tracker/dist/

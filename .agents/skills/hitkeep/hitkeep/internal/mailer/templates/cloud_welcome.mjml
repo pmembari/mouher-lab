@@ -1,0 +1,44 @@
+{{ define "content" }}
+<mj-text font-size="20px" font-weight="600" padding-bottom="10px">
+  {{ t "cloud.welcome.heading" }}
+</mj-text>
+
+<mj-text>
+  {{ tf "cloud.welcome.body" .TeamName .SiteDomain }}
+</mj-text>
+
+<mj-button href="{{ .DashboardURL }}" padding-top="20px" padding-bottom="16px">
+  {{ t "cloud.welcome.dashboard_button" }}
+</mj-button>
+
+<mj-text>
+  {{ t "cloud.welcome.docs" }}
+  <a href="{{ .DocsURL }}">{{ t "cloud.welcome.docs_button" }}</a>
+</mj-text>
+
+<mj-text>
+  {{ t "cloud.welcome.wordpress" }}
+  <a href="{{ .WordPressURL }}">{{ t "cloud.welcome.wordpress_button" }}</a>
+</mj-text>
+
+{{ if .IsFreePlan }}
+<mj-text>
+  {{ tf "cloud.welcome.free_retention" .RetentionDays }}
+  <a href="{{ .UpgradeURL }}">{{ t "cloud.welcome.plans_link" }}</a>
+</mj-text>
+{{ end }}
+
+<mj-text>
+  {{ t "cloud.welcome.feedback" }}
+  <a href="{{ .FeedbackURL }}">{{ t "cloud.welcome.feedback_button" }}</a>
+</mj-text>
+
+<mj-divider border-width="1px" border-color="#e2e8f0" padding-top="16px" padding-bottom="8px" />
+
+<mj-text font-size="12px" color="#64748b">
+  {{ t "cloud.opensource.note" }}
+  {{ t "cloud.opensource.support" }}
+  <a href="{{ .FundingURL }}">{{ t "cloud.opensource.sponsor" }}</a>.
+  {{ t "cloud.opensource.spread" }}
+</mj-text>
+{{ end }}

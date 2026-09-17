@@ -1,0 +1,234 @@
+<app-settings-card [title]="'settings.security.social.title' | transloco" [subtitle]="'settings.security.social.description' | transloco" icon="pi pi-users">
+    <div settings-card-body class="flex flex-col gap-4">
+        @if (socialError()) {
+        <p-message severity="error" styleClass="w-full">{{ socialError()! | transloco }}</p-message>
+        } @if (socialSuccess()) {
+        <p-message severity="success" styleClass="w-full">{{ socialSuccess()! | transloco }}</p-message>
+        } @if (socialIdentities().length === 0) {
+        <p class="text-sm text-muted-color">{{ "settings.security.social.empty" | transloco }}</p>
+        } @else {
+        <div class="passkey-list">
+            @for (identity of socialIdentities(); track identity.provider) {
+            <div class="passkey-item">
+                <div class="passkey-meta">
+                    <span class="font-medium text-sm">{{ providerName(identity.provider) }}</span>
+                    @if (identity.observed_email) {
+                    <span class="text-xs text-muted-color">{{ identity.observed_email }}</span>
+                    }
+                    <span class="text-xs text-muted-color"> {{ "settings.security.social.linkedDate" | transloco }} <app-relative-date-time [value]="identity.linked_at" /> </span>
+                    @if (identity.last_used_at) {
+                    <span class="text-xs text-muted-color"> {{ "settings.security.social.lastUsed" | transloco }} <app-relative-date-time [value]="identity.last_used_at" /> </span>
+                    }
+                </div>
+                <button pButton type="button" severity="secondary" [outlined]="true" icon="pi pi-unlink" [loading]="socialLoading() === identity.provider" [disabled]="socialLoading() !== null" (click)="unlinkSocial(identity.provider)">
+                    {{ "settings.security.social.unlinkAction" | transloco }}
+                </button>
+            </div>
+            }
+        </div>
+        } @if (availableSocialProviders().length > 0) {
+        <div class="flex flex-wrap gap-2">
+            @for (provider of availableSocialProviders(); track provider.id) {
+            <button pButton type="button" severity="secondary" [outlined]="true" icon="pi pi-plus" [loading]="socialLoading() === provider.id" [disabled]="socialLoading() !== null" (click)="connectSocial(provider.id)">
+                {{ "settings.security.social.connectAction" | transloco : { provider: provider.display_name } }}
+            </button>
+            }
+        </div>
+        } @if (passwordLoginEnabled() && socialIdentities().length === 1 && passkeys().length === 0) {
+        <small class="text-xs text-muted-color">{{ "settings.security.social.passwordConfirmationHint" | transloco }}</small>
+        }
+    </div>
+</app-settings-card>
+
+<app-settings-card
+    [title]="(passwordLoginEnabled() ? 'settings.security.changePasswordTitle' : 'settings.security.setPasswordTitle') | transloco"
+    [subtitle]="(passwordLoginEnabled() ? 'settings.security.changePasswordDescription' : 'settings.security.setPasswordDescription') | transloco"
+    icon="pi pi-shield"
+>
+    <div settings-card-body>
+        @if (passwordLoginEnabled()) {
+        <form id="settings-security-form" (submit)="onSubmit($event)" class="flex flex-col gap-4" novalidate>
+            @if (passwordError()) {
+            <p-message severity="error" styleClass="w-full">{{ passwordError()! | transloco }}</p-message>
+            } @if (passwordSuccess()) {
+            <p-message severity="success" styleClass="w-full">{{ "settings.security.passwordUpdated" | transloco }}</p-message>
+            }
+
+            <div class="flex flex-col gap-2">
+                <label for="currentPassword" class="text-sm font-medium">{{ "settings.security.currentPasswordLabel" | transloco }}</label>
+                <p-password
+                    id="currentPassword"
+                    [formControl]="form.currentPassword().control()"
+                    [toggleMask]="true"
+                    [feedback]="false"
+                    class="w-full"
+                    [class.ng-invalid]="form.currentPassword().touched() && form.currentPassword().invalid()"
+                    [class.ng-dirty]="form.currentPassword().dirty()"
+                />
+            </div>
+
+            <div class="flex flex-col gap-2">
+                <label for="newPassword" class="text-sm font-medium">{{ "settings.security.newPasswordLabel" | transloco }}</label>
+                <p-password id="newPassword" [formControl]="form.newPassword().control()" [toggleMask]="true" [feedback]="false" class="w-full" />
+                <small class="text-xs text-muted-color">{{ "settings.security.minimumLengthHint" | transloco }}</small>
+            </div>
+        </form>
+        } @else {
+        <div class="flex flex-col gap-4">
+            @if (passwordError()) {
+            <p-message severity="error" styleClass="w-full">{{ passwordError()! | transloco }}</p-message>
+            } @if (setPasswordSent()) {
+            <p-message severity="success" styleClass="w-full">{{ "settings.security.setPasswordSent" | transloco }}</p-message>
+            }
+            <p class="text-sm text-muted-color">{{ "settings.security.setPasswordHelp" | transloco }}</p>
+        </div>
+        }
+    </div>
+    <div settings-card-footer>
+        @if (passwordLoginEnabled()) {
+        <button pButton type="submit" form="settings-security-form" icon="pi pi-check" [loading]="isPasswordLoading()" [disabled]="isPasswordLoading() || form.currentPassword().invalid() || form.newPassword().invalid()" class="settings-action-btn">
+            {{ "settings.security.updatePassword" | transloco }}
+        </button>
+        } @else {
+        <button pButton type="button" icon="pi pi-envelope" [loading]="isPasswordLoading()" [disabled]="isPasswordLoading()" class="settings-action-btn" (click)="requestSetPassword()">{{ "settings.security.setPasswordAction" | transloco }}</button>
+        }
+    </div>
+</app-settings-card>
+
+<app-settings-card [title]="'settings.security.twoFactor.title' | transloco" [subtitle]="'settings.security.twoFactor.description' | transloco" icon="pi pi-mobile">
+    <div settings-card-body class="flex flex-col gap-4">
+        @if (securityError()) {
+        <p-message severity="error" styleClass="w-full">{{ securityError()! | transloco }}</p-message>
+        } @if (totpError()) {
+        <p-message severity="error" styleClass="w-full">{{ totpError()! | transloco }}</p-message>
+        } @if (totpSuccess()) {
+        <p-message severity="success" styleClass="w-full">{{ totpSuccess()! | transloco }}</p-message>
+        } @if (isSecurityLoading()) {
+        <p class="text-sm text-muted-color">{{ "settings.security.loading" | transloco }}</p>
+        } @else { @if (totpEnabled()) {
+        <p class="text-sm text-[var(--p-text-color)]">{{ "settings.security.twoFactor.enabledDescription" | transloco }}</p>
+        <div class="flex flex-col gap-2">
+            <label for="disable-totp-code" class="text-sm font-medium">{{ "settings.security.twoFactor.disableCodeLabel" | transloco }}</label>
+            <p-inputotp inputId="disable-totp-code" [formControl]="form.disableTotpCode().control()" [length]="6" [integerOnly]="true" [invalid]="form.disableTotpCode().touched() && form.disableTotpCode().invalid()" />
+            <small class="text-xs text-muted-color">{{ "settings.security.twoFactor.disableHint" | transloco }}</small>
+        </div>
+
+        } @else { @if (!totpSetup()) {
+        <p class="text-sm text-[var(--p-text-color)]">{{ "settings.security.twoFactor.setupDescription" | transloco }}</p>
+        } @else {
+        <div class="flex flex-col gap-2">
+            <span class="text-sm font-medium">{{ "settings.security.twoFactor.secretLabel" | transloco }}</span>
+            <code class="totp-secret">{{ totpSetup()!.secret }}</code>
+        </div>
+        <div class="flex flex-col gap-2">
+            <label for="totp-uri" class="text-sm font-medium">{{ "settings.security.twoFactor.otpauthLabel" | transloco }}</label>
+            <input id="totp-uri" type="text" class="totp-uri" [value]="totpSetup()!.otpauth_url" readonly />
+        </div>
+        <div class="flex flex-col gap-2">
+            <label for="totp-code" class="text-sm font-medium">{{ "settings.security.twoFactor.verifyCodeLabel" | transloco }}</label>
+            <p-inputotp inputId="totp-code" [formControl]="form.totpCode().control()" [length]="6" [integerOnly]="true" [invalid]="form.totpCode().touched() && form.totpCode().invalid()" />
+        </div>
+
+        } } }
+    </div>
+
+    <div settings-card-footer>
+        @if (!isSecurityLoading()) { @if (totpEnabled()) {
+        <button pButton type="button" severity="danger" icon="pi pi-times" [loading]="isTotpActionLoading()" [disabled]="isTotpActionLoading()" class="settings-action-btn" (click)="disableTotp()">
+            {{ "settings.security.twoFactor.disableAction" | transloco }}
+        </button>
+        } @else { @if (!totpSetup()) {
+        <button pButton type="button" icon="pi pi-shield" [loading]="isTotpActionLoading()" [disabled]="isTotpActionLoading()" class="settings-action-btn" (click)="startTotpSetup()">
+            {{ "settings.security.twoFactor.startSetupAction" | transloco }}
+        </button>
+        } @else {
+        <button pButton type="button" icon="pi pi-check" [loading]="isTotpActionLoading()" [disabled]="isTotpActionLoading()" class="settings-action-btn" (click)="verifyTotpSetup()">
+            {{ "settings.security.twoFactor.verifyAction" | transloco }}
+        </button>
+        } } }
+    </div>
+</app-settings-card>
+
+<app-settings-card [title]="'settings.security.passkeys.title' | transloco" [subtitle]="'settings.security.passkeys.description' | transloco" icon="pi pi-key">
+    <div settings-card-body class="flex flex-col gap-4">
+        @if (passkeyError()) {
+        <p-message severity="error" styleClass="w-full">{{ passkeyError()! | transloco }}</p-message>
+        } @if (passkeySuccess()) {
+        <p-message severity="success" styleClass="w-full">{{ passkeySuccess()! | transloco }}</p-message>
+        } @if (passkeys().length === 0) {
+        <p class="text-sm text-muted-color">{{ "settings.security.passkeys.empty" | transloco }}</p>
+        } @else {
+        <div class="passkey-list">
+            @for (passkey of passkeys(); track passkey.id) {
+            <div class="passkey-item">
+                <div class="passkey-meta">
+                    <span class="font-medium text-sm">{{ passkey.name }}</span>
+                    <span class="text-xs text-muted-color"><app-relative-date-time [value]="passkey.created_at" /></span>
+                </div>
+                <button pButton type="button" severity="secondary" [outlined]="true" icon="pi pi-trash" [disabled]="isPasskeyActionLoading()" (click)="deletePasskey(passkey.id)">{{ "settings.security.passkeys.removeAction" | transloco }}</button>
+            </div>
+            }
+        </div>
+        }
+
+        <div class="flex flex-col gap-2">
+            <label for="passkey-name" class="text-sm font-medium">{{ "settings.security.passkeys.nameLabel" | transloco }}</label>
+            <input id="passkey-name" type="text" class="passkey-name-input" [placeholder]="'settings.security.passkeys.namePlaceholder' | transloco" [formControl]="form.passkeyName().control()" maxlength="64" />
+            <small class="text-xs text-muted-color">{{ "settings.security.passkeys.nameHint" | transloco }}</small>
+        </div>
+    </div>
+
+    <div settings-card-footer>
+        <button pButton type="button" icon="pi pi-plus" [loading]="isPasskeyActionLoading()" [disabled]="isPasskeyActionLoading() || form.passkeyName().invalid()" class="settings-action-btn" (click)="registerPasskey()">
+            {{ "settings.security.passkeys.addAction" | transloco }}
+        </button>
+    </div>
+</app-settings-card>
+
+<app-settings-card [title]="'settings.security.recoveryCodes.title' | transloco" [subtitle]="'settings.security.recoveryCodes.description' | transloco" icon="pi pi-lock">
+    <div settings-card-body class="flex flex-col gap-4">
+        @if (recoveryCodeError()) {
+        <p-message severity="error" styleClass="w-full">{{ recoveryCodeError()! | transloco }}</p-message>
+        } @if (recoveryCodeSuccess()) {
+        <p-message severity="success" styleClass="w-full">{{ recoveryCodeSuccess()! | transloco }}</p-message>
+        }
+
+        <div class="recovery-codes-summary">
+            <div class="recovery-codes-summary-copy">
+                <span class="text-sm font-medium">{{ "settings.security.recoveryCodes.remainingLabel" | transloco }}</span>
+                <span class="text-sm text-muted-color">{{ "settings.security.recoveryCodes.remainingValue" | transloco: { count: recoveryCodesRemaining() } }}</span>
+            </div>
+            @if (recoveryCodesGenerated()) {
+            <span class="recovery-codes-badge">{{ "settings.security.recoveryCodes.generatedBadge" | transloco }}</span>
+            }
+        </div>
+
+        @if (!hasMfaProtection()) {
+        <p-message severity="warn" styleClass="w-full">{{ "settings.security.recoveryCodes.requiresMfa" | transloco }}</p-message>
+        } @if (recoveryCodes().length > 0) {
+        <div class="recovery-codes-panel">
+            <div class="flex flex-col gap-1">
+                <span class="text-sm font-medium">{{ "settings.security.recoveryCodes.codesTitle" | transloco }}</span>
+                <span class="text-xs text-muted-color">{{ "settings.security.recoveryCodes.codesHint" | transloco }}</span>
+            </div>
+
+            <div class="recovery-codes-actions">
+                <button pButton type="button" icon="pi pi-copy" severity="secondary" [outlined]="true" (click)="copyRecoveryCodes()">{{ "settings.security.recoveryCodes.copyAction" | transloco }}</button>
+                <button pButton type="button" icon="pi pi-download" severity="secondary" [outlined]="true" (click)="downloadRecoveryCodes()">{{ "settings.security.recoveryCodes.downloadAction" | transloco }}</button>
+            </div>
+
+            <div class="recovery-codes-grid">
+                @for (code of recoveryCodes(); track code) {
+                <code class="recovery-code">{{ code }}</code>
+                }
+            </div>
+        </div>
+        }
+    </div>
+
+    <div settings-card-footer>
+        <button pButton type="button" icon="pi pi-refresh" [loading]="isRecoveryCodesLoading()" [disabled]="isRecoveryCodesLoading() || !hasMfaProtection()" class="settings-action-btn" (click)="regenerateRecoveryCodes()">
+            {{ (recoveryCodesGenerated() ? "settings.security.recoveryCodes.regenerateAction" : "settings.security.recoveryCodes.generateAction") | transloco }}
+        </button>
+    </div>
+</app-settings-card>

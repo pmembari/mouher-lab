@@ -1,0 +1,14 @@
+{{ define "content" -}}
+{{ t "invite.team.heading" }}
+=============================
+
+{{ t "common.hello" }}
+
+{{ tf "invite.team.body1" .Inviter .TeamName (roleLabel .Role) }}
+{{ if .RequiresAccountSetup }}
+{{ t "invite.team.requires_setup" }}
+{{ end }}
+{{ if .RequiresAccountSetup }}{{ t "invite.team.help_new" }}{{ else }}{{ t "invite.team.help_existing" }}{{ end }}
+
+{{ if .RequiresAccountSetup }}{{ t "invite.team.button_new" }}{{ else }}{{ t "invite.team.button_existing" }}{{ end }}: {{ .Link }}
+{{- end }}

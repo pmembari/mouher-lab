@@ -1,0 +1,23 @@
+:host {
+    display: block;
+}
+
+:host ::ng-deep .plan-comparison__card--recommended.p-card {
+    border-color: var(--p-primary-color);
+}
+
+:host ::ng-deep .team-overview__usage-progress.p-progressbar {
+    height: 0.5rem;
+}
+
+:host ::ng-deep .team-overview__usage-progress--healthy .p-progressbar-value {
+    background: var(--p-primary-color);
+}
+
+:host ::ng-deep .team-overview__usage-progress--warning .p-progressbar-value {
+    background: var(--p-amber-500);
+}
+
+:host ::ng-deep .team-overview__usage-progress--critical .p-progressbar-value {
+    background: var(--p-red-600);
+}

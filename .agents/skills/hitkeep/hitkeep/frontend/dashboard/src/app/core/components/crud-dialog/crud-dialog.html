@@ -1,0 +1,18 @@
+<app-dialog-shell
+    [title]="title()"
+    [visible]="visible()"
+    (visibleChange)="onVisibleChange($event)"
+    [secondaryLabel]="cancelLabel()"
+    [primaryLabel]="submitLabel()"
+    [primaryIcon]="submitIcon()"
+    [primaryDisabled]="submitDisabled()"
+    [busy]="saving()"
+    [primaryLoading]="saving()"
+    [width]="width()"
+    (secondaryAction)="onSecondaryAction()"
+    (primaryAction)="submitted.emit()"
+>
+    <div class="crud-dialog-body">
+        <ng-content />
+    </div>
+</app-dialog-shell>

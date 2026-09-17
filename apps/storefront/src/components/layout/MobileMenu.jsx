@@ -50,35 +50,23 @@ export default function MobileMenu({
           href="#categories"
           onClick={onClose}
         >
-          {t.nav.collections}
+          {isFarsi
+            ? "دسته‌بندی‌ها"
+            : "Categories"}
         </a>
 
         <a
-          href="#products"
+          href="#/shop"
           onClick={onClose}
         >
           {t.nav.shop}
         </a>
 
         <a
-          href="#/owner"
+          href="#/shop"
           onClick={onClose}
         >
-          {t.nav.owner}
-        </a>
-
-        <a
-          href="#/developer"
-          onClick={onClose}
-        >
-          {t.nav.developer}
-        </a>
-
-        <a
-          href="#/assist"
-          onClick={onClose}
-        >
-          {t.nav.assist}
+          {t.nav.collections}
         </a>
 
         <a

@@ -118,15 +118,18 @@ export default function App() {
   function handleSearchSubmit(event) {
     event.preventDefault();
 
-    shell.closeSearch();
-    filters.setActiveCategory("all");
+    const query =
+      String(filters.query || "").trim();
 
-    document
-      .getElementById("products")
-      ?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
+    shell.closeSearch();
+
+    if (!query) {
+      window.location.hash = "#/shop";
+      return;
+    }
+
+    window.location.hash =
+      `#/search?q=${encodeURIComponent(query)}`;
   }
 
   return (

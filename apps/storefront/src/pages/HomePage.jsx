@@ -1,8 +1,6 @@
-import { useMemo, useState } from "react";
 import { ArrowRight } from "../components/icons";
 import { ProductImage } from "../components/ProductImage";
 import ProductCard from "../components/storefront/ProductCard";
-import CategoryCard from "../components/storefront/CategoryCard";
 
 const BASE_URL = import.meta.env.BASE_URL;
 
@@ -33,67 +31,40 @@ export default function HomePage({
   homepageCollections = [],
   addingProductId,
   email,
-  onSetQuery,
   onSetEmail,
   onAddToCart,
   onNewsletterSubmit,
 }) {
-  const isFarsi = language === "farsi";
-  const [activeCategory, setActiveCategory] =
-    useState("all");
-  const visibleProducts = useMemo(() => {
-    if (activeCategory === "all") {
-      return homepageProducts;
-    }
+  const isFarsi =
+    language === "farsi";
 
-    return homepageProducts.filter(
-      (product) =>
-        product.categorySlug === activeCategory
-    );
-  }, [
-    homepageProducts,
-    activeCategory,
-  ]);
+  const featuredProducts =
+    homepageProducts.slice(0, 8);
 
-  const featuredProducts = visibleProducts.slice(
-    0,
-    8
-  );
-
-  const discoveryProducts = visibleProducts.slice(
-    8,
-    20
-  );
+  const discoveryProducts =
+    homepageProducts.slice(8, 20);
 
   const editorialImage =
     homepageProducts[1]?.imageUrls ||
     homepageProducts[0]?.imageUrls ||
     heroImage;
 
-  function scrollToProducts() {
-    document
-      .getElementById("products")
-      ?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-  }
+  const visualCollections =
+    homepageCollections.map(
+      (collection) => ({
+        ...collection,
 
-  function handleShopAll() {
-    onSetQuery?.("");
-    setActiveCategory("all");
-    scrollToProducts();
-  }
-  function handleCategorySelect(categorySlug) {
-    setActiveCategory(categorySlug);
+        image:
+          getCollectionImage({
+            collection,
+            products:
+              homepageProducts,
+            fallback:
+              heroImage,
+          }),
+      })
+    );
 
-    document
-      .getElementById("products")
-      ?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-  }
   return (
     <>
       <section
@@ -108,32 +79,39 @@ export default function HomePage({
           <h1>
             {t.hero.title
               .split("\n")
-              .map((line, index, lines) => (
-                <span
-                  key={`${line}-${index}`}
-                >
-                  {line}
+              .map(
+                (
+                  line,
+                  index,
+                  lines
+                ) => (
+                  <span
+                    key={`${line}-${index}`}
+                  >
+                    {line}
 
-                  {index <
-                    lines.length - 1 && (
-                      <br />
-                    )}
-                </span>
-              ))}
+                    {index <
+                      lines.length -
+                      1 && (
+                        <br />
+                      )}
+                  </span>
+                )
+              )}
           </h1>
 
           <p className="hero-description">
             {t.hero.description}
           </p>
 
-          <button
-            type="button"
+          <a
+            href="#/shop"
             className="button button-dark"
-            onClick={scrollToProducts}
           >
             {t.hero.button}
+
             <ArrowRight />
-          </button>
+          </a>
         </div>
       </section>
 
@@ -146,27 +124,29 @@ export default function HomePage({
         }
       >
         <div className="hero-video-grid">
-          {HERO_VIDEOS.map((video) => (
-            <div
-              className="hero-video-panel"
-              key={video.id}
-            >
-              <video
-                className="hero-video"
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="metadata"
-                aria-hidden="true"
+          {HERO_VIDEOS.map(
+            (video) => (
+              <div
+                className="hero-video-panel"
+                key={video.id}
               >
-                <source
-                  src={video.src}
-                  type="video/webm"
-                />
-              </video>
-            </div>
-          ))}
+                <video
+                  className="hero-video"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="metadata"
+                  aria-hidden="true"
+                >
+                  <source
+                    src={video.src}
+                    type="video/webm"
+                  />
+                </video>
+              </div>
+            )
+          )}
         </div>
       </section>
 
@@ -213,14 +193,14 @@ export default function HomePage({
               {sourceLabel}
             </span>
 
-            <button
-              type="button"
+            <a
+              href="#/shop"
               className="text-link"
-              onClick={handleShopAll}
             >
               {t.products.shopAll}
+
               <ArrowRight />
-            </button>
+            </a>
           </div>
         </div>
 
@@ -230,7 +210,8 @@ export default function HomePage({
           </p>
         )}
 
-        {catalogState === "loading" ? (
+        {catalogState ===
+          "loading" ? (
           <p className="empty-state">
             {t.products.loading}
           </p>
@@ -242,9 +223,13 @@ export default function HomePage({
                 <ProductCard
                   key={product.id}
                   product={product}
-                  language={language}
+                  language={
+                    language
+                  }
                   labels={t.cart}
-                  onAdd={onAddToCart}
+                  onAdd={
+                    onAddToCart
+                  }
                   isAdding={
                     addingProductId ===
                     product.id
@@ -260,7 +245,7 @@ export default function HomePage({
         )}
       </section>
 
-      {homepageCollections.length >
+      {visualCollections.length >
         0 && (
           <section
             className="section collections-section"
@@ -276,28 +261,92 @@ export default function HomePage({
                   {t.collections.title}
                 </h2>
               </div>
+
+              <a
+                href="#/shop"
+                className="text-link"
+              >
+                {isFarsi
+                  ? "مشاهده فروشگاه"
+                  : "View all"}
+
+                <ArrowRight />
+              </a>
             </div>
 
-            <div className="collection-rail">
-              {homepageCollections.map(
-                (collection) => (
-                  <a
-                    key={collection.slug}
-                    href="#products"
-                    className="home-collection-link"
-                  >
-                    <strong>
-                      {isFarsi
-                        ? collection.nameFa ||
-                        collection.name
-                        : collection.name}
-                    </strong>
+            <div className="home-collections-grid">
+              {visualCollections.map(
+                (
+                  collection,
+                  index
+                ) => {
+                  const name =
+                    isFarsi
+                      ? collection.nameFa ||
+                      collection.name
+                      : collection.name;
 
-                    <span>
-                      {collection.count}
-                    </span>
-                  </a>
-                )
+                  return (
+                    <a
+                      key={
+                        collection.slug
+                      }
+                      href={`#/collections/${encodeURIComponent(
+                        collection.slug
+                      )}`}
+                      className={`home-collection-card ${index === 0
+                          ? "home-collection-card-featured"
+                          : ""
+                        }`}
+                    >
+                      <div className="home-collection-media">
+                        <ProductImage
+                          image={
+                            collection.image
+                          }
+                          alt={name}
+                          className="home-collection-image"
+                        />
+                      </div>
+
+                      <div className="home-collection-copy">
+                        <div>
+                          <span className="home-card-kicker">
+                            {isFarsi
+                              ? "کالکشن"
+                              : "Collection"}
+                          </span>
+
+                          <h3>
+                            {name}
+                          </h3>
+                        </div>
+
+                        <div className="home-collection-meta">
+                          {collection.count >
+                            0 && (
+                              <span>
+                                {isFarsi
+                                  ? `${collection.count} محصول`
+                                  : `${collection.count} ${collection.count ===
+                                    1
+                                    ? "style"
+                                    : "styles"
+                                  }`}
+                              </span>
+                            )}
+
+                          <span
+                            className="home-card-arrow"
+                            aria-hidden="true"
+                          >
+                            <ArrowRight />
+                          </span>
+                        </div>
+                      </div>
+                    </a>
+                  );
+                }
               )}
             </div>
           </section>
@@ -319,38 +368,91 @@ export default function HomePage({
                   {t.categories.title}
                 </h2>
               </div>
+
+              <a
+                href="#/shop"
+                className="text-link"
+              >
+                {isFarsi
+                  ? "همه محصولات"
+                  : "Shop all"}
+
+                <ArrowRight />
+              </a>
             </div>
-          <button
-            type="button"
-            className={`category-reset ${activeCategory === "all"
-                ? "category-reset-active"
-                : ""
-              }`}
-            onClick={() => {
-              setActiveCategory("all");
-              scrollToProducts();
-            }}
-          >
-            {t.categories.all}
-          </button>
-            <div className="categories-grid">
+
+            <div className="home-categories-grid">
               {homepageCategories
                 .slice(0, 6)
-                .map((category) => (
-                  <CategoryCard
-                    key={category.slug}
-                    category={category}
-                    language={language}
-                    labels={t.categories}
-                    active={
-                      activeCategory ===
-                      category.slug
-                    }
-                    onSelect={
-                      handleCategorySelect
-                    }
-                  />
-                ))}
+                .map(
+                  (category) => {
+                    const name =
+                      isFarsi
+                        ? category.nameFa ||
+                        category.name
+                        : category.name;
+
+                    const categoryImage =
+                      category.imageUrl ||
+                      getCategoryImage({
+                        category,
+                        products:
+                          homepageProducts,
+                        fallback:
+                          heroImage,
+                      });
+
+                    return (
+                      <a
+                        key={
+                          category.slug
+                        }
+                        href={`#/categories/${encodeURIComponent(
+                          category.slug
+                        )}`}
+                        className="home-category-card"
+                      >
+                        <div className="home-category-media">
+                          <ProductImage
+                            image={
+                              categoryImage
+                            }
+                            alt={name}
+                            className="home-category-image"
+                          />
+                        </div>
+
+                        <div className="home-category-copy">
+                          <div>
+                            <h3>
+                              {name}
+                            </h3>
+
+                            {category.count >
+                              0 && (
+                                <span>
+                                  {isFarsi
+                                    ? `${category.count} محصول`
+                                    : `${category.count} ${category.count ===
+                                      1
+                                      ? "style"
+                                      : "styles"
+                                    }`}
+                                </span>
+                              )}
+                          </div>
+
+                          <span
+                            className="home-card-arrow"
+                            aria-hidden="true"
+                          >
+                            <ArrowRight />
+                          </span>
+                        </div>
+                      </a>
+                    );
+                  }
+                )}
             </div>
           </section>
         )}
@@ -358,7 +460,9 @@ export default function HomePage({
       <section className="philosophy">
         <div className="philosophy-image">
           <ProductImage
-            image={editorialImage}
+            image={
+              editorialImage
+            }
             alt={
               isFarsi
                 ? "داستان موهر"
@@ -382,10 +486,11 @@ export default function HomePage({
           </p>
 
           <a
-            href="#collections"
+            href="#/shop"
             className="button button-dark"
           >
             {t.philosophy.button}
+
             <ArrowRight />
           </a>
         </div>
@@ -408,6 +513,17 @@ export default function HomePage({
                     : "More to discover"}
                 </h2>
               </div>
+
+              <a
+                href="#/shop"
+                className="text-link"
+              >
+                {isFarsi
+                  ? "مشاهده همه"
+                  : "Shop all"}
+
+                <ArrowRight />
+              </a>
             </div>
 
             <div className="products-grid">
@@ -416,9 +532,13 @@ export default function HomePage({
                   <ProductCard
                     key={product.id}
                     product={product}
-                    language={language}
+                    language={
+                      language
+                    }
                     labels={t.cart}
-                    onAdd={onAddToCart}
+                    onAdd={
+                      onAddToCart
+                    }
                     isAdding={
                       addingProductId ===
                       product.id
@@ -475,6 +595,7 @@ export default function HomePage({
 
             <button type="submit">
               {t.newsletter.button}
+
               <ArrowRight />
             </button>
           </form>
@@ -482,4 +603,66 @@ export default function HomePage({
       </section>
     </>
   );
+}
+
+function getCollectionImage({
+  collection,
+  products,
+  fallback,
+}) {
+  if (collection.imageUrl) {
+    return collection.imageUrl;
+  }
+
+  const match =
+    products.find((product) => {
+      const collectionSlug =
+        slugifyValue(
+          product.collection
+        );
+
+      return (
+        collectionSlug ===
+        collection.slug
+      );
+    });
+
+  return (
+    match?.imageUrls ||
+    fallback ||
+    ""
+  );
+}
+
+function getCategoryImage({
+  category,
+  products,
+  fallback,
+}) {
+  const match =
+    products.find(
+      (product) =>
+        product.categorySlug ===
+        category.slug
+    );
+
+  return (
+    match?.imageUrls ||
+    fallback ||
+    ""
+  );
+}
+
+function slugifyValue(value) {
+  return String(value || "")
+    .trim()
+    .toLowerCase()
+    .replace(
+      /[^a-z0-9]+/g,
+      "-"
+    )
+    .replace(
+      /^-|-$/g,
+      ""
+    );
 }

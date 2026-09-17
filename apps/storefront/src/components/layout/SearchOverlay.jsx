@@ -16,7 +16,8 @@ export default function SearchOverlay({
   onClose,
   onSubmit,
 }) {
-  const inputRef = useRef(null);
+  const inputRef =
+    useRef(null);
 
   useEffect(() => {
     if (!open) {
@@ -24,12 +25,16 @@ export default function SearchOverlay({
     }
 
     const frame =
-      window.requestAnimationFrame(() => {
-        inputRef.current?.focus();
-      });
+      window.requestAnimationFrame(
+        () => {
+          inputRef.current?.focus();
+        }
+      );
 
     function handleKeyDown(event) {
-      if (event.key === "Escape") {
+      if (
+        event.key === "Escape"
+      ) {
         onClose();
       }
     }
@@ -61,7 +66,6 @@ export default function SearchOverlay({
   return (
     <div
       className="search-overlay"
-      role="presentation"
       onMouseDown={(event) => {
         if (
           event.target ===
@@ -71,141 +75,79 @@ export default function SearchOverlay({
         }
       }}
     >
-      <section
-        className="search-dropdown"
+      <div
+        className="search-panel"
         role="dialog"
         aria-modal="true"
         aria-label={
           t.search.title
         }
       >
-        <div className="search-dropdown-inner">
-          <div className="search-header">
-            <div>
-              <span className="search-eyebrow">
-                MOUHER
-              </span>
-
-              <h2 className="search-title">
-                {t.search.title}
-              </h2>
-            </div>
-
-            <button
-              type="button"
-              className="search-close-button"
-              onClick={onClose}
-              aria-label={
-                t.search.close
-              }
-            >
-              <CloseIcon />
-            </button>
-          </div>
-
-          <form
-            className="search-form"
-            onSubmit={onSubmit}
+        <form
+          className="search-panel-form"
+          onSubmit={onSubmit}
+        >
+          <span
+            className="search-panel-icon"
+            aria-hidden="true"
           >
-            <div className="search-field">
-              <span
-                className="search-field-icon"
-                aria-hidden="true"
-              >
-                <SearchIcon />
-              </span>
+            <SearchIcon />
+          </span>
 
-              <input
-                ref={inputRef}
-                type="search"
-                placeholder={
-                  t.search.placeholder
-                }
-                value={query}
-                onChange={(event) =>
-                  onQueryChange(
-                    event.target.value
-                  )
-                }
-                aria-label={
-                  t.search.open
-                }
-                autoComplete="off"
-                spellCheck="false"
-              />
+          <input
+            ref={inputRef}
+            type="search"
+            value={query}
+            placeholder={
+              t.search.placeholder
+            }
+            onChange={(event) =>
+              onQueryChange(
+                event.target.value
+              )
+            }
+            autoComplete="off"
+            spellCheck="false"
+            aria-label={
+              t.search.open
+            }
+          />
 
-              {query && (
-                <button
-                  type="button"
-                  className="search-clear-button"
-                  onClick={() =>
-                    onQueryChange("")
-                  }
-                  aria-label="Clear search"
-                >
-                  ×
-                </button>
-              )}
-            </div>
-
-            <button
-              type="submit"
-              className="search-submit-button"
-              disabled={
-                !query.trim()
-              }
-            >
-              <span>
-                {t.search.submit}
-              </span>
-
-              <SearchIcon />
-            </button>
-          </form>
-
-          <div className="search-suggestions">
-            <span className="search-suggestions-label">
-              Popular
-            </span>
-
+          {query && (
             <button
               type="button"
+              className="search-panel-clear"
               onClick={() =>
-                onQueryChange("shirts")
+                onQueryChange("")
               }
+              aria-label="Clear search"
             >
-              Shirts
+              ×
             </button>
+          )}
 
-            <button
-              type="button"
-              onClick={() =>
-                onQueryChange("trousers")
-              }
-            >
-              Trousers
-            </button>
+          <button
+            type="submit"
+            className="search-panel-submit"
+            disabled={
+              !query.trim()
+            }
+          >
+            Search
+          </button>
 
-            <button
-              type="button"
-              onClick={() =>
-                onQueryChange("coats")
-              }
-            >
-              Coats
-            </button>
-
-            <button
-              type="button"
-              onClick={() =>
-                onQueryChange("accessories")
-              }
-            >
-              Accessories
-            </button>
-          </div>
-        </div>
-      </section>
+          <button
+            type="button"
+            className="search-panel-close"
+            onClick={onClose}
+            aria-label={
+              t.search.close
+            }
+          >
+            <CloseIcon />
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

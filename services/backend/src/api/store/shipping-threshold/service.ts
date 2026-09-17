@@ -1,14 +1,17 @@
 const BONBAST_EUR_GRAPH_URL = "https://www.bonbast.com/graph/eur"
 const FREE_SHIPPING_EUR = 50
-const TOMAN_ROUNDING_STEP = 1_000_000
+const BASE_POLICY_YEAR = 2026
+const BASE_THRESHOLD_TOMAN = 10_000_000
+const ANNUAL_INCREMENT_TOMAN = 1_000_000
 const FETCH_TIMEOUT_MS = 8_000
 
 export type FreeShippingThreshold = {
   eur_amount: number
   eur_toman_rate: number | null
-  threshold_toman: number | null
-  threshold_rial: number | null
-  source: "bonbast" | "stale-cache" | "fallback"
+  threshold_toman: number
+  threshold_rial: number
+  policy_year: number
+  source: "annual-policy"
   fetched_at: string | null
   cache_month: string
 }
@@ -20,51 +23,44 @@ type CachedThreshold = FreeShippingThreshold & {
 let cachedThreshold: CachedThreshold | null = null
 
 export async function getFreeShippingThreshold(): Promise<FreeShippingThreshold> {
-  const cacheMonth = monthKey(new Date())
+  const now = new Date()
+  const cacheMonth = monthKey(now)
+  const policyYear = now.getUTCFullYear()
+  const thresholdToman = annualFreeShippingThresholdToman(policyYear)
 
   if (cachedThreshold?.cache_month === cacheMonth) {
     return cachedThreshold
   }
 
+  let eurTomanRate: number | null = null
+  let fetchedAt: string | null = null
+
   try {
-    const eurTomanRate = await fetchBonbastEurTomanRate()
-    const thresholdToman = roundToNearestMillionToman(
-      eurTomanRate * FREE_SHIPPING_EUR
-    )
-
-    cachedThreshold = {
-      eur_amount: FREE_SHIPPING_EUR,
-      eur_toman_rate: eurTomanRate,
-      threshold_toman: thresholdToman,
-      threshold_rial: thresholdToman * 10,
-      source: "bonbast",
-      fetched_at: new Date().toISOString(),
-      cache_month: cacheMonth,
-    }
-
-    return cachedThreshold
-  } catch (error) {
-    if (cachedThreshold?.threshold_toman) {
-      return {
-        ...cachedThreshold,
-        source: "stale-cache",
-      }
-    }
-
-    const fallbackToman = positiveIntegerFromEnv(
-      process.env.FREE_SHIPPING_FALLBACK_TOMAN
-    )
-
-    return {
-      eur_amount: FREE_SHIPPING_EUR,
-      eur_toman_rate: null,
-      threshold_toman: fallbackToman,
-      threshold_rial: fallbackToman ? fallbackToman * 10 : null,
-      source: "fallback",
-      fetched_at: null,
-      cache_month: cacheMonth,
-    }
+    eurTomanRate = await fetchBonbastEurTomanRate()
+    fetchedAt = new Date().toISOString()
+  } catch {
+    // The exchange rate is informational only. The free-shipping threshold
+    // follows a stable annual policy and must not move with FX volatility.
   }
+
+  cachedThreshold = {
+    eur_amount: FREE_SHIPPING_EUR,
+    eur_toman_rate: eurTomanRate,
+    threshold_toman: thresholdToman,
+    threshold_rial: thresholdToman * 10,
+    policy_year: policyYear,
+    source: "annual-policy",
+    fetched_at: fetchedAt,
+    cache_month: cacheMonth,
+  }
+
+  return cachedThreshold
+}
+
+export function annualFreeShippingThresholdToman(year: number): number {
+  const elapsedYears = Math.max(0, Math.trunc(year) - BASE_POLICY_YEAR)
+
+  return BASE_THRESHOLD_TOMAN + elapsedYears * ANNUAL_INCREMENT_TOMAN
 }
 
 export async function fetchBonbastEurTomanRate(): Promise<number> {
@@ -104,10 +100,6 @@ export async function fetchBonbastEurTomanRate(): Promise<number> {
   }
 }
 
-export function roundToNearestMillionToman(value: number): number {
-  return Math.round(value / TOMAN_ROUNDING_STEP) * TOMAN_ROUNDING_STEP
-}
-
 function monthKey(date: Date): string {
   return `${date.getUTCFullYear()}-${String(date.getUTCMonth() + 1).padStart(2, "0")}`
 }
@@ -122,13 +114,4 @@ function htmlToText(html: string): string {
     .replace(/&amp;/gi, "&")
     .replace(/\s+/g, " ")
     .trim()
-}
-
-function positiveIntegerFromEnv(value?: string): number | null {
-  if (!value) {
-    return null
-  }
-
-  const parsed = Number.parseInt(value, 10)
-  return Number.isFinite(parsed) && parsed > 0 ? parsed : null
 }

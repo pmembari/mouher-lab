@@ -1,16 +1,23 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowRight } from "../components/icons";
 import { ProductImage } from "../components/ProductImage";
+import { isMedusaConfigured } from "../lib/catalog/config.js";
 import {
+  isValidMobilePhone,
   loadCurrentCustomer,
   loginCustomer,
   logoutCustomer,
+  normalizeMobilePhone,
   registerCustomer,
 } from "../lib/medusaAuth";
 import {
   requestLoyaltyPushSubscription,
   supportsBrowserPush,
 } from "../lib/notifications";
+
+const TURNSTILE_SCRIPT_ID = "mouher-turnstile-script";
+const TURNSTILE_SCRIPT_SRC =
+  "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
 
 function AccountProductRail({ title, viewAllLabel, products }) {
   return (
@@ -36,8 +43,77 @@ function AccountProductRail({ title, viewAllLabel, products }) {
   );
 }
 
+function TurnstileWidget({ siteKey, onToken, resetKey }) {
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    if (!siteKey || !containerRef.current || typeof window === "undefined") {
+      return undefined;
+    }
+
+    let cancelled = false;
+    let widgetId = null;
+    const container = containerRef.current;
+
+    function renderWidget() {
+      if (cancelled || !window.turnstile || !container) return;
+
+      container.innerHTML = "";
+      widgetId = window.turnstile.render(container, {
+        sitekey: siteKey,
+        action: "customer-register",
+        callback: (token) => onToken(token || ""),
+        "expired-callback": () => onToken(""),
+        "error-callback": () => onToken(""),
+      });
+    }
+
+    let script = document.getElementById(TURNSTILE_SCRIPT_ID);
+
+    if (!script) {
+      script = document.createElement("script");
+      script.id = TURNSTILE_SCRIPT_ID;
+      script.src = TURNSTILE_SCRIPT_SRC;
+      script.async = true;
+      script.defer = true;
+      document.head.appendChild(script);
+    }
+
+    if (window.turnstile) {
+      renderWidget();
+    } else {
+      script.addEventListener("load", renderWidget, { once: true });
+    }
+
+    return () => {
+      cancelled = true;
+      script?.removeEventListener("load", renderWidget);
+
+      if (widgetId !== null && window.turnstile?.remove) {
+        try {
+          window.turnstile.remove(widgetId);
+        } catch {
+          // Widget cleanup should never block account navigation.
+        }
+      }
+    };
+  }, [siteKey, resetKey]);
+
+  return (
+    <div
+      ref={containerRef}
+      className="account-turnstile"
+      aria-label="Security check"
+    />
+  );
+}
+
 export function AccountWorkspacePage({ language, labels, dashboardLabels }) {
   const isSupported = supportsBrowserPush();
+  const medusaConfigured = isMedusaConfigured();
+  const turnstileSiteKey = String(
+    import.meta.env.VITE_TURNSTILE_SITE_KEY || ""
+  ).trim();
   const [customerId, setCustomerId] = useState("");
   const [status, setStatus] = useState(isSupported ? "idle" : "unsupported");
   const [profile, setProfile] = useState({
@@ -54,6 +130,7 @@ export function AccountWorkspacePage({ language, labels, dashboardLabels }) {
   const [authMode, setAuthMode] = useState("login");
   const [authForm, setAuthForm] = useState({
     name: "",
+    phone: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -61,6 +138,8 @@ export function AccountWorkspacePage({ language, labels, dashboardLabels }) {
   const [showPassword, setShowPassword] = useState(false);
   const [authError, setAuthError] = useState("");
   const [authPending, setAuthPending] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState("");
+  const [captchaResetKey, setCaptchaResetKey] = useState(0);
   const [accountUser, setAccountUser] = useState(null);
   const isLoading = status === "loading";
   const statusLabel = loyaltyStatusLabel(status, labels);
@@ -68,6 +147,10 @@ export function AccountWorkspacePage({ language, labels, dashboardLabels }) {
   const isAuthenticated = Boolean(accountUser);
 
   useEffect(() => {
+    if (!medusaConfigured) {
+      return undefined;
+    }
+
     let active = true;
 
     loadCurrentCustomer()
@@ -80,6 +163,7 @@ export function AccountWorkspacePage({ language, labels, dashboardLabels }) {
             .filter(Boolean)
             .join(" "),
           email: customer.email || "",
+          phone: customer.phone || "",
         });
       })
       .catch((error) => {
@@ -90,7 +174,7 @@ export function AccountWorkspacePage({ language, labels, dashboardLabels }) {
     return () => {
       active = false;
     };
-  }, []);
+  }, [medusaConfigured]);
 
   function handleProfileChange(field, value) {
     setProfile((currentProfile) => ({
@@ -141,10 +225,11 @@ export function AccountWorkspacePage({ language, labels, dashboardLabels }) {
   async function handleAuthSubmit(event) {
     event.preventDefault();
 
-    if (authPending) return;
+    if (authPending || !medusaConfigured) return;
 
     const email = authForm.email.trim();
     const name = authForm.name.trim();
+    const phone = normalizeMobilePhone(authForm.phone);
 
     if (!email || !authForm.password) {
       setAuthError(labels.authErrorRequired);
@@ -156,11 +241,38 @@ export function AccountWorkspacePage({ language, labels, dashboardLabels }) {
       return;
     }
 
+    if (authMode === "create" && !isValidMobilePhone(phone)) {
+      setAuthError(
+        isFarsi
+          ? "شماره موبایل معتبر وارد کنید. شماره باید با کد کشور ثبت شود."
+          : "Enter a valid mobile phone number, including the country code."
+      );
+      return;
+    }
+
     if (
       authMode === "create" &&
       authForm.password !== authForm.confirmPassword
     ) {
       setAuthError(labels.authErrorPasswordMismatch);
+      return;
+    }
+
+    if (authMode === "create" && !turnstileSiteKey) {
+      setAuthError(
+        isFarsi
+          ? "ساخت حساب تا زمان پیکربندی بررسی امنیتی در دسترس نیست."
+          : "Account creation is unavailable until the security check is configured."
+      );
+      return;
+    }
+
+    if (authMode === "create" && !captchaToken) {
+      setAuthError(
+        isFarsi
+          ? "لطفاً بررسی امنیتی را کامل کنید."
+          : "Complete the security check before creating your account."
+      );
       return;
     }
 
@@ -178,6 +290,8 @@ export function AccountWorkspacePage({ language, labels, dashboardLabels }) {
           password: authForm.password,
           firstName: parts[0] || "",
           lastName: parts.slice(1).join(" "),
+          phone,
+          captchaToken,
         });
       } else {
         customer = await loginCustomer(email, authForm.password);
@@ -194,16 +308,24 @@ export function AccountWorkspacePage({ language, labels, dashboardLabels }) {
             .filter(Boolean)
             .join(" ") || customer.email,
         email: customer.email || "",
+        phone: customer.phone || phone,
       });
 
       setAuthForm({
         name,
+        phone: customer.phone || phone,
         email,
         password: "",
         confirmPassword: "",
       });
+      setCaptchaToken("");
     } catch (error) {
       setAuthError(error?.message || labels.failed || "Authentication failed.");
+
+      if (authMode === "create") {
+        setCaptchaToken("");
+        setCaptchaResetKey((current) => current + 1);
+      }
     } finally {
       setAuthPending(false);
     }
@@ -229,13 +351,15 @@ export function AccountWorkspacePage({ language, labels, dashboardLabels }) {
   function applyAuthenticatedUser(user) {
     const name = user.name || user.email || "Customer";
     const email = user.email || "";
+    const phone = user.phone || "";
 
-    setAccountUser({ ...user, name, email });
+    setAccountUser({ ...user, name, email, phone });
     setCustomerId(user.id || email);
     setProfile((currentProfile) => ({
       ...currentProfile,
       name: currentProfile.name || name,
       email: currentProfile.email || email,
+      phone: currentProfile.phone || phone,
     }));
   }
 
@@ -315,7 +439,27 @@ export function AccountWorkspacePage({ language, labels, dashboardLabels }) {
           </div>
         </div>
 
-        {!isAuthenticated && (
+        {!isAuthenticated && !medusaConfigured && (
+          <section className="account-auth-panel" dir={isFarsi ? "rtl" : undefined}>
+            <div>
+              <span className="eyebrow">{labels.authRequired}</span>
+              <h2>
+                {isFarsi ? "حساب مشتری به‌زودی فعال می‌شود" : "Customer accounts are coming soon"}
+              </h2>
+              <p>
+                {isFarsi
+                  ? "ورود، سفارش‌ها و اطلاعات حساب زمانی فعال می‌شوند که بک‌اند مدوسا راه‌اندازی شود."
+                  : "Sign in, orders and saved account details will become available when the Medusa backend goes live."}
+              </p>
+            </div>
+            <a href="#/shop" className="button button-dark">
+              {dashboardLabels.viewStore}
+              <ArrowRight />
+            </a>
+          </section>
+        )}
+
+        {!isAuthenticated && medusaConfigured && (
           <section className="account-auth-panel" dir={isFarsi ? "rtl" : undefined}>
             <div>
               <span className="eyebrow">{labels.authRequired}</span>
@@ -325,16 +469,31 @@ export function AccountWorkspacePage({ language, labels, dashboardLabels }) {
 
             <form className="account-auth-form" onSubmit={handleAuthSubmit}>
               {authMode === "create" && (
-                <label>
-                  <span>{labels.fullName}</span>
-                  <input
-                    type="text"
-                    value={authForm.name}
-                    onChange={(event) => handleAuthChange("name", event.target.value)}
-                    placeholder={labels.fullNamePlaceholder}
-                    autoComplete="name"
-                  />
-                </label>
+                <>
+                  <label>
+                    <span>{labels.fullName}</span>
+                    <input
+                      type="text"
+                      value={authForm.name}
+                      onChange={(event) => handleAuthChange("name", event.target.value)}
+                      placeholder={labels.fullNamePlaceholder}
+                      autoComplete="name"
+                    />
+                  </label>
+
+                  <label>
+                    <span>{labels.phone}</span>
+                    <input
+                      type="tel"
+                      value={authForm.phone}
+                      onChange={(event) => handleAuthChange("phone", event.target.value)}
+                      placeholder={labels.phonePlaceholder || "+98 912 123 4567"}
+                      autoComplete="tel"
+                      inputMode="tel"
+                      required
+                    />
+                  </label>
+                </>
               )}
 
               <label>
@@ -368,18 +527,34 @@ export function AccountWorkspacePage({ language, labels, dashboardLabels }) {
               </label>
 
               {authMode === "create" && (
-                <label>
-                  <span>{labels.confirmPassword}</span>
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    value={authForm.confirmPassword}
-                    onChange={(event) => handleAuthChange("confirmPassword", event.target.value)}
-                    placeholder={labels.confirmPasswordPlaceholder}
-                    autoComplete="new-password"
-                    minLength="8"
-                    required
-                  />
-                </label>
+                <>
+                  <label>
+                    <span>{labels.confirmPassword}</span>
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      value={authForm.confirmPassword}
+                      onChange={(event) => handleAuthChange("confirmPassword", event.target.value)}
+                      placeholder={labels.confirmPasswordPlaceholder}
+                      autoComplete="new-password"
+                      minLength="8"
+                      required
+                    />
+                  </label>
+
+                  {turnstileSiteKey ? (
+                    <TurnstileWidget
+                      siteKey={turnstileSiteKey}
+                      resetKey={captchaResetKey}
+                      onToken={setCaptchaToken}
+                    />
+                  ) : (
+                    <p className="account-auth-error" role="status">
+                      {isFarsi
+                        ? "بررسی امنیتی برای ساخت حساب هنوز پیکربندی نشده است."
+                        : "The security check for account creation is not configured yet."}
+                    </p>
+                  )}
+                </>
               )}
 
               {authError && (
@@ -389,7 +564,14 @@ export function AccountWorkspacePage({ language, labels, dashboardLabels }) {
               )}
 
               <div className="account-auth-actions">
-                <button type="submit" className="button button-dark" disabled={authPending}>
+                <button
+                  type="submit"
+                  className="button button-dark"
+                  disabled={
+                    authPending ||
+                    (authMode === "create" && (!turnstileSiteKey || !captchaToken))
+                  }
+                >
                   {authPending
                     ? (labels.loading || "Please wait...")
                     : (authMode === "login" ? labels.login : labels.createAccount)}
@@ -403,6 +585,8 @@ export function AccountWorkspacePage({ language, labels, dashboardLabels }) {
                   onClick={() => {
                     setAuthMode((currentMode) => (currentMode === "login" ? "create" : "login"));
                     setAuthError("");
+                    setCaptchaToken("");
+                    setCaptchaResetKey((current) => current + 1);
                   }}
                 >
                   {authMode === "login" ? labels.switchToCreate : labels.switchToLogin}

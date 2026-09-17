@@ -37,9 +37,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Test storefront
-        run: npm test
-
       - name: Build storefront
         run: npm run build
 

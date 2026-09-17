@@ -82,6 +82,12 @@ export default function ProductCard({
   const href =
     productPageHref(product);
 
+  const badgeLabel =
+    getProductBadgeLabel(
+      product,
+      isFarsi
+    );
+
   const stockCount =
     Number(
       product.stockCount
@@ -168,9 +174,9 @@ export default function ProductCard({
       }}
     >
       <div className="product-image-wrap">
-        {product.badge && (
+        {badgeLabel && (
           <span className="product-badge">
-            {product.badge}
+            {badgeLabel}
           </span>
         )}
 
@@ -320,5 +326,66 @@ export default function ProductCard({
         </p>
       )}
     </article>
+  );
+}
+
+function getProductBadgeLabel(
+  product,
+  isFarsi
+) {
+  const badge = String(
+    product.badge || ""
+  ).trim();
+
+  const badgeValue =
+    badge.toLowerCase();
+
+  const isSaleBadge =
+    badgeValue === "sale" ||
+    badgeValue === "sales" ||
+    badgeValue.startsWith("off");
+
+  const currentPrice = Number(
+    product.priceAmount
+  );
+
+  const comparePrice = Number(
+    product.compareAtAmount
+  );
+
+  const hasValidDiscount =
+    Number.isFinite(currentPrice) &&
+    Number.isFinite(comparePrice) &&
+    currentPrice > 0 &&
+    comparePrice > currentPrice;
+
+  if (hasValidDiscount) {
+    const percentage = Math.round(
+      ((comparePrice - currentPrice) /
+        comparePrice) *
+        100
+    );
+
+    if (percentage > 0) {
+      return isFarsi
+        ? `${toPersianDigits(percentage)}٪ تخفیف`
+        : `OFF ${percentage}%`;
+    }
+  }
+
+  if (isSaleBadge) {
+    return null;
+  }
+
+  return badge || null;
+}
+
+function toPersianDigits(value) {
+  return String(value).replace(
+    /\d/g,
+    (digit) =>
+      "۰۱۲۳۴۵۶۷۸۹"[
+        Number(digit)
+      ]
   );
 }

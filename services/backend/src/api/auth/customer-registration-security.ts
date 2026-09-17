@@ -17,6 +17,10 @@ type TurnstileVerification = {
   "error-codes"?: string[]
 }
 
+function firstHeaderValue(value: string | string[] | undefined) {
+  return String(Array.isArray(value) ? value[0] : value || "").trim()
+}
+
 export async function verifyCustomerRegistrationTurnstile(
   req: MedusaRequest,
   res: MedusaResponse,
@@ -31,14 +35,22 @@ export async function verifyCustomerRegistrationTurnstile(
     })
   }
 
-  const tokenHeader = req.headers["x-turnstile-token"]
-  const token = String(
-    Array.isArray(tokenHeader) ? tokenHeader[0] : tokenHeader || ""
-  ).trim()
+  const phone = firstHeaderValue(req.headers["x-mouher-phone"])
+
+  if (!E164_PHONE_PATTERN.test(phone)) {
+    return res.status(400).json({
+      message:
+        "A valid mobile phone number in international format is required to create an account.",
+      code: "mobile_phone_required",
+    })
+  }
+
+  const token = firstHeaderValue(req.headers["x-turnstile-token"])
 
   if (!token) {
     return res.status(400).json({
       message: "Please complete the security check before creating an account.",
+      code: "turnstile_required",
     })
   }
 
@@ -71,6 +83,7 @@ export async function verifyCustomerRegistrationTurnstile(
     console.error("Turnstile verification failed:", error)
     return res.status(502).json({
       message: "The security check could not be verified. Please try again.",
+      code: "turnstile_unavailable",
     })
   }
 
@@ -81,10 +94,7 @@ export async function verifyCustomerRegistrationTurnstile(
     })
   }
 
-  if (
-    verification.action &&
-    verification.action !== REGISTRATION_ACTION
-  ) {
+  if (verification.action !== REGISTRATION_ACTION) {
     return res.status(400).json({
       message: "The security check was not valid for account registration.",
       code: "turnstile_action_mismatch",
@@ -97,7 +107,6 @@ export async function verifyCustomerRegistrationTurnstile(
 
   if (
     expectedHostname &&
-    verification.hostname &&
     verification.hostname !== expectedHostname
   ) {
     return res.status(400).json({

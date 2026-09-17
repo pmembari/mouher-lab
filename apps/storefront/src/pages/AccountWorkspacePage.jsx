@@ -17,12 +17,12 @@ function AccountProductRail({ title, viewAllLabel, products }) {
     <section className="account-rail">
       <div className="account-rail-header">
         <h3>{title}</h3>
-        <a href="#products">{viewAllLabel}</a>
+        <a href="#/shop">{viewAllLabel}</a>
       </div>
 
       <div className="account-product-row">
         {products.map((product, index) => (
-          <a href="#products" className="account-product-card" key={product.name}>
+          <a href="#/shop" className="account-product-card" key={product.name}>
             <ProductImage
               image={product.image}
               alt={`${product.name} | image ${index + 1} of ${products.length}.`}
@@ -53,13 +53,14 @@ export function AccountWorkspacePage({ language, labels, dashboardLabels }) {
   const [profileSaved, setProfileSaved] = useState(false);
   const [authMode, setAuthMode] = useState("login");
   const [authForm, setAuthForm] = useState({
-    name: "Parham",
+    name: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
   const [showPassword, setShowPassword] = useState(false);
   const [authError, setAuthError] = useState("");
+  const [authPending, setAuthPending] = useState(false);
   const [accountUser, setAccountUser] = useState(null);
   const isLoading = status === "loading";
   const statusLabel = loyaltyStatusLabel(status, labels);
@@ -75,21 +76,22 @@ export function AccountWorkspacePage({ language, labels, dashboardLabels }) {
 
         applyAuthenticatedUser({
           id: customer.id,
-          name: [
-            customer.first_name,
-            customer.last_name,
-          ]
+          name: [customer.first_name, customer.last_name]
             .filter(Boolean)
             .join(" "),
           email: customer.email || "",
         });
       })
-      .catch(() => { });
+      .catch((error) => {
+        if (!active) return;
+        setAuthError(error?.message || "Could not restore your Medusa session.");
+      });
 
     return () => {
       active = false;
     };
   }, []);
+
   function handleProfileChange(field, value) {
     setProfile((currentProfile) => ({
       ...currentProfile,
@@ -139,6 +141,8 @@ export function AccountWorkspacePage({ language, labels, dashboardLabels }) {
   async function handleAuthSubmit(event) {
     event.preventDefault();
 
+    if (authPending) return;
+
     const email = authForm.email.trim();
     const name = authForm.name.trim();
 
@@ -161,6 +165,7 @@ export function AccountWorkspacePage({ language, labels, dashboardLabels }) {
     }
 
     setAuthError("");
+    setAuthPending(true);
 
     try {
       let customer;
@@ -175,28 +180,19 @@ export function AccountWorkspacePage({ language, labels, dashboardLabels }) {
           lastName: parts.slice(1).join(" "),
         });
       } else {
-        customer = await loginCustomer(
-          email,
-          authForm.password
-        );
+        customer = await loginCustomer(email, authForm.password);
       }
 
       if (!customer) {
-        throw new Error(
-          labels.failed || "Authentication failed."
-        );
+        throw new Error(labels.failed || "Authentication failed.");
       }
 
       applyAuthenticatedUser({
         id: customer.id,
         name:
-          [
-            customer.first_name,
-            customer.last_name,
-          ]
+          [customer.first_name, customer.last_name]
             .filter(Boolean)
-            .join(" ") ||
-          customer.email,
+            .join(" ") || customer.email,
         email: customer.email || "",
       });
 
@@ -207,11 +203,9 @@ export function AccountWorkspacePage({ language, labels, dashboardLabels }) {
         confirmPassword: "",
       });
     } catch (error) {
-      setAuthError(
-        error?.message ||
-        labels.failed ||
-        "Authentication failed."
-      );
+      setAuthError(error?.message || labels.failed || "Authentication failed.");
+    } finally {
+      setAuthPending(false);
     }
   }
 
@@ -219,10 +213,7 @@ export function AccountWorkspacePage({ language, labels, dashboardLabels }) {
     try {
       await logoutCustomer();
     } catch (error) {
-      console.error(
-        "Medusa logout failed:",
-        error
-      );
+      console.error("Medusa logout failed:", error);
     }
 
     setAccountUser(null);
@@ -236,7 +227,7 @@ export function AccountWorkspacePage({ language, labels, dashboardLabels }) {
   }
 
   function applyAuthenticatedUser(user) {
-    const name = user.name || "Parham";
+    const name = user.name || user.email || "Customer";
     const email = user.email || "";
 
     setAccountUser({ ...user, name, email });
@@ -276,50 +267,20 @@ export function AccountWorkspacePage({ language, labels, dashboardLabels }) {
     { label: labels.signOut, action: "sign-out" },
   ];
   const wishlistItems = [
-    {
-      name: "Cornell Slim Jeans - Dark Wash",
-      image: "",
-    },
-    {
-      name: "Viscose Ribbed Turtleneck FN - Black",
-      image: "",
-    },
-    {
-      name: "Pick A Side Denim Top - Black",
-      image: "",
-    },
+    { name: "Cornell Slim Jeans - Dark Wash", image: "" },
+    { name: "Viscose Ribbed Turtleneck FN - Black", image: "" },
+    { name: "Pick A Side Denim Top - Black", image: "" },
   ];
   const viewedItems = [
-    {
-      name: "Cropped Striped Button Up Shirt - Black",
-      image: "",
-    },
-    {
-      name: "Princeton Textured Johnny Collar Polo Shirt - Cream",
-      image: "",
-    },
-    {
-      name: "Monarch Royale Watch - Gold",
-      image: "",
-    },
-    {
-      name: "Bulls Digi Camo Soccer Top - Red",
-      image: "",
-    },
+    { name: "Cropped Striped Button Up Shirt - Black", image: "" },
+    { name: "Princeton Textured Johnny Collar Polo Shirt - Cream", image: "" },
+    { name: "Monarch Royale Watch - Gold", image: "" },
+    { name: "Bulls Digi Camo Soccer Top - Red", image: "" },
   ];
   const recommendedItems = [
-    {
-      name: "Tailored Everyday Blazer - Charcoal",
-      image: "",
-    },
-    {
-      name: "Wide Pleated Trouser - Stone",
-      image: "",
-    },
-    {
-      name: "Soft Cotton Overshirt - Ivory",
-      image: "",
-    },
+    { name: "Tailored Everyday Blazer - Charcoal", image: "" },
+    { name: "Wide Pleated Trouser - Stone", image: "" },
+    { name: "Soft Cotton Overshirt - Ivory", image: "" },
   ];
   const accountLinkGroups = [
     {
@@ -347,7 +308,7 @@ export function AccountWorkspacePage({ language, labels, dashboardLabels }) {
           </div>
 
           <div className="dashboard-heading-actions">
-            <a href="#products" className="button button-outline">
+            <a href="#/shop" className="button button-outline">
               {dashboardLabels.viewStore}
               <ArrowRight />
             </a>
@@ -363,7 +324,7 @@ export function AccountWorkspacePage({ language, labels, dashboardLabels }) {
             </div>
 
             <form className="account-auth-form" onSubmit={handleAuthSubmit}>
-              {!keycloakEnabled && authMode === "create" && (
+              {authMode === "create" && (
                 <label>
                   <span>{labels.fullName}</span>
                   <input
@@ -376,60 +337,49 @@ export function AccountWorkspacePage({ language, labels, dashboardLabels }) {
                 </label>
               )}
 
-              {!keycloakEnabled && (
-                <>
-                  <label>
-                    <span>{labels.email}</span>
-                    <input
-                      type="email"
-                      value={authForm.email}
-                      onChange={(event) => handleAuthChange("email", event.target.value)}
-                      placeholder={labels.emailPlaceholder}
-                      autoComplete="email"
-                      required
-                    />
-                  </label>
+              <label>
+                <span>{labels.email}</span>
+                <input
+                  type="email"
+                  value={authForm.email}
+                  onChange={(event) => handleAuthChange("email", event.target.value)}
+                  placeholder={labels.emailPlaceholder}
+                  autoComplete="email"
+                  required
+                />
+              </label>
 
-                  <label>
-                    <span>{labels.password}</span>
-                    <div className="password-field">
-                      <input
-                        type={showPassword ? "text" : "password"}
-                        value={authForm.password}
-                        onChange={(event) => handleAuthChange("password", event.target.value)}
-                        placeholder={labels.passwordPlaceholder}
-                        autoComplete={authMode === "login" ? "current-password" : "new-password"}
-                        minLength="8"
-                        required
-                      />
-                      <button type="button" onClick={() => setShowPassword((current) => !current)}>
-                        {showPassword ? labels.hidePassword : labels.showPassword}
-                      </button>
-                    </div>
-                  </label>
-
-                  {authMode === "create" && (
-                    <label>
-                      <span>{labels.confirmPassword}</span>
-                      <input
-                        type={showPassword ? "text" : "password"}
-                        value={authForm.confirmPassword}
-                        onChange={(event) => handleAuthChange("confirmPassword", event.target.value)}
-                        placeholder={labels.confirmPasswordPlaceholder}
-                        autoComplete="new-password"
-                        minLength="8"
-                        required
-                      />
-                    </label>
-                  )}
-                </>
-              )}
-
-              {keycloakEnabled && (
-                <div className="account-auth-provider">
-                  <strong>Keycloak</strong>
-                  <span>{labels.authSecurityNote}</span>
+              <label>
+                <span>{labels.password}</span>
+                <div className="password-field">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    value={authForm.password}
+                    onChange={(event) => handleAuthChange("password", event.target.value)}
+                    placeholder={labels.passwordPlaceholder}
+                    autoComplete={authMode === "login" ? "current-password" : "new-password"}
+                    minLength="8"
+                    required
+                  />
+                  <button type="button" onClick={() => setShowPassword((current) => !current)}>
+                    {showPassword ? labels.hidePassword : labels.showPassword}
+                  </button>
                 </div>
+              </label>
+
+              {authMode === "create" && (
+                <label>
+                  <span>{labels.confirmPassword}</span>
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    value={authForm.confirmPassword}
+                    onChange={(event) => handleAuthChange("confirmPassword", event.target.value)}
+                    placeholder={labels.confirmPasswordPlaceholder}
+                    autoComplete="new-password"
+                    minLength="8"
+                    required
+                  />
+                </label>
               )}
 
               {authError && (
@@ -439,14 +389,17 @@ export function AccountWorkspacePage({ language, labels, dashboardLabels }) {
               )}
 
               <div className="account-auth-actions">
-                <button type="submit" className="button button-dark" disabled={!keycloakReady}>
-                  {authMode === "login" ? labels.login : labels.createAccount}
-                  <ArrowRight />
+                <button type="submit" className="button button-dark" disabled={authPending}>
+                  {authPending
+                    ? (labels.loading || "Please wait...")
+                    : (authMode === "login" ? labels.login : labels.createAccount)}
+                  {!authPending && <ArrowRight />}
                 </button>
 
                 <button
                   type="button"
                   className="account-auth-switch"
+                  disabled={authPending}
                   onClick={() => {
                     setAuthMode((currentMode) => (currentMode === "login" ? "create" : "login"));
                     setAuthError("");
@@ -456,260 +409,212 @@ export function AccountWorkspacePage({ language, labels, dashboardLabels }) {
                 </button>
               </div>
 
-              {!keycloakEnabled && <p>{labels.authSecurityNote}</p>}
+              <p>{labels.authSecurityNote}</p>
             </form>
           </section>
         )}
 
         {isAuthenticated && (
-        <section className="account-dashboard">
-          <aside className="account-menu" aria-label={labels.account}>
-            {accountMenu.map((item) => (
-              <button
-                type="button"
-                className={item.action === "account" ? "account-menu-active" : ""}
-                key={item.action}
-                onClick={item.action === "sign-out" ? handleSignOut : undefined}
-              >
-                {item.label}
-              </button>
-            ))}
-          </aside>
-
-          <div className="account-main">
-            <div className="account-welcome">
-              <span className="eyebrow">{labels.account}</span>
-              <h2>{labels.greeting.replace("Parham", accountUser?.name || "Parham").replace("پرهام", accountUser?.name || "پرهام")}</h2>
-            </div>
-
-            <AccountProductRail
-              title={labels.wishlist}
-              viewAllLabel={labels.viewAll}
-              products={wishlistItems}
-            />
-
-            <AccountProductRail
-              title={labels.viewed}
-              viewAllLabel={labels.viewAll}
-              products={viewedItems}
-            />
-
-            <AccountProductRail
-              title={labels.recommended}
-              viewAllLabel={labels.viewAll}
-              products={recommendedItems}
-            />
-
-            <div className="account-app-panel">
-              <strong>{labels.shopFaster}</strong>
-              <a href="#products" className="button button-light">
-                {dashboardLabels.viewStore}
-                <ArrowRight />
-              </a>
-            </div>
-
-            <div className="account-footer-links">
-              {accountLinkGroups.map((group) => (
-                <div key={group.title}>
-                  <h3>{group.title}</h3>
-                  {group.links.map((link) => (
-                    <a href="#/account" key={link}>
-                      {link}
-                    </a>
-                  ))}
-                </div>
+          <section className="account-dashboard">
+            <aside className="account-menu" aria-label={labels.account}>
+              {accountMenu.map((item) => (
+                <button
+                  type="button"
+                  className={item.action === "account" ? "account-menu-active" : ""}
+                  key={item.action}
+                  onClick={item.action === "sign-out" ? handleSignOut : undefined}
+                >
+                  {item.label}
+                </button>
               ))}
+            </aside>
+
+            <div className="account-main">
+              <div className="account-welcome">
+                <span className="eyebrow">{labels.account}</span>
+                <h2>{labels.greeting.replace("Parham", accountUser?.name || "Customer").replace("پرهام", accountUser?.name || "مشتری")}</h2>
+              </div>
+
+              <AccountProductRail title={labels.wishlist} viewAllLabel={labels.viewAll} products={wishlistItems} />
+              <AccountProductRail title={labels.viewed} viewAllLabel={labels.viewAll} products={viewedItems} />
+              <AccountProductRail title={labels.recommended} viewAllLabel={labels.viewAll} products={recommendedItems} />
+
+              <div className="account-app-panel">
+                <strong>{labels.shopFaster}</strong>
+                <a href="#/shop" className="button button-light">
+                  {dashboardLabels.viewStore}
+                  <ArrowRight />
+                </a>
+              </div>
+
+              <div className="account-footer-links">
+                {accountLinkGroups.map((group) => (
+                  <div key={group.title}>
+                    <h3>{group.title}</h3>
+                    {group.links.map((link) => (
+                      <a href="#/account" key={link}>{link}</a>
+                    ))}
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
         )}
 
         {isAuthenticated && (
-        <section className="profile-landing" dir={isFarsi ? "rtl" : undefined}>
-          <div className="profile-cover">
-            {coverPhoto ? (
-              <img src={coverPhoto} alt="" />
-            ) : (
-              <div className="profile-cover-empty" aria-hidden="true" />
-            )}
+          <section className="profile-landing" dir={isFarsi ? "rtl" : undefined}>
+            <div className="profile-cover">
+              {coverPhoto ? (
+                <img src={coverPhoto} alt="" />
+              ) : (
+                <div className="profile-cover-empty" aria-hidden="true" />
+              )}
 
-            <label className="profile-upload profile-cover-upload">
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleSinglePhotoChange(setCoverPhoto)}
-              />
-              <span>{coverPhoto ? labels.changePhoto : labels.coverPhoto}</span>
-            </label>
-          </div>
-
-          <div className="profile-intro">
-            <div className="profile-avatar-wrap">
-              <div className="profile-avatar">
-                {profilePhoto ? (
-                  <img src={profilePhoto} alt="" />
-                ) : (
-                  <span>{(profile.name || "M").trim().charAt(0).toUpperCase()}</span>
-                )}
-              </div>
-
-              <label className="profile-upload">
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleSinglePhotoChange(setProfilePhoto)}
-                />
-                <span>{profilePhoto ? labels.changePhoto : labels.addPhoto}</span>
+              <label className="profile-upload profile-cover-upload">
+                <input type="file" accept="image/*" onChange={handleSinglePhotoChange(setCoverPhoto)} />
+                <span>{coverPhoto ? labels.changePhoto : labels.coverPhoto}</span>
               </label>
             </div>
 
-            <div>
-              <span className="eyebrow">{labels.profileEyebrow}</span>
-              <h2>{labels.heroTitle}</h2>
-              <p>{labels.heroDescription}</p>
+            <div className="profile-intro">
+              <div className="profile-avatar-wrap">
+                <div className="profile-avatar">
+                  {profilePhoto ? (
+                    <img src={profilePhoto} alt="" />
+                  ) : (
+                    <span>{(profile.name || "M").trim().charAt(0).toUpperCase()}</span>
+                  )}
+                </div>
+
+                <label className="profile-upload">
+                  <input type="file" accept="image/*" onChange={handleSinglePhotoChange(setProfilePhoto)} />
+                  <span>{profilePhoto ? labels.changePhoto : labels.addPhoto}</span>
+                </label>
+              </div>
+
+              <div>
+                <span className="eyebrow">{labels.profileEyebrow}</span>
+                <h2>{labels.heroTitle}</h2>
+                <p>{labels.heroDescription}</p>
+              </div>
             </div>
-          </div>
 
-          <div className="profile-content-grid">
-            <form className="profile-form" onSubmit={handleSaveProfile}>
-              <div className="dashboard-panel-header">
-                <h2>{labels.profileDetails}</h2>
-                <span>{labels.profilePhoto}</span>
-              </div>
+            <div className="profile-content-grid">
+              <form className="profile-form" onSubmit={handleSaveProfile}>
+                <div className="dashboard-panel-header">
+                  <h2>{labels.profileDetails}</h2>
+                  <span>{labels.profilePhoto}</span>
+                </div>
 
-              <div className="profile-field-grid">
+                <div className="profile-field-grid">
+                  <label>
+                    <span>{labels.fullName}</span>
+                    <input
+                      type="text"
+                      value={profile.name}
+                      onChange={(event) => handleProfileChange("name", event.target.value)}
+                      placeholder={labels.fullNamePlaceholder}
+                      autoComplete="name"
+                    />
+                  </label>
+
+                  <label>
+                    <span>{labels.city}</span>
+                    <input
+                      type="text"
+                      value={profile.city}
+                      onChange={(event) => handleProfileChange("city", event.target.value)}
+                      placeholder={labels.cityPlaceholder}
+                      autoComplete="address-level2"
+                    />
+                  </label>
+
+                  <label>
+                    <span>{labels.email}</span>
+                    <input
+                      type="email"
+                      value={profile.email}
+                      onChange={(event) => handleProfileChange("email", event.target.value)}
+                      placeholder={labels.emailPlaceholder}
+                      autoComplete="email"
+                    />
+                  </label>
+
+                  <label>
+                    <span>{labels.phone}</span>
+                    <input
+                      type="tel"
+                      value={profile.phone}
+                      onChange={(event) => handleProfileChange("phone", event.target.value)}
+                      placeholder={labels.phonePlaceholder}
+                      autoComplete="tel"
+                    />
+                  </label>
+                </div>
+
                 <label>
-                  <span>{labels.fullName}</span>
-                  <input
-                    type="text"
-                    value={profile.name}
-                    onChange={(event) => handleProfileChange("name", event.target.value)}
-                    placeholder={labels.fullNamePlaceholder}
-                    autoComplete="name"
+                  <span>{labels.notes}</span>
+                  <textarea
+                    rows="4"
+                    value={profile.notes}
+                    onChange={(event) => handleProfileChange("notes", event.target.value)}
+                    placeholder={labels.notesPlaceholder}
                   />
                 </label>
 
-                <label>
-                  <span>{labels.city}</span>
-                  <input
-                    type="text"
-                    value={profile.city}
-                    onChange={(event) => handleProfileChange("city", event.target.value)}
-                    placeholder={labels.cityPlaceholder}
-                    autoComplete="address-level2"
-                  />
-                </label>
-
-                <label>
-                  <span>{labels.email}</span>
-                  <input
-                    type="email"
-                    value={profile.email}
-                    onChange={(event) => handleProfileChange("email", event.target.value)}
-                    placeholder={labels.emailPlaceholder}
-                    autoComplete="email"
-                  />
-                </label>
-
-                <label>
-                  <span>{labels.phone}</span>
-                  <input
-                    type="tel"
-                    value={profile.phone}
-                    onChange={(event) => handleProfileChange("phone", event.target.value)}
-                    placeholder={labels.phonePlaceholder}
-                    autoComplete="tel"
-                  />
-                </label>
-              </div>
-
-              <label className="profile-notes-field">
-                <span>{labels.styleNotes}</span>
-                <textarea
-                  value={profile.notes}
-                  onChange={(event) => handleProfileChange("notes", event.target.value)}
-                  placeholder={labels.styleNotesPlaceholder}
-                  rows="6"
-                />
-              </label>
-
-              <div className="profile-form-actions">
                 <button type="submit" className="button button-dark">
                   {labels.saveProfile}
                   <ArrowRight />
                 </button>
+                {profileSaved && <p>{labels.profileSaved}</p>}
+              </form>
 
-                {profileSaved && <span role="status">{labels.savedProfile}</span>}
-              </div>
-            </form>
+              <aside className="profile-side-panel">
+                <div className="profile-location-card">
+                  <span>{labels.location}</span>
+                  <strong>{profileLocation || labels.locationPlaceholder}</strong>
+                </div>
 
-            <aside className="profile-preview" aria-label={labels.previewLabel}>
-              <span>{labels.previewLabel}</span>
-              <h3>{profile.name || labels.emptyName}</h3>
-              <p>{profileLocation || labels.emptyLocation}</p>
-              <blockquote>{profile.notes || labels.emptyBio}</blockquote>
-            </aside>
-          </div>
+                <div className="profile-gallery-card">
+                  <div className="dashboard-panel-header">
+                    <h2>{labels.gallery}</h2>
+                    <span>{galleryPhotos.length}/6</span>
+                  </div>
 
-          <section className="profile-gallery-panel">
-            <div className="dashboard-panel-header">
-              <h2>{labels.gallery}</h2>
+                  <div className="profile-gallery-grid">
+                    {galleryPhotos.map((photo) => (
+                      <img key={photo} src={photo} alt="" />
+                    ))}
+                  </div>
 
-              <label className="profile-upload">
-                <input type="file" accept="image/*" multiple onChange={handleGalleryChange} />
-                <span>{labels.addGalleryPhoto}</span>
-              </label>
-            </div>
-
-            <div className="profile-gallery-grid">
-              {galleryPhotos.length ? (
-                galleryPhotos.map((photo) => (
-                  <img src={photo} alt="" key={photo} />
-                ))
-              ) : (
-                [0, 1, 2].map((slot) => (
-                  <div className="profile-gallery-empty" key={slot} aria-hidden="true" />
-                ))
-              )}
+                  <label className="profile-upload">
+                    <input type="file" accept="image/*" multiple onChange={handleGalleryChange} />
+                    <span>{labels.addGallery}</span>
+                  </label>
+                </div>
+              </aside>
             </div>
           </section>
-        </section>
         )}
 
         {isAuthenticated && (
-        <section className="dashboard-panel loyalty-panel">
-          <div className="dashboard-panel-header">
-            <h2>{labels.browserPush}</h2>
-            <span>{isSupported ? labels.browserSupported : labels.browserUnsupported}</span>
-          </div>
+          <section className="profile-card">
+            <div className="dashboard-panel-header">
+              <h2>{labels.loyaltyTitle}</h2>
+              <span>{statusLabel}</span>
+            </div>
 
-          <form className="loyalty-form" onSubmit={handleEnablePush}>
-            <label>
-              <span>{labels.customerId}</span>
-              <input
-                type="text"
-                value={customerId}
-                onChange={(event) => setCustomerId(event.target.value)}
-                placeholder={labels.customerPlaceholder}
-                autoComplete="off"
-              />
-            </label>
+            <p>{labels.loyaltyDescription}</p>
 
             <button
-              type="submit"
-              className="button button-dark"
-              disabled={!isSupported || isLoading}
+              type="button"
+              className="button button-outline"
+              disabled={isLoading || status === "active"}
+              onClick={handleEnablePush}
             >
-              {isLoading ? labels.enabling : labels.enable}
-              <ArrowRight />
+              {isLoading ? labels.loading : labels.enableNotifications}
             </button>
-          </form>
-
-          <div className={`loyalty-status loyalty-status-${status || "idle"}`} role="status">
-            <strong>{statusLabel}</strong>
-            <span>{labels.noPaidChannels}</span>
-          </div>
-        </section>
+          </section>
         )}
       </section>
     </div>
@@ -717,12 +622,18 @@ export function AccountWorkspacePage({ language, labels, dashboardLabels }) {
 }
 
 function loyaltyStatusLabel(status, labels) {
-  if (status === "active") return labels.active;
-  if (status === "blocked") return labels.blocked;
-  if (status === "not_configured") return labels.notConfigured;
-  if (status === "not_granted") return labels.notGranted;
-  if (status === "unsupported") return labels.unsupported;
-  if (status === "failed") return labels.failed;
-
-  return labels.browserPush;
+  switch (status) {
+    case "active":
+      return labels.active;
+    case "unsupported":
+      return labels.unsupported;
+    case "denied":
+      return labels.denied;
+    case "failed":
+      return labels.failed;
+    case "loading":
+      return labels.loading;
+    default:
+      return labels.inactive;
+  }
 }

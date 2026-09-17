@@ -1,16 +1,76 @@
 /* =========================================================
-   HOMEPAGE MERCHANDISING
+   HOMEPAGE TYPOGRAPHY + MERCHANDISING
 ========================================================= */
 
-.home-video-cta {
-  display: flex;
-  justify-content: center;
-  padding: 28px 24px 10px;
+.home-intro,
+.home-trending,
+.categories-section,
+.philosophy,
+.home-discovery,
+.newsletter {
+  --home-sans:
+    -apple-system,
+    BlinkMacSystemFont,
+    "SF Pro Text",
+    "SF Pro Display",
+    "Helvetica Neue",
+    Helvetica,
+    Arial,
+    sans-serif;
+
+  --home-display:
+    "Bodoni 72",
+    Didot,
+    "Iowan Old Style",
+    "Times New Roman",
+    serif;
 }
 
-.home-video-cta .button {
-  min-width: 170px;
-  justify-content: center;
+.home-intro,
+.home-trending,
+.categories-section,
+.philosophy,
+.home-discovery,
+.newsletter {
+  font-family: var(--home-sans);
+}
+
+.home-intro h1,
+.home-trending .section-heading h2,
+.categories-section .section-heading h2,
+.philosophy-content h2,
+.home-discovery .section-heading h2,
+.newsletter h2 {
+  font-family: var(--home-display);
+  font-weight: 400;
+  letter-spacing: -0.035em;
+}
+
+.home-intro h1 {
+  font-size: clamp(58px, 7.2vw, 112px);
+  line-height: 0.92;
+  letter-spacing: -0.045em;
+}
+
+.home-intro .hero-description,
+.home-trending-copy,
+.home-category-copy,
+.philosophy-content p,
+.newsletter p,
+.newsletter input,
+.newsletter button {
+  font-family: var(--home-sans);
+}
+
+.home-intro .eyebrow,
+.home-trending .eyebrow,
+.categories-section .eyebrow,
+.philosophy .eyebrow,
+.home-discovery .eyebrow,
+.newsletter .eyebrow,
+.home-merch-kicker {
+  font-family: var(--home-sans);
+  letter-spacing: 0.14em;
 }
 
 .home-merch-heading {
@@ -45,10 +105,7 @@
   background: var(--surface);
 }
 
-.home-trending-media {
-  aspect-ratio: 4 / 5;
-}
-
+.home-trending-media,
 .home-category-media {
   aspect-ratio: 4 / 5;
 }
@@ -81,16 +138,18 @@
 .home-category-copy h3 {
   margin: 0;
   color: var(--dark);
-  font-size: clamp(18px, 1.5vw, 24px);
-  line-height: 1.15;
-  font-weight: 600;
-  letter-spacing: -0.02em;
+  font-family: var(--home-display);
+  font-size: clamp(22px, 1.8vw, 30px);
+  line-height: 1.08;
+  font-weight: 400;
+  letter-spacing: -0.025em;
 }
 
 .home-trending-copy p,
 .home-category-copy span {
   margin: 7px 0 0;
   color: var(--muted);
+  font-family: var(--home-sans);
   font-size: 12px;
   line-height: 1.45;
 }
@@ -101,7 +160,6 @@
   color: var(--muted);
   font-size: 9px;
   line-height: 1.2;
-  letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
@@ -127,17 +185,33 @@
   outline-offset: 5px;
 }
 
+.site-farsi .home-intro,
+.site-farsi .home-trending,
+.site-farsi .categories-section,
+.site-farsi .philosophy,
+.site-farsi .home-discovery,
+.site-farsi .newsletter,
+.site-farsi .home-trending-copy h3,
+.site-farsi .home-category-copy h3,
+.site-farsi .home-merch-kicker {
+  font-family: var(--farsi);
+}
+
+.site-farsi .home-intro h1,
+.site-farsi .home-trending .section-heading h2,
+.site-farsi .categories-section .section-heading h2,
+.site-farsi .philosophy-content h2,
+.site-farsi .home-discovery .section-heading h2,
+.site-farsi .newsletter h2 {
+  font-family: var(--farsi);
+  letter-spacing: 0;
+}
+
 .site-farsi .home-trending-grid,
 .site-farsi .home-categories-grid,
 .site-farsi .home-trending-copy,
 .site-farsi .home-category-copy {
   direction: rtl;
-}
-
-.site-farsi .home-trending-copy h3,
-.site-farsi .home-category-copy h3,
-.site-farsi .home-merch-kicker {
-  font-family: var(--farsi);
 }
 
 @media (max-width: 980px) {
@@ -154,13 +228,8 @@
 }
 
 @media (max-width: 700px) {
-  .home-video-cta {
-    padding: 22px 16px 6px;
-  }
-
-  .home-video-cta .button {
-    width: 100%;
-    max-width: 320px;
+  .home-intro h1 {
+    font-size: clamp(48px, 15vw, 72px);
   }
 
   .home-merch-heading {

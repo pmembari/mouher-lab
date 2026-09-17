@@ -75,7 +75,8 @@ export async function registerCustomer({
   }
 
   // The registration JWT has no customer actor attached yet, so pass it
-  // explicitly while creating the Medusa customer profile.
+  // explicitly while creating the Medusa customer profile. The SDK method's
+  // second argument is query params and the third is request headers.
   await sdk.store.customer.create(
     {
       email,
@@ -83,6 +84,7 @@ export async function registerCustomer({
       last_name: lastName,
       phone: normalizedPhone,
     },
+    undefined,
     {
       authorization: `Bearer ${registrationToken}`,
     }

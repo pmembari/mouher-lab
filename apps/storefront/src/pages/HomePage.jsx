@@ -66,13 +66,6 @@ export default function HomePage({
         </div>
       </section>
 
-      <div className="home-video-cta">
-        <a href="#/shop" className="button button-dark">
-          {t.hero.button}
-          <ArrowRight />
-        </a>
-      </div>
-
       <section className="home-intro" id="new">
         <div className="home-intro-copy">
           <p className="eyebrow">{t.hero.eyebrow}</p>

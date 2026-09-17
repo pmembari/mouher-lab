@@ -8,7 +8,8 @@ import {
   medusaConfig,
 } from "../lib/catalog/config";
 
-const DEFAULT_EUR_AMOUNT = 50;
+const FALLBACK_THRESHOLD_RIAL =
+  120_000_000;
 
 export function useFreeShippingThreshold({
   language,
@@ -62,11 +63,11 @@ export function useFreeShippingThreshold({
           next &&
           Number.isFinite(
             Number(
-              next.threshold_toman
+              next.threshold_rial
             )
           ) &&
           Number(
-            next.threshold_toman
+            next.threshold_rial
           ) > 0
         ) {
           setThreshold(next);
@@ -89,30 +90,19 @@ export function useFreeShippingThreshold({
   }, []);
 
   return useMemo(() => {
-    const eurAmount =
-      threshold?.eur_amount ||
-      DEFAULT_EUR_AMOUNT;
-
-    const thresholdToman =
-      Number(
-        threshold?.threshold_toman
-      ) || null;
-
     const thresholdRial =
       Number(
         threshold?.threshold_rial
-      ) || null;
+      ) ||
+      FALLBACK_THRESHOLD_RIAL;
 
     return {
       ...threshold,
-      eurAmount,
-      thresholdToman,
       thresholdRial,
       announcement:
         formatShippingCopy({
           language,
-          eurAmount,
-          thresholdToman,
+          thresholdRial,
         }),
     };
   }, [language, threshold]);
@@ -120,41 +110,28 @@ export function useFreeShippingThreshold({
 
 function formatShippingCopy({
   language,
-  eurAmount,
-  thresholdToman,
+  thresholdRial,
 }) {
   const isFarsi =
     language === "farsi";
 
-  if (!thresholdToman) {
-    return isFarsi
-      ? `ارسال رایگان برای سفارش‌های بالاتر از معادل روز ${toPersianDigits(
-          eurAmount
-        )} یورو`
-      : `Free shipping above the current equivalent of €${eurAmount}`;
-  }
-
-  const millions =
-    thresholdToman /
-    1_000_000;
+  const roundedMillions =
+    Math.round(
+      thresholdRial /
+        1_000_000
+    );
 
   if (isFarsi) {
     return `ارسال رایگان برای خریدهای بالای ${toPersianDigits(
-      millions
-    )} میلیون تومان`;
+      roundedMillions
+    )} میلیون ریال`;
   }
 
-  return `Free shipping on orders over ${formatEnglishToman(
-    thresholdToman
-  )}`;
-}
-
-function formatEnglishToman(
-  value
-) {
-  return `${new Intl.NumberFormat(
+  return `Free shipping on orders over ${new Intl.NumberFormat(
     "en-US"
-  ).format(value)} toman`;
+  ).format(
+    roundedMillions
+  )} million rial`;
 }
 
 function toPersianDigits(value) {

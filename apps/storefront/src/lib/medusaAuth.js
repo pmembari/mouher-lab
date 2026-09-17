@@ -1,62 +1,28 @@
-const backendUrl = String(
-  import.meta.env?.VITE_MEDUSA_BACKEND_URL || ""
-).replace(/\/$/, "");
+import { getMedusaSdk } from "./medusaSdk.js";
 
-function requireBackend() {
-  if (!backendUrl) {
-    throw new Error("Medusa backend is not configured.");
-  }
-}
+export async function loginCustomer(email, password) {
+  const sdk = getMedusaSdk();
 
-async function request(path, options = {}) {
-  requireBackend();
+  const result = await sdk.auth.login(
+    "customer",
+    "emailpass",
+    {
+      email,
+      password,
+    }
+  );
 
-  const response = await fetch(`${backendUrl}${path}`, {
-    credentials: "include",
-    ...options,
-    headers: {
-      Accept: "application/json",
-      ...(options.body
-        ? { "Content-Type": "application/json" }
-        : {}),
-      ...(options.headers || {}),
-    },
-  });
+  assertAuthCompleted(result);
 
-  const payload = await response.json().catch(() => ({}));
+  const customer = await loadCurrentCustomer();
 
-  if (!response.ok) {
+  if (!customer) {
     throw new Error(
-      payload?.message ||
-      payload?.error?.message ||
-      `Authentication request failed: ${response.status}`
+      "Authentication succeeded, but no Medusa customer profile was found for this account."
     );
   }
 
-  return payload;
-}
-
-export async function loginCustomer(email, password) {
-  const auth = await request("/auth/customer/emailpass", {
-    method: "POST",
-    body: JSON.stringify({
-      email,
-      password,
-    }),
-  });
-
-  if (!auth?.token) {
-    throw new Error("Medusa did not return an authentication token.");
-  }
-
-  await request("/auth/session", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${auth.token}`,
-    },
-  });
-
-  return loadCurrentCustomer();
+  return customer;
 }
 
 export async function registerCustomer({
@@ -65,59 +31,152 @@ export async function registerCustomer({
   firstName = "",
   lastName = "",
 }) {
-  const auth = await request("/auth/customer/emailpass/register", {
-    method: "POST",
-    body: JSON.stringify({
-      email,
-      password,
-    }),
-  });
+  const sdk = getMedusaSdk();
+  let authenticatedExistingIdentity = false;
+  let authResult;
 
-  if (!auth?.token) {
-    throw new Error("Medusa did not return a registration token.");
+  try {
+    authResult = await sdk.auth.register(
+      "customer",
+      "emailpass",
+      {
+        email,
+        password,
+      }
+    );
+  } catch (error) {
+    if (!isExistingIdentityError(error)) {
+      throw error;
+    }
+
+    authResult = await sdk.auth.login(
+      "customer",
+      "emailpass",
+      {
+        email,
+        password,
+      }
+    );
+
+    authenticatedExistingIdentity = true;
   }
 
-  await request("/store/customers", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${auth.token}`,
-      "x-publishable-api-key":
-        import.meta.env?.VITE_MEDUSA_PUBLISHABLE_KEY || "",
-    },
-    body: JSON.stringify({
+  assertAuthCompleted(authResult);
+
+  if (authenticatedExistingIdentity) {
+    const existingCustomer =
+      await loadCurrentCustomer();
+
+    if (existingCustomer) {
+      return existingCustomer;
+    }
+  }
+
+  await sdk.store.customer.create({
+    email,
+    first_name: firstName,
+    last_name: lastName,
+  });
+
+  // The registration token is used to create the customer. Log in once
+  // more so the SDK stores a normal customer JWT for subsequent requests.
+  const loginResult = await sdk.auth.login(
+    "customer",
+    "emailpass",
+    {
       email,
-      first_name: firstName,
-      last_name: lastName,
-    }),
-  });
+      password,
+    }
+  );
 
-  await request("/auth/session", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${auth.token}`,
-    },
-  });
+  assertAuthCompleted(loginResult);
 
-  return loadCurrentCustomer();
+  const customer = await loadCurrentCustomer();
+
+  if (!customer) {
+    throw new Error(
+      "Your account was created, but the customer profile could not be loaded. Please sign in again."
+    );
+  }
+
+  return customer;
 }
 
 export async function loadCurrentCustomer() {
+  const sdk = getMedusaSdk();
+
   try {
-    const payload = await request("/store/customers/me", {
-      headers: {
-        "x-publishable-api-key":
-          import.meta.env?.VITE_MEDUSA_PUBLISHABLE_KEY || "",
-      },
-    });
+    const payload =
+      await sdk.store.customer.retrieve();
 
     return payload?.customer || null;
-  } catch {
-    return null;
+  } catch (error) {
+    if (isUnauthenticatedError(error)) {
+      return null;
+    }
+
+    throw error;
   }
 }
 
 export async function logoutCustomer() {
-  await request("/auth/session", {
-    method: "DELETE",
-  });
+  const sdk = getMedusaSdk();
+  await sdk.auth.logout();
+}
+
+function assertAuthCompleted(result) {
+  if (typeof result === "string") {
+    return;
+  }
+
+  if (result?.verification_required) {
+    throw new Error(
+      "Please verify your email address before signing in."
+    );
+  }
+
+  if (result?.location) {
+    throw new Error(
+      "This account requires an additional authentication step."
+    );
+  }
+
+  throw new Error(
+    "Medusa authentication did not complete successfully."
+  );
+}
+
+function isExistingIdentityError(error) {
+  const message = String(
+    error?.message || ""
+  ).toLowerCase();
+
+  return (
+    message.includes("identity") &&
+    (
+      message.includes("already") ||
+      message.includes("exists")
+    )
+  );
+}
+
+function isUnauthenticatedError(error) {
+  const status = Number(
+    error?.status ||
+    error?.response?.status ||
+    error?.statusCode
+  );
+
+  if (status === 401 || status === 403) {
+    return true;
+  }
+
+  const message = String(
+    error?.message || ""
+  ).toLowerCase();
+
+  return (
+    message.includes("unauthorized") ||
+    message.includes("not authenticated")
+  );
 }

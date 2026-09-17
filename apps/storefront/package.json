@@ -8,14 +8,12 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "node --test src/lib/*.test.js",
-    "test:catalog": "node --test src/lib/*.test.js",
-    "test:keycloak": "node --test src/lib/keycloakAuth.test.js"
+    "test:catalog": "node --test src/lib/*.test.js"
   },
   "dependencies": {
     "@medusajs/js-sdk": "2.16.0",
     "@stripe/react-stripe-js": "^6.10.0",
     "@stripe/stripe-js": "^9.16.0",
-    "keycloak-js": "^26.2.4",
     "react": "^19.1.1",
     "react-dom": "^19.1.1"
   },

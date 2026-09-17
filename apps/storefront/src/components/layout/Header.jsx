@@ -44,13 +44,7 @@ export default function Header({
           </a>
 
           <a href="#/shop">
-            {t.nav.collections}
-          </a>
-
-          <a href="#/shop">
-            {isFarsi
-              ? "دسته‌بندی‌ها"
-              : "Categories"}
+            {t.nav.shop}
           </a>
 
           <a href="#collections">

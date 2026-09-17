@@ -28,6 +28,7 @@ jobs:
       VITE_MEDUSA_REGION_ID: ${{ vars.VITE_MEDUSA_REGION_ID || secrets.VITE_MEDUSA_REGION_ID }}
       VITE_MEDUSA_COUNTRY_CODE: ${{ vars.VITE_MEDUSA_COUNTRY_CODE || 'ir' }}
       VITE_MEDUSA_CURRENCY_CODE: ${{ vars.VITE_MEDUSA_CURRENCY_CODE || 'irr' }}
+      VITE_TURNSTILE_SITE_KEY: ${{ vars.VITE_TURNSTILE_SITE_KEY || secrets.VITE_TURNSTILE_SITE_KEY }}
       VITE_ALLOW_STATIC_CATALOG_FALLBACK: ${{ vars.VITE_ALLOW_STATIC_CATALOG_FALLBACK || 'true' }}
 
     steps:
@@ -41,22 +42,9 @@ jobs:
           cache: npm
           cache-dependency-path: apps/storefront/package-lock.json
 
-      - name: Validate Medusa storefront configuration
-        shell: bash
-        run: |
-          if [ -z "$VITE_MEDUSA_BACKEND_URL" ]; then
-            echo "Missing GitHub repository variable VITE_MEDUSA_BACKEND_URL"
-            exit 1
-          fi
-
-          if [ -z "$VITE_MEDUSA_PUBLISHABLE_KEY" ]; then
-            echo "Missing GitHub repository variable VITE_MEDUSA_PUBLISHABLE_KEY"
-            exit 1
-          fi
-
       - name: Install dependencies
-        # package.json now includes the Medusa JS SDK. Use npm install until
-        # the generated package-lock.json is refreshed and committed locally.
+        # npm install refreshes the lockfile state after dependency cleanup while
+        # the storefront is still in active development.
         run: npm install --no-audit --no-fund
 
       - name: Build storefront

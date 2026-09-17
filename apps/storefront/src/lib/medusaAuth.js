@@ -1,4 +1,3 @@
-import { medusaConfig } from "./catalog/config.js";
 import { getMedusaSdk } from "./medusaSdk.js";
 
 export async function loginCustomer(email, password) {
@@ -50,19 +49,20 @@ export async function registerCustomer({
     );
   }
 
-  const registration = await requestJson(
-    `${medusaConfig.backendUrl}/auth/customer/emailpass/register`,
+  // sdk.auth.register doesn't accept custom request headers. Use the SDK's
+  // low-level client for the built-in registration route so the backend can
+  // verify the Turnstile token before Medusa creates the auth identity.
+  const registration = await sdk.client.fetch(
+    "/auth/customer/emailpass/register",
     {
       method: "POST",
       headers: {
-        "content-type": "application/json",
-        "x-publishable-api-key": medusaConfig.publishableKey,
         "x-turnstile-token": token,
       },
-      body: JSON.stringify({
+      body: {
         email,
         password,
-      }),
+      },
     }
   );
 
@@ -74,21 +74,17 @@ export async function registerCustomer({
     );
   }
 
-  await requestJson(
-    `${medusaConfig.backendUrl}/store/customers`,
+  // The registration JWT has no customer actor attached yet, so pass it
+  // explicitly while creating the Medusa customer profile.
+  await sdk.store.customer.create(
     {
-      method: "POST",
-      headers: {
-        authorization: `Bearer ${registrationToken}`,
-        "content-type": "application/json",
-        "x-publishable-api-key": medusaConfig.publishableKey,
-      },
-      body: JSON.stringify({
-        email,
-        first_name: firstName,
-        last_name: lastName,
-        phone: normalizedPhone,
-      }),
+      email,
+      first_name: firstName,
+      last_name: lastName,
+      phone: normalizedPhone,
+    },
+    {
+      authorization: `Bearer ${registrationToken}`,
     }
   );
 
@@ -165,23 +161,6 @@ export function isValidMobilePhone(value) {
   return /^\+[1-9]\d{7,14}$/.test(String(value || ""));
 }
 
-async function requestJson(url, options) {
-  const response = await fetch(url, options);
-  const payload = await response
-    .json()
-    .catch(() => ({}));
-
-  if (!response.ok) {
-    throw new Error(
-      payload?.message ||
-      payload?.error ||
-      `Request failed with status ${response.status}.`
-    );
-  }
-
-  return payload;
-}
-
 function assertAuthCompleted(result) {
   if (typeof result === "string") {
     return;
@@ -190,6 +169,12 @@ function assertAuthCompleted(result) {
   if (result?.verification_required) {
     throw new Error(
       "Please verify your email address before signing in."
+    );
+  }
+
+  if (result?.mfa_required) {
+    throw new Error(
+      "This account requires an additional authentication step."
     );
   }
 

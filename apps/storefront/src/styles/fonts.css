@@ -1,23 +1,18 @@
 /* =========================================================
    STOREFRONT FONT SETUP
 
-   Licensed techno display font placeholder:
-   Place the commercially licensed webfont files at:
+   Oxanium is used for English display typography.
+   It is distributed under the SIL Open Font License 1.1.
 
-   apps/storefront/public-safe/fonts/techno-display.woff2
-   apps/storefront/public-safe/fonts/techno-display.woff
-
-   Keep the filenames below in sync with the licensed files you add.
-   Do not commit demo or personal-use-only font files here.
+   Exact self-hosted font path:
+   apps/storefront/public-safe/fonts/Oxanium[wght].ttf
 ========================================================= */
 
 @font-face {
-  font-family: "Mouher Techno Display";
-  src:
-    url("/mouher-lab/fonts/techno-display.woff2") format("woff2"),
-    url("/mouher-lab/fonts/techno-display.woff") format("woff");
+  font-family: "Oxanium";
+  src: url("/mouher-lab/fonts/Oxanium[wght].ttf") format("truetype-variations");
   font-style: normal;
-  font-weight: 400 900;
+  font-weight: 200 800;
   font-display: swap;
 }
 
@@ -33,7 +28,7 @@
     sans-serif;
 
   --font-display-techno:
-    "Mouher Techno Display",
+    "Oxanium",
     "Arial Black",
     "Helvetica Neue",
     Helvetica,
@@ -61,7 +56,7 @@
   letter-spacing: -0.025em;
 }
 
-/* Small labels stay clean and restrained rather than using the display face. */
+/* Small labels and commerce UI stay in the system sans-serif stack. */
 .site:not(.site-farsi) .eyebrow,
 .site:not(.site-farsi) .home-merch-kicker,
 .site:not(.site-farsi) .desktop-nav,

@@ -43,8 +43,14 @@ export default function Header({
             {t.nav.newIn}
           </a>
 
-          <a href="#products">
-            {t.nav.shop}
+          <a href="#/shop">
+            {t.nav.collections}
+          </a>
+
+          <a href="#/shop">
+            {isFarsi
+              ? "دسته‌بندی‌ها"
+              : "Categories"}
           </a>
 
           <a href="#collections">

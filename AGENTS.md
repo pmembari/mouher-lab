@@ -88,6 +88,40 @@ back/forward navigation remains meaningful.
 
 Before adding new CSS to `index.css`, check whether the styles belong in
 an existing file under `apps/storefront/src/styles/`.
+
+### UI Quality Guardrails
+
+Storefront UI must be visually merchandised, not merely functionally rendered.
+
+Before implementing a homepage section, ask:
+
+- Does the section communicate through imagery?
+- Is the primary action obvious?
+- Is there duplicated navigation or duplicated filtering?
+- Is metadata visually secondary?
+- Can any control be removed or progressively disclosed?
+- Does the design still work without hover?
+
+Avoid:
+- plain text collection/category rows when imagery exists
+- excessive image hover transforms
+- glassmorphism as a default design language
+- large floating modals for simple search/filter interactions
+- duplicated controls between homepage and Shop
+- raw HTML-looking select/input layouts
+- decorative animation without merchandising purpose
+
+For catalog lists:
+- keep product imagery stable
+- keep card chrome minimal
+- prioritize image, name, price, availability
+- prefer dedicated Shop/Collection/Category routes over homepage state
+
+For homepage collections/categories:
+- use editorial image-led cards or compositions
+- product counts are metadata, not the main visual content
+- each entity must link to its dedicated route
+
 ## API FAIR Principles
 
 All storefront and owner APIs should be:

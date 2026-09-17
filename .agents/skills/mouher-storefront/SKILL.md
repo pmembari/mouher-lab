@@ -106,6 +106,92 @@ or a lightweight derivative.
 Do not commit private raw media.
 
 Do not read private media unless the current task explicitly requires it.
+
+## Visual Merchandising Rules
+
+Homepage merchandising must be visual, editorial, and immediately understandable.
+
+Do not render important discovery entities as plain text rows with only
+a title and product count.
+
+Collections and categories should normally have visual representation.
+
+Preferred homepage collection treatment:
+
+- large image-led cards
+- one strong image or collage per collection
+- collection name
+- optional restrained product count
+- optional short merchandising line
+- clear click target to the dedicated collection route
+
+Example:
+
+```text
+┌──────────────────────────────┐
+│                              │
+│       collection image       │
+│                              │
+│  Unisex                      │
+│  180 pieces             →    │
+└──────────────────────────────┘
+```
+For two collections, prefer an asymmetric editorial composition rather
+than two small utility cards.
+For example:
+```
+┌───────────────────────────────┬───────────────┐
+│                               │               │
+│                               │ Accessories   │
+│          UNISEX               │               │
+│                               │ collection    │
+│       large visual story      │ image         │
+│                               │               │
+│ View collection →             │ Explore →     │
+└───────────────────────────────┴───────────────┘
+```
+Unisex       180
+Accessories    1
+
+as a primary homepage merchandising treatment.
+Counts are supporting metadata, never the visual focus.
+Product Card Restraint
+Product listing imagery should remain clean.
+Avoid:
+- image zoom on hover
+- aggressive scale effects
+- image tilt
+- floating badges everywhere
+- glass overlays over product photography
+- gradient overlays unless text readability requires them
+- multiple hover actions appearing on top of the image
+- unnecessary animation on every card
+Preferred product card interaction:
+- image remains stable
+- subtle border/shadow/text change if needed
+- entire card or product title links to product detail
+- product name and price remain easy to scan
+- sold-out or sale state may appear as small restrained text/badge
+Do not make product browsing feel like an effects demo.
+Search And Filter Visual Style
+Search and filters should feel calm, lightweight, and familiar.
+Search:
+- prefer a clean expanding header search or top sheet
+- one clear field
+- one clear submit action
+- no oversized modal unless necessary
+- no decorative chips by default
+- no excessive blur or glassmorphism
+Filters:
+- default product browsing should prioritize imagery
+- keep filters behind a clear "Filters" control when possible
+- use a drawer or sheet for detailed filters
+- keep sorting visible but compact
+- do not show a permanent dense filter sidebar unless the information
+  architecture clearly benefits from it
+The visual reference is modern fashion ecommerce with Apple-like
+restraint, not experimental UI.
+
 ## Homepage Navigation Contract
 
 The homepage is a merchandising and discovery surface, not the full catalog browser.

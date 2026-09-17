@@ -813,7 +813,7 @@ Do not transform Mouher into a generic monochrome Apple clone.
 
 ---
 
-# Storefront Imagery--
+# Storefront Imagery
 
 Use large imagery without stretching intentionally (my images are not wide an example of them is: )
 
@@ -851,7 +851,7 @@ Avoid excessive small product cards on premium storytelling pages.
 
 ---
 
-# Storefront Motion--
+# Storefront Motion
 
 Motion should improve engagement and understanding.
 
@@ -901,7 +901,7 @@ Raw private media must not be committed.
 
 ---
 
-# Homepage Experience--
+# Homepage Experience
 
 Preferred flow:
 
@@ -999,7 +999,36 @@ Performance:
 
 \- keep page LCP and interaction responsiveness more important than
 autoplay animation
+## Homepage Merchandising Acceptance Criteria
 
+The homepage must not resemble a database browser.
+
+Collections:
+- each promoted collection has a visual treatment
+- collection image may come from explicit collection media or a representative product
+- each collection links to `#/collections/<slug>`
+- product counts are optional secondary metadata
+- primary collections may receive larger visual hierarchy than secondary ones
+
+Categories:
+- each category links to `#/categories/<slug>`
+- categories should use real product imagery when available
+- homepage category interaction must not locally filter the homepage product
+  grid as a substitute for a category page
+
+Featured products:
+- "Shop All" links to `#/shop`
+- product cards link to product detail
+- no aggressive image hover scaling or decorative overlays
+
+Search:
+- use a compact, familiar search interaction
+- search submission lands on `#/search?q=<query>`
+
+Shop:
+- owns full filters, sort, price range, availability, search, and pagination
+- filters use progressive disclosure
+- detailed filters should appear in a drawer/sheet on normal storefront layouts
 # Product Detail Experience--
 
 Preferred hierarchy:

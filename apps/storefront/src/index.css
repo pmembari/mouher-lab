@@ -4741,3 +4741,207 @@ img {
   .owner-resource-search input { width: 100%; }
   .owner-today-grid { grid-template-columns: 1fr; }
 }
+
+/* =========================================================
+   Homepage editorial intro
+   ========================================================= */
+
+.home-intro {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42vh;
+  padding: clamp(4rem, 9vw, 8rem) clamp(1.25rem, 5vw, 5rem);
+  background: #ffffff;
+}
+
+.home-intro-copy {
+  width: min(100%, 900px);
+  text-align: center;
+}
+
+.home-intro-copy h1 {
+  margin: 0.75rem 0 1.25rem;
+  font-size: clamp(2.75rem, 7vw, 6.75rem);
+  font-weight: 500;
+  line-height: 0.95;
+  letter-spacing: -0.055em;
+}
+
+.home-intro-copy .hero-description {
+  max-width: 680px;
+  margin: 0 auto 2rem;
+  font-size: clamp(1rem, 1.5vw, 1.25rem);
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   Three-panel homepage video story
+   ========================================================= */
+
+.hero-video-story {
+  width: 100%;
+  padding:
+    0 clamp(0.75rem, 2vw, 2rem) clamp(4rem, 8vw, 8rem);
+  background: #ffffff;
+}
+
+.hero-video-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(0.5rem, 1.3vw, 1.25rem);
+  width: 100%;
+  max-width: 1800px;
+  margin: 0 auto;
+}
+
+.hero-video-panel {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 9 / 16;
+  min-width: 0;
+  background: #f6f6f4;
+  border-radius: clamp(0.75rem, 1.5vw, 1.5rem);
+}
+
+.hero-video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+/* =========================================================
+   Curated homepage collections
+   ========================================================= */
+
+.home-collection-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-width: min(280px, 76vw);
+  padding: 1.25rem 1.4rem;
+  color: inherit;
+  text-decoration: none;
+  background: #f6f6f4;
+  border: 1px solid #e5e5e0;
+  border-radius: 1rem;
+  transition:
+    transform 180ms ease,
+    background-color 180ms ease,
+    border-color 180ms ease;
+}
+
+.home-collection-link:hover {
+  transform: translateY(-2px);
+  background: #ffffff;
+  border-color: #cfcfca;
+}
+
+.home-collection-link strong {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.home-collection-link span {
+  opacity: 0.55;
+  font-size: 0.85rem;
+}
+
+
+/* =========================================================
+   Secondary curated products
+   ========================================================= */
+
+.home-discovery {
+  background: #f6f6f4;
+}
+
+
+/* =========================================================
+   RTL
+   ========================================================= */
+
+.site-farsi .home-intro-copy {
+  direction: rtl;
+}
+
+
+/* =========================================================
+   Tablet
+   ========================================================= */
+
+@media (max-width: 1024px) {
+  .home-intro {
+    min-height: 36vh;
+  }
+
+  .hero-video-grid {
+    gap: 0.75rem;
+  }
+
+  .hero-video-panel {
+    border-radius: 1rem;
+  }
+}
+
+
+/* =========================================================
+   Mobile
+   ========================================================= */
+
+@media (max-width: 720px) {
+  .home-intro {
+    min-height: auto;
+    padding-top: 4rem;
+    padding-bottom: 3rem;
+  }
+
+  .home-intro-copy h1 {
+    font-size: clamp(2.5rem, 13vw, 4.5rem);
+  }
+
+  .hero-video-story {
+    overflow: hidden;
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  .hero-video-grid {
+    display: flex;
+    gap: 0.75rem;
+    overflow-x: auto;
+    padding: 0 1rem 0.75rem;
+
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .hero-video-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .hero-video-panel {
+    flex: 0 0 min(82vw, 360px);
+    scroll-snap-align: center;
+  }
+}
+
+
+/* =========================================================
+   Reduced motion
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .home-collection-link {
+    transition: none;
+  }
+
+  .home-collection-link:hover {
+    transform: none;
+  }
+}

@@ -3,6 +3,23 @@ import { ProductImage } from "../components/ProductImage";
 import ProductCard from "../components/storefront/ProductCard";
 import CategoryCard from "../components/storefront/CategoryCard";
 
+const BASE_URL = import.meta.env.BASE_URL;
+
+const HERO_VIDEOS = [
+  {
+    id: "hero-1",
+    src: `${BASE_URL}media/home/hero-1.webm`,
+  },
+  {
+    id: "hero-2",
+    src: `${BASE_URL}media/home/hero-2.webm`,
+  },
+  {
+    id: "hero-3",
+    src: `${BASE_URL}media/home/hero-3.webm`,
+  },
+];
+
 export default function HomePage({
   catalog,
   catalogState,
@@ -10,21 +27,32 @@ export default function HomePage({
   t,
   heroImage,
   sourceLabel,
-  categoryOptions,
-  collectionOptions,
-  filteredProducts,
-  activeCategory,
-  activeCollection,
+  homepageProducts = [],
+  homepageCategories = [],
+  homepageCollections = [],
   addingProductId,
   email,
-  onSetActiveCategory,
-  onSetActiveCollection,
   onSetQuery,
   onSetEmail,
   onAddToCart,
   onNewsletterSubmit,
 }) {
   const isFarsi = language === "farsi";
+
+  const featuredProducts = homepageProducts.slice(
+    0,
+    8
+  );
+
+  const discoveryProducts = homepageProducts.slice(
+    8,
+    20
+  );
+
+  const editorialImage =
+    homepageProducts[1]?.imageUrls ||
+    homepageProducts[0]?.imageUrls ||
+    heroImage;
 
   function scrollToProducts() {
     document
@@ -35,32 +63,35 @@ export default function HomePage({
       });
   }
 
+  function handleShopAll() {
+    onSetQuery?.("");
+    scrollToProducts();
+  }
+
   return (
     <>
       <section
-        className="hero"
+        className="home-intro"
         id="new"
       >
-        <ProductImage
-          image={heroImage}
-          alt="Mouher collection"
-          className="hero-image"
-        />
-
-        <div className="hero-overlay" />
-
-        <div className="hero-content">
-          <p className="eyebrow hero-eyebrow">
+        <div className="home-intro-copy">
+          <p className="eyebrow">
             {t.hero.eyebrow}
           </p>
 
           <h1>
             {t.hero.title
               .split("\n")
-              .map((line, index) => (
-                <span key={line}>
+              .map((line, index, lines) => (
+                <span
+                  key={`${line}-${index}`}
+                >
                   {line}
-                  {index === 0 && <br />}
+
+                  {index <
+                    lines.length - 1 && (
+                      <br />
+                    )}
                 </span>
               ))}
           </h1>
@@ -69,74 +100,69 @@ export default function HomePage({
             {t.hero.description}
           </p>
 
-          <a
-            href="#products"
-            className="button button-light"
+          <button
+            type="button"
+            className="button button-dark"
+            onClick={scrollToProducts}
           >
             {t.hero.button}
             <ArrowRight />
-          </a>
+          </button>
+        </div>
+      </section>
+
+      <section
+        className="hero-video-story"
+        aria-label={
+          isFarsi
+            ? "داستان تصویری موهر"
+            : "Mouher visual story"
+        }
+      >
+        <div className="hero-video-grid">
+          {HERO_VIDEOS.map((video) => (
+            <div
+              className="hero-video-panel"
+              key={video.id}
+            >
+              <video
+                className="hero-video"
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
+                aria-hidden="true"
+              >
+                <source
+                  src={video.src}
+                  type="video/webm"
+                />
+              </video>
+            </div>
+          ))}
         </div>
       </section>
 
       <section
         className="trust-strip"
-        aria-label="Store benefits"
+        aria-label={
+          isFarsi
+            ? "مزایای فروشگاه"
+            : "Store benefits"
+        }
       >
-        <span>{t.trust.shipping}</span>
-        <span>{t.trust.returns}</span>
-        <span>{t.trust.support}</span>
-      </section>
+        <span>
+          {t.trust.shipping}
+        </span>
 
-      <section
-        className="section collections-section"
-        id="collections"
-      >
-        <div className="section-heading">
-          <div>
-            <span className="eyebrow">
-              {t.collections.eyebrow}
-            </span>
+        <span>
+          {t.trust.returns}
+        </span>
 
-            <h2>
-              {t.collections.title}
-            </h2>
-          </div>
-        </div>
-
-        <div className="collection-rail">
-          {collectionOptions.map(
-            (collection) => (
-              <button
-                type="button"
-                key={collection.slug}
-                className={
-                  activeCollection ===
-                    collection.slug
-                    ? "active"
-                    : ""
-                }
-                onClick={() => {
-                  onSetActiveCollection(
-                    collection.slug
-                  );
-
-                  scrollToProducts();
-                }}
-              >
-                <strong>
-                  {isFarsi
-                    ? collection.nameFa
-                    : collection.name}
-                </strong>
-
-                <span>
-                  {collection.count}
-                </span>
-              </button>
-            )
-          )}
-        </div>
+        <span>
+          {t.trust.support}
+        </span>
       </section>
 
       <section
@@ -164,11 +190,7 @@ export default function HomePage({
             <button
               type="button"
               className="text-link"
-              onClick={() => {
-                onSetActiveCategory("all");
-                onSetActiveCollection("all");
-                onSetQuery("");
-              }}
+              onClick={handleShopAll}
             >
               {t.products.shopAll}
               <ArrowRight />
@@ -182,48 +204,14 @@ export default function HomePage({
           </p>
         )}
 
-        <div
-          className="filter-bar"
-          aria-label={t.categories.eyebrow}
-        >
-          {categoryOptions.map(
-            (category) => (
-              <button
-                type="button"
-                key={category.slug}
-                className={
-                  activeCategory ===
-                    category.slug
-                    ? "active"
-                    : ""
-                }
-                onClick={() =>
-                  onSetActiveCategory(
-                    category.slug
-                  )
-                }
-              >
-                <span>
-                  {isFarsi
-                    ? category.nameFa
-                    : category.name}
-                </span>
-
-                <span>
-                  {category.count}
-                </span>
-              </button>
-            )
-          )}
-        </div>
-
         {catalogState === "loading" ? (
           <p className="empty-state">
             {t.products.loading}
           </p>
-        ) : filteredProducts.length > 0 ? (
+        ) : featuredProducts.length >
+          0 ? (
           <div className="products-grid">
-            {filteredProducts.map(
+            {featuredProducts.map(
               (product) => (
                 <ProductCard
                   key={product.id}
@@ -246,53 +234,95 @@ export default function HomePage({
         )}
       </section>
 
-      <section
-        className="section categories-section"
-        id="categories"
-      >
-        <div className="section-heading">
-          <div>
-            <span className="eyebrow">
-              {t.categories.eyebrow}
-            </span>
+      {homepageCollections.length >
+        0 && (
+          <section
+            className="section collections-section"
+            id="collections"
+          >
+            <div className="section-heading">
+              <div>
+                <span className="eyebrow">
+                  {t.collections.eyebrow}
+                </span>
 
-            <h2>
-              {t.categories.title}
-            </h2>
-          </div>
-        </div>
+                <h2>
+                  {t.collections.title}
+                </h2>
+              </div>
+            </div>
 
-        <div className="categories-grid">
-          {(catalog.categories || [])
-            .slice(0, 3)
-            .map((category) => (
-              <CategoryCard
-                key={category.slug}
-                category={category}
-                language={language}
-                labels={t.categories}
-                active={
-                  activeCategory ===
-                  category.slug
-                }
-                onSelect={(slug) => {
-                  onSetActiveCategory(slug);
-                  scrollToProducts();
-                }}
-              />
-            ))}
-        </div>
-      </section>
+            <div className="collection-rail">
+              {homepageCollections.map(
+                (collection) => (
+                  <a
+                    key={collection.slug}
+                    href="#products"
+                    className="home-collection-link"
+                  >
+                    <strong>
+                      {isFarsi
+                        ? collection.nameFa ||
+                        collection.name
+                        : collection.name}
+                    </strong>
+
+                    <span>
+                      {collection.count}
+                    </span>
+                  </a>
+                )
+              )}
+            </div>
+          </section>
+        )}
+
+      {homepageCategories.length >
+        0 && (
+          <section
+            className="section categories-section"
+            id="categories"
+          >
+            <div className="section-heading">
+              <div>
+                <span className="eyebrow">
+                  {t.categories.eyebrow}
+                </span>
+
+                <h2>
+                  {t.categories.title}
+                </h2>
+              </div>
+            </div>
+
+            <div className="categories-grid">
+              {homepageCategories
+                .slice(0, 6)
+                .map((category) => (
+                  <CategoryCard
+                    key={category.slug}
+                    category={category}
+                    language={language}
+                    labels={t.categories}
+                    active={false}
+                    onSelect={
+                      scrollToProducts
+                    }
+                  />
+                ))}
+            </div>
+          </section>
+        )}
 
       <section className="philosophy">
         <div className="philosophy-image">
           <ProductImage
-            image={
-              catalog.products?.[1]
-                ?.imageUrls ||
-              heroImage
+            image={editorialImage}
+            alt={
+              isFarsi
+                ? "داستان موهر"
+                : "Mouher editorial story"
             }
-            alt="Mouher editorial"
             className=""
           />
         </div>
@@ -311,7 +341,7 @@ export default function HomePage({
           </p>
 
           <a
-            href="#newsletter"
+            href="#collections"
             className="button button-dark"
           >
             {t.philosophy.button}
@@ -319,6 +349,45 @@ export default function HomePage({
           </a>
         </div>
       </section>
+
+      {discoveryProducts.length >
+        0 && (
+          <section className="section products-section home-discovery">
+            <div className="section-heading">
+              <div>
+                <span className="eyebrow">
+                  {isFarsi
+                    ? "انتخاب‌های موهر"
+                    : "The Mouher Edit"}
+                </span>
+
+                <h2>
+                  {isFarsi
+                    ? "برای کشف بیشتر"
+                    : "More to discover"}
+                </h2>
+              </div>
+            </div>
+
+            <div className="products-grid">
+              {discoveryProducts.map(
+                (product) => (
+                  <ProductCard
+                    key={product.id}
+                    product={product}
+                    language={language}
+                    labels={t.cart}
+                    onAdd={onAddToCart}
+                    isAdding={
+                      addingProductId ===
+                      product.id
+                    }
+                  />
+                )
+              )}
+            </div>
+          </section>
+        )}
 
       <section
         className="newsletter"
@@ -339,12 +408,15 @@ export default function HomePage({
 
           <form
             className="newsletter-form"
-            onSubmit={onNewsletterSubmit}
+            onSubmit={
+              onNewsletterSubmit
+            }
           >
             <input
               type="email"
               placeholder={
-                t.newsletter.placeholder
+                t.newsletter
+                  .placeholder
               }
               value={email}
               onChange={(event) =>
@@ -353,7 +425,8 @@ export default function HomePage({
                 )
               }
               aria-label={
-                t.newsletter.placeholder
+                t.newsletter
+                  .placeholder
               }
               autoComplete="email"
               required

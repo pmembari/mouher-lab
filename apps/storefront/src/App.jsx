@@ -13,6 +13,8 @@ import { useNewsletter } from "./hooks/useNewsletter";
 import { useStorefrontFilters } from "./hooks/useStorefrontFilters";
 import { useStorefrontShell } from "./hooks/useStorefrontShell";
 
+const HOMEPAGE_PRODUCT_LIMIT = 30;
+
 export default function App() {
   const locale = useLocale();
 
@@ -66,6 +68,18 @@ export default function App() {
   const newsletter = useNewsletter({
     thanksMessage: t.newsletter.thanks,
   });
+
+  const homepageProducts = (
+    catalog.products || []
+  ).slice(0, HOMEPAGE_PRODUCT_LIMIT);
+
+  const homepageCategories = (
+    catalog.categories || []
+  ).slice(0, 6);
+
+  const homepageCollections = (
+    catalog.collections || []
+  ).slice(0, 6);
 
   function handleSearchSubmit(event) {
     event.preventDefault();
@@ -140,14 +154,10 @@ export default function App() {
         addToCart={cart.addToCart}
         heroImage={heroImage}
         sourceLabel={sourceLabel}
-        categoryOptions={filters.categoryOptions}
-        collectionOptions={filters.collectionOptions}
-        filteredProducts={filters.filteredProducts}
-        activeCategory={filters.activeCategory}
-        activeCollection={filters.activeCollection}
+        homepageProducts={homepageProducts}
+        homepageCategories={homepageCategories}
+        homepageCollections={homepageCollections}
         email={newsletter.email}
-        setActiveCategory={filters.setActiveCategory}
-        setActiveCollection={filters.setActiveCollection}
         setQuery={filters.setQuery}
         setEmail={newsletter.setEmail}
         handleNewsletterSubmit={

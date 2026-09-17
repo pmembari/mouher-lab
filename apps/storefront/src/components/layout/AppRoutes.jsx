@@ -23,7 +23,9 @@ const AccountWorkspacePage = lazy(() =>
   }))
 );
 
-function RouteFallback({ isFarsi }) {
+function RouteFallback({
+  isFarsi,
+}) {
   return (
     <div className="dashboard-page">
       <section className="dashboard-shell">
@@ -49,14 +51,12 @@ export default function AppRoutes({
   addToCart,
   heroImage,
   sourceLabel,
-  categoryOptions,
-  collectionOptions,
-  filteredProducts,
-  activeCategory,
-  activeCollection,
+
+  homepageProducts,
+  homepageCategories,
+  homepageCollections,
+
   email,
-  setActiveCategory,
-  setActiveCollection,
   setQuery,
   setEmail,
   handleNewsletterSubmit,
@@ -120,19 +120,17 @@ export default function AppRoutes({
             t={t}
             heroImage={heroImage}
             sourceLabel={sourceLabel}
-            categoryOptions={categoryOptions}
-            collectionOptions={collectionOptions}
-            filteredProducts={filteredProducts}
-            activeCategory={activeCategory}
-            activeCollection={activeCollection}
+            homepageProducts={homepageProducts}
+            homepageCategories={homepageCategories}
+            homepageCollections={homepageCollections}
             addingProductId={addingProductId}
             email={email}
-            onSetActiveCategory={setActiveCategory}
-            onSetActiveCollection={setActiveCollection}
             onSetQuery={setQuery}
             onSetEmail={setEmail}
             onAddToCart={addToCart}
-            onNewsletterSubmit={handleNewsletterSubmit}
+            onNewsletterSubmit={
+              handleNewsletterSubmit
+            }
           />
         )}
       </Suspense>

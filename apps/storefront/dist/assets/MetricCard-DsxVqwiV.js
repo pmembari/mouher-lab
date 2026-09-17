@@ -1,0 +1,1 @@
+import{j as r}from"./index-DJy2OAO_.js";function c({label:s,value:e}){return r.jsxs("article",{className:"metric-card",children:[r.jsx("span",{children:s}),r.jsx("strong",{children:e})]})}export{c as M};

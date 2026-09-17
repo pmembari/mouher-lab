@@ -106,6 +106,58 @@ or a lightweight derivative.
 Do not commit private raw media.
 
 Do not read private media unless the current task explicitly requires it.
+## Homepage Navigation Contract
+
+The homepage is a merchandising and discovery surface, not the full catalog browser.
+
+Homepage links must land on real browsing routes:
+
+- "Shop", "Shop All", catalog CTAs -> `#/shop`
+- featured product cards -> `#/products/<handle>`
+- category cards -> `#/categories/<slug>`
+- collection cards -> `#/collections/<slug>`
+- search submissions -> `#/search?q=<query>`
+
+Do not make catalog entities such as categories or collections merely scroll
+to another homepage section.
+
+Homepage sections may preview products, categories, and collections, but
+deeper exploration must transition to the dedicated catalog route.
+
+Do not duplicate filtering behavior between HomePage and ShopPage.
+HomePage may provide curated previews; ShopPage owns full filtering,
+sorting, pagination, and catalog discovery.
+
+## Storefront CSS Architecture
+
+Do not grow `src/index.css` into a monolithic stylesheet.
+
+Keep `index.css` for:
+- reset
+- design tokens
+- typography
+- global primitives
+- shared layout foundations
+
+Prefer scoped files for major surfaces:
+
+- `styles/header.css`
+- `styles/home.css`
+- `styles/search.css`
+- `styles/shop.css`
+- `styles/products.css`
+
+When redesigning a surface, remove or migrate obsolete rules instead of
+stacking multiple generations of CSS overrides.
+
+Prefer semantic class names tied to component responsibility.
+
+UI implementation should preserve:
+- responsive behavior
+- RTL/LTR
+- keyboard focus
+- reduced motion
+- loading / empty / error states
 
 ## Multi-Video Hero
 

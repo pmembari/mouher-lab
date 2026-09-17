@@ -1,3 +1,4 @@
+import { useMemo, useState } from "react";
 import { ArrowRight } from "../components/icons";
 import { ProductImage } from "../components/ProductImage";
 import ProductCard from "../components/storefront/ProductCard";
@@ -38,13 +39,28 @@ export default function HomePage({
   onNewsletterSubmit,
 }) {
   const isFarsi = language === "farsi";
+  const [activeCategory, setActiveCategory] =
+    useState("all");
+  const visibleProducts = useMemo(() => {
+    if (activeCategory === "all") {
+      return homepageProducts;
+    }
 
-  const featuredProducts = homepageProducts.slice(
+    return homepageProducts.filter(
+      (product) =>
+        product.categorySlug === activeCategory
+    );
+  }, [
+    homepageProducts,
+    activeCategory,
+  ]);
+
+  const featuredProducts = visibleProducts.slice(
     0,
     8
   );
 
-  const discoveryProducts = homepageProducts.slice(
+  const discoveryProducts = visibleProducts.slice(
     8,
     20
   );
@@ -65,9 +81,19 @@ export default function HomePage({
 
   function handleShopAll() {
     onSetQuery?.("");
+    setActiveCategory("all");
     scrollToProducts();
   }
+  function handleCategorySelect(categorySlug) {
+    setActiveCategory(categorySlug);
 
+    document
+      .getElementById("products")
+      ?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+  }
   return (
     <>
       <section
@@ -294,7 +320,19 @@ export default function HomePage({
                 </h2>
               </div>
             </div>
-
+          <button
+            type="button"
+            className={`category-reset ${activeCategory === "all"
+                ? "category-reset-active"
+                : ""
+              }`}
+            onClick={() => {
+              setActiveCategory("all");
+              scrollToProducts();
+            }}
+          >
+            {t.categories.all}
+          </button>
             <div className="categories-grid">
               {homepageCategories
                 .slice(0, 6)
@@ -304,9 +342,12 @@ export default function HomePage({
                     category={category}
                     language={language}
                     labels={t.categories}
-                    active={false}
+                    active={
+                      activeCategory ===
+                      category.slug
+                    }
                     onSelect={
-                      scrollToProducts
+                      handleCategorySelect
                     }
                   />
                 ))}

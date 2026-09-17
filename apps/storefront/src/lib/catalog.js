@@ -49,26 +49,47 @@ export function isMedusaConfigured(config = medusaConfig) {
 }
 
 export async function loadCatalog(config = medusaConfig) {
+  const shouldUseStaticFallback =
+    config.allowStaticCatalogFallback ||
+    import.meta.env.DEV;
+
   if (isMedusaConfigured(config)) {
     try {
       const response = await fetchMedusaProducts(config);
 
-      return {
-        ...normalizeMedusaProductsResponse(
+      const normalizedCatalog =
+        normalizeMedusaProductsResponse(
           response,
-          response.currency_code || config.currencyCode
-        ),
-        source: "medusa",
-        notice: "",
-      };
+          response.currency_code ||
+          config.currencyCode
+        );
+
+      if (
+        normalizedCatalog.products.length > 0
+      ) {
+        return {
+          ...normalizedCatalog,
+          source: "medusa",
+          notice: "",
+        };
+      }
+
+      console.warn(
+        "Medusa returned an empty catalog."
+      );
     } catch (error) {
-      console.error("Failed to load Medusa:", error);
+      console.error(
+        "Failed to load Medusa:",
+        error
+      );
     }
   }
 
-  if (config.allowStaticCatalogFallback) {
+  if (shouldUseStaticFallback) {
     return loadStaticFallbackCatalog(
-      "Unable to reach Medusa. Showing catalog snapshot."
+      isMedusaConfigured(config)
+        ? "Unable to reach Medusa. Showing catalog snapshot."
+        : "Showing local catalog snapshot."
     );
   }
 

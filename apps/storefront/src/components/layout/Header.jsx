@@ -33,45 +33,51 @@ export default function Header({
 
         <nav
           className="desktop-nav nav-left"
-          aria-label="Primary"
+          aria-label={
+            isFarsi
+              ? "منوی اصلی"
+              : "Primary navigation"
+          }
         >
           <a href="#new">
             {t.nav.newIn}
           </a>
 
-          <a href="#categories">
+          <a href="#products">
+            {t.nav.shop}
+          </a>
+
+          <a href="#collections">
             {t.nav.collections}
           </a>
 
-          <a href="#products">
-            {t.nav.shop}
+          <a href="#categories">
+            {isFarsi
+              ? "دسته‌بندی‌ها"
+              : "Categories"}
           </a>
         </nav>
 
         <a
           href="#new"
           className="logo"
-          aria-label="Mouher home"
+          aria-label={
+            isFarsi
+              ? "صفحه اصلی موهر"
+              : "Mouher home"
+          }
         >
           MOUHER
         </a>
 
         <nav
           className="desktop-nav nav-right"
-          aria-label="Utility"
+          aria-label={
+            isFarsi
+              ? "ابزارهای فروشگاه"
+              : "Store utilities"
+          }
         >
-          <a href="#/owner">
-            {t.nav.owner}
-          </a>
-
-          <a href="#/developer">
-            {t.nav.developer}
-          </a>
-
-          <a href="#/assist">
-            {t.nav.assist}
-          </a>
-
           <button
             type="button"
             className="icon-button"

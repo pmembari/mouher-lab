@@ -1,17 +1,18 @@
 import { describe, expect, it } from "vitest"
 
-import { roundToNearestMillionToman } from "./service"
+import { annualFreeShippingThresholdToman } from "./service"
 
-describe("roundToNearestMillionToman", () => {
-  it("rounds down to the nearest million", () => {
-    expect(roundToNearestMillionToman(7_470_000)).toBe(7_000_000)
+describe("annualFreeShippingThresholdToman", () => {
+  it("starts at 10 million toman in 2026", () => {
+    expect(annualFreeShippingThresholdToman(2026)).toBe(10_000_000)
   })
 
-  it("rounds up to the nearest million", () => {
-    expect(roundToNearestMillionToman(7_510_000)).toBe(8_000_000)
+  it("adds 1 million toman each year", () => {
+    expect(annualFreeShippingThresholdToman(2027)).toBe(11_000_000)
+    expect(annualFreeShippingThresholdToman(2028)).toBe(12_000_000)
   })
 
-  it("keeps exact million brackets unchanged", () => {
-    expect(roundToNearestMillionToman(12_000_000)).toBe(12_000_000)
+  it("does not go below the base threshold before 2026", () => {
+    expect(annualFreeShippingThresholdToman(2025)).toBe(10_000_000)
   })
 })

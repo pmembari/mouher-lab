@@ -2,12 +2,14 @@ import { useEffect, useMemo, useState } from "react";
 
 const RESPONSIVE_WIDTHS = [360, 540, 720, 960, 1280];
 const ARVAN_HOST_SUFFIX = ".arvanstorage.ir";
+const PRODUCT_CARD_SIZES =
+  "(max-width: 640px) calc(100vw - 32px), (max-width: 1024px) calc(50vw - 36px), (max-width: 1500px) calc(25vw - 42px), 340px";
 
 export function ProductImage({
   image,
   alt,
   className,
-  sizes = "100vw",
+  sizes,
   loading = "lazy",
   fetchPriority = "auto",
 }) {
@@ -29,6 +31,12 @@ export function ProductImage({
     return buildResponsiveSrcSet(src);
   }, [src, responsiveDisabled]);
 
+  const resolvedSizes =
+    sizes ||
+    (hasClassName(className, "product-image")
+      ? PRODUCT_CARD_SIZES
+      : "100vw");
+
   useEffect(() => {
     setSourceIndex(0);
     setResponsiveDisabled(false);
@@ -47,7 +55,7 @@ export function ProductImage({
     <img
       src={src}
       srcSet={srcSet || undefined}
-      sizes={srcSet ? sizes : undefined}
+      sizes={srcSet ? resolvedSizes : undefined}
       alt={alt}
       className={className}
       loading={loading}
@@ -111,4 +119,10 @@ function hasSignedQuery(url) {
   return signedParams.some((param) =>
     url.searchParams.has(param)
   );
+}
+
+function hasClassName(className, value) {
+  return String(className || "")
+    .split(/\s+/)
+    .includes(value);
 }

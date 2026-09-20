@@ -179,9 +179,9 @@ Do not expose privileged credentials to browsers.
 
 ## Authentication
 
-Use Medusa-compatible authentication.
+Use Medusa-native authentication. Customer authentication uses Medusa email/password authentication. Admin/owner authentication must also remain Medusa-compatible.
 
-Do not retain Django only for owner authentication.
+Keycloak is removed and must not be reintroduced unless explicitly requested. Do not retain Django only for owner authentication.
 
 Admin-facing routes require authenticated admin identities.
 
@@ -418,21 +418,11 @@ Use integration tests when behavior crosses Medusa modules or services.
 
 Before broad repository inspection:
 
-1. Query `graphify-out/`.
-2. Read `GRAPH_REPORT.md` when relevant.
-3. Identify exact paths and symbols.
-4. Read only required files.
+1. Identify exact paths and symbols with targeted search/read operations.
+2. Read only required files.
+3. Use `graphify-out/` or `GRAPH_REPORT.md` only when explicitly requested or when a bounded architecture question cannot be answered from targeted source/document reads.
 
-Do not read:
-
-* CSV
-* media
-* environment files
-* generated JSON
-* build outputs
-* files larger than 5 MB
-
-unless explicitly requested.
+Follow `AGENTS.md` for canonical context exclusions and file-size limits. Do not widen them here.
 
 Prefer targeted changes and focused tests.
 

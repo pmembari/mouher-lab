@@ -136,4 +136,44 @@ describe("Mouher catalog import planner", () => {
       "/repo/data/Mouher_Data/clean/catalog.clean.json"
     )
   })
+
+  it("reports importable and skipped products with specific legacy review reasons", () => {
+    const importable = baseProduct()
+
+    const hiddenOnly = baseProduct()
+    hiddenOnly.legacy_id = "11"
+    hiddenOnly.product_code = "MHR-SHT-000011"
+    hiddenOnly.metadata.legacy_product_id = "11"
+    hiddenOnly.variants = [
+      {
+        ...hiddenOnly.variants[0],
+        legacy_id: "111",
+        sku: "MHR-SHT-000011-BLK-S1",
+        is_visible: false,
+      },
+    ]
+
+    const noVariants = baseProduct()
+    noVariants.legacy_id = "113"
+    noVariants.product_code = "MHR-TRS-000113"
+    noVariants.metadata.legacy_product_id = "113"
+    noVariants.variants = []
+
+    const plan = buildImportPlan([importable, hiddenOnly, noVariants])
+
+    expect(plan.summary.planned_products).toBe(3)
+    expect(plan.summary.importable_products).toBe(1)
+    expect(plan.summary.skipped_products).toBe(2)
+    expect(plan.issues).toContainEqual({
+      level: "review",
+      code: "legacy_visible_without_sellable_variant",
+      product_code: "MHR-SHT-000011",
+    })
+    expect(plan.issues).toContainEqual({
+      level: "review",
+      code: "legacy_product_without_variants",
+      product_code: "MHR-TRS-000113",
+    })
+  })
+
 })

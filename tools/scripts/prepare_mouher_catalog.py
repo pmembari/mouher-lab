@@ -75,7 +75,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--source-root",
         type=Path,
-        default=Path("Mouher_Data"),
+        default=Path("data/Mouher_Data"),
         help="Path to local Mouher_Data. Default: Mouher_Data",
     )
     parser.add_argument(

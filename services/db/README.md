@@ -225,3 +225,25 @@ npm run dev
 Do not commit `.env` files or production credentials. For production, use a
 managed or separately operated PostgreSQL service and inject credentials through
 the deployment environment.
+
+
+
+# How to run with docker:
+
+```
+docker run --name db-mouher \
+  --env POSTGRES_DB=postgres \
+  --env POSTGRES_USER=postgres \
+  --env POSTGRES_PASSWORD=postgres \
+  --env MOUHER_BACKEND_DB_PASSWORD=backend \
+  --env MOUHER_MEDUSA_DB_PASSWORD=medusa \
+  --env MOUHER_PAYMENT_DB_PASSWORD=payment \
+  --publish 5433:5432 \
+  --volume mouher-postgres-data:/var/lib/postgresql/data \
+  --detach \
+  db-mouher:16
+```
+
+```
+docker exec db-mouher pg_isready -U mouher_medusa -d mouher_medusa
+```

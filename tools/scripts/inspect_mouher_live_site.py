@@ -63,7 +63,7 @@ def parse_args() -> argparse.Namespace:
         description="Inspect current mouher.com storefront data into ignored local JSON."
     )
     parser.add_argument("--base-url", default=DEFAULT_BASE_URL)
-    parser.add_argument("--source-root", type=Path, default=Path("Mouher_Data"))
+    parser.add_argument("--source-root", type=Path, default=Path("data/Mouher_Data"))
     parser.add_argument(
         "--output-dir",
         type=Path,

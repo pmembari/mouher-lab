@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-09-12T18:04:57.906520+00:00",
-  "source_root": "/home/p/Desktop/p/Mouher/mouher-lab/Mouher_Data",
+  "generated_at": "2026-09-20T17:17:07.123677+00:00",
+  "source_root": "/home/p/Desktop/p/Mouher/mouher-lab/data/Mouher_Data",
   "privacy": {
     "uses_remote_image_urls": false,
     "uses_physical_images": true,
@@ -13,11 +13,24 @@
     "included": 178,
     "included_visible": 178,
     "without_visible_variants": 15,
-    "duplicate_handles_resolved": 0
+    "product_codes_generated": 178,
+    "invalid_product_codes": 0,
+    "duplicate_product_codes": 0,
+    "handles_accepted": 0,
+    "handles_needing_review": 178,
+    "duplicate_handles": 0
   },
   "variants": {
     "total": 391,
     "visible": 314,
+    "included": 356,
+    "skus_generated": 272,
+    "invalid_skus": 0,
+    "duplicate_skus": 0,
+    "known_colors_mapped": 327,
+    "unknown_colors_requiring_review": 29,
+    "known_sizes_mapped": 346,
+    "unknown_sizes_requiring_review": 10,
     "missing_size_lookup": 0,
     "missing_color_lookup": 0
   },
@@ -25,12 +38,15 @@
     "matched_product_dirs": 189,
     "matched_images": 818,
     "included_product_images": 775,
+    "items_mapped": 775,
     "image_dirs_without_product": [],
     "products_without_physical_images": 0,
+    "invalid_target_paths": 0,
+    "duplicate_positions": 0,
     "deprecated_csv_image_rows_ignored": 820,
     "videos_total": 3,
     "unmatched_videos": 3,
-    "scan_issues": 0
+    "scan_issues": 3
   },
   "categories": {
     "Shirts": 105,
@@ -42,9 +58,967 @@
     "Men": 36,
     "Women": 33,
     "26": 28,
-    "Fall Winter Mouher": 23,
-    "Spring Summer Unisex": 22,
-    "Accessories": 2
+    "Fall Winter 2024": 23,
+    "Spring Summer 2024": 22,
+    "Accessories": 2,
+    "_normalized": 116,
+    "_requiring_review": 28
+  },
+  "validation": {
+    "errors": [],
+    "reviews": [
+      {
+        "type": "handle_needs_review",
+        "product_id": "2"
+      },
+      {
+        "type": "collection_needs_review",
+        "product_id": "2"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "5"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "6"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "7"
+      },
+      {
+        "type": "collection_needs_review",
+        "product_id": "7"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "10"
+      },
+      {
+        "type": "collection_needs_review",
+        "product_id": "10"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "11"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "12"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "13"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "14"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "15"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "16"
+      },
+      {
+        "type": "collection_needs_review",
+        "product_id": "16"
+      },
+      {
+        "type": "unknown_color_code",
+        "product_id": "16"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "17"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "18"
+      },
+      {
+        "type": "collection_needs_review",
+        "product_id": "18"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "20"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "21"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "25"
+      },
+      {
+        "type": "unknown_color_code",
+        "product_id": "25"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "26"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "27"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "28"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "29"
+      },
+      {
+        "type": "collection_needs_review",
+        "product_id": "29"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "30"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "31"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "32"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "33"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "34"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "35"
+      },
+      {
+        "type": "unknown_color_code",
+        "product_id": "35"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "36"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "37"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "38"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "39"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "40"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "41"
+      },
+      {
+        "type": "collection_needs_review",
+        "product_id": "41"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "42"
+      },
+      {
+        "type": "collection_needs_review",
+        "product_id": "42"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "43"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "44"
+      },
+      {
+        "type": "unknown_color_code",
+        "product_id": "44"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "45"
+      },
+      {
+        "type": "collection_needs_review",
+        "product_id": "45"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "46"
+      },
+      {
+        "type": "collection_needs_review",
+        "product_id": "46"
+      },
+      {
+        "type": "unknown_color_code",
+        "product_id": "46"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "47"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "48"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "49"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "50"
+      },
+      {
+        "type": "unknown_color_code",
+        "product_id": "50"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "51"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "53"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "54"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "55"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "56"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "57"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "58"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "60"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "61"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "62"
+      },
+      {
+        "type": "unknown_color_code",
+        "product_id": "62"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "64"
+      },
+      {
+        "type": "collection_needs_review",
+        "product_id": "64"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "65"
+      },
+      {
+        "type": "collection_needs_review",
+        "product_id": "65"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "66"
+      },
+      {
+        "type": "collection_needs_review",
+        "product_id": "66"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "67"
+      },
+      {
+        "type": "collection_needs_review",
+        "product_id": "67"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "68"
+      },
+      {
+        "type": "collection_needs_review",
+        "product_id": "68"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "69"
+      },
+      {
+        "type": "collection_needs_review",
+        "product_id": "69"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "70"
+      },
+      {
+        "type": "collection_needs_review",
+        "product_id": "70"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "71"
+      },
+      {
+        "type": "collection_needs_review",
+        "product_id": "71"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "72"
+      },
+      {
+        "type": "collection_needs_review",
+        "product_id": "72"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "73"
+      },
+      {
+        "type": "collection_needs_review",
+        "product_id": "73"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "74"
+      },
+      {
+        "type": "collection_needs_review",
+        "product_id": "74"
+      },
+      {
+        "type": "unknown_color_code",
+        "product_id": "74"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "75"
+      },
+      {
+        "type": "collection_needs_review",
+        "product_id": "75"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "76"
+      },
+      {
+        "type": "collection_needs_review",
+        "product_id": "76"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "77"
+      },
+      {
+        "type": "collection_needs_review",
+        "product_id": "77"
+      },
+      {
+        "type": "unknown_color_code",
+        "product_id": "77"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "78"
+      },
+      {
+        "type": "collection_needs_review",
+        "product_id": "78"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "79"
+      },
+      {
+        "type": "collection_needs_review",
+        "product_id": "79"
+      },
+      {
+        "type": "unknown_size_code",
+        "product_id": "79"
+      },
+      {
+        "type": "unknown_color_code",
+        "product_id": "79"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "80"
+      },
+      {
+        "type": "collection_needs_review",
+        "product_id": "80"
+      },
+      {
+        "type": "unknown_color_code",
+        "product_id": "80"
+      },
+      {
+        "type": "unknown_size_code",
+        "product_id": "80"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "81"
+      },
+      {
+        "type": "collection_needs_review",
+        "product_id": "81"
+      },
+      {
+        "type": "unknown_color_code",
+        "product_id": "81"
+      },
+      {
+        "type": "unknown_size_code",
+        "product_id": "81"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "82"
+      },
+      {
+        "type": "unknown_color_code",
+        "product_id": "82"
+      },
+      {
+        "type": "unknown_size_code",
+        "product_id": "82"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "83"
+      },
+      {
+        "type": "unknown_color_code",
+        "product_id": "83"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "84"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "85"
+      },
+      {
+        "type": "unknown_color_code",
+        "product_id": "85"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "86"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "87"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "88"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "89"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "90"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "91"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "92"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "93"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "94"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "95"
+      },
+      {
+        "type": "unknown_color_code",
+        "product_id": "95"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "96"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "97"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "98"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "99"
+      },
+      {
+        "type": "unknown_color_code",
+        "product_id": "99"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "100"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "101"
+      },
+      {
+        "type": "unknown_color_code",
+        "product_id": "101"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "102"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "103"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "104"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "105"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "106"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "107"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "108"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "109"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "110"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "111"
+      },
+      {
+        "type": "unknown_size_code",
+        "product_id": "111"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "112"
+      },
+      {
+        "type": "unknown_size_code",
+        "product_id": "112"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "113"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "114"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "115"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "116"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "117"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "118"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "119"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "120"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "121"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "122"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "123"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "124"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "125"
+      },
+      {
+        "type": "unknown_size_code",
+        "product_id": "125"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "126"
+      },
+      {
+        "type": "unknown_size_code",
+        "product_id": "126"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "127"
+      },
+      {
+        "type": "unknown_size_code",
+        "product_id": "127"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "128"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "129"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "130"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "131"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "132"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "133"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "134"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "135"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "136"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "137"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "138"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "139"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "140"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "141"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "142"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "143"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "145"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "146"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "147"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "148"
+      },
+      {
+        "type": "unknown_color_code",
+        "product_id": "148"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "149"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "150"
+      },
+      {
+        "type": "unknown_color_code",
+        "product_id": "150"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "151"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "152"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "153"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "154"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "155"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "156"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "157"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "158"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "159"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "160"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "161"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "162"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "163"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "164"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "165"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "166"
+      },
+      {
+        "type": "unknown_color_code",
+        "product_id": "166"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "167"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "168"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "169"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "170"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "171"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "172"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "173"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "174"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "175"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "176"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "177"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "178"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "179"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "180"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "181"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "182"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "183"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "184"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "185"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "186"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "187"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "188"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "189"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "190"
+      },
+      {
+        "type": "handle_needs_review",
+        "product_id": "191"
+      }
+    ],
+    "counts": {
+      "errors": 0,
+      "reviews": 236,
+      "duplicate_product_codes": 0,
+      "duplicate_skus": 0,
+      "duplicate_handles": 0
+    }
   },
   "issues": {
     "products_without_physical_images": [],
@@ -65,8 +1039,201 @@
       "75",
       "113"
     ],
-    "duplicate_handles_resolved": [],
+    "handle_needs_review": [
+      "2",
+      "5",
+      "6",
+      "7",
+      "10",
+      "11",
+      "12",
+      "13",
+      "14",
+      "15",
+      "16",
+      "17",
+      "18",
+      "20",
+      "21",
+      "25",
+      "26",
+      "27",
+      "28",
+      "29",
+      "30",
+      "31",
+      "32",
+      "33",
+      "34",
+      "35",
+      "36",
+      "37",
+      "38",
+      "39",
+      "40",
+      "41",
+      "42",
+      "43",
+      "44",
+      "45",
+      "46",
+      "47",
+      "48",
+      "49",
+      "50",
+      "51",
+      "53",
+      "54",
+      "55",
+      "56",
+      "57",
+      "58",
+      "60",
+      "61",
+      "62",
+      "64",
+      "65",
+      "66",
+      "67",
+      "68",
+      "69",
+      "70",
+      "71",
+      "72",
+      "73",
+      "74",
+      "75",
+      "76",
+      "77",
+      "78",
+      "79",
+      "80",
+      "81",
+      "82",
+      "83",
+      "84",
+      "85",
+      "86",
+      "87",
+      "88",
+      "89",
+      "90",
+      "91",
+      "92",
+      "93",
+      "94",
+      "95",
+      "96",
+      "97",
+      "98",
+      "99",
+      "100",
+      "101",
+      "102",
+      "103",
+      "104",
+      "105",
+      "106",
+      "107",
+      "108",
+      "109",
+      "110",
+      "111",
+      "112",
+      "113",
+      "114",
+      "115",
+      "116",
+      "117",
+      "118",
+      "119",
+      "120",
+      "121",
+      "122",
+      "123",
+      "124",
+      "125",
+      "126",
+      "127",
+      "128",
+      "129",
+      "130",
+      "131",
+      "132",
+      "133",
+      "134",
+      "135",
+      "136",
+      "137",
+      "138",
+      "139",
+      "140",
+      "141",
+      "142",
+      "143",
+      "145",
+      "146",
+      "147",
+      "148",
+      "149",
+      "150",
+      "151",
+      "152",
+      "153",
+      "154",
+      "155",
+      "156",
+      "157",
+      "158",
+      "159",
+      "160",
+      "161",
+      "162",
+      "163",
+      "164",
+      "165",
+      "166",
+      "167",
+      "168",
+      "169",
+      "170",
+      "171",
+      "172",
+      "173",
+      "174",
+      "175",
+      "176",
+      "177",
+      "178",
+      "179",
+      "180",
+      "181",
+      "182",
+      "183",
+      "184",
+      "185",
+      "186",
+      "187",
+      "188",
+      "189",
+      "190",
+      "191"
+    ],
+    "invalid_handles": 0,
     "image_scan_issues": [],
-    "video_scan_issues": []
+    "video_scan_issues": [
+      {
+        "type": "unparseable_video_name",
+        "path": "data/videos/hero-1.webm"
+      },
+      {
+        "type": "unparseable_video_name",
+        "path": "data/videos/hero-2.webm"
+      },
+      {
+        "type": "unparseable_video_name",
+        "path": "data/videos/hero-3.webm"
+      }
+    ]
   }
 }

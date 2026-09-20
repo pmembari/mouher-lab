@@ -1,23 +1,31 @@
 [
   {
     "legacy_id": "7",
-    "slug": "1234",
+    "slug": "women",
     "title": "Women",
     "title_fa": "زنانه",
     "description": "",
     "position": 0,
     "is_visible": true,
-    "thumbnail_source": "legacy_csv_path_ignored"
+    "thumbnail_source": "legacy_csv_path_ignored",
+    "metadata": {
+      "legacy_slug": "1234"
+    },
+    "quality_flags": []
   },
   {
     "legacy_id": "8",
-    "slug": "123",
+    "slug": "men",
     "title": "Men",
     "title_fa": "مردانه",
     "description": "",
     "position": 0,
     "is_visible": true,
-    "thumbnail_source": "legacy_csv_path_ignored"
+    "thumbnail_source": "legacy_csv_path_ignored",
+    "metadata": {
+      "legacy_slug": "123"
+    },
+    "quality_flags": []
   },
   {
     "legacy_id": "9",
@@ -27,7 +35,11 @@
     "description": "",
     "position": 0,
     "is_visible": true,
-    "thumbnail_source": "legacy_csv_path_ignored"
+    "thumbnail_source": "legacy_csv_path_ignored",
+    "metadata": {
+      "legacy_slug": "Accessories"
+    },
+    "quality_flags": []
   },
   {
     "legacy_id": "6",
@@ -37,27 +49,41 @@
     "description": "",
     "position": 0,
     "is_visible": false,
-    "thumbnail_source": "legacy_csv_path_ignored"
+    "thumbnail_source": "legacy_csv_path_ignored",
+    "metadata": {
+      "legacy_slug": "111"
+    },
+    "quality_flags": [
+      "collection_needs_review"
+    ]
   },
   {
     "legacy_id": "1",
-    "slug": "ss-2024-collection",
-    "title": "Spring Summer Unisex",
+    "slug": "spring-summer-2024",
+    "title": "Spring Summer 2024",
     "title_fa": "بهار تابستان( unisex)",
     "description": "",
     "position": 1,
     "is_visible": false,
-    "thumbnail_source": "legacy_csv_path_ignored"
+    "thumbnail_source": "legacy_csv_path_ignored",
+    "metadata": {
+      "legacy_slug": "ss-2024-collection"
+    },
+    "quality_flags": []
   },
   {
     "legacy_id": "3",
-    "slug": "fw-2024-collectin",
-    "title": "Fall Winter Mouher",
+    "slug": "fall-winter-2024",
+    "title": "Fall Winter 2024",
     "title_fa": "پاییز زمستان موهر",
     "description": "",
     "position": 2,
     "is_visible": false,
-    "thumbnail_source": "legacy_csv_path_ignored"
+    "thumbnail_source": "legacy_csv_path_ignored",
+    "metadata": {
+      "legacy_slug": "fw-2024-collectin"
+    },
+    "quality_flags": []
   },
   {
     "legacy_id": "5",
@@ -67,6 +93,12 @@
     "description": "",
     "position": 3,
     "is_visible": false,
-    "thumbnail_source": "legacy_csv_path_ignored"
+    "thumbnail_source": "legacy_csv_path_ignored",
+    "metadata": {
+      "legacy_slug": "big-off"
+    },
+    "quality_flags": [
+      "collection_needs_review"
+    ]
   }
 ]

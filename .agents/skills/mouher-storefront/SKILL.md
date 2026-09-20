@@ -505,25 +505,25 @@ If the two conflict:
 * preserve accessibility
 * prefer the simpler architecture
 
+## Customer Account Guardrails
+
+- Customer account UX lives in `apps/storefront/`.
+- Customer authentication uses Medusa email/password authentication.
+- Mobile phone is required during account creation.
+- CAPTCHA is not currently required; do not add it unless explicitly requested.
+- GitHub Pages is the public development storefront host; real accounts require a separately reachable Medusa backend/database.
+- Do not create a second backend/BFF solely for GitHub Pages.
+
 ## Agent Workflow
 
 Before changing storefront code:
 
 1. Read the relevant `PLANS.md` section.
-2. Query `graphify-out/` when architecture context is needed.
-3. Identify the smallest set of relevant storefront files.
+2. Identify the smallest set of relevant storefront files.
+3. Use `graphify-out/` only when explicitly requested or when a concrete architecture question cannot be answered from targeted source/document reads.
 4. Do not broadly crawl the repository.
 5. Write or update tests for behavior changes.
 6. Implement the smallest useful change.
 7. Verify responsive, RTL/LTR, loading, empty, and error states where applicable.
 
-Do not read:
-
-* CSV
-* private media
-* environment files
-* generated JSON
-* build output
-* files over 5 MB
-
-unless explicitly required.
+Follow `AGENTS.md` for canonical context exclusions and file-size limits. Do not widen them here.

@@ -10,7 +10,7 @@ The target system has:
 - A premium public storefront for customers.
 
 - A secure Mouher operations dashboard for authorized staff.
-- A secure client account.
+- A secure customer account in `apps/storefront/` using Medusa email/password authentication; mobile phone is required at account creation.
 
 - Medusa should be identify as the commerce backend and commerce source of truth.
 
@@ -69,8 +69,7 @@ ecommerce UI.
 
 - `apps/dashboards/`: Mouher operational dashboard boundary.
 
-- `services/backend/`: backend service boundary that is being
-migrated to Medusa.
+- `services/backend/`: the Medusa backend boundary and the only intended commerce/auth backend.
 
 - `services/payment/`: isolated payment adapter service.
 
@@ -92,46 +91,8 @@ operational behavior.
 
 # Agent Context Exclusions
 
-Agents should default to:
-
-- source code
-
-- typed configuration
-
-- human-authored documentation
-
-- focused tests
-
-Do not read or index unless explicitly required:
-
-- CSV files
-
-- image files
-
-- video files
-
-- raw media
-
-- generated catalog JSON
-
-- generated data JSON
-
-- build outputs
-
-- files larger than 2 MB
-
-- private files under `data/Mouher_Data`
-
-Environment files are stricter.
-
-Do not read:
-
-- `.env`
-- `.env.-`
-- `-.env`
-- `.venv`
-
-unless the user explicitly asks for environment inspection.
+Follow the canonical context exclusions in `AGENTS.md`. Do not widen them here.
+Environment files remain excluded unless the user explicitly asks for environment inspection.
 
 ---
 
@@ -371,7 +332,14 @@ mutations
 
 ---
 
-# Development DevOps Principles(future milestone)
+# Development DevOps Principles (future milestone)
+
+During development, the public storefront is hosted on GitHub Pages at
+`https://pmembari.github.io/mouher-lab/`.
+
+GitHub Pages is static. Real customer accounts therefore require a separately
+reachable Medusa backend and database. Do not introduce a second backend/BFF
+solely to compensate for GitHub Pages.
 
 This milestone focuses on:
 

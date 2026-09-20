@@ -46,7 +46,9 @@ function logPlan(logger: any, plan: ImportPlan, catalogPath: string, apply: bool
     [
       `Mouher catalog bridge: ${apply ? "APPLY" : "DRY RUN"}`,
       `input=${catalogPath}`,
-      `products=${plan.summary.products}`,
+      `planned_products=${plan.summary.planned_products}`,
+      `importable_products=${plan.summary.importable_products}`,
+      `skipped_products=${plan.summary.skipped_products}`,
       `variants=${plan.summary.variants}`,
       `categories=${plan.summary.categories}`,
       `collections=${plan.summary.collections}`,

@@ -1,0 +1,3523 @@
+[
+  {
+    "live_id": 396,
+    "name": "پیراهن اسلپ",
+    "handle": "slap-shirt-brown",
+    "raw_slug": "slap-shirt-brown",
+    "price": "27040000.00",
+    "compare_at_price": "33800000.00",
+    "track_inventory": true,
+    "listing_stock": 10,
+    "colors": [],
+    "source_page": 1,
+    "image_filename_hint": "9ee8ff6a-6ea6-48b7-bd20-1a5b2b658694.webp",
+    "image_product_id_hint": "396",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/products/396/9ee8ff6a-6ea6-48b7-bd20-1a5b2b658694.webp"
+  },
+  {
+    "live_id": 395,
+    "name": "Porto linen shirt(m)",
+    "handle": "porto-shirt",
+    "raw_slug": "Porto shirt",
+    "price": "27040000.00",
+    "compare_at_price": "33800000.00",
+    "track_inventory": true,
+    "listing_stock": 20,
+    "colors": [],
+    "source_page": 1,
+    "image_filename_hint": "05637b22-3ccd-4575-911b-0d0e5eeac6d5.webp",
+    "image_product_id_hint": "395",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/products/395/05637b22-3ccd-4575-911b-0d0e5eeac6d5.webp"
+  },
+  {
+    "live_id": 390,
+    "name": "تیشرت حلقه ای بیسیک فری سایز",
+    "handle": "tshirt-rounded-basic-freesize",
+    "raw_slug": "tshirt-rounded-basic-freesize",
+    "price": "21440000.00",
+    "compare_at_price": "26800000.00",
+    "track_inventory": true,
+    "listing_stock": 30,
+    "colors": [
+      {
+        "label": "آبی آسمانی",
+        "hex": "#C2D1E6"
+      },
+      {
+        "label": "مشکی",
+        "hex": "#000000"
+      },
+      {
+        "label": "سبز پسته ای",
+        "hex": "#9D9D85"
+      },
+      {
+        "label": "سفید",
+        "hex": "#ffffff"
+      },
+      {
+        "label": "قهوه ای",
+        "hex": "#392E2D"
+      }
+    ],
+    "source_page": 1,
+    "image_filename_hint": "012e8d75-309e-4bb0-b466-550a6d0a38dd.webp",
+    "image_product_id_hint": "390",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/products/390/012e8d75-309e-4bb0-b466-550a6d0a38dd.webp"
+  },
+  {
+    "live_id": 302,
+    "name": "جوراب socks",
+    "handle": "691c09a655d37",
+    "raw_slug": "691c09a655d37",
+    "price": "3900000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 152,
+    "colors": [
+      {
+        "label": "مشکی",
+        "hex": "#212121"
+      },
+      {
+        "label": "سفید",
+        "hex": "#FFFFFF"
+      },
+      {
+        "label": "قهوه ای",
+        "hex": "#562e1f"
+      },
+      {
+        "label": "طوسی",
+        "hex": "#e0e0e0"
+      }
+    ],
+    "source_page": 1,
+    "image_filename_hint": "01KAARJF7AEKRHQ96PD443GKTM.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01KAARJF7AEKRHQ96PD443GKTM.webp"
+  },
+  {
+    "live_id": 299,
+    "name": "Kebrit pants M (green)",
+    "handle": "68e20e23d24ed",
+    "raw_slug": "68e20e23d24ed",
+    "price": "23840000.00",
+    "compare_at_price": "29800000.00",
+    "track_inventory": true,
+    "listing_stock": 40,
+    "colors": [],
+    "source_page": 1,
+    "image_filename_hint": "01K6SGFWCACMH6HAX6VS42P8PM.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01K6SGFWCACMH6HAX6VS42P8PM.webp"
+  },
+  {
+    "live_id": 298,
+    "name": "Kebrit pants M (cream)",
+    "handle": "68e20cfd3c465",
+    "raw_slug": "68e20cfd3c465",
+    "price": "23840000.00",
+    "compare_at_price": "29800000.00",
+    "track_inventory": true,
+    "listing_stock": 40,
+    "colors": [],
+    "source_page": 1,
+    "image_filename_hint": "01K6SGAEJAJNK73CSKAKDHY2YP.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01K6SGAEJAJNK73CSKAKDHY2YP.webp"
+  },
+  {
+    "live_id": 297,
+    "name": "Kebrit pants M (black)",
+    "handle": "68e1a04d75ca0",
+    "raw_slug": "68e1a04d75ca0",
+    "price": "23840000.00",
+    "compare_at_price": "29800000.00",
+    "track_inventory": true,
+    "listing_stock": 10,
+    "colors": [],
+    "source_page": 1,
+    "image_filename_hint": "01K6RP06S0NHFBN08P90THANE0.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01K6RP06S0NHFBN08P90THANE0.webp"
+  },
+  {
+    "live_id": 296,
+    "name": "Mazerati pants M (black)",
+    "handle": "68e19ea256e49",
+    "raw_slug": "68e19ea256e49",
+    "price": "33800000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 33,
+    "colors": [],
+    "source_page": 1,
+    "image_filename_hint": "01K6RNB5TTZP8QTKY9NG0MR73E.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01K6RNB5TTZP8QTKY9NG0MR73E.webp"
+  },
+  {
+    "live_id": 295,
+    "name": "Mazerati pants M(brown)",
+    "handle": "68e19d1178558",
+    "raw_slug": "68e19d1178558",
+    "price": "33800000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 35,
+    "colors": [],
+    "source_page": 1,
+    "image_filename_hint": "01K6RN3HCZW88KR4BH4NCRAEN0.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01K6RN3HCZW88KR4BH4NCRAEN0.webp"
+  },
+  {
+    "live_id": 282,
+    "name": "Pollar shirt M( black)",
+    "handle": "68e17b7e0b10a",
+    "raw_slug": "68e17b7e0b10a",
+    "price": "28800000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 1,
+    "colors": [],
+    "source_page": 1,
+    "image_filename_hint": "01K6RCYJFR1BW3JSJN2ESH24AF.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01K6RCYJFR1BW3JSJN2ESH24AF.webp"
+  },
+  {
+    "live_id": 280,
+    "name": "Waterproof hoodie M(blue)",
+    "handle": "68e0213dae6cb",
+    "raw_slug": "68e0213dae6cb",
+    "price": "39800000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 5,
+    "colors": [],
+    "source_page": 1,
+    "image_filename_hint": "01K6NREB5DNC136F517QEQ92AW.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01K6NREB5DNC136F517QEQ92AW.webp"
+  },
+  {
+    "live_id": 273,
+    "name": "Keshmir shirt M((navy)",
+    "handle": "68e011d00efe3",
+    "raw_slug": "68e011d00efe3",
+    "price": "33800000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 18,
+    "colors": [],
+    "source_page": 1,
+    "image_filename_hint": "01K6RBPM4K9JRYED63FSH678VZ.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01K6RBPM4K9JRYED63FSH678VZ.webp"
+  },
+  {
+    "live_id": 272,
+    "name": "Keshmir shirt M(gray)",
+    "handle": "68e0110668b0f",
+    "raw_slug": "68e0110668b0f",
+    "price": "33800000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 18,
+    "colors": [],
+    "source_page": 1,
+    "image_filename_hint": "01K6NMA5A3RXAJT9SJWRBMHGXZ.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01K6NMA5A3RXAJT9SJWRBMHGXZ.webp"
+  },
+  {
+    "live_id": 271,
+    "name": "Cotton shirt M(brown)",
+    "handle": "68e0105744480",
+    "raw_slug": "68e0105744480",
+    "price": "33800000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 20,
+    "colors": [],
+    "source_page": 1,
+    "image_filename_hint": "01K6NM1Y20TZKYVYKJPXPAC2GT.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01K6NM1Y20TZKYVYKJPXPAC2GT.webp"
+  },
+  {
+    "live_id": 270,
+    "name": "Cotton shirt M(black)",
+    "handle": "68e00ee21fef7",
+    "raw_slug": "68e00ee21fef7",
+    "price": "33800000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 19,
+    "colors": [],
+    "source_page": 1,
+    "image_filename_hint": "01K6NKTZG5S7VPF6H6N56F7MDW.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01K6NKTZG5S7VPF6H6N56F7MDW.webp"
+  },
+  {
+    "live_id": 268,
+    "name": "Limited overcoat F(black)",
+    "handle": "68e00339b86b3",
+    "raw_slug": "68e00339b86b3",
+    "price": "59800000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 9,
+    "colors": [],
+    "source_page": 1,
+    "image_filename_hint": "01K6NH48RNTE0RESMG5NH1WFSC.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01K6NH48RNTE0RESMG5NH1WFSC.webp"
+  },
+  {
+    "live_id": 262,
+    "name": "Denim coat F",
+    "handle": "68dfc6aa8c5aa",
+    "raw_slug": "68dfc6aa8c5aa",
+    "price": "39800000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 3,
+    "colors": [],
+    "source_page": 1,
+    "image_filename_hint": "01K6N27M65B90JSB1P43W7X6BH.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01K6N27M65B90JSB1P43W7X6BH.webp"
+  },
+  {
+    "live_id": 250,
+    "name": "Cotton shirt F(brown)",
+    "handle": "68df6569e40d3",
+    "raw_slug": "68df6569e40d3",
+    "price": "29800000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 20,
+    "colors": [],
+    "source_page": 1,
+    "image_filename_hint": "01K6MAEZ3GCKRANH020YC7HA2C.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01K6MAEZ3GCKRANH020YC7HA2C.webp"
+  },
+  {
+    "live_id": 249,
+    "name": "Cotton shirt F (black)",
+    "handle": "68df6439ca6e2",
+    "raw_slug": "68df6439ca6e2",
+    "price": "29800000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 20,
+    "colors": [],
+    "source_page": 1,
+    "image_filename_hint": "01K6MA4GFG9HAPW6KFGH3KGC1A.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01K6MA4GFG9HAPW6KFGH3KGC1A.webp"
+  },
+  {
+    "live_id": 248,
+    "name": "Keshmir shirt F(gray)",
+    "handle": "68df62df9e7b8",
+    "raw_slug": "68df62df9e7b8",
+    "price": "29800000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 20,
+    "colors": [],
+    "source_page": 1,
+    "image_filename_hint": "01K6M9SXKCPH44ZW8YVJRMD91X.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01K6M9SXKCPH44ZW8YVJRMD91X.webp"
+  },
+  {
+    "live_id": 247,
+    "name": "Keshmir shirt F(navy)",
+    "handle": "68df5f9ab9af1",
+    "raw_slug": "68df5f9ab9af1",
+    "price": "29800000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 19,
+    "colors": [],
+    "source_page": 2,
+    "image_filename_hint": "01K6M99XCGS28YWJC4D0Y840X3.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01K6M99XCGS28YWJC4D0Y840X3.webp"
+  },
+  {
+    "live_id": 245,
+    "name": "(Cargo pants (green",
+    "handle": "6850100ead84c",
+    "raw_slug": "6850100ead84c",
+    "price": "29800000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 49,
+    "colors": [],
+    "source_page": 2,
+    "image_filename_hint": "01JXWC04992DPFHKE7TC2GQ1FV.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JXWC04992DPFHKE7TC2GQ1FV.webp"
+  },
+  {
+    "live_id": 244,
+    "name": "(Cargo pants M (black",
+    "handle": "68500d3e8b5ff",
+    "raw_slug": "68500d3e8b5ff",
+    "price": "29800000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 18,
+    "colors": [],
+    "source_page": 2,
+    "image_filename_hint": "01JXWBDM37X282AVPFR1PD4960.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JXWBDM37X282AVPFR1PD4960.webp"
+  },
+  {
+    "live_id": 243,
+    "name": "(Cargo pants F (black",
+    "handle": "68500bed00841",
+    "raw_slug": "68500bed00841",
+    "price": "29800000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 50,
+    "colors": [],
+    "source_page": 2,
+    "image_filename_hint": "01JXWAZ3AYQGH0Z5HYDE8A6H73.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JXWAZ3AYQGH0Z5HYDE8A6H73.webp"
+  },
+  {
+    "live_id": 242,
+    "name": "(Cargo pants F (green",
+    "handle": "68500b0f49cca",
+    "raw_slug": "68500b0f49cca",
+    "price": "29800000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 50,
+    "colors": [],
+    "source_page": 2,
+    "image_filename_hint": "01JXWATBE9RCKVQ95RMMRS6MFZ.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JXWATBE9RCKVQ95RMMRS6MFZ.webp"
+  },
+  {
+    "live_id": 241,
+    "name": "(Mom pants (black",
+    "handle": "6850099d4e3cd",
+    "raw_slug": "6850099d4e3cd",
+    "price": "23840000.00",
+    "compare_at_price": "29800000.00",
+    "track_inventory": true,
+    "listing_stock": 10,
+    "colors": [],
+    "source_page": 2,
+    "image_filename_hint": "01JXWAFBB8F5RJQ93N2S0VKZNT.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JXWAFBB8F5RJQ93N2S0VKZNT.webp"
+  },
+  {
+    "live_id": 237,
+    "name": "(Everyday pants F (nescafe",
+    "handle": "684ed8e22f73c",
+    "raw_slug": "684ed8e22f73c",
+    "price": "23840000.00",
+    "compare_at_price": "29800000.00",
+    "track_inventory": true,
+    "listing_stock": 10,
+    "colors": [],
+    "source_page": 2,
+    "image_filename_hint": "01JXT02D4XP4Q12K3X433N58NX.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JXT02D4XP4Q12K3X433N58NX.webp"
+  },
+  {
+    "live_id": 236,
+    "name": "(Everday pants F (black",
+    "handle": "684eaeed7faaf",
+    "raw_slug": "684eaeed7faaf",
+    "price": "29800000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 148,
+    "colors": [],
+    "source_page": 2,
+    "image_filename_hint": "01JXSNSC3229JZXEFDV8DYD106.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JXSNSC3229JZXEFDV8DYD106.webp"
+  },
+  {
+    "live_id": 235,
+    "name": "(Everyday pants F (cream",
+    "handle": "684eab461c749",
+    "raw_slug": "684eab461c749",
+    "price": "23840000.00",
+    "compare_at_price": "29800000.00",
+    "track_inventory": true,
+    "listing_stock": 8,
+    "colors": [],
+    "source_page": 2,
+    "image_filename_hint": "01JXSNEYJC5HD5M5M9P8ZXDQC9.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JXSNEYJC5HD5M5M9P8ZXDQC9.webp"
+  },
+  {
+    "live_id": 234,
+    "name": "Striped pants F",
+    "handle": "684ea8e44b612",
+    "raw_slug": "684ea8e44b612",
+    "price": "23840000.00",
+    "compare_at_price": "29800000.00",
+    "track_inventory": true,
+    "listing_stock": 50,
+    "colors": [],
+    "source_page": 2,
+    "image_filename_hint": "01JXSMKDET7RK9FH83W1FQC0J3.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JXSMKDET7RK9FH83W1FQC0J3.webp"
+  },
+  {
+    "live_id": 231,
+    "name": "Basic short",
+    "handle": "684e8c45a3115",
+    "raw_slug": "684e8c45a3115",
+    "price": "15840000.00",
+    "compare_at_price": "19800000.00",
+    "track_inventory": true,
+    "listing_stock": 197,
+    "colors": [
+      {
+        "label": "مشکی",
+        "hex": "#212121"
+      },
+      {
+        "label": "سفید",
+        "hex": "#FFFFFF"
+      },
+      {
+        "label": "نسکافه ای",
+        "hex": "#a98274"
+      },
+      {
+        "label": "کرم",
+        "hex": "#ffecca"
+      }
+    ],
+    "source_page": 2,
+    "image_filename_hint": "01JXSDB31Q76JBN482X29Z5HPW.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JXSDB31Q76JBN482X29Z5HPW.webp"
+  },
+  {
+    "live_id": 230,
+    "name": "Striped short gray",
+    "handle": "684e8af68a65d",
+    "raw_slug": "684e8af68a65d",
+    "price": "15840000.00",
+    "compare_at_price": "19800000.00",
+    "track_inventory": true,
+    "listing_stock": 10,
+    "colors": [],
+    "source_page": 2,
+    "image_filename_hint": "01JXSD0AKAAFDR78FHM33RZ25V.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JXSD0AKAAFDR78FHM33RZ25V.webp"
+  },
+  {
+    "live_id": 229,
+    "name": "Striped short red",
+    "handle": "684e869269407",
+    "raw_slug": "684e869269407",
+    "price": "15840000.00",
+    "compare_at_price": "19800000.00",
+    "track_inventory": true,
+    "listing_stock": 4,
+    "colors": [],
+    "source_page": 2,
+    "image_filename_hint": "01JXSCNHVPHW2DD31VG0B90WW9.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JXSCNHVPHW2DD31VG0B90WW9.webp"
+  },
+  {
+    "live_id": 228,
+    "name": "Nimo striped gray M",
+    "handle": "684e814c2087a",
+    "raw_slug": "684e814c2087a",
+    "price": "23840000.00",
+    "compare_at_price": "29800000.00",
+    "track_inventory": true,
+    "listing_stock": 20,
+    "colors": [],
+    "source_page": 2,
+    "image_filename_hint": "01JXSBEW5G2SVVY205W81PXBPD.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JXSBEW5G2SVVY205W81PXBPD.webp"
+  },
+  {
+    "live_id": 225,
+    "name": "(Mom pants M (black",
+    "handle": "684e765e7df39",
+    "raw_slug": "684e765e7df39",
+    "price": "23840000.00",
+    "compare_at_price": "29800000.00",
+    "track_inventory": true,
+    "listing_stock": 5,
+    "colors": [],
+    "source_page": 2,
+    "image_filename_hint": "01JXS8F0SCK0QN0XQM6512K6PF.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JXS8F0SCK0QN0XQM6512K6PF.webp"
+  },
+  {
+    "live_id": 224,
+    "name": "(Mom pants M (cream",
+    "handle": "684e74176a32e",
+    "raw_slug": "684e74176a32e",
+    "price": "23840000.00",
+    "compare_at_price": "29800000.00",
+    "track_inventory": true,
+    "listing_stock": 5,
+    "colors": [],
+    "source_page": 2,
+    "image_filename_hint": "01JXS7QRXGNTFA4QTJPH6BEYQY.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JXS7QRXGNTFA4QTJPH6BEYQY.webp"
+  },
+  {
+    "live_id": 222,
+    "name": "(Dust pants M (black",
+    "handle": "684e6e536b845",
+    "raw_slug": "684e6e536b845",
+    "price": "23840000.00",
+    "compare_at_price": "29800000.00",
+    "track_inventory": true,
+    "listing_stock": 20,
+    "colors": [],
+    "source_page": 2,
+    "image_filename_hint": "01JXS60VGCKBJXB6XAQVEMF0NA.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JXS60VGCKBJXB6XAQVEMF0NA.webp"
+  },
+  {
+    "live_id": 221,
+    "name": "(Dust pants M (cream",
+    "handle": "684e67b36282b",
+    "raw_slug": "684e67b36282b",
+    "price": "23840000.00",
+    "compare_at_price": "29800000.00",
+    "track_inventory": true,
+    "listing_stock": 10,
+    "colors": [],
+    "source_page": 2,
+    "image_filename_hint": "01JXS5K507GC7HZCXKZC7FRHR2.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JXS5K507GC7HZCXKZC7FRHR2.webp"
+  },
+  {
+    "live_id": 220,
+    "name": "(Box shirt M (black",
+    "handle": "684e6307a7925",
+    "raw_slug": "684e6307a7925",
+    "price": "23840000.00",
+    "compare_at_price": "29800000.00",
+    "track_inventory": true,
+    "listing_stock": 5,
+    "colors": [],
+    "source_page": 2,
+    "image_filename_hint": "01JXS3CXEJZTFR9TT9W97ZH6QZ.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JXS3CXEJZTFR9TT9W97ZH6QZ.webp"
+  },
+  {
+    "live_id": 219,
+    "name": "(Box shirt M (white",
+    "handle": "684e615f66491",
+    "raw_slug": "684e615f66491",
+    "price": "23840000.00",
+    "compare_at_price": "29800000.00",
+    "track_inventory": true,
+    "listing_stock": 4,
+    "colors": [],
+    "source_page": 2,
+    "image_filename_hint": "01JXS2W6E7P2JFJ41R67ENGP21.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JXS2W6E7P2JFJ41R67ENGP21.webp"
+  },
+  {
+    "live_id": 216,
+    "name": "(Box shirt M (blue",
+    "handle": "684dd5133909f",
+    "raw_slug": "684dd5133909f",
+    "price": "23840000.00",
+    "compare_at_price": "29800000.00",
+    "track_inventory": true,
+    "listing_stock": 1,
+    "colors": [],
+    "source_page": 3,
+    "image_filename_hint": "01JXR0Z2JRTA3PH8C0JEMTFW0N.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JXR0Z2JRTA3PH8C0JEMTFW0N.webp"
+  },
+  {
+    "live_id": 215,
+    "name": "Camp collar shirt M",
+    "handle": "684dd0dc2928e",
+    "raw_slug": "684dd0dc2928e",
+    "price": "15840000.00",
+    "compare_at_price": "19800000.00",
+    "track_inventory": true,
+    "listing_stock": 5,
+    "colors": [],
+    "source_page": 3,
+    "image_filename_hint": "01JXQZJZWM6847DBNC6XYG9BTW.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JXQZJZWM6847DBNC6XYG9BTW.webp"
+  },
+  {
+    "live_id": 214,
+    "name": "Striped gray shirt M",
+    "handle": "684dceb41eec2",
+    "raw_slug": "684dceb41eec2",
+    "price": "19840000.00",
+    "compare_at_price": "24800000.00",
+    "track_inventory": true,
+    "listing_stock": 10,
+    "colors": [],
+    "source_page": 3,
+    "image_filename_hint": "01JXQZ5FN47YEE0NCY9FDP0DP7.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JXQZ5FN47YEE0NCY9FDP0DP7.webp"
+  },
+  {
+    "live_id": 207,
+    "name": "(Slap shirt m (black",
+    "handle": "684dc30d58073",
+    "raw_slug": "684dc30d58073",
+    "price": "27040000.00",
+    "compare_at_price": "33800000.00",
+    "track_inventory": true,
+    "listing_stock": 10,
+    "colors": [],
+    "source_page": 3,
+    "image_filename_hint": "01JXQW6ZHECR7FFE2XN5YH0S70.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JXQW6ZHECR7FFE2XN5YH0S70.webp"
+  },
+  {
+    "live_id": 206,
+    "name": "Slap shirt m (white)",
+    "handle": "684dc206bc576",
+    "raw_slug": "684dc206bc576",
+    "price": "27040000.00",
+    "compare_at_price": "33800000.00",
+    "track_inventory": true,
+    "listing_stock": 5,
+    "colors": [],
+    "source_page": 3,
+    "image_filename_hint": "01JXQVYHFCM3C3VATC4BVHPW1K.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JXQVYHFCM3C3VATC4BVHPW1K.webp"
+  },
+  {
+    "live_id": 204,
+    "name": "Harir F",
+    "handle": "68493d07bb15f",
+    "raw_slug": "68493d07bb15f",
+    "price": "19800000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 4,
+    "colors": [],
+    "source_page": 3,
+    "image_filename_hint": "01JXF1HE102ESG6PY9R9DBWR0E.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JXF1HE102ESG6PY9R9DBWR0E.webp"
+  },
+  {
+    "live_id": 203,
+    "name": "(Camp collar shirt F (white",
+    "handle": "68493bd9d9107",
+    "raw_slug": "68493bd9d9107",
+    "price": "15840000.00",
+    "compare_at_price": "19800000.00",
+    "track_inventory": true,
+    "listing_stock": 10,
+    "colors": [],
+    "source_page": 3,
+    "image_filename_hint": "01JXF18DP1H0HV2SR15F3K29JJ.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JXF18DP1H0HV2SR15F3K29JJ.webp"
+  },
+  {
+    "live_id": 202,
+    "name": "(Camp collar shirt F (black",
+    "handle": "6849345974a09",
+    "raw_slug": "6849345974a09",
+    "price": "15840000.00",
+    "compare_at_price": "19800000.00",
+    "track_inventory": true,
+    "listing_stock": 10,
+    "colors": [],
+    "source_page": 3,
+    "image_filename_hint": "01JXEZQNR9JQEGFK9FXT9JVR20.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JXEZQNR9JQEGFK9FXT9JVR20.webp"
+  },
+  {
+    "live_id": 201,
+    "name": "Striped gray shirt F",
+    "handle": "684931ca64c6f",
+    "raw_slug": "684931ca64c6f",
+    "price": "19840000.00",
+    "compare_at_price": "24800000.00",
+    "track_inventory": true,
+    "listing_stock": 10,
+    "colors": [],
+    "source_page": 3,
+    "image_filename_hint": "01JXEYS4XQ8PH9G5RGAA3P4CDS.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JXEYS4XQ8PH9G5RGAA3P4CDS.webp"
+  },
+  {
+    "live_id": 198,
+    "name": "(Slap shirt F (black",
+    "handle": "68492c8274bd1",
+    "raw_slug": "68492c8274bd1",
+    "price": "23840000.00",
+    "compare_at_price": "29800000.00",
+    "track_inventory": true,
+    "listing_stock": 10,
+    "colors": [],
+    "source_page": 3,
+    "image_filename_hint": "01JXQV3KT4433DMRQBWA0B74ST.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JXQV3KT4433DMRQBWA0B74ST.webp"
+  },
+  {
+    "live_id": 197,
+    "name": "(Slap shirt F (navy",
+    "handle": "68492b4a898dc",
+    "raw_slug": "68492b4a898dc",
+    "price": "23840000.00",
+    "compare_at_price": "29800000.00",
+    "track_inventory": true,
+    "listing_stock": 10,
+    "colors": [],
+    "source_page": 3,
+    "image_filename_hint": "01JXEX6HG6WP13Z00F5HTPNPMK.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JXEX6HG6WP13Z00F5HTPNPMK.webp"
+  },
+  {
+    "live_id": 194,
+    "name": "(Slap shirt F (white",
+    "handle": "6849271055b4f",
+    "raw_slug": "6849271055b4f",
+    "price": "23840000.00",
+    "compare_at_price": "29800000.00",
+    "track_inventory": true,
+    "listing_stock": 10,
+    "colors": [],
+    "source_page": 3,
+    "image_filename_hint": "01JXEW4VHSA6G6HFR23K7HPN8V.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JXEW4VHSA6G6HFR23K7HPN8V.webp"
+  },
+  {
+    "live_id": 192,
+    "name": "(Slap shirt F (blue",
+    "handle": "68491f83b2d0f",
+    "raw_slug": "68491f83b2d0f",
+    "price": "23840000.00",
+    "compare_at_price": "29800000.00",
+    "track_inventory": true,
+    "listing_stock": 10,
+    "colors": [],
+    "source_page": 3,
+    "image_filename_hint": "01JXETWTSSP0JW9H5A6XVBXRVP.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JXETWTSSP0JW9H5A6XVBXRVP.webp"
+  },
+  {
+    "live_id": 189,
+    "name": "پیراهن لینن لخت",
+    "handle": "67c407f78db91",
+    "raw_slug": "67c407f78db91",
+    "price": "23840000.00",
+    "compare_at_price": "29800000.00",
+    "track_inventory": true,
+    "listing_stock": 5,
+    "colors": [
+      {
+        "label": "مشکی",
+        "hex": "#212121"
+      },
+      {
+        "label": "خاکی",
+        "hex": "#cec1b1"
+      }
+    ],
+    "source_page": 3,
+    "image_filename_hint": "01JNAW5RHCGQ7QVVJPF8J29DKS.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JNAW5RHCGQ7QVVJPF8J29DKS.webp"
+  },
+  {
+    "live_id": 187,
+    "name": "شلوار لینن لخت",
+    "handle": "67c40369aa11e",
+    "raw_slug": "67c40369aa11e",
+    "price": "23840000.00",
+    "compare_at_price": "29800000.00",
+    "track_inventory": true,
+    "listing_stock": 40,
+    "colors": [
+      {
+        "label": "مشکی",
+        "hex": "#212121"
+      },
+      {
+        "label": "خاکی",
+        "hex": "#cec1b1"
+      }
+    ],
+    "source_page": 3,
+    "image_filename_hint": "01JNAV8KDH488VXP655P0MX2VM.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JNAV8KDH488VXP655P0MX2VM.webp"
+  },
+  {
+    "live_id": 182,
+    "name": "تیشرت 24",
+    "handle": "67c3eebf5ab55",
+    "raw_slug": "67c3eebf5ab55",
+    "price": "21440000.00",
+    "compare_at_price": "26800000.00",
+    "track_inventory": true,
+    "listing_stock": 10,
+    "colors": [],
+    "source_page": 3,
+    "image_filename_hint": "01JNAP1CRPTK6682FHVEC9AH8B.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JNAP1CRPTK6682FHVEC9AH8B.webp"
+  },
+  {
+    "live_id": 180,
+    "name": "پیراهن کنفی",
+    "handle": "67c3eb26b494e",
+    "raw_slug": "67c3eb26b494e",
+    "price": "23840000.00",
+    "compare_at_price": "29800000.00",
+    "track_inventory": true,
+    "listing_stock": 10,
+    "colors": [],
+    "source_page": 3,
+    "image_filename_hint": "01JNAN5W89H3Z9N3JKGW5DJJYK.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JNAN5W89H3Z9N3JKGW5DJJYK.webp"
+  },
+  {
+    "live_id": 177,
+    "name": "پیراهن بیسیک 2025",
+    "handle": "67c3803e72b97",
+    "raw_slug": "67c3803e72b97",
+    "price": "23840000.00",
+    "compare_at_price": "29800000.00",
+    "track_inventory": true,
+    "listing_stock": 10,
+    "colors": [
+      {
+        "label": "سبز",
+        "hex": "#00e676"
+      },
+      {
+        "label": "مشکی",
+        "hex": "#212121"
+      },
+      {
+        "label": "سفید",
+        "hex": "#FFFFFF"
+      }
+    ],
+    "source_page": 3,
+    "image_filename_hint": "01JN9W64QKM5PBMN6XGHB0EEK9.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JN9W64QKM5PBMN6XGHB0EEK9.webp"
+  },
+  {
+    "live_id": 176,
+    "name": "کت اسپرت",
+    "handle": "67c37b702e32a",
+    "raw_slug": "67c37b702e32a",
+    "price": "22350000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 42,
+    "colors": [
+      {
+        "label": "مشکی",
+        "hex": "#212121"
+      },
+      {
+        "label": "سفید",
+        "hex": "#FFFFFF"
+      }
+    ],
+    "source_page": 3,
+    "image_filename_hint": "01JN9TCF4FMVKVS22AVD6TC9K9.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JN9TCF4FMVKVS22AVD6TC9K9.webp"
+  },
+  {
+    "live_id": 174,
+    "name": "کت بلیزر 2025",
+    "handle": "67c367c6729ef",
+    "raw_slug": "67c367c6729ef",
+    "price": "65800000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 72,
+    "colors": [
+      {
+        "label": "مشکی",
+        "hex": "#212121"
+      },
+      {
+        "label": "طوسی روشن",
+        "hex": "#c3c3c3"
+      }
+    ],
+    "source_page": 3,
+    "image_filename_hint": "01JN9PKWSJ02H69RHPFPC0BB3Q.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JN9PKWSJ02H69RHPFPC0BB3Q.webp"
+  },
+  {
+    "live_id": 168,
+    "name": "جاگر",
+    "handle": "6762fc2db1534",
+    "raw_slug": "6762fc2db1534",
+    "price": "14850000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 9,
+    "colors": [
+      {
+        "label": "مشکی",
+        "hex": "#212121"
+      },
+      {
+        "label": "قهوه ای",
+        "hex": "#562e1f"
+      },
+      {
+        "label": "کرم",
+        "hex": "#ffecca"
+      }
+    ],
+    "source_page": 4,
+    "image_filename_hint": "01JFDBBVRKN9KSCJHAQTTE0KD2.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JFDBBVRKN9KSCJHAQTTE0KD2.webp"
+  },
+  {
+    "live_id": 167,
+    "name": "هودی ساده",
+    "handle": "6762f7d0789f3",
+    "raw_slug": "6762f7d0789f3",
+    "price": "14850000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 27,
+    "colors": [
+      {
+        "label": "قهوه ای",
+        "hex": "#562e1f"
+      },
+      {
+        "label": "مشکی",
+        "hex": "#212121"
+      },
+      {
+        "label": "کرم",
+        "hex": "#ffecca"
+      }
+    ],
+    "source_page": 4,
+    "image_filename_hint": "01JFD9PGR5SYSPZ3SWNM6C50JT.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JFD9PGR5SYSPZ3SWNM6C50JT.webp"
+  },
+  {
+    "live_id": 166,
+    "name": "نیم زیپ ساده",
+    "handle": "6762f484128b5",
+    "raw_slug": "6762f484128b5",
+    "price": "14850000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 2,
+    "colors": [
+      {
+        "label": "کرم",
+        "hex": "#ffecca"
+      },
+      {
+        "label": "قهوه ای",
+        "hex": "#562e1f"
+      },
+      {
+        "label": "مشکی",
+        "hex": "#212121"
+      }
+    ],
+    "source_page": 4,
+    "image_filename_hint": "01JFD95PYX7R94BE5YQE7301WY.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JFD95PYX7R94BE5YQE7301WY.webp"
+  },
+  {
+    "live_id": 156,
+    "name": "شلوار کبریتی",
+    "handle": "6710a6cc8688c",
+    "raw_slug": "6710a6cc8688c",
+    "price": "23840000.00",
+    "compare_at_price": "29800000.00",
+    "track_inventory": true,
+    "listing_stock": 21,
+    "colors": [
+      {
+        "label": "مشکی",
+        "hex": "#212121"
+      },
+      {
+        "label": "کرم",
+        "hex": "#ffecca"
+      },
+      {
+        "label": "طوسی تیره",
+        "hex": "#808080"
+      }
+    ],
+    "source_page": 4,
+    "image_filename_hint": "01JACGWDY0G2144A2V9R5Y6XBA.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JACGWDY0G2144A2V9R5Y6XBA.webp"
+  },
+  {
+    "live_id": 151,
+    "name": "وست کتان",
+    "handle": "670d317031da7",
+    "raw_slug": "670d317031da7",
+    "price": "23800000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 40,
+    "colors": [
+      {
+        "label": "مشکی",
+        "hex": "#212121"
+      },
+      {
+        "label": "کرم",
+        "hex": "#ffecca"
+      }
+    ],
+    "source_page": 4,
+    "image_filename_hint": "01JA5RNZMXWKS7GSBBQC90DJQZ.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JA5RNZMXWKS7GSBBQC90DJQZ.webp"
+  },
+  {
+    "live_id": 149,
+    "name": "هودی آستین کوتاه",
+    "handle": "670d1091e5925",
+    "raw_slug": "670d1091e5925",
+    "price": "26800000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 10,
+    "colors": [
+      {
+        "label": "مشکی",
+        "hex": "#212121"
+      },
+      {
+        "label": "طوسی روشن",
+        "hex": "#c3c3c3"
+      }
+    ],
+    "source_page": 4,
+    "image_filename_hint": "01JA5GR04WH8ZR5J778ZA7XAV8.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JA5GR04WH8ZR5J778ZA7XAV8.webp"
+  },
+  {
+    "live_id": 147,
+    "name": "سوییتشرت (sweatshirt)",
+    "handle": "670d0b5868fe9",
+    "raw_slug": "670d0b5868fe9",
+    "price": "38800000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 5,
+    "colors": [],
+    "source_page": 4,
+    "image_filename_hint": "01JA5FK1XY72GCQ3YX237RTS7C.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JA5FK1XY72GCQ3YX237RTS7C.webp"
+  },
+  {
+    "live_id": 146,
+    "name": "یقه پولو",
+    "handle": "670d08eedc032",
+    "raw_slug": "670d08eedc032",
+    "price": "33800000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 29,
+    "colors": [
+      {
+        "label": "مشکی",
+        "hex": "#212121"
+      },
+      {
+        "label": "سفید",
+        "hex": "#FFFFFF"
+      },
+      {
+        "label": "طوسی روشن",
+        "hex": "#c3c3c3"
+      }
+    ],
+    "source_page": 4,
+    "image_filename_hint": "01JA5EWSTCKXDF64GGJ30JXP4B.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JA5EWSTCKXDF64GGJ30JXP4B.webp"
+  },
+  {
+    "live_id": 143,
+    "name": "هودی بیسیک",
+    "handle": "670a9e935d9ee",
+    "raw_slug": "670a9e935d9ee",
+    "price": "33800000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 31,
+    "colors": [
+      {
+        "label": "سبز",
+        "hex": "#00e676"
+      },
+      {
+        "label": "مشکی",
+        "hex": "#212121"
+      }
+    ],
+    "source_page": 4,
+    "image_filename_hint": "01JA0S5EY3DWW7QSK795TFPRZ6.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JA0S5EY3DWW7QSK795TFPRZ6.webp"
+  },
+  {
+    "live_id": 140,
+    "name": "تیشرت موهر",
+    "handle": "66adedbae7e05",
+    "raw_slug": "66adedbae7e05",
+    "price": "21440000.00",
+    "compare_at_price": "26800000.00",
+    "track_inventory": true,
+    "listing_stock": 30,
+    "colors": [
+      {
+        "label": "آبی",
+        "hex": "#2196f3"
+      },
+      {
+        "label": "سفید",
+        "hex": "#FFFFFF"
+      },
+      {
+        "label": "مشکی",
+        "hex": "#212121"
+      }
+    ],
+    "source_page": 4,
+    "image_filename_hint": "01J4BPM4CRA02X820VGX51MXKN.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01J4BPM4CRA02X820VGX51MXKN.webp"
+  },
+  {
+    "live_id": 138,
+    "name": "پیراهن تنسل",
+    "handle": "66a227dface75",
+    "raw_slug": "66a227dface75",
+    "price": "19040000.00",
+    "compare_at_price": "23800000.00",
+    "track_inventory": true,
+    "listing_stock": 10,
+    "colors": [],
+    "source_page": 4,
+    "image_filename_hint": "01J3MPSSQKN8643MP27VW0XFD3.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01J3MPSSQKN8643MP27VW0XFD3.webp"
+  },
+  {
+    "live_id": 130,
+    "name": "شلوارک تک جیب",
+    "handle": "shalvarakkk",
+    "raw_slug": "Shalvarakkk",
+    "price": "19040000.00",
+    "compare_at_price": "23800000.00",
+    "track_inventory": true,
+    "listing_stock": 10,
+    "colors": [
+      {
+        "label": "مشکی",
+        "hex": "#212121"
+      },
+      {
+        "label": "نسکافه ای",
+        "hex": "#a98274"
+      }
+    ],
+    "source_page": 4,
+    "image_filename_hint": "e2uEvRcmquzekgtOlMMy6npU0WcBjn-metaRkU2MThFMjctNkVDNi00MkFELUJFQTctMkFCQTU4N0Q2MEVFLmpwZWc=-.jpg",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/e2uEvRcmquzekgtOlMMy6npU0WcBjn-metaRkU2MThFMjctNkVDNi00MkFELUJFQTctMkFCQTU4N0Q2MEVFLmpwZWc=-.jpg"
+  },
+  {
+    "live_id": 128,
+    "name": "وست",
+    "handle": "vessst",
+    "raw_slug": "Vessst",
+    "price": "24800000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 50,
+    "colors": [
+      {
+        "label": "مشکی",
+        "hex": "#212121"
+      },
+      {
+        "label": "کرم",
+        "hex": "#ffecca"
+      }
+    ],
+    "source_page": 4,
+    "image_filename_hint": "j1eAEBVlR5e6dPNS0sdVWPvXEE8jvD-metaRUQzNjI3MEUtREFEOS00MEIyLTlDQkEtQTk1OUFENzQyQUU3LmpwZWc=-.jpg",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/j1eAEBVlR5e6dPNS0sdVWPvXEE8jvD-metaRUQzNjI3MEUtREFEOS00MEIyLTlDQkEtQTk1OUFENzQyQUU3LmpwZWc=-.jpg"
+  },
+  {
+    "live_id": 126,
+    "name": "شلوار دو پیله",
+    "handle": "pp-mazerati",
+    "raw_slug": "PP-mazerati",
+    "price": "27040000.00",
+    "compare_at_price": "33800000.00",
+    "track_inventory": true,
+    "listing_stock": 192,
+    "colors": [
+      {
+        "label": "کرم",
+        "hex": "#ffecca"
+      },
+      {
+        "label": "خاکی",
+        "hex": "#cec1b1"
+      },
+      {
+        "label": "مشکی",
+        "hex": "#212121"
+      }
+    ],
+    "source_page": 4,
+    "image_filename_hint": "01JNAWCEMNMYQXBPHFHA55MDTV.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JNAWCEMNMYQXBPHFHA55MDTV.webp"
+  },
+  {
+    "live_id": 125,
+    "name": "کت لینن",
+    "handle": "llinen-coat",
+    "raw_slug": "LLinen-coat",
+    "price": "46800000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 35,
+    "colors": [
+      {
+        "label": "مشکی",
+        "hex": "#212121"
+      },
+      {
+        "label": "سبز",
+        "hex": "#00e676"
+      }
+    ],
+    "source_page": 4,
+    "image_filename_hint": "WfJQc6mdy3gjumiY09wz0eHNzULVxx-metaQjJBMENBMzMtOEFEMi00NjJELTlDQTUtNjE4MDE0MEY2NTczLmpwZWc=-.jpg",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/WfJQc6mdy3gjumiY09wz0eHNzULVxx-metaQjJBMENBMzMtOEFEMi00NjJELTlDQTUtNjE4MDE0MEY2NTczLmpwZWc=-.jpg"
+  },
+  {
+    "live_id": 124,
+    "name": "شلوار بگ لینن",
+    "handle": "nbag-linen",
+    "raw_slug": "NBag-linen",
+    "price": "23840000.00",
+    "compare_at_price": "29800000.00",
+    "track_inventory": true,
+    "listing_stock": 18,
+    "colors": [
+      {
+        "label": "مشکی",
+        "hex": "#212121"
+      },
+      {
+        "label": "سفید",
+        "hex": "#FFFFFF"
+      }
+    ],
+    "source_page": 4,
+    "image_filename_hint": "ubORIs43g2clqR9ob4Z2V35hg7gWNT-metaMjBFQUVFNkMtNzFCOS00RDM2LThENjUtQjlGNzU0QzA2QUYxLmpwZWc=-.jpg",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/ubORIs43g2clqR9ob4Z2V35hg7gWNT-metaMjBFQUVFNkMtNzFCOS00RDM2LThENjUtQjlGNzU0QzA2QUYxLmpwZWc=-.jpg"
+  },
+  {
+    "live_id": 120,
+    "name": "شلوار کارگو",
+    "handle": "cargoooo",
+    "raw_slug": "Cargoooo",
+    "price": "23840000.00",
+    "compare_at_price": "29800000.00",
+    "track_inventory": true,
+    "listing_stock": 79,
+    "colors": [
+      {
+        "label": "مشکی",
+        "hex": "#212121"
+      },
+      {
+        "label": "قهوه ای",
+        "hex": "#562e1f"
+      },
+      {
+        "label": "سرمه ای",
+        "hex": "#002171"
+      },
+      {
+        "label": "سبز",
+        "hex": "#00e676"
+      },
+      {
+        "label": "کرم",
+        "hex": "#ffecca"
+      }
+    ],
+    "source_page": 4,
+    "image_filename_hint": "Wbc8VNNERMOU8i5B6UIhjR5WA0zmzu-metaRDAxNkYwMUQtOUM3QS00REI0LTk4MkQtNTY5MUY0RjUyQ0QxLmpwZWc=-.jpg",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/Wbc8VNNERMOU8i5B6UIhjR5WA0zmzu-metaRDAxNkYwMUQtOUM3QS00REI0LTk4MkQtNTY5MUY0RjUyQ0QxLmpwZWc=-.jpg"
+  },
+  {
+    "live_id": 117,
+    "name": "شلوار کمر کش",
+    "handle": "tro",
+    "raw_slug": "Tro",
+    "price": "27040000.00",
+    "compare_at_price": "33800000.00",
+    "track_inventory": true,
+    "listing_stock": 11,
+    "colors": [
+      {
+        "label": "مشکی",
+        "hex": "#212121"
+      },
+      {
+        "label": "سبز",
+        "hex": "#00e676"
+      },
+      {
+        "label": "کرم",
+        "hex": "#ffecca"
+      }
+    ],
+    "source_page": 4,
+    "image_filename_hint": "wXyY7zxWE5RaWnb8HGdgvefvrtmlQt-metaOTBENTJBOTMtRUEwRi00OTFFLUIxMTgtOTY2QTlBNDA2RjdELmpwZWc=-.jpg",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/wXyY7zxWE5RaWnb8HGdgvefvrtmlQt-metaOTBENTJBOTMtRUEwRi00OTFFLUIxMTgtOTY2QTlBNDA2RjdELmpwZWc=-.jpg"
+  },
+  {
+    "live_id": 116,
+    "name": "پیراهن حصیری",
+    "handle": "hasiriii",
+    "raw_slug": "Hasiriii",
+    "price": "19840000.00",
+    "compare_at_price": "24800000.00",
+    "track_inventory": true,
+    "listing_stock": 11,
+    "colors": [
+      {
+        "label": "سفید",
+        "hex": "#FFFFFF"
+      },
+      {
+        "label": "کرم",
+        "hex": "#ffecca"
+      },
+      {
+        "label": "نسکافه ای",
+        "hex": "#a98274"
+      },
+      {
+        "label": "مشکی",
+        "hex": "#212121"
+      }
+    ],
+    "source_page": 4,
+    "image_filename_hint": "DURQpXrM6hWXV6m7LnjtoldKywBuRW-metaRTMxQUE5RDktNUM5RC00Q0YwLUE2NzgtNTkxRkI0QTQxNTVELmpwZWc=-.jpg",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/DURQpXrM6hWXV6m7LnjtoldKywBuRW-metaRTMxQUE5RDktNUM5RC00Q0YwLUE2NzgtNTkxRkI0QTQxNTVELmpwZWc=-.jpg"
+  },
+  {
+    "live_id": 115,
+    "name": "کراپ کت",
+    "handle": "croppp",
+    "raw_slug": "Croppp",
+    "price": "34800000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 2,
+    "colors": [],
+    "source_page": 4,
+    "image_filename_hint": "JmPRJzfYOvJO2WpugMsw1ruz1d70O8-metaQ0FFRDA0REYtNDczMy00NDYyLUI4M0QtRkFGOEQ0MkM1MUQwLmpwZWc=-.jpg",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/JmPRJzfYOvJO2WpugMsw1ruz1d70O8-metaQ0FFRDA0REYtNDczMy00NDYyLUI4M0QtRkFGOEQ0MkM1MUQwLmpwZWc=-.jpg"
+  },
+  {
+    "live_id": 113,
+    "name": "شلوار تک پیله فاستونی",
+    "handle": "ppnngff",
+    "raw_slug": "Ppnngff",
+    "price": "27040000.00",
+    "compare_at_price": "33800000.00",
+    "track_inventory": true,
+    "listing_stock": 7,
+    "colors": [
+      {
+        "label": "مشکی",
+        "hex": "#212121"
+      },
+      {
+        "label": "طوسی روشن",
+        "hex": "#c3c3c3"
+      }
+    ],
+    "source_page": 5,
+    "image_filename_hint": "HuGBMr1kuE4V0ObEgH7IWDWtjNPmzD-metaNDFEQkQ0QjktOEI0QS00MkU5LUI4QjctNjFCQTNDQjUzN0M2LmpwZWc=-.jpg",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/HuGBMr1kuE4V0ObEgH7IWDWtjNPmzD-metaNDFEQkQ0QjktOEI0QS00MkU5LUI4QjctNjFCQTNDQjUzN0M2LmpwZWc=-.jpg"
+  },
+  {
+    "live_id": 301,
+    "name": "gloves M",
+    "handle": "68e22e7cac5f4",
+    "raw_slug": "68e22e7cac5f4",
+    "price": "18900000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [
+      {
+        "label": "مشکی",
+        "hex": "#212121"
+      },
+      {
+        "label": "سبز",
+        "hex": "#00e676"
+      },
+      {
+        "label": "نسکافه ای",
+        "hex": "#a98274"
+      },
+      {
+        "label": "طوسی",
+        "hex": "#e0e0e0"
+      }
+    ],
+    "source_page": 5,
+    "image_filename_hint": "01K6SS2G7PXPNW980QE2AR9WJZ.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01K6SS2G7PXPNW980QE2AR9WJZ.webp"
+  },
+  {
+    "live_id": 300,
+    "name": "Mouher shawl",
+    "handle": "68e22ba74c44e",
+    "raw_slug": "68e22ba74c44e",
+    "price": "18900000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [
+      {
+        "label": "مشکی",
+        "hex": "#212121"
+      },
+      {
+        "label": "سبز",
+        "hex": "#00e676"
+      },
+      {
+        "label": "قرمز",
+        "hex": "#f44336"
+      },
+      {
+        "label": "سرمه ای",
+        "hex": "#002171"
+      },
+      {
+        "label": "قهوه ای",
+        "hex": "#562e1f"
+      },
+      {
+        "label": "کرم",
+        "hex": "#ffecca"
+      }
+    ],
+    "source_page": 5,
+    "image_filename_hint": "01K6SQVDH8VYMKPVJ742WZY6D6.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01K6SQVDH8VYMKPVJ742WZY6D6.webp"
+  },
+  {
+    "live_id": 294,
+    "name": "Waterproof hoodie F(black)",
+    "handle": "68e19a8233619",
+    "raw_slug": "68e19a8233619",
+    "price": "39800000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 5,
+    "image_filename_hint": "01K6RMB9NHWKKFANV1F9BA70JV.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01K6RMB9NHWKKFANV1F9BA70JV.webp"
+  },
+  {
+    "live_id": 293,
+    "name": "Waterproof hoodie F(blue)",
+    "handle": "68e1985f69ff1",
+    "raw_slug": "68e1985f69ff1",
+    "price": "39800000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 5,
+    "image_filename_hint": "01K6RM0ZKY2V1BCM6NV3ZJ4WFF.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01K6RM0ZKY2V1BCM6NV3ZJ4WFF.webp"
+  },
+  {
+    "live_id": 292,
+    "name": "Denim coat M",
+    "handle": "68e196d5c5bbe",
+    "raw_slug": "68e196d5c5bbe",
+    "price": "39800000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 5,
+    "image_filename_hint": "01K6RKH0PF93QPD61DDRRR4J7X.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01K6RKH0PF93QPD61DDRRR4J7X.webp"
+  },
+  {
+    "live_id": 291,
+    "name": "Casual overcoat M (nescafe)",
+    "handle": "68e1902bae177",
+    "raw_slug": "68e1902bae177",
+    "price": "59800000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 5,
+    "image_filename_hint": "01K6RHS8FGHG7DPMT0FV2C4437.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01K6RHS8FGHG7DPMT0FV2C4437.webp"
+  },
+  {
+    "live_id": 290,
+    "name": "Casual overcoat M(gray)",
+    "handle": "68e18f9cb0388",
+    "raw_slug": "68e18f9cb0388",
+    "price": "59800000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 5,
+    "image_filename_hint": "01K6RHKW3HZBNRNEA74103CXYF.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01K6RHKW3HZBNRNEA74103CXYF.webp"
+  },
+  {
+    "live_id": 289,
+    "name": "Casual overcoat M(black)",
+    "handle": "68e18e802d80f",
+    "raw_slug": "68e18e802d80f",
+    "price": "59800000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 5,
+    "image_filename_hint": "01K6RHE62B3VW4GRZ29349SPKF.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01K6RHE62B3VW4GRZ29349SPKF.webp"
+  },
+  {
+    "live_id": 288,
+    "name": "Limited overcoat M(nescafe)",
+    "handle": "68e18c85d086a",
+    "raw_slug": "68e18c85d086a",
+    "price": "44850000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 5,
+    "image_filename_hint": "01K6RGVZA4TSN4HJX1DS7NJ81F.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01K6RGVZA4TSN4HJX1DS7NJ81F.webp"
+  },
+  {
+    "live_id": 287,
+    "name": "Limited overcoat M(black)",
+    "handle": "68e18b0904c57",
+    "raw_slug": "68e18b0904c57",
+    "price": "44850000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 5,
+    "image_filename_hint": "01K6RGNFZKDBK6M5WER5FJ753A.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01K6RGNFZKDBK6M5WER5FJ753A.webp"
+  },
+  {
+    "live_id": 286,
+    "name": "Limited overcoat M(gray)",
+    "handle": "68e181b612242",
+    "raw_slug": "68e181b612242",
+    "price": "44850000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 5,
+    "image_filename_hint": "01K6REBXGS6W8BZ931F86NPQYJ.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01K6REBXGS6W8BZ931F86NPQYJ.webp"
+  },
+  {
+    "live_id": 285,
+    "name": "Pollar shirt M (navy)",
+    "handle": "68e180b35d6e0",
+    "raw_slug": "68e180b35d6e0",
+    "price": "18600000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 5,
+    "image_filename_hint": "01K6RDZ1NE4K3PNS2TK97XSP0Y.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01K6RDZ1NE4K3PNS2TK97XSP0Y.webp"
+  },
+  {
+    "live_id": 284,
+    "name": "Pollar shirt M(green)",
+    "handle": "68e180442d06c",
+    "raw_slug": "68e180442d06c",
+    "price": "18600000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 5,
+    "image_filename_hint": "01K6RDVHHWSHR1EH5T52JP83FT.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01K6RDVHHWSHR1EH5T52JP83FT.webp"
+  },
+  {
+    "live_id": 283,
+    "name": "Pollar shirt M(cream)",
+    "handle": "68e17df38c6f0",
+    "raw_slug": "68e17df38c6f0",
+    "price": "18600000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 5,
+    "image_filename_hint": "01K6RD9YTC4KJ4DX3FZ6W0D7C6.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01K6RD9YTC4KJ4DX3FZ6W0D7C6.webp"
+  },
+  {
+    "live_id": 281,
+    "name": "Waterproof hoodie M(black)",
+    "handle": "68e0238f35d28",
+    "raw_slug": "68e0238f35d28",
+    "price": "39800000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 5,
+    "image_filename_hint": "01K6NRQWCCK6FSH4FCDN3QEV6X.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01K6NRQWCCK6FSH4FCDN3QEV6X.webp"
+  },
+  {
+    "live_id": 279,
+    "name": "Pocket coat M(gray)",
+    "handle": "68e0184f64010",
+    "raw_slug": "68e0184f64010",
+    "price": "29850000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 5,
+    "image_filename_hint": "01K6NNZVWQR18617G842G63B4V.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01K6NNZVWQR18617G842G63B4V.webp"
+  },
+  {
+    "live_id": 278,
+    "name": "Pocket coat (black)",
+    "handle": "68e0157d48099",
+    "raw_slug": "68e0157d48099",
+    "price": "29850000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 5,
+    "image_filename_hint": "01K6NNQVQTJHXBC5W6VWKVEN4B.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01K6NNQVQTJHXBC5W6VWKVEN4B.webp"
+  },
+  {
+    "live_id": 277,
+    "name": "Trench coat M (black)",
+    "handle": "68e01521b0cc8",
+    "raw_slug": "68e01521b0cc8",
+    "price": "29850000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 5,
+    "image_filename_hint": "01K6RBXJFWRRGD0NAKENS0GK20.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01K6RBXJFWRRGD0NAKENS0GK20.webp"
+  },
+  {
+    "live_id": 276,
+    "name": "Trench coat M(begie)",
+    "handle": "68e0136d41e0d",
+    "raw_slug": "68e0136d41e0d",
+    "price": "29850000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 5,
+    "image_filename_hint": "01K6NMX45HS3BFR5E47RV9YJDP.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01K6NMX45HS3BFR5E47RV9YJDP.webp"
+  },
+  {
+    "live_id": 275,
+    "name": "Leather jacket M(black)",
+    "handle": "68e012f682232",
+    "raw_slug": "68e012f682232",
+    "price": "27600000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 6,
+    "image_filename_hint": "01K6RBGPW0DMRHWK0AGTGW89TF.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01K6RBGPW0DMRHWK0AGTGW89TF.webp"
+  },
+  {
+    "live_id": 274,
+    "name": "Leather jacket M(brown)",
+    "handle": "68e0123fed3e2",
+    "raw_slug": "68e0123fed3e2",
+    "price": "27600000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 6,
+    "image_filename_hint": "01K6NMHYXG6T0250V6FJT7HHM9.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01K6NMHYXG6T0250V6FJT7HHM9.webp"
+  },
+  {
+    "live_id": 269,
+    "name": "Limited overcoat F(nescafe)",
+    "handle": "68e00c08169b2",
+    "raw_slug": "68e00c08169b2",
+    "price": "59800000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 6,
+    "image_filename_hint": "01K6NK2T5W5BBYJCK9KSKZQERT.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01K6NK2T5W5BBYJCK9KSKZQERT.webp"
+  },
+  {
+    "live_id": 267,
+    "name": "Limited overcoat F(gray)",
+    "handle": "68dfff6d3e9b3",
+    "raw_slug": "68dfff6d3e9b3",
+    "price": "59800000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 6,
+    "image_filename_hint": "01K6NGM5EXNF7AT4DSMV6TJF1K.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01K6NGM5EXNF7AT4DSMV6TJF1K.webp"
+  },
+  {
+    "live_id": 266,
+    "name": "Pollar shirt F(black)",
+    "handle": "68dffdcf6b734",
+    "raw_slug": "68dffdcf6b734",
+    "price": "18600000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 6,
+    "image_filename_hint": "01K6NFGHAMA8Y5T6B0TTWA2ZAH.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01K6NFGHAMA8Y5T6B0TTWA2ZAH.webp"
+  },
+  {
+    "live_id": 265,
+    "name": "Pollar shirt F(green)",
+    "handle": "68dffd18c05a3",
+    "raw_slug": "68dffd18c05a3",
+    "price": "18600000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 6,
+    "image_filename_hint": "01K6NFCC48AM7Z3QATY1VPTTTK.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01K6NFCC48AM7Z3QATY1VPTTTK.webp"
+  },
+  {
+    "live_id": 264,
+    "name": "Pollar shirt F(navy)",
+    "handle": "68dffc24b54ce",
+    "raw_slug": "68dffc24b54ce",
+    "price": "18600000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 6,
+    "image_filename_hint": "01K6NF3HDA593MJ2N7KKVAME14.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01K6NF3HDA593MJ2N7KKVAME14.webp"
+  },
+  {
+    "live_id": 263,
+    "name": "Pollar shirt F(cream)",
+    "handle": "68dfcab602850",
+    "raw_slug": "68dfcab602850",
+    "price": "18600000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 6,
+    "image_filename_hint": "01K6N37ENPS2QEW57C9P6HRY6P.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01K6N37ENPS2QEW57C9P6HRY6P.webp"
+  },
+  {
+    "live_id": 261,
+    "name": "Cropped trench coat(black)",
+    "handle": "68dfc56f6314c",
+    "raw_slug": "68dfc56f6314c",
+    "price": "21600000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 6,
+    "image_filename_hint": "01K6N1RRVVSB1XMXXSJF23PQB3.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01K6N1RRVVSB1XMXXSJF23PQB3.webp"
+  },
+  {
+    "live_id": 260,
+    "name": "Cropped trench coat(begie)",
+    "handle": "68dfc2fec936b",
+    "raw_slug": "68dfc2fec936b",
+    "price": "21600000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 6,
+    "image_filename_hint": "01K6N1G57CBKDFQZSQJ1126Z7M.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01K6N1G57CBKDFQZSQJ1126Z7M.webp"
+  },
+  {
+    "live_id": 259,
+    "name": "Trench coat F(black)",
+    "handle": "68df7aed24202",
+    "raw_slug": "68df7aed24202",
+    "price": "29850000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 6,
+    "image_filename_hint": "01K6NFNW2E8YKHKYFW9A189ZZW.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01K6NFNW2E8YKHKYFW9A189ZZW.webp"
+  },
+  {
+    "live_id": 258,
+    "name": "Trench coat F(begie)",
+    "handle": "68df7972a4684",
+    "raw_slug": "68df7972a4684",
+    "price": "29850000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 6,
+    "image_filename_hint": "01K6MFAVRDKYFJJE7YTWSDFXAC.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01K6MFAVRDKYFJJE7YTWSDFXAC.webp"
+  },
+  {
+    "live_id": 257,
+    "name": "Paecoat F(black)",
+    "handle": "68df78a4c078c",
+    "raw_slug": "68df78a4c078c",
+    "price": "27600000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 6,
+    "image_filename_hint": "01K6MF2934QKG4NFRMW70H45RN.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01K6MF2934QKG4NFRMW70H45RN.webp"
+  },
+  {
+    "live_id": 256,
+    "name": "Paecoat F(nescafe)",
+    "handle": "68df767e6bcbe",
+    "raw_slug": "68df767e6bcbe",
+    "price": "27600000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 6,
+    "image_filename_hint": "01K6MESWDPWFVN799NTRN8VVP8.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01K6MESWDPWFVN799NTRN8VVP8.webp"
+  },
+  {
+    "live_id": 255,
+    "name": "Casual overcoat F(black)",
+    "handle": "68df75a80d36a",
+    "raw_slug": "68df75a80d36a",
+    "price": "59800000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 6,
+    "image_filename_hint": "01K6ME9AMMDSECFQ231PA7JNVS.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01K6ME9AMMDSECFQ231PA7JNVS.webp"
+  },
+  {
+    "live_id": 253,
+    "name": "Casual overcoat F(gray)",
+    "handle": "68df71ad1d24b",
+    "raw_slug": "68df71ad1d24b",
+    "price": "59800000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 6,
+    "image_filename_hint": "01K6MDBS2E14CECYXYB2ZJF90F.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01K6MDBS2E14CECYXYB2ZJF90F.webp"
+  },
+  {
+    "live_id": 252,
+    "name": "Leather jacket F(black)",
+    "handle": "68df693d45e40",
+    "raw_slug": "68df693d45e40",
+    "price": "27600000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 6,
+    "image_filename_hint": "01K6MBAP9NVT1AE1BHJQQPPT4Z.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01K6MBAP9NVT1AE1BHJQQPPT4Z.webp"
+  },
+  {
+    "live_id": 251,
+    "name": "Leather jacket F (brown)",
+    "handle": "68df66bec717b",
+    "raw_slug": "68df66bec717b",
+    "price": "27600000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 6,
+    "image_filename_hint": "01K6MB15B9HY16DPRH1J8ETG6R.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01K6MB15B9HY16DPRH1J8ETG6R.webp"
+  },
+  {
+    "live_id": 246,
+    "name": "Crop top",
+    "handle": "685cdc66eb712",
+    "raw_slug": "685cdc66eb712",
+    "price": "4875000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [
+      {
+        "label": "سفید",
+        "hex": "#FFFFFF"
+      },
+      {
+        "label": "مشکی",
+        "hex": "#212121"
+      },
+      {
+        "label": "طوسی",
+        "hex": "#e0e0e0"
+      }
+    ],
+    "source_page": 6,
+    "image_filename_hint": "01JYNBX3JF56V5REX6XMMVQZT8.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JYNBX3JF56V5REX6XMMVQZT8.webp"
+  },
+  {
+    "live_id": 240,
+    "name": "(Mom pants F (cream",
+    "handle": "68500873c08e6",
+    "raw_slug": "68500873c08e6",
+    "price": "23840000.00",
+    "compare_at_price": "29800000.00",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 6,
+    "image_filename_hint": "01JXWA7GC1F2K4612RHZXH1MVK.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JXWA7GC1F2K4612RHZXH1MVK.webp"
+  },
+  {
+    "live_id": 239,
+    "name": "(Nimo pants F (black",
+    "handle": "684ee4ff78539",
+    "raw_slug": "684ee4ff78539",
+    "price": "23840000.00",
+    "compare_at_price": "29800000.00",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 7,
+    "image_filename_hint": "01JXT30YPTW1KA9V27F3M34VSX.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JXT30YPTW1KA9V27F3M34VSX.webp"
+  },
+  {
+    "live_id": 238,
+    "name": "(Nimo pants F (white",
+    "handle": "684ee38d183f7",
+    "raw_slug": "684ee38d183f7",
+    "price": "23840000.00",
+    "compare_at_price": "29800000.00",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 7,
+    "image_filename_hint": "01JXT2NDJ1QPPQN8TT2P6QRH25.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JXT2NDJ1QPPQN8TT2P6QRH25.webp"
+  },
+  {
+    "live_id": 233,
+    "name": "(Tank top (black",
+    "handle": "684e9bbf0ef42",
+    "raw_slug": "684e9bbf0ef42",
+    "price": "17800000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 7,
+    "image_filename_hint": "01JXSH3RMPZEWEMYJ3RJJCAN91.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JXSH3RMPZEWEMYJ3RJJCAN91.webp"
+  },
+  {
+    "live_id": 232,
+    "name": "(Tank top(white",
+    "handle": "684e99c3b029c",
+    "raw_slug": "684e99c3b029c",
+    "price": "17800000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 7,
+    "image_filename_hint": "01JXSGQXNHSXXVA2FDQGA3A7QY.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JXSGQXNHSXXVA2FDQGA3A7QY.webp"
+  },
+  {
+    "live_id": 227,
+    "name": "(Nimo pants M (white",
+    "handle": "684e7bc254c79",
+    "raw_slug": "684e7bc254c79",
+    "price": "23840000.00",
+    "compare_at_price": "29800000.00",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 7,
+    "image_filename_hint": "01JXS9AHC1FF0S5FK8HJDT4F29.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JXS9AHC1FF0S5FK8HJDT4F29.webp"
+  },
+  {
+    "live_id": 226,
+    "name": "(Nimo pants M (black",
+    "handle": "684e7b01176ff",
+    "raw_slug": "684e7b01176ff",
+    "price": "23840000.00",
+    "compare_at_price": "29800000.00",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 7,
+    "image_filename_hint": "01JXS9H07VS8KBVBDBPF1XBZ19.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JXS9H07VS8KBVBDBPF1XBZ19.webp"
+  },
+  {
+    "live_id": 223,
+    "name": "(Dust pants M( nescafe",
+    "handle": "684e6f6b14cf7",
+    "raw_slug": "684e6f6b14cf7",
+    "price": "23840000.00",
+    "compare_at_price": "29800000.00",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 7,
+    "image_filename_hint": "01JXS6CSZKY7B04ZA0ENG6NQB5.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JXS6CSZKY7B04ZA0ENG6NQB5.webp"
+  },
+  {
+    "live_id": 218,
+    "name": "(Box shirt M (navy",
+    "handle": "684dd8d591641",
+    "raw_slug": "684dd8d591641",
+    "price": "23840000.00",
+    "compare_at_price": "29800000.00",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 7,
+    "image_filename_hint": "01JXR233PN2D38XTRJTFYW6DZD.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JXR233PN2D38XTRJTFYW6DZD.webp"
+  },
+  {
+    "live_id": 217,
+    "name": "(Box shirt M (green",
+    "handle": "684dd7473b96f",
+    "raw_slug": "684dd7473b96f",
+    "price": "23840000.00",
+    "compare_at_price": "29800000.00",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 7,
+    "image_filename_hint": "01JXR191ADWCV0YSRCTNSWP3MG.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JXR191ADWCV0YSRCTNSWP3MG.webp"
+  },
+  {
+    "live_id": 212,
+    "name": "Oxford shirt m",
+    "handle": "684dcbcfcc893",
+    "raw_slug": "684dcbcfcc893",
+    "price": "33800000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 7,
+    "image_filename_hint": "01JXQYAJWMZ976C1E7AB8ZTYEF.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JXQYAJWMZ976C1E7AB8ZTYEF.webp"
+  },
+  {
+    "live_id": 211,
+    "name": "(Slap shirt m (pink",
+    "handle": "684dcad0aab17",
+    "raw_slug": "684dcad0aab17",
+    "price": "27040000.00",
+    "compare_at_price": "33800000.00",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 7,
+    "image_filename_hint": "01JXQY2KCJ7M6A2ES3D9YAC5K9.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JXQY2KCJ7M6A2ES3D9YAC5K9.webp"
+  },
+  {
+    "live_id": 210,
+    "name": "(Slap shirt m (green",
+    "handle": "684dc9ae16946",
+    "raw_slug": "684dc9ae16946",
+    "price": "27040000.00",
+    "compare_at_price": "33800000.00",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 7,
+    "image_filename_hint": "01JXQXXQWEYAGWMZS6KQP82XPC.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JXQXXQWEYAGWMZS6KQP82XPC.webp"
+  },
+  {
+    "live_id": 209,
+    "name": "(Slap shirt m (yellow",
+    "handle": "684dc6fc48516",
+    "raw_slug": "684dc6fc48516",
+    "price": "27040000.00",
+    "compare_at_price": "33800000.00",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 7,
+    "image_filename_hint": "01JXQXM2YQSYN19S8ARDV2A652.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JXQXM2YQSYN19S8ARDV2A652.webp"
+  },
+  {
+    "live_id": 208,
+    "name": "(Slap shirt m (navy",
+    "handle": "684dc429d4320",
+    "raw_slug": "684dc429d4320",
+    "price": "27040000.00",
+    "compare_at_price": "33800000.00",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 7,
+    "image_filename_hint": "01JXQWGKDDWPPJ9820DRMJXAFH.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JXQWGKDDWPPJ9820DRMJXAFH.webp"
+  },
+  {
+    "live_id": 205,
+    "name": "Slap shirt m (blue)",
+    "handle": "684dbfdccb27c",
+    "raw_slug": "684dbfdccb27c",
+    "price": "27040000.00",
+    "compare_at_price": "33800000.00",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 7,
+    "image_filename_hint": "01JXQVMTH23PGTZB3C6PR5HJJA.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JXQVMTH23PGTZB3C6PR5HJJA.webp"
+  },
+  {
+    "live_id": 200,
+    "name": "Striped red shirt F",
+    "handle": "68492f9c3e72f",
+    "raw_slug": "68492f9c3e72f",
+    "price": "19840000.00",
+    "compare_at_price": "24800000.00",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 7,
+    "image_filename_hint": "01JXEYFHQPW1NJRZHSZDZ2WBM9.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JXEYFHQPW1NJRZHSZDZ2WBM9.webp"
+  },
+  {
+    "live_id": 199,
+    "name": "Crop oxford shirt",
+    "handle": "68492d967fd0b",
+    "raw_slug": "68492d967fd0b",
+    "price": "29800000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 7,
+    "image_filename_hint": "01JXEXZCPJA6NG5M6T27F6QVKH.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JXEXZCPJA6NG5M6T27F6QVKH.webp"
+  },
+  {
+    "live_id": 196,
+    "name": "(Slap shirt F (green",
+    "handle": "68492a2228f49",
+    "raw_slug": "68492a2228f49",
+    "price": "23840000.00",
+    "compare_at_price": "29800000.00",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 7,
+    "image_filename_hint": "01JXEWWKKTJ0H66J5XFP9RVYZ7.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JXEWWKKTJ0H66J5XFP9RVYZ7.webp"
+  },
+  {
+    "live_id": 195,
+    "name": "(Slap shirt F (pink",
+    "handle": "6849280bbdb87",
+    "raw_slug": "6849280bbdb87",
+    "price": "23840000.00",
+    "compare_at_price": "29800000.00",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 7,
+    "image_filename_hint": "01JXEWK4831XFNJN0WXDEG32KX.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JXEWK4831XFNJN0WXDEG32KX.webp"
+  },
+  {
+    "live_id": 193,
+    "name": "(Slap shirt F (yellow",
+    "handle": "6849241d10d09",
+    "raw_slug": "6849241d10d09",
+    "price": "23840000.00",
+    "compare_at_price": "29800000.00",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 7,
+    "image_filename_hint": "01JXEVXQ9B5HSFEYN8YKMBHDG2.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JXEVXQ9B5HSFEYN8YKMBHDG2.webp"
+  },
+  {
+    "live_id": 191,
+    "name": "عطر پنجاه میل night bloom",
+    "handle": "67d169f7ae957",
+    "raw_slug": "67d169f7ae957",
+    "price": "17100000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 8,
+    "image_filename_hint": "01JP50FFCB7BWH0NA6KZWGHTBB.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JP50FFCB7BWH0NA6KZWGHTBB.webp"
+  },
+  {
+    "live_id": 190,
+    "name": "عطر سی میل night bloom",
+    "handle": "67d1662fd8f05",
+    "raw_slug": "67d1662fd8f05",
+    "price": "11700000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 8,
+    "image_filename_hint": "01JP5054Z4GFX9E3YBSYSNF94S.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JP5054Z4GFX9E3YBSYSNF94S.webp"
+  },
+  {
+    "live_id": 188,
+    "name": "وست Tc",
+    "handle": "67c40619392e0",
+    "raw_slug": "67c40619392e0",
+    "price": "26800000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 8,
+    "image_filename_hint": "01JNAVRHS2YNWADZQSCXH7FS4C.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JNAVRHS2YNWADZQSCXH7FS4C.webp"
+  },
+  {
+    "live_id": 186,
+    "name": "تیشرت life",
+    "handle": "67c3f5485c138",
+    "raw_slug": "67c3f5485c138",
+    "price": "26800000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 8,
+    "image_filename_hint": "01JNARAT190ZYB5RQA85XJQ17N.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JNARAT190ZYB5RQA85XJQ17N.webp"
+  },
+  {
+    "live_id": 185,
+    "name": "تیشرت (بترسی باختی)",
+    "handle": "67c3f3fc0af17",
+    "raw_slug": "67c3f3fc0af17",
+    "price": "26800000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 8,
+    "image_filename_hint": "01JNAQ9TZXFRC1AMNJFV5MRS2P.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JNAQ9TZXFRC1AMNJFV5MRS2P.webp"
+  },
+  {
+    "live_id": 184,
+    "name": "تیشرت freedom",
+    "handle": "67c3f18ef2d4a",
+    "raw_slug": "67c3f18ef2d4a",
+    "price": "26800000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 8,
+    "image_filename_hint": "01JNAPR1KSMXHVAWMBWTWXB3R3.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JNAPR1KSMXHVAWMBWTWXB3R3.webp"
+  },
+  {
+    "live_id": 183,
+    "name": "تیشرت موهر ماستی",
+    "handle": "67c3f04d5c29d",
+    "raw_slug": "67c3f04d5c29d",
+    "price": "26800000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 8,
+    "image_filename_hint": "01JNAPBB3FZ7NMZE8H62W28JV7.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JNAPBB3FZ7NMZE8H62W28JV7.webp"
+  },
+  {
+    "live_id": 181,
+    "name": "تیشرت رگلان",
+    "handle": "67c3ed2948539",
+    "raw_slug": "67c3ed2948539",
+    "price": "26800000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 8,
+    "image_filename_hint": "01JNANNC2Z1Y3NEGJPXC2K2QJN.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JNANNC2Z1Y3NEGJPXC2K2QJN.webp"
+  },
+  {
+    "live_id": 179,
+    "name": "پیراهن دوجیب پرسی",
+    "handle": "67c3e923cfcad",
+    "raw_slug": "67c3e923cfcad",
+    "price": "19040000.00",
+    "compare_at_price": "23800000.00",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 8,
+    "image_filename_hint": "01JNAMS0CFCC6RTAZQBJZ80SP2.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JNAMS0CFCC6RTAZQBJZ80SP2.webp"
+  },
+  {
+    "live_id": 178,
+    "name": "پیراهن طرح",
+    "handle": "67c3e6a80b552",
+    "raw_slug": "67c3e6a80b552",
+    "price": "27040000.00",
+    "compare_at_price": "33800000.00",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 8,
+    "image_filename_hint": "01JNAM82X2EDS5W5HCRCYH9J7K.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JNAM82X2EDS5W5HCRCYH9J7K.webp"
+  },
+  {
+    "live_id": 175,
+    "name": "پیراهن چهارخانه کشمیر",
+    "handle": "67c3772b2d39a",
+    "raw_slug": "67c3772b2d39a",
+    "price": "23840000.00",
+    "compare_at_price": "29800000.00",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [
+      {
+        "label": "مشکی",
+        "hex": "#212121"
+      },
+      {
+        "label": "سفید",
+        "hex": "#FFFFFF"
+      }
+    ],
+    "source_page": 8,
+    "image_filename_hint": "01JN9S58Q84RRCFWZVQZ10WE08.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JN9S58Q84RRCFWZVQZ10WE08.webp"
+  },
+  {
+    "live_id": 172,
+    "name": "پافر کلاه داره",
+    "handle": "6773caecca60f",
+    "raw_slug": "6773caecca60f",
+    "price": "28350000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [
+      {
+        "label": "خاکی",
+        "hex": "#cec1b1"
+      },
+      {
+        "label": "مشکی",
+        "hex": "#212121"
+      }
+    ],
+    "source_page": 8,
+    "image_filename_hint": "01JGE54W25HN5ATCG2ECERAYZG.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JGE54W25HN5ATCG2ECERAYZG.webp"
+  },
+  {
+    "live_id": 171,
+    "name": "بامبر جکت چرم",
+    "handle": "6773c09ddb4f7",
+    "raw_slug": "6773c09ddb4f7",
+    "price": "20100000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [
+      {
+        "label": "سبز",
+        "hex": "#00e676"
+      },
+      {
+        "label": "مشکی",
+        "hex": "#212121"
+      }
+    ],
+    "source_page": 8,
+    "image_filename_hint": "01JGE2TBJRJFRFTVT7SSWJMXDM.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JGE2TBJRJFRFTVT7SSWJMXDM.webp"
+  },
+  {
+    "live_id": 170,
+    "name": "اورکت long",
+    "handle": "6768463d90d0c",
+    "raw_slug": "6768463d90d0c",
+    "price": "29850000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [
+      {
+        "label": "مشکی",
+        "hex": "#212121"
+      },
+      {
+        "label": "قهوه ای",
+        "hex": "#562e1f"
+      },
+      {
+        "label": "طوسی روشن",
+        "hex": "#c3c3c3"
+      }
+    ],
+    "source_page": 8,
+    "image_filename_hint": "01JFQNFZV696HX0THR9F3J60TX.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JFQNFZV696HX0THR9F3J60TX.webp"
+  },
+  {
+    "live_id": 165,
+    "name": "کت بلیزر",
+    "handle": "6762f3b08047c",
+    "raw_slug": "6762f3b08047c",
+    "price": "18600000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 8,
+    "image_filename_hint": "01JFD8JTZE3RXGXQ56RVKRF4RJ.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JFD8JTZE3RXGXQ56RVKRF4RJ.webp"
+  },
+  {
+    "live_id": 164,
+    "name": "پیراهن چهارخانه طوسی",
+    "handle": "6762f1dfcea90",
+    "raw_slug": "6762f1dfcea90",
+    "price": "5880000.00",
+    "compare_at_price": "7350000.00",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 8,
+    "image_filename_hint": "01JFD89QS85NXGYB3Q4F7CWXS0.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JFD89QS85NXGYB3Q4F7CWXS0.webp"
+  },
+  {
+    "live_id": 163,
+    "name": "یقه ترکیبی",
+    "handle": "6762f05fa44c9",
+    "raw_slug": "6762f05fa44c9",
+    "price": "29800000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [
+      {
+        "label": "سفید",
+        "hex": "#FFFFFF"
+      },
+      {
+        "label": "مشکی",
+        "hex": "#212121"
+      }
+    ],
+    "source_page": 8,
+    "image_filename_hint": "01JFD7VY84RQ79AHSD85CQTHGY.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JFD7VY84RQ79AHSD85CQTHGY.webp"
+  },
+  {
+    "live_id": 161,
+    "name": "تیشرت کلاه دار",
+    "handle": "6762919b16178",
+    "raw_slug": "6762919b16178",
+    "price": "13400000.00",
+    "compare_at_price": "26800000.00",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 8,
+    "image_filename_hint": "01JFCGMD0SCY48K6X0JCYMW2WZ.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JFCGMD0SCY48K6X0JCYMW2WZ.webp"
+  },
+  {
+    "live_id": 160,
+    "name": "بادی شرت(strech shirt)",
+    "handle": "673da87068ba1",
+    "raw_slug": "673da87068ba1",
+    "price": "4875000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [
+      {
+        "label": "قرمز",
+        "hex": "#f44336"
+      },
+      {
+        "label": "طوسی تیره",
+        "hex": "#808080"
+      },
+      {
+        "label": "مشکی",
+        "hex": "#212121"
+      },
+      {
+        "label": "سفید",
+        "hex": "#FFFFFF"
+      }
+    ],
+    "source_page": 8,
+    "image_filename_hint": "01JD4DRS35RF826Q2TAHCNXTMD.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JD4DRS35RF826Q2TAHCNXTMD.webp"
+  },
+  {
+    "live_id": 159,
+    "name": "وست پافر",
+    "handle": "673075849e70a",
+    "raw_slug": "673075849e70a",
+    "price": "20100000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [
+      {
+        "label": "کرم",
+        "hex": "#ffecca"
+      },
+      {
+        "label": "مشکی",
+        "hex": "#212121"
+      }
+    ],
+    "source_page": 8,
+    "image_filename_hint": "01JCAN54H8TCRWZMFF9J8VKSJD.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JCAN54H8TCRWZMFF9J8VKSJD.webp"
+  },
+  {
+    "live_id": 158,
+    "name": "کت چرم (leather jacket)",
+    "handle": "671372b018936",
+    "raw_slug": "671372b018936",
+    "price": "20100000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 9,
+    "image_filename_hint": "01JBGGA2B7AZ8A9N71WB46S7FN.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JBGGA2B7AZ8A9N71WB46S7FN.webp"
+  },
+  {
+    "live_id": 157,
+    "name": "کراپ کاپشن",
+    "handle": "671102b05b82f",
+    "raw_slug": "671102b05b82f",
+    "price": "20850000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [
+      {
+        "label": "مشکی",
+        "hex": "#212121"
+      },
+      {
+        "label": "کرم",
+        "hex": "#ffecca"
+      }
+    ],
+    "source_page": 9,
+    "image_filename_hint": "01JAD77PVRA0FB83S2JSPT90QX.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JAD77PVRA0FB83S2JSPT90QX.webp"
+  },
+  {
+    "live_id": 155,
+    "name": "لانگ شرت",
+    "handle": "6710a4d9cd7e3",
+    "raw_slug": "6710a4d9cd7e3",
+    "price": "29800000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [
+      {
+        "label": "مشکی",
+        "hex": "#212121"
+      },
+      {
+        "label": "سفید",
+        "hex": "#FFFFFF"
+      }
+    ],
+    "source_page": 9,
+    "image_filename_hint": "01JACGC6RFK927PRG0B47YDWEH.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JACGC6RFK927PRG0B47YDWEH.webp"
+  },
+  {
+    "live_id": 154,
+    "name": "کت جین",
+    "handle": "670d39e74dce5",
+    "raw_slug": "670d39e74dce5",
+    "price": "17850000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [
+      {
+        "label": "طوسی روشن",
+        "hex": "#c3c3c3"
+      },
+      {
+        "label": "طوسی تیره",
+        "hex": "#808080"
+      }
+    ],
+    "source_page": 9,
+    "image_filename_hint": "01JA5TRQEJ6K38M7CTC18F4W9S.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JA5TRQEJ6K38M7CTC18F4W9S.webp"
+  },
+  {
+    "live_id": 153,
+    "name": "بافت",
+    "handle": "670d3448e9076",
+    "raw_slug": "670d3448e9076",
+    "price": "13350000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [
+      {
+        "label": "مشکی",
+        "hex": "#212121"
+      },
+      {
+        "label": "کرم",
+        "hex": "#ffecca"
+      }
+    ],
+    "source_page": 9,
+    "image_filename_hint": "01JA5SCA1ED60CM0Q44HZX2EG3.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JA5SCA1ED60CM0Q44HZX2EG3.webp"
+  },
+  {
+    "live_id": 152,
+    "name": "شلوارک کتان",
+    "handle": "670d330898cfc",
+    "raw_slug": "670d330898cfc",
+    "price": "19040000.00",
+    "compare_at_price": "23800000.00",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [
+      {
+        "label": "مشکی",
+        "hex": "#212121"
+      },
+      {
+        "label": "کرم",
+        "hex": "#ffecca"
+      }
+    ],
+    "source_page": 9,
+    "image_filename_hint": "01JA5S2V0T5TDKP1QSPAD1WR47.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JA5S2V0T5TDKP1QSPAD1WR47.webp"
+  },
+  {
+    "live_id": 150,
+    "name": "کاپشن",
+    "handle": "670d30bf14a1b",
+    "raw_slug": "670d30bf14a1b",
+    "price": "26850000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [
+      {
+        "label": "مشکی",
+        "hex": "#212121"
+      },
+      {
+        "label": "کرم",
+        "hex": "#ffecca"
+      }
+    ],
+    "source_page": 9,
+    "image_filename_hint": "01JAD6PPSTZJSCMK67161B8SQZ.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JAD6PPSTZJSCMK67161B8SQZ.webp"
+  },
+  {
+    "live_id": 148,
+    "name": "سوییتشرت کوتاه(short sweatshirt)",
+    "handle": "670d0da798da4",
+    "raw_slug": "670d0da798da4",
+    "price": "38800000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [
+      {
+        "label": "مشکی",
+        "hex": "#212121"
+      },
+      {
+        "label": "سبز",
+        "hex": "#00e676"
+      }
+    ],
+    "source_page": 9,
+    "image_filename_hint": "01JA5FYQR7A733EH1F156S72HM.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JA5FYQR7A733EH1F156S72HM.webp"
+  },
+  {
+    "live_id": 145,
+    "name": "اورکت (over coat)",
+    "handle": "670bf74dc1ae4",
+    "raw_slug": "670bf74dc1ae4",
+    "price": "22350000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [
+      {
+        "label": "مشکی",
+        "hex": "#212121"
+      },
+      {
+        "label": "طوسی تیره",
+        "hex": "#808080"
+      }
+    ],
+    "source_page": 9,
+    "image_filename_hint": "01JA3C08ERDJ0N7VQDHW5Q7JTT.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JA3C08ERDJ0N7VQDHW5Q7JTT.webp"
+  },
+  {
+    "live_id": 144,
+    "name": "ترنچ کت(trench coat)",
+    "handle": "670bf36786c84",
+    "raw_slug": "670bf36786c84",
+    "price": "29850000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [
+      {
+        "label": "کرم",
+        "hex": "#ffecca"
+      },
+      {
+        "label": "مشکی",
+        "hex": "#212121"
+      }
+    ],
+    "source_page": 9,
+    "image_filename_hint": "01JA3BA4JTNY2DM6KAPDD7Y1ZN.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JA3BA4JTNY2DM6KAPDD7Y1ZN.webp"
+  },
+  {
+    "live_id": 142,
+    "name": "نیم زیپ",
+    "handle": "670a9b96ccf50",
+    "raw_slug": "670a9b96ccf50",
+    "price": "17850000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [
+      {
+        "label": "سبز",
+        "hex": "#00e676"
+      },
+      {
+        "label": "سفید",
+        "hex": "#FFFFFF"
+      }
+    ],
+    "source_page": 9,
+    "image_filename_hint": "01JA0QFH7FNG7FZ1W85W6KBJVX.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JA0QFH7FNG7FZ1W85W6KBJVX.webp"
+  },
+  {
+    "live_id": 141,
+    "name": "پیراهن یقه انگلیسی (new)",
+    "handle": "66b36d04757f4",
+    "raw_slug": "66b36d04757f4",
+    "price": "23840000.00",
+    "compare_at_price": "29800000.00",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [
+      {
+        "label": "مشکی",
+        "hex": "#212121"
+      },
+      {
+        "label": "سبز",
+        "hex": "#00e676"
+      },
+      {
+        "label": "سفید",
+        "hex": "#FFFFFF"
+      }
+    ],
+    "source_page": 9,
+    "image_filename_hint": "01J4PE6WSBVF0PK3Y8YTGH20N6.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01J4PE6WSBVF0PK3Y8YTGH20N6.webp"
+  },
+  {
+    "live_id": 139,
+    "name": "شلوار کنفی",
+    "handle": "66a2288520a45",
+    "raw_slug": "66a2288520a45",
+    "price": "29800000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 9,
+    "image_filename_hint": "01JNASDVS4S8XH8XK5W3HEN0V7.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01JNASDVS4S8XH8XK5W3HEN0V7.webp"
+  },
+  {
+    "live_id": 137,
+    "name": "پیراهن 4 دکمه",
+    "handle": "669cd3e9a3855",
+    "raw_slug": "669cd3e9a3855",
+    "price": "19040000.00",
+    "compare_at_price": "23800000.00",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [
+      {
+        "label": "سبز",
+        "hex": "#00e676"
+      },
+      {
+        "label": "مشکی",
+        "hex": "#212121"
+      },
+      {
+        "label": "کرم",
+        "hex": "#ffecca"
+      }
+    ],
+    "source_page": 9,
+    "image_filename_hint": "01J3A9SDFXQV4C5YAWA1HC2PT1.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01J3A9SDFXQV4C5YAWA1HC2PT1.webp"
+  },
+  {
+    "live_id": 136,
+    "name": "پیراهن راه راه سفید مشکی",
+    "handle": "669796ae1615e",
+    "raw_slug": "669796ae1615e",
+    "price": "19840000.00",
+    "compare_at_price": "24800000.00",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 9,
+    "image_filename_hint": "01J302CJCVZDFD6GYZQJNJ8X3A.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01J302CJCVZDFD6GYZQJNJ8X3A.webp"
+  },
+  {
+    "live_id": 135,
+    "name": "پیراهن لینن جیبدار",
+    "handle": "6692a6ac2ce70",
+    "raw_slug": "6692a6ac2ce70",
+    "price": "19840000.00",
+    "compare_at_price": "24800000.00",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [
+      {
+        "label": "زرد",
+        "hex": "#ffeb3b"
+      },
+      {
+        "label": "سفید",
+        "hex": "#FFFFFF"
+      },
+      {
+        "label": "کرم",
+        "hex": "#ffecca"
+      },
+      {
+        "label": "مشکی",
+        "hex": "#212121"
+      }
+    ],
+    "source_page": 9,
+    "image_filename_hint": "01J2PG43HJB15112FMK9SYFSWE.webp",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/01J2PG43HJB15112FMK9SYFSWE.webp"
+  },
+  {
+    "live_id": 131,
+    "name": "ژیله",
+    "handle": "product",
+    "raw_slug": "ژیله",
+    "price": "23800000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [
+      {
+        "label": "کرم",
+        "hex": "#ffecca"
+      },
+      {
+        "label": "مشکی",
+        "hex": "#212121"
+      }
+    ],
+    "source_page": 9,
+    "image_filename_hint": "ZHBTuITjBwg9skkpy3XDU5wvS9IX2w-metaQTFBQjE0RjItRjY4QS00QUY1LTk3RkQtQTc4QzJCNTE0RUQ0LmpwZWc=-.jpg",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/ZHBTuITjBwg9skkpy3XDU5wvS9IX2w-metaQTFBQjE0RjItRjY4QS00QUY1LTk3RkQtQTc4QzJCNTE0RUQ0LmpwZWc=-.jpg"
+  },
+  {
+    "live_id": 127,
+    "name": "پیراهن راه راه کنفی",
+    "handle": "piran",
+    "raw_slug": "Piran—-",
+    "price": "19840000.00",
+    "compare_at_price": "24800000.00",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [],
+    "source_page": 9,
+    "image_filename_hint": "BLNowATNDFElItjLZ8v94muoXzVwCq-metaOUZCNDc3RTUtMjI4NC00MTI4LTlEMUItMUVGMkNFRTUyNzFDLmpwZWc=-.jpg",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/BLNowATNDFElItjLZ8v94muoXzVwCq-metaOUZCNDc3RTUtMjI4NC00MTI4LTlEMUItMUVGMkNFRTUyNzFDLmpwZWc=-.jpg"
+  },
+  {
+    "live_id": 123,
+    "name": "پیراهن یقه انگلیسی",
+    "handle": "ip-englisi",
+    "raw_slug": "IP-englisi",
+    "price": "19840000.00",
+    "compare_at_price": "24800000.00",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [
+      {
+        "label": "مشکی",
+        "hex": "#212121"
+      },
+      {
+        "label": "سفید",
+        "hex": "#FFFFFF"
+      }
+    ],
+    "source_page": 9,
+    "image_filename_hint": "tMYSBlHsCdJsXeTqHclFeM0Mywshb3-metaRDNGMzQxOEQtNUY2OS00QTk5LUJDRTQtQTRBNTRFQTIzQUI3LmpwZWc=-.jpg",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/tMYSBlHsCdJsXeTqHclFeM0Mywshb3-metaRDNGMzQxOEQtNUY2OS00QTk5LUJDRTQtQTRBNTRFQTIzQUI3LmpwZWc=-.jpg"
+  },
+  {
+    "live_id": 122,
+    "name": "تیشرت بیسیک",
+    "handle": "tt-shirt",
+    "raw_slug": "TT-shirt",
+    "price": "23800000.00",
+    "compare_at_price": "",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [
+      {
+        "label": "سفید",
+        "hex": "#FFFFFF"
+      },
+      {
+        "label": "آبی",
+        "hex": "#2196f3"
+      },
+      {
+        "label": "مشکی",
+        "hex": "#212121"
+      },
+      {
+        "label": "سبز",
+        "hex": "#00e676"
+      }
+    ],
+    "source_page": 9,
+    "image_filename_hint": "SlOhYaqVuNAEplawd674pgSrJ6m3FQ-metaNzFBNDk2NTEtMzczNy00NkZBLTlDMkEtQkVGNEVBRTU1MDkzLmpwZWc=-.jpg",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/SlOhYaqVuNAEplawd674pgSrJ6m3FQ-metaNzFBNDk2NTEtMzczNy00NkZBLTlDMkEtQkVGNEVBRTU1MDkzLmpwZWc=-.jpg"
+  },
+  {
+    "live_id": 121,
+    "name": "پیراهن بیسیک",
+    "handle": "basiccc",
+    "raw_slug": "basiccc",
+    "price": "23840000.00",
+    "compare_at_price": "29800000.00",
+    "track_inventory": true,
+    "listing_stock": 0,
+    "colors": [
+      {
+        "label": "مشکی",
+        "hex": "#212121"
+      },
+      {
+        "label": "سفید",
+        "hex": "#FFFFFF"
+      }
+    ],
+    "source_page": 10,
+    "image_filename_hint": "gQoSLf4IYHTvUrFKgNg4aTBIR2e16s-metaRUY1QTRDNDktODQwMS00MjFBLTkyNjMtQTJFQ0REQjk4NjY0LmpwZWc=-.jpg",
+    "image_product_id_hint": "",
+    "image_source": "remote_public_url",
+    "image_url": "https://darika-assets.s3.ir-thr-at1.arvanstorage.ir/tenant_2/gQoSLf4IYHTvUrFKgNg4aTBIR2e16s-metaRUY1QTRDNDktODQwMS00MjFBLTkyNjMtQTJFQ0REQjk4NjY0LmpwZWc=-.jpg"
+  }
+]

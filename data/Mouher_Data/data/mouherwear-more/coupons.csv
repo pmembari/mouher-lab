@@ -1,0 +1,5 @@
+id,code,discount_type,discount_amount,minimum_cart_amount,expiration_date,usage_limit,user_usage_limit,used_count,is_active,description,created_at,updated_at,deleted_at
+1,amiralitest,percentage,95,95,2024-10-18,23,23,4,1,,2024-10-16 17:50:37,2025-02-12 14:43:41,
+2,coupontest2024,percentage,30,1000000,2024-12-05,1,1,0,1,,2024-11-30 12:19:50,2025-02-12 14:41:30,
+3,shamim,percentage,95,95,2026-02-12,1,1,1,1,,2025-02-12 14:44:33,2025-02-12 14:46:12,
+4,Morsaly,percentage,15,500000,2025-08-08,20,,13,0,,2025-08-03 16:39:27,2025-10-08 00:07:32,

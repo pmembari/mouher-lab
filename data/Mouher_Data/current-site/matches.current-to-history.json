@@ -1,0 +1,2689 @@
+[
+  {
+    "live_id": 396,
+    "live_name": "پیراهن اسلپ",
+    "live_handle": "slap-shirt-brown",
+    "confidence": "none",
+    "reason": "",
+    "history_candidates": []
+  },
+  {
+    "live_id": 395,
+    "live_name": "Porto linen shirt(m)",
+    "live_handle": "porto-shirt",
+    "confidence": "none",
+    "reason": "",
+    "history_candidates": []
+  },
+  {
+    "live_id": 390,
+    "live_name": "تیشرت حلقه ای بیسیک فری سایز",
+    "live_handle": "tshirt-rounded-basic-freesize",
+    "confidence": "none",
+    "reason": "",
+    "history_candidates": []
+  },
+  {
+    "live_id": 302,
+    "live_name": "جوراب socks",
+    "live_handle": "691c09a655d37",
+    "confidence": "none",
+    "reason": "",
+    "history_candidates": []
+  },
+  {
+    "live_id": 299,
+    "live_name": "Kebrit pants M (green)",
+    "live_handle": "68e20e23d24ed",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "189",
+        "title_fa": "Kebrit pants M (green)",
+        "handle": "68e20e23d24ed",
+        "image_count": 3
+      }
+    ]
+  },
+  {
+    "live_id": 298,
+    "live_name": "Kebrit pants M (cream)",
+    "live_handle": "68e20cfd3c465",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "188",
+        "title_fa": "Kebrit pants M (cream)",
+        "handle": "68e20cfd3c465",
+        "image_count": 3
+      }
+    ]
+  },
+  {
+    "live_id": 297,
+    "live_name": "Kebrit pants M (black)",
+    "live_handle": "68e1a04d75ca0",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "187",
+        "title_fa": "Kebrit pants M (black)",
+        "handle": "68e1a04d75ca0",
+        "image_count": 3
+      }
+    ]
+  },
+  {
+    "live_id": 296,
+    "live_name": "Mazerati pants M (black)",
+    "live_handle": "68e19ea256e49",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "186",
+        "title_fa": "Mazerati pants M (black)",
+        "handle": "68e19ea256e49",
+        "image_count": 3
+      }
+    ]
+  },
+  {
+    "live_id": 295,
+    "live_name": "Mazerati pants M(brown)",
+    "live_handle": "68e19d1178558",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "185",
+        "title_fa": "Mazerati pants M(brown)",
+        "handle": "68e19d1178558",
+        "image_count": 3
+      }
+    ]
+  },
+  {
+    "live_id": 282,
+    "live_name": "Pollar shirt M( black)",
+    "live_handle": "68e17b7e0b10a",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "172",
+        "title_fa": "Pollar shirt M( black)",
+        "handle": "68e17b7e0b10a",
+        "image_count": 3
+      }
+    ]
+  },
+  {
+    "live_id": 280,
+    "live_name": "Waterproof hoodie M(blue)",
+    "live_handle": "68e0213dae6cb",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "170",
+        "title_fa": "Waterproof hoodie M(blue)",
+        "handle": "68e0213dae6cb",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 273,
+    "live_name": "Keshmir shirt M((navy)",
+    "live_handle": "68e011d00efe3",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "163",
+        "title_fa": "Keshmir shirt M((navy)",
+        "handle": "68e011d00efe3",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 272,
+    "live_name": "Keshmir shirt M(gray)",
+    "live_handle": "68e0110668b0f",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "162",
+        "title_fa": "Keshmir shirt M(gray)",
+        "handle": "68e0110668b0f",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 271,
+    "live_name": "Cotton shirt M(brown)",
+    "live_handle": "68e0105744480",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "161",
+        "title_fa": "Cotton shirt M(brown)",
+        "handle": "68e0105744480",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 270,
+    "live_name": "Cotton shirt M(black)",
+    "live_handle": "68e00ee21fef7",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "160",
+        "title_fa": "Cotton shirt M(black)",
+        "handle": "68e00ee21fef7",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 268,
+    "live_name": "Limited overcoat F(black)",
+    "live_handle": "68e00339b86b3",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "158",
+        "title_fa": "Limited overcoat F(black)",
+        "handle": "68e00339b86b3",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 262,
+    "live_name": "Denim coat F",
+    "live_handle": "68dfc6aa8c5aa",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "152",
+        "title_fa": "Denim coat F",
+        "handle": "68dfc6aa8c5aa",
+        "image_count": 5
+      }
+    ]
+  },
+  {
+    "live_id": 250,
+    "live_name": "Cotton shirt F(brown)",
+    "live_handle": "68df6569e40d3",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "140",
+        "title_fa": "Cotton shirt F(brown)",
+        "handle": "68df6569e40d3",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 249,
+    "live_name": "Cotton shirt F (black)",
+    "live_handle": "68df6439ca6e2",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "139",
+        "title_fa": "Cotton shirt F (black)",
+        "handle": "68df6439ca6e2",
+        "image_count": 3
+      }
+    ]
+  },
+  {
+    "live_id": 248,
+    "live_name": "Keshmir shirt F(gray)",
+    "live_handle": "68df62df9e7b8",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "138",
+        "title_fa": "Keshmir shirt F(gray)",
+        "handle": "68df62df9e7b8",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 247,
+    "live_name": "Keshmir shirt F(navy)",
+    "live_handle": "68df5f9ab9af1",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "137",
+        "title_fa": "Keshmir shirt F(navy)",
+        "handle": "68df5f9ab9af1",
+        "image_count": 3
+      }
+    ]
+  },
+  {
+    "live_id": 245,
+    "live_name": "(Cargo pants (green",
+    "live_handle": "6850100ead84c",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "135",
+        "title_fa": "(Cargo pants (green",
+        "handle": "6850100ead84c",
+        "image_count": 3
+      }
+    ]
+  },
+  {
+    "live_id": 244,
+    "live_name": "(Cargo pants M (black",
+    "live_handle": "68500d3e8b5ff",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "134",
+        "title_fa": "(Cargo pants M (black",
+        "handle": "68500d3e8b5ff",
+        "image_count": 3
+      }
+    ]
+  },
+  {
+    "live_id": 243,
+    "live_name": "(Cargo pants F (black",
+    "live_handle": "68500bed00841",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "133",
+        "title_fa": "(Cargo pants F (black",
+        "handle": "68500bed00841",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 242,
+    "live_name": "(Cargo pants F (green",
+    "live_handle": "68500b0f49cca",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "132",
+        "title_fa": "(Cargo pants F (green",
+        "handle": "68500b0f49cca",
+        "image_count": 3
+      }
+    ]
+  },
+  {
+    "live_id": 241,
+    "live_name": "(Mom pants (black",
+    "live_handle": "6850099d4e3cd",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "131",
+        "title_fa": "(Mom pants (black",
+        "handle": "6850099d4e3cd",
+        "image_count": 3
+      }
+    ]
+  },
+  {
+    "live_id": 237,
+    "live_name": "(Everyday pants F (nescafe",
+    "live_handle": "684ed8e22f73c",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "127",
+        "title_fa": "(Everyday pants F (nescafe",
+        "handle": "684ed8e22f73c",
+        "image_count": 3
+      }
+    ]
+  },
+  {
+    "live_id": 236,
+    "live_name": "(Everday pants F (black",
+    "live_handle": "684eaeed7faaf",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "126",
+        "title_fa": "(Everday pants F (black",
+        "handle": "684eaeed7faaf",
+        "image_count": 5
+      }
+    ]
+  },
+  {
+    "live_id": 235,
+    "live_name": "(Everyday pants F (cream",
+    "live_handle": "684eab461c749",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "125",
+        "title_fa": "(Everyday pants F (cream",
+        "handle": "684eab461c749",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 234,
+    "live_name": "Striped pants F",
+    "live_handle": "684ea8e44b612",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "124",
+        "title_fa": "Striped pants F",
+        "handle": "684ea8e44b612",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 231,
+    "live_name": "Basic short",
+    "live_handle": "684e8c45a3115",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "121",
+        "title_fa": "Basic short",
+        "handle": "684e8c45a3115",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 230,
+    "live_name": "Striped short gray",
+    "live_handle": "684e8af68a65d",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "120",
+        "title_fa": "Striped short gray",
+        "handle": "684e8af68a65d",
+        "image_count": 3
+      }
+    ]
+  },
+  {
+    "live_id": 229,
+    "live_name": "Striped short red",
+    "live_handle": "684e869269407",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "119",
+        "title_fa": "Striped short red",
+        "handle": "684e869269407",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 228,
+    "live_name": "Nimo striped gray M",
+    "live_handle": "684e814c2087a",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "118",
+        "title_fa": "Nimo striped gray M",
+        "handle": "684e814c2087a",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 225,
+    "live_name": "(Mom pants M (black",
+    "live_handle": "684e765e7df39",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "115",
+        "title_fa": "(Mom pants M (black",
+        "handle": "684e765e7df39",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 224,
+    "live_name": "(Mom pants M (cream",
+    "live_handle": "684e74176a32e",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "114",
+        "title_fa": "(Mom pants M (cream",
+        "handle": "684e74176a32e",
+        "image_count": 6
+      }
+    ]
+  },
+  {
+    "live_id": 222,
+    "live_name": "(Dust pants M (black",
+    "live_handle": "684e6e536b845",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "112",
+        "title_fa": "(Dust pants M (black",
+        "handle": "684e6e536b845",
+        "image_count": 5
+      }
+    ]
+  },
+  {
+    "live_id": 221,
+    "live_name": "(Dust pants M (cream",
+    "live_handle": "684e67b36282b",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "111",
+        "title_fa": "(Dust pants M (cream",
+        "handle": "684e67b36282b",
+        "image_count": 5
+      }
+    ]
+  },
+  {
+    "live_id": 220,
+    "live_name": "(Box shirt M (black",
+    "live_handle": "684e6307a7925",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "110",
+        "title_fa": "(Box shirt M (black",
+        "handle": "684e6307a7925",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 219,
+    "live_name": "(Box shirt M (white",
+    "live_handle": "684e615f66491",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "109",
+        "title_fa": "(Box shirt M (white",
+        "handle": "684e615f66491",
+        "image_count": 3
+      }
+    ]
+  },
+  {
+    "live_id": 216,
+    "live_name": "(Box shirt M (blue",
+    "live_handle": "684dd5133909f",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "106",
+        "title_fa": "(Box shirt M (blue",
+        "handle": "684dd5133909f",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 215,
+    "live_name": "Camp collar shirt M",
+    "live_handle": "684dd0dc2928e",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "105",
+        "title_fa": "Camp collar shirt M",
+        "handle": "684dd0dc2928e",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 214,
+    "live_name": "Striped gray shirt M",
+    "live_handle": "684dceb41eec2",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "104",
+        "title_fa": "Striped gray shirt M",
+        "handle": "684dceb41eec2",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 207,
+    "live_name": "(Slap shirt m (black",
+    "live_handle": "684dc30d58073",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "97",
+        "title_fa": "(Slap shirt m (black",
+        "handle": "684dc30d58073",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 206,
+    "live_name": "Slap shirt m (white)",
+    "live_handle": "684dc206bc576",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "96",
+        "title_fa": "Slap shirt m (white)",
+        "handle": "684dc206bc576",
+        "image_count": 5
+      }
+    ]
+  },
+  {
+    "live_id": 204,
+    "live_name": "Harir F",
+    "live_handle": "68493d07bb15f",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "94",
+        "title_fa": "Harir F",
+        "handle": "68493d07bb15f",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 203,
+    "live_name": "(Camp collar shirt F (white",
+    "live_handle": "68493bd9d9107",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "93",
+        "title_fa": "(Camp collar shirt F (white",
+        "handle": "68493bd9d9107",
+        "image_count": 3
+      }
+    ]
+  },
+  {
+    "live_id": 202,
+    "live_name": "(Camp collar shirt F (black",
+    "live_handle": "6849345974a09",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "92",
+        "title_fa": "(Camp collar shirt F (black",
+        "handle": "6849345974a09",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 201,
+    "live_name": "Striped gray shirt F",
+    "live_handle": "684931ca64c6f",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "91",
+        "title_fa": "Striped gray shirt F",
+        "handle": "684931ca64c6f",
+        "image_count": 5
+      }
+    ]
+  },
+  {
+    "live_id": 198,
+    "live_name": "(Slap shirt F (black",
+    "live_handle": "68492c8274bd1",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "88",
+        "title_fa": "(Slap shirt F (black",
+        "handle": "68492c8274bd1",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 197,
+    "live_name": "(Slap shirt F (navy",
+    "live_handle": "68492b4a898dc",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "87",
+        "title_fa": "(Slap shirt F (navy",
+        "handle": "68492b4a898dc",
+        "image_count": 5
+      }
+    ]
+  },
+  {
+    "live_id": 194,
+    "live_name": "(Slap shirt F (white",
+    "live_handle": "6849271055b4f",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "84",
+        "title_fa": "(Slap shirt F (white",
+        "handle": "6849271055b4f",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 192,
+    "live_name": "(Slap shirt F (blue",
+    "live_handle": "68491f83b2d0f",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "82",
+        "title_fa": "(Slap shirt F (blue",
+        "handle": "68491f83b2d0f",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 189,
+    "live_name": "پیراهن لینن لخت",
+    "live_handle": "67c407f78db91",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "79",
+        "title_fa": "پیراهن لینن لخت",
+        "handle": "67c407f78db91",
+        "image_count": 5
+      }
+    ]
+  },
+  {
+    "live_id": 187,
+    "live_name": "شلوار لینن لخت",
+    "live_handle": "67c40369aa11e",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "77",
+        "title_fa": "شلوار لینن لخت",
+        "handle": "67c40369aa11e",
+        "image_count": 5
+      }
+    ]
+  },
+  {
+    "live_id": 182,
+    "live_name": "تیشرت 24",
+    "live_handle": "67c3eebf5ab55",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "72",
+        "title_fa": "تیشرت 24",
+        "handle": "67c3eebf5ab55",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 180,
+    "live_name": "پیراهن کنفی",
+    "live_handle": "67c3eb26b494e",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "70",
+        "title_fa": "پیراهن کنفی",
+        "handle": "67c3eb26b494e",
+        "image_count": 5
+      }
+    ]
+  },
+  {
+    "live_id": 177,
+    "live_name": "پیراهن بیسیک 2025",
+    "live_handle": "67c3803e72b97",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "67",
+        "title_fa": "پیراهن بیسیک 2025",
+        "handle": "67c3803e72b97",
+        "image_count": 12
+      }
+    ]
+  },
+  {
+    "live_id": 176,
+    "live_name": "کت اسپرت",
+    "live_handle": "67c37b702e32a",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "66",
+        "title_fa": "کت اسپرت",
+        "handle": "67c37b702e32a",
+        "image_count": 6
+      }
+    ]
+  },
+  {
+    "live_id": 174,
+    "live_name": "کت بلیزر 2025",
+    "live_handle": "67c367c6729ef",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "64",
+        "title_fa": "کت بلیزر 2025",
+        "handle": "67c367c6729ef",
+        "image_count": 10
+      }
+    ]
+  },
+  {
+    "live_id": 168,
+    "live_name": "جاگر",
+    "live_handle": "6762fc2db1534",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "58",
+        "title_fa": "جاگر",
+        "handle": "6762fc2db1534",
+        "image_count": 5
+      }
+    ]
+  },
+  {
+    "live_id": 167,
+    "live_name": "هودی ساده",
+    "live_handle": "6762f7d0789f3",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "57",
+        "title_fa": "هودی ساده",
+        "handle": "6762f7d0789f3",
+        "image_count": 5
+      }
+    ]
+  },
+  {
+    "live_id": 166,
+    "live_name": "نیم زیپ ساده",
+    "live_handle": "6762f484128b5",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "56",
+        "title_fa": "نیم زیپ ساده",
+        "handle": "6762f484128b5",
+        "image_count": 3
+      }
+    ]
+  },
+  {
+    "live_id": 156,
+    "live_name": "شلوار کبریتی",
+    "live_handle": "6710a6cc8688c",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "46",
+        "title_fa": "شلوار کبریتی",
+        "handle": "6710a6cc8688c",
+        "image_count": 6
+      }
+    ]
+  },
+  {
+    "live_id": 151,
+    "live_name": "وست کتان",
+    "live_handle": "670d317031da7",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "41",
+        "title_fa": "وست کتان",
+        "handle": "670d317031da7",
+        "image_count": 7
+      }
+    ]
+  },
+  {
+    "live_id": 149,
+    "live_name": "هودی آستین کوتاه",
+    "live_handle": "670d1091e5925",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "39",
+        "title_fa": "هودی آستین کوتاه",
+        "handle": "670d1091e5925",
+        "image_count": 6
+      }
+    ]
+  },
+  {
+    "live_id": 147,
+    "live_name": "سوییتشرت (sweatshirt)",
+    "live_handle": "670d0b5868fe9",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "37",
+        "title_fa": "سوییتشرت (sweatshirt)",
+        "handle": "670d0b5868fe9",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 146,
+    "live_name": "یقه پولو",
+    "live_handle": "670d08eedc032",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "36",
+        "title_fa": "یقه پولو",
+        "handle": "670d08eedc032",
+        "image_count": 9
+      }
+    ]
+  },
+  {
+    "live_id": 143,
+    "live_name": "هودی بیسیک",
+    "live_handle": "670a9e935d9ee",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "33",
+        "title_fa": "هودی بیسیک",
+        "handle": "670a9e935d9ee",
+        "image_count": 5
+      }
+    ]
+  },
+  {
+    "live_id": 140,
+    "live_name": "تیشرت موهر",
+    "live_handle": "66adedbae7e05",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "30",
+        "title_fa": "تیشرت موهر",
+        "handle": "66adedbae7e05",
+        "image_count": 6
+      }
+    ]
+  },
+  {
+    "live_id": 138,
+    "live_name": "پیراهن تنسل",
+    "live_handle": "66a227dface75",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "28",
+        "title_fa": "پیراهن تنسل",
+        "handle": "66a227dface75",
+        "image_count": 3
+      }
+    ]
+  },
+  {
+    "live_id": 130,
+    "live_name": "شلوارک تک جیب",
+    "live_handle": "shalvarakkk",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "20",
+        "title_fa": "شلوارک تک جیب",
+        "handle": "shalvarakkk",
+        "image_count": 2
+      }
+    ]
+  },
+  {
+    "live_id": 128,
+    "live_name": "وست",
+    "live_handle": "vessst",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "18",
+        "title_fa": "وست",
+        "handle": "vessst",
+        "image_count": 3
+      }
+    ]
+  },
+  {
+    "live_id": 126,
+    "live_name": "شلوار دو پیله",
+    "live_handle": "pp-mazerati",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "16",
+        "title_fa": "شلوار دو پیله",
+        "handle": "pp-mazerati",
+        "image_count": 10
+      }
+    ]
+  },
+  {
+    "live_id": 125,
+    "live_name": "کت لینن",
+    "live_handle": "llinen-coat",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "15",
+        "title_fa": "کت لینن",
+        "handle": "llinen-coat",
+        "image_count": 5
+      }
+    ]
+  },
+  {
+    "live_id": 124,
+    "live_name": "شلوار بگ لینن",
+    "live_handle": "nbag-linen",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "14",
+        "title_fa": "شلوار بگ لینن",
+        "handle": "nbag-linen",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 120,
+    "live_name": "شلوار کارگو",
+    "live_handle": "cargoooo",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "10",
+        "title_fa": "شلوار کارگو",
+        "handle": "cargoooo",
+        "image_count": 6
+      }
+    ]
+  },
+  {
+    "live_id": 117,
+    "live_name": "شلوار کمر کش",
+    "live_handle": "tro",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "7",
+        "title_fa": "شلوار کمر کش",
+        "handle": "tro",
+        "image_count": 9
+      }
+    ]
+  },
+  {
+    "live_id": 116,
+    "live_name": "پیراهن حصیری",
+    "live_handle": "hasiriii",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "6",
+        "title_fa": "پیراهن حصیری",
+        "handle": "hasiriii",
+        "image_count": 5
+      }
+    ]
+  },
+  {
+    "live_id": 115,
+    "live_name": "کراپ کت",
+    "live_handle": "croppp",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "5",
+        "title_fa": "کراپ کت",
+        "handle": "croppp",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 113,
+    "live_name": "شلوار تک پیله فاستونی",
+    "live_handle": "ppnngff",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "2",
+        "title_fa": "شلوار تک پیله فاستونی",
+        "handle": "ppnngff",
+        "image_count": 6
+      }
+    ]
+  },
+  {
+    "live_id": 301,
+    "live_name": "gloves M",
+    "live_handle": "68e22e7cac5f4",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "191",
+        "title_fa": "gloves M",
+        "handle": "68e22e7cac5f4",
+        "image_count": 3
+      }
+    ]
+  },
+  {
+    "live_id": 300,
+    "live_name": "Mouher shawl",
+    "live_handle": "68e22ba74c44e",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "190",
+        "title_fa": "Mouher shawl",
+        "handle": "68e22ba74c44e",
+        "image_count": 13
+      }
+    ]
+  },
+  {
+    "live_id": 294,
+    "live_name": "Waterproof hoodie F(black)",
+    "live_handle": "68e19a8233619",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "184",
+        "title_fa": "Waterproof hoodie F(black)",
+        "handle": "68e19a8233619",
+        "image_count": 3
+      }
+    ]
+  },
+  {
+    "live_id": 293,
+    "live_name": "Waterproof hoodie F(blue)",
+    "live_handle": "68e1985f69ff1",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "183",
+        "title_fa": "Waterproof hoodie F(blue)",
+        "handle": "68e1985f69ff1",
+        "image_count": 3
+      }
+    ]
+  },
+  {
+    "live_id": 292,
+    "live_name": "Denim coat M",
+    "live_handle": "68e196d5c5bbe",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "182",
+        "title_fa": "Denim coat M",
+        "handle": "68e196d5c5bbe",
+        "image_count": 3
+      }
+    ]
+  },
+  {
+    "live_id": 291,
+    "live_name": "Casual overcoat M (nescafe)",
+    "live_handle": "68e1902bae177",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "181",
+        "title_fa": "Casual overcoat M (nescafe)",
+        "handle": "68e1902bae177",
+        "image_count": 3
+      }
+    ]
+  },
+  {
+    "live_id": 290,
+    "live_name": "Casual overcoat M(gray)",
+    "live_handle": "68e18f9cb0388",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "180",
+        "title_fa": "Casual overcoat M(gray)",
+        "handle": "68e18f9cb0388",
+        "image_count": 3
+      }
+    ]
+  },
+  {
+    "live_id": 289,
+    "live_name": "Casual overcoat M(black)",
+    "live_handle": "68e18e802d80f",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "179",
+        "title_fa": "Casual overcoat M(black)",
+        "handle": "68e18e802d80f",
+        "image_count": 3
+      }
+    ]
+  },
+  {
+    "live_id": 288,
+    "live_name": "Limited overcoat M(nescafe)",
+    "live_handle": "68e18c85d086a",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "178",
+        "title_fa": "Limited overcoat M(nescafe)",
+        "handle": "68e18c85d086a",
+        "image_count": 3
+      }
+    ]
+  },
+  {
+    "live_id": 287,
+    "live_name": "Limited overcoat M(black)",
+    "live_handle": "68e18b0904c57",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "177",
+        "title_fa": "Limited overcoat M(black)",
+        "handle": "68e18b0904c57",
+        "image_count": 3
+      }
+    ]
+  },
+  {
+    "live_id": 286,
+    "live_name": "Limited overcoat M(gray)",
+    "live_handle": "68e181b612242",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "176",
+        "title_fa": "Limited overcoat M(gray)",
+        "handle": "68e181b612242",
+        "image_count": 3
+      }
+    ]
+  },
+  {
+    "live_id": 285,
+    "live_name": "Pollar shirt M (navy)",
+    "live_handle": "68e180b35d6e0",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "175",
+        "title_fa": "Pollar shirt M (navy)",
+        "handle": "68e180b35d6e0",
+        "image_count": 3
+      }
+    ]
+  },
+  {
+    "live_id": 284,
+    "live_name": "Pollar shirt M(green)",
+    "live_handle": "68e180442d06c",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "174",
+        "title_fa": "Pollar shirt M(green)",
+        "handle": "68e180442d06c",
+        "image_count": 3
+      }
+    ]
+  },
+  {
+    "live_id": 283,
+    "live_name": "Pollar shirt M(cream)",
+    "live_handle": "68e17df38c6f0",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "173",
+        "title_fa": "Pollar shirt M(cream)",
+        "handle": "68e17df38c6f0",
+        "image_count": 3
+      }
+    ]
+  },
+  {
+    "live_id": 281,
+    "live_name": "Waterproof hoodie M(black)",
+    "live_handle": "68e0238f35d28",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "171",
+        "title_fa": "Waterproof hoodie M(black)",
+        "handle": "68e0238f35d28",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 279,
+    "live_name": "Pocket coat M(gray)",
+    "live_handle": "68e0184f64010",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "169",
+        "title_fa": "Pocket coat M(gray)",
+        "handle": "68e0184f64010",
+        "image_count": 3
+      }
+    ]
+  },
+  {
+    "live_id": 278,
+    "live_name": "Pocket coat (black)",
+    "live_handle": "68e0157d48099",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "168",
+        "title_fa": "Pocket coat (black)",
+        "handle": "68e0157d48099",
+        "image_count": 5
+      }
+    ]
+  },
+  {
+    "live_id": 277,
+    "live_name": "Trench coat M (black)",
+    "live_handle": "68e01521b0cc8",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "167",
+        "title_fa": "Trench coat M (black)",
+        "handle": "68e01521b0cc8",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 276,
+    "live_name": "Trench coat M(begie)",
+    "live_handle": "68e0136d41e0d",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "166",
+        "title_fa": "Trench coat M(begie)",
+        "handle": "68e0136d41e0d",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 275,
+    "live_name": "Leather jacket M(black)",
+    "live_handle": "68e012f682232",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "165",
+        "title_fa": "Leather jacket M(black)",
+        "handle": "68e012f682232",
+        "image_count": 3
+      }
+    ]
+  },
+  {
+    "live_id": 274,
+    "live_name": "Leather jacket M(brown)",
+    "live_handle": "68e0123fed3e2",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "164",
+        "title_fa": "Leather jacket M(brown)",
+        "handle": "68e0123fed3e2",
+        "image_count": 3
+      }
+    ]
+  },
+  {
+    "live_id": 269,
+    "live_name": "Limited overcoat F(nescafe)",
+    "live_handle": "68e00c08169b2",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "159",
+        "title_fa": "Limited overcoat F(nescafe)",
+        "handle": "68e00c08169b2",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 267,
+    "live_name": "Limited overcoat F(gray)",
+    "live_handle": "68dfff6d3e9b3",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "157",
+        "title_fa": "Limited overcoat F(gray)",
+        "handle": "68dfff6d3e9b3",
+        "image_count": 3
+      }
+    ]
+  },
+  {
+    "live_id": 266,
+    "live_name": "Pollar shirt F(black)",
+    "live_handle": "68dffdcf6b734",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "156",
+        "title_fa": "Pollar shirt F(black)",
+        "handle": "68dffdcf6b734",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 265,
+    "live_name": "Pollar shirt F(green)",
+    "live_handle": "68dffd18c05a3",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "155",
+        "title_fa": "Pollar shirt F(green)",
+        "handle": "68dffd18c05a3",
+        "image_count": 3
+      }
+    ]
+  },
+  {
+    "live_id": 264,
+    "live_name": "Pollar shirt F(navy)",
+    "live_handle": "68dffc24b54ce",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "154",
+        "title_fa": "Pollar shirt F(navy)",
+        "handle": "68dffc24b54ce",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 263,
+    "live_name": "Pollar shirt F(cream)",
+    "live_handle": "68dfcab602850",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "153",
+        "title_fa": "Pollar shirt F(cream)",
+        "handle": "68dfcab602850",
+        "image_count": 3
+      }
+    ]
+  },
+  {
+    "live_id": 261,
+    "live_name": "Cropped trench coat(black)",
+    "live_handle": "68dfc56f6314c",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "151",
+        "title_fa": "Cropped trench coat(black)",
+        "handle": "68dfc56f6314c",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 260,
+    "live_name": "Cropped trench coat(begie)",
+    "live_handle": "68dfc2fec936b",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "150",
+        "title_fa": "Cropped trench coat(begie)",
+        "handle": "68dfc2fec936b",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 259,
+    "live_name": "Trench coat F(black)",
+    "live_handle": "68df7aed24202",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "149",
+        "title_fa": "Trench coat F(black)",
+        "handle": "68df7aed24202",
+        "image_count": 3
+      }
+    ]
+  },
+  {
+    "live_id": 258,
+    "live_name": "Trench coat F(begie)",
+    "live_handle": "68df7972a4684",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "148",
+        "title_fa": "Trench coat F(begie)",
+        "handle": "68df7972a4684",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 257,
+    "live_name": "Paecoat F(black)",
+    "live_handle": "68df78a4c078c",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "147",
+        "title_fa": "Paecoat F(black)",
+        "handle": "68df78a4c078c",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 256,
+    "live_name": "Paecoat F(nescafe)",
+    "live_handle": "68df767e6bcbe",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "146",
+        "title_fa": "Paecoat F(nescafe)",
+        "handle": "68df767e6bcbe",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 255,
+    "live_name": "Casual overcoat F(black)",
+    "live_handle": "68df75a80d36a",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "145",
+        "title_fa": "Casual overcoat F(black)",
+        "handle": "68df75a80d36a",
+        "image_count": 3
+      }
+    ]
+  },
+  {
+    "live_id": 253,
+    "live_name": "Casual overcoat F(gray)",
+    "live_handle": "68df71ad1d24b",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "143",
+        "title_fa": "Casual overcoat F(gray)",
+        "handle": "68df71ad1d24b",
+        "image_count": 3
+      }
+    ]
+  },
+  {
+    "live_id": 252,
+    "live_name": "Leather jacket F(black)",
+    "live_handle": "68df693d45e40",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "142",
+        "title_fa": "Leather jacket F(black)",
+        "handle": "68df693d45e40",
+        "image_count": 3
+      }
+    ]
+  },
+  {
+    "live_id": 251,
+    "live_name": "Leather jacket F (brown)",
+    "live_handle": "68df66bec717b",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "141",
+        "title_fa": "Leather jacket F (brown)",
+        "handle": "68df66bec717b",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 246,
+    "live_name": "Crop top",
+    "live_handle": "685cdc66eb712",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "136",
+        "title_fa": "Crop top",
+        "handle": "685cdc66eb712",
+        "image_count": 3
+      }
+    ]
+  },
+  {
+    "live_id": 240,
+    "live_name": "(Mom pants F (cream",
+    "live_handle": "68500873c08e6",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "130",
+        "title_fa": "(Mom pants F (cream",
+        "handle": "68500873c08e6",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 239,
+    "live_name": "(Nimo pants F (black",
+    "live_handle": "684ee4ff78539",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "129",
+        "title_fa": "(Nimo pants F (black",
+        "handle": "684ee4ff78539",
+        "image_count": 1
+      }
+    ]
+  },
+  {
+    "live_id": 238,
+    "live_name": "(Nimo pants F (white",
+    "live_handle": "684ee38d183f7",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "128",
+        "title_fa": "(Nimo pants F (white",
+        "handle": "684ee38d183f7",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 233,
+    "live_name": "(Tank top (black",
+    "live_handle": "684e9bbf0ef42",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "123",
+        "title_fa": "(Tank top (black",
+        "handle": "684e9bbf0ef42",
+        "image_count": 3
+      }
+    ]
+  },
+  {
+    "live_id": 232,
+    "live_name": "(Tank top(white",
+    "live_handle": "684e99c3b029c",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "122",
+        "title_fa": "(Tank top(white",
+        "handle": "684e99c3b029c",
+        "image_count": 3
+      }
+    ]
+  },
+  {
+    "live_id": 227,
+    "live_name": "(Nimo pants M (white",
+    "live_handle": "684e7bc254c79",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "117",
+        "title_fa": "(Nimo pants M (white",
+        "handle": "684e7bc254c79",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 226,
+    "live_name": "(Nimo pants M (black",
+    "live_handle": "684e7b01176ff",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "116",
+        "title_fa": "(Nimo pants M (black",
+        "handle": "684e7b01176ff",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 223,
+    "live_name": "(Dust pants M( nescafe",
+    "live_handle": "684e6f6b14cf7",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "113",
+        "title_fa": "(Dust pants M( nescafe",
+        "handle": "684e6f6b14cf7",
+        "image_count": 5
+      }
+    ]
+  },
+  {
+    "live_id": 218,
+    "live_name": "(Box shirt M (navy",
+    "live_handle": "684dd8d591641",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "108",
+        "title_fa": "(Box shirt M (navy",
+        "handle": "684dd8d591641",
+        "image_count": 3
+      }
+    ]
+  },
+  {
+    "live_id": 217,
+    "live_name": "(Box shirt M (green",
+    "live_handle": "684dd7473b96f",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "107",
+        "title_fa": "(Box shirt M (green",
+        "handle": "684dd7473b96f",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 212,
+    "live_name": "Oxford shirt m",
+    "live_handle": "684dcbcfcc893",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "102",
+        "title_fa": "Oxford shirt m",
+        "handle": "684dcbcfcc893",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 211,
+    "live_name": "(Slap shirt m (pink",
+    "live_handle": "684dcad0aab17",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "101",
+        "title_fa": "(Slap shirt m (pink",
+        "handle": "684dcad0aab17",
+        "image_count": 5
+      }
+    ]
+  },
+  {
+    "live_id": 210,
+    "live_name": "(Slap shirt m (green",
+    "live_handle": "684dc9ae16946",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "100",
+        "title_fa": "(Slap shirt m (green",
+        "handle": "684dc9ae16946",
+        "image_count": 3
+      }
+    ]
+  },
+  {
+    "live_id": 209,
+    "live_name": "(Slap shirt m (yellow",
+    "live_handle": "684dc6fc48516",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "99",
+        "title_fa": "(Slap shirt m (yellow",
+        "handle": "684dc6fc48516",
+        "image_count": 3
+      }
+    ]
+  },
+  {
+    "live_id": 208,
+    "live_name": "(Slap shirt m (navy",
+    "live_handle": "684dc429d4320",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "98",
+        "title_fa": "(Slap shirt m (navy",
+        "handle": "684dc429d4320",
+        "image_count": 3
+      }
+    ]
+  },
+  {
+    "live_id": 205,
+    "live_name": "Slap shirt m (blue)",
+    "live_handle": "684dbfdccb27c",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "95",
+        "title_fa": "Slap shirt m (blue)",
+        "handle": "684dbfdccb27c",
+        "image_count": 2
+      }
+    ]
+  },
+  {
+    "live_id": 200,
+    "live_name": "Striped red shirt F",
+    "live_handle": "68492f9c3e72f",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "90",
+        "title_fa": "Striped red shirt F",
+        "handle": "68492f9c3e72f",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 199,
+    "live_name": "Crop oxford shirt",
+    "live_handle": "68492d967fd0b",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "89",
+        "title_fa": "Crop oxford shirt",
+        "handle": "68492d967fd0b",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 196,
+    "live_name": "(Slap shirt F (green",
+    "live_handle": "68492a2228f49",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "86",
+        "title_fa": "(Slap shirt F (green",
+        "handle": "68492a2228f49",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 195,
+    "live_name": "(Slap shirt F (pink",
+    "live_handle": "6849280bbdb87",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "85",
+        "title_fa": "(Slap shirt F (pink",
+        "handle": "6849280bbdb87",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 193,
+    "live_name": "(Slap shirt F (yellow",
+    "live_handle": "6849241d10d09",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "83",
+        "title_fa": "(Slap shirt F (yellow",
+        "handle": "6849241d10d09",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 191,
+    "live_name": "عطر پنجاه میل night bloom",
+    "live_handle": "67d169f7ae957",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "81",
+        "title_fa": "عطر پنجاه میل night bloom",
+        "handle": "67d169f7ae957",
+        "image_count": 3
+      }
+    ]
+  },
+  {
+    "live_id": 190,
+    "live_name": "عطر سی میل night bloom",
+    "live_handle": "67d1662fd8f05",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "80",
+        "title_fa": "عطر سی میل night bloom",
+        "handle": "67d1662fd8f05",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 188,
+    "live_name": "وست Tc",
+    "live_handle": "67c40619392e0",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "78",
+        "title_fa": "وست Tc",
+        "handle": "67c40619392e0",
+        "image_count": 5
+      }
+    ]
+  },
+  {
+    "live_id": 186,
+    "live_name": "تیشرت life",
+    "live_handle": "67c3f5485c138",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "76",
+        "title_fa": "تیشرت life",
+        "handle": "67c3f5485c138",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 185,
+    "live_name": "تیشرت (بترسی باختی)",
+    "live_handle": "67c3f3fc0af17",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "75",
+        "title_fa": "تیشرت (بترسی باختی)",
+        "handle": "67c3f3fc0af17",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 184,
+    "live_name": "تیشرت freedom",
+    "live_handle": "67c3f18ef2d4a",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "74",
+        "title_fa": "تیشرت freedom",
+        "handle": "67c3f18ef2d4a",
+        "image_count": 5
+      }
+    ]
+  },
+  {
+    "live_id": 183,
+    "live_name": "تیشرت موهر ماستی",
+    "live_handle": "67c3f04d5c29d",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "73",
+        "title_fa": "تیشرت موهر ماستی",
+        "handle": "67c3f04d5c29d",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 181,
+    "live_name": "تیشرت رگلان",
+    "live_handle": "67c3ed2948539",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "71",
+        "title_fa": "تیشرت رگلان",
+        "handle": "67c3ed2948539",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 179,
+    "live_name": "پیراهن دوجیب پرسی",
+    "live_handle": "67c3e923cfcad",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "69",
+        "title_fa": "پیراهن دوجیب پرسی",
+        "handle": "67c3e923cfcad",
+        "image_count": 6
+      }
+    ]
+  },
+  {
+    "live_id": 178,
+    "live_name": "پیراهن طرح",
+    "live_handle": "67c3e6a80b552",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "68",
+        "title_fa": "پیراهن طرح",
+        "handle": "67c3e6a80b552",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 175,
+    "live_name": "پیراهن چهارخانه کشمیر",
+    "live_handle": "67c3772b2d39a",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "65",
+        "title_fa": "پیراهن چهارخانه کشمیر",
+        "handle": "67c3772b2d39a",
+        "image_count": 8
+      }
+    ]
+  },
+  {
+    "live_id": 172,
+    "live_name": "پافر کلاه داره",
+    "live_handle": "6773caecca60f",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "62",
+        "title_fa": "پافر کلاه داره",
+        "handle": "6773caecca60f",
+        "image_count": 8
+      }
+    ]
+  },
+  {
+    "live_id": 171,
+    "live_name": "بامبر جکت چرم",
+    "live_handle": "6773c09ddb4f7",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "61",
+        "title_fa": "بامبر جکت چرم",
+        "handle": "6773c09ddb4f7",
+        "image_count": 6
+      }
+    ]
+  },
+  {
+    "live_id": 170,
+    "live_name": "اورکت long",
+    "live_handle": "6768463d90d0c",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "60",
+        "title_fa": "اورکت long",
+        "handle": "6768463d90d0c",
+        "image_count": 10
+      }
+    ]
+  },
+  {
+    "live_id": 165,
+    "live_name": "کت بلیزر",
+    "live_handle": "6762f3b08047c",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "55",
+        "title_fa": "کت بلیزر",
+        "handle": "6762f3b08047c",
+        "image_count": 3
+      }
+    ]
+  },
+  {
+    "live_id": 164,
+    "live_name": "پیراهن چهارخانه طوسی",
+    "live_handle": "6762f1dfcea90",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "54",
+        "title_fa": "پیراهن چهارخانه طوسی",
+        "handle": "6762f1dfcea90",
+        "image_count": 2
+      }
+    ]
+  },
+  {
+    "live_id": 163,
+    "live_name": "یقه ترکیبی",
+    "live_handle": "6762f05fa44c9",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "53",
+        "title_fa": "یقه ترکیبی",
+        "handle": "6762f05fa44c9",
+        "image_count": 2
+      }
+    ]
+  },
+  {
+    "live_id": 161,
+    "live_name": "تیشرت کلاه دار",
+    "live_handle": "6762919b16178",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "51",
+        "title_fa": "تیشرت کلاه دار",
+        "handle": "6762919b16178",
+        "image_count": 2
+      }
+    ]
+  },
+  {
+    "live_id": 160,
+    "live_name": "بادی شرت(strech shirt)",
+    "live_handle": "673da87068ba1",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "50",
+        "title_fa": "بادی شرت(strech shirt)",
+        "handle": "673da87068ba1",
+        "image_count": 8
+      }
+    ]
+  },
+  {
+    "live_id": 159,
+    "live_name": "وست پافر",
+    "live_handle": "673075849e70a",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "49",
+        "title_fa": "وست پافر",
+        "handle": "673075849e70a",
+        "image_count": 7
+      }
+    ]
+  },
+  {
+    "live_id": 158,
+    "live_name": "کت چرم (leather jacket)",
+    "live_handle": "671372b018936",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "48",
+        "title_fa": "کت چرم (leather jacket)",
+        "handle": "671372b018936",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 157,
+    "live_name": "کراپ کاپشن",
+    "live_handle": "671102b05b82f",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "47",
+        "title_fa": "کراپ کاپشن",
+        "handle": "671102b05b82f",
+        "image_count": 5
+      }
+    ]
+  },
+  {
+    "live_id": 155,
+    "live_name": "لانگ شرت",
+    "live_handle": "6710a4d9cd7e3",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "45",
+        "title_fa": "لانگ شرت",
+        "handle": "6710a4d9cd7e3",
+        "image_count": 6
+      }
+    ]
+  },
+  {
+    "live_id": 154,
+    "live_name": "کت جین",
+    "live_handle": "670d39e74dce5",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "44",
+        "title_fa": "کت جین",
+        "handle": "670d39e74dce5",
+        "image_count": 6
+      }
+    ]
+  },
+  {
+    "live_id": 153,
+    "live_name": "بافت",
+    "live_handle": "670d3448e9076",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "43",
+        "title_fa": "بافت",
+        "handle": "670d3448e9076",
+        "image_count": 6
+      }
+    ]
+  },
+  {
+    "live_id": 152,
+    "live_name": "شلوارک کتان",
+    "live_handle": "670d330898cfc",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "42",
+        "title_fa": "شلوارک کتان",
+        "handle": "670d330898cfc",
+        "image_count": 5
+      }
+    ]
+  },
+  {
+    "live_id": 150,
+    "live_name": "کاپشن",
+    "live_handle": "670d30bf14a1b",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "40",
+        "title_fa": "کاپشن",
+        "handle": "670d30bf14a1b",
+        "image_count": 7
+      }
+    ]
+  },
+  {
+    "live_id": 148,
+    "live_name": "سوییتشرت کوتاه(short sweatshirt)",
+    "live_handle": "670d0da798da4",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "38",
+        "title_fa": "سوییتشرت کوتاه(short sweatshirt)",
+        "handle": "670d0da798da4",
+        "image_count": 5
+      }
+    ]
+  },
+  {
+    "live_id": 145,
+    "live_name": "اورکت (over coat)",
+    "live_handle": "670bf74dc1ae4",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "35",
+        "title_fa": "اورکت (over coat)",
+        "handle": "670bf74dc1ae4",
+        "image_count": 8
+      }
+    ]
+  },
+  {
+    "live_id": 144,
+    "live_name": "ترنچ کت(trench coat)",
+    "live_handle": "670bf36786c84",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "34",
+        "title_fa": "ترنچ کت(trench coat)",
+        "handle": "670bf36786c84",
+        "image_count": 10
+      }
+    ]
+  },
+  {
+    "live_id": 142,
+    "live_name": "نیم زیپ",
+    "live_handle": "670a9b96ccf50",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "32",
+        "title_fa": "نیم زیپ",
+        "handle": "670a9b96ccf50",
+        "image_count": 7
+      }
+    ]
+  },
+  {
+    "live_id": 141,
+    "live_name": "پیراهن یقه انگلیسی (new)",
+    "live_handle": "66b36d04757f4",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "31",
+        "title_fa": "پیراهن یقه انگلیسی (new)",
+        "handle": "66b36d04757f4",
+        "image_count": 5
+      }
+    ]
+  },
+  {
+    "live_id": 139,
+    "live_name": "شلوار کنفی",
+    "live_handle": "66a2288520a45",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "29",
+        "title_fa": "شلوار کنفی",
+        "handle": "66a2288520a45",
+        "image_count": 5
+      }
+    ]
+  },
+  {
+    "live_id": 137,
+    "live_name": "پیراهن 4 دکمه",
+    "live_handle": "669cd3e9a3855",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "27",
+        "title_fa": "پیراهن 4 دکمه",
+        "handle": "669cd3e9a3855",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 136,
+    "live_name": "پیراهن راه راه سفید مشکی",
+    "live_handle": "669796ae1615e",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "26",
+        "title_fa": "پیراهن راه راه سفید مشکی",
+        "handle": "669796ae1615e",
+        "image_count": 2
+      }
+    ]
+  },
+  {
+    "live_id": 135,
+    "live_name": "پیراهن لینن جیبدار",
+    "live_handle": "6692a6ac2ce70",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "25",
+        "title_fa": "پیراهن لینن جیبدار",
+        "handle": "6692a6ac2ce70",
+        "image_count": 3
+      }
+    ]
+  },
+  {
+    "live_id": 131,
+    "live_name": "ژیله",
+    "live_handle": "product",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "21",
+        "title_fa": "ژیله",
+        "handle": "product",
+        "image_count": 7
+      }
+    ]
+  },
+  {
+    "live_id": 127,
+    "live_name": "پیراهن راه راه کنفی",
+    "live_handle": "piran",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "17",
+        "title_fa": "پیراهن راه راه کنفی",
+        "handle": "piran",
+        "image_count": 3
+      }
+    ]
+  },
+  {
+    "live_id": 123,
+    "live_name": "پیراهن یقه انگلیسی",
+    "live_handle": "ip-englisi",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "13",
+        "title_fa": "پیراهن یقه انگلیسی",
+        "handle": "ip-englisi",
+        "image_count": 3
+      }
+    ]
+  },
+  {
+    "live_id": 122,
+    "live_name": "تیشرت بیسیک",
+    "live_handle": "tt-shirt",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "12",
+        "title_fa": "تیشرت بیسیک",
+        "handle": "tt-shirt",
+        "image_count": 4
+      }
+    ]
+  },
+  {
+    "live_id": 121,
+    "live_name": "پیراهن بیسیک",
+    "live_handle": "basiccc",
+    "confidence": "medium",
+    "reason": "handle",
+    "history_candidates": [
+      {
+        "legacy_id": "11",
+        "title_fa": "پیراهن بیسیک",
+        "handle": "basiccc",
+        "image_count": 4
+      }
+    ]
+  }
+]

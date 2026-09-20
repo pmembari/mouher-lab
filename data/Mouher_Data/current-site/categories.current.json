@@ -1,0 +1,52 @@
+[
+  {
+    "live_id": 30,
+    "name": "تیشرت",
+    "handle": "tshirt",
+    "raw_slug": "tshirt",
+    "description": "",
+    "children": [],
+    "image_filename_hint": "41f954c9-5bc4-4d72-b28e-5988a207a720.webp",
+    "image_source": "remote_url_stripped"
+  },
+  {
+    "live_id": 11,
+    "name": "کت",
+    "handle": "coat",
+    "raw_slug": "Coat",
+    "description": "",
+    "children": [],
+    "image_filename_hint": "",
+    "image_source": ""
+  },
+  {
+    "live_id": 10,
+    "name": "شلوار",
+    "handle": "pants",
+    "raw_slug": "Pants",
+    "description": "",
+    "children": [],
+    "image_filename_hint": "",
+    "image_source": ""
+  },
+  {
+    "live_id": 9,
+    "name": "پیراهن",
+    "handle": "shirt",
+    "raw_slug": "Shirt",
+    "description": "",
+    "children": [],
+    "image_filename_hint": "",
+    "image_source": ""
+  },
+  {
+    "live_id": 12,
+    "name": "ست",
+    "handle": "bundle",
+    "raw_slug": "bundle",
+    "description": "",
+    "children": [],
+    "image_filename_hint": "",
+    "image_source": ""
+  }
+]

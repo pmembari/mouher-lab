@@ -1,0 +1,37 @@
+{
+  "source": "https://mouher.com",
+  "products": {
+    "total": 181,
+    "with_stock": 81,
+    "with_compare_at_price": 77
+  },
+  "collections": {
+    "total": 3,
+    "names": [
+      "اکسسوری",
+      "زنانه",
+      "مردانه"
+    ]
+  },
+  "categories": {
+    "total": 5,
+    "names": [
+      "تیشرت",
+      "کت",
+      "شلوار",
+      "پیراهن",
+      "ست"
+    ]
+  },
+  "matches": {
+    "high": 0,
+    "medium": 177,
+    "review": 0,
+    "none": 4
+  },
+  "privacy": {
+    "remote_image_urls_stripped": false,
+    "contains_public_image_urls": true,
+    "safe_to_commit": true
+  }
+}

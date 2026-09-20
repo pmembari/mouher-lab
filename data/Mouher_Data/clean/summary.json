@@ -1,0 +1,72 @@
+{
+  "generated_at": "2026-09-12T18:04:57.906520+00:00",
+  "source_root": "/home/p/Desktop/p/Mouher/mouher-lab/Mouher_Data",
+  "privacy": {
+    "uses_remote_image_urls": false,
+    "uses_physical_images": true,
+    "raw_exports_committed": false,
+    "output_should_stay_ignored": true
+  },
+  "products": {
+    "total": 190,
+    "visible": 178,
+    "included": 178,
+    "included_visible": 178,
+    "without_visible_variants": 15,
+    "duplicate_handles_resolved": 0
+  },
+  "variants": {
+    "total": 391,
+    "visible": 314,
+    "missing_size_lookup": 0,
+    "missing_color_lookup": 0
+  },
+  "media": {
+    "matched_product_dirs": 189,
+    "matched_images": 818,
+    "included_product_images": 775,
+    "image_dirs_without_product": [],
+    "products_without_physical_images": 0,
+    "deprecated_csv_image_rows_ignored": 820,
+    "videos_total": 3,
+    "unmatched_videos": 3,
+    "scan_issues": 0
+  },
+  "categories": {
+    "Shirts": 105,
+    "Coats": 39,
+    "Trousers": 38,
+    "Sets": 2
+  },
+  "collections": {
+    "Men": 36,
+    "Women": 33,
+    "26": 28,
+    "Fall Winter Mouher": 23,
+    "Spring Summer Unisex": 22,
+    "Accessories": 2
+  },
+  "issues": {
+    "products_without_physical_images": [],
+    "products_without_visible_variants": [
+      "11",
+      "13",
+      "14",
+      "17",
+      "43",
+      "51",
+      "53",
+      "54",
+      "55",
+      "58",
+      "69",
+      "71",
+      "73",
+      "75",
+      "113"
+    ],
+    "duplicate_handles_resolved": [],
+    "image_scan_issues": [],
+    "video_scan_issues": []
+  }
+}

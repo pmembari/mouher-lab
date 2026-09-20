@@ -1,0 +1,72 @@
+[
+  {
+    "legacy_id": "7",
+    "slug": "1234",
+    "title": "Women",
+    "title_fa": "زنانه",
+    "description": "",
+    "position": 0,
+    "is_visible": true,
+    "thumbnail_source": "legacy_csv_path_ignored"
+  },
+  {
+    "legacy_id": "8",
+    "slug": "123",
+    "title": "Men",
+    "title_fa": "مردانه",
+    "description": "",
+    "position": 0,
+    "is_visible": true,
+    "thumbnail_source": "legacy_csv_path_ignored"
+  },
+  {
+    "legacy_id": "9",
+    "slug": "accessories",
+    "title": "Accessories",
+    "title_fa": "اکسسوری",
+    "description": "",
+    "position": 0,
+    "is_visible": true,
+    "thumbnail_source": "legacy_csv_path_ignored"
+  },
+  {
+    "legacy_id": "6",
+    "slug": "111",
+    "title": "26",
+    "title_fa": "26",
+    "description": "",
+    "position": 0,
+    "is_visible": false,
+    "thumbnail_source": "legacy_csv_path_ignored"
+  },
+  {
+    "legacy_id": "1",
+    "slug": "ss-2024-collection",
+    "title": "Spring Summer Unisex",
+    "title_fa": "بهار تابستان( unisex)",
+    "description": "",
+    "position": 1,
+    "is_visible": false,
+    "thumbnail_source": "legacy_csv_path_ignored"
+  },
+  {
+    "legacy_id": "3",
+    "slug": "fw-2024-collectin",
+    "title": "Fall Winter Mouher",
+    "title_fa": "پاییز زمستان موهر",
+    "description": "",
+    "position": 2,
+    "is_visible": false,
+    "thumbnail_source": "legacy_csv_path_ignored"
+  },
+  {
+    "legacy_id": "5",
+    "slug": "big-off",
+    "title": "تخفیف ویژه",
+    "title_fa": "تخفیف ویژه",
+    "description": "",
+    "position": 3,
+    "is_visible": false,
+    "thumbnail_source": "legacy_csv_path_ignored"
+  }
+]

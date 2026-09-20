@@ -1,0 +1,29 @@
+[
+  {
+    "live_id": 11,
+    "name": "اکسسوری",
+    "handle": "accessories",
+    "raw_slug": "Accessories",
+    "description": "",
+    "image_filename_hint": "edd75d0a-a7dc-4d10-a744-702089cb8c95.webp",
+    "image_source": "remote_url_stripped"
+  },
+  {
+    "live_id": 9,
+    "name": "زنانه",
+    "handle": "1234",
+    "raw_slug": "1234",
+    "description": "",
+    "image_filename_hint": "73555b8f-0c86-45d9-9461-112c23fc9118.webp",
+    "image_source": "remote_url_stripped"
+  },
+  {
+    "live_id": 10,
+    "name": "مردانه",
+    "handle": "123",
+    "raw_slug": "123",
+    "description": "",
+    "image_filename_hint": "747778ab-cd61-4091-8bdf-0f3b50ff13d3.webp",
+    "image_source": "remote_url_stripped"
+  }
+]

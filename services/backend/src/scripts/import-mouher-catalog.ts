@@ -34,12 +34,6 @@ function hasFlag(name: string): boolean {
   return process.argv.includes(`--${name}`)
 }
 
-function parseMultiplier(value?: string): number | undefined {
-  if (!value) return undefined
-  const parsed = Number(value)
-  return Number.isFinite(parsed) && parsed > 0 ? parsed : undefined
-}
-
 function readCatalog(filePath: string): any[] {
   const payload = JSON.parse(fs.readFileSync(filePath, "utf8"))
   if (Array.isArray(payload)) return payload
@@ -166,8 +160,6 @@ function productInput(
   product: PlannedProduct,
   refs: ExistingRefs,
   config: {
-    currency?: string
-    multiplier?: number
     salesChannelId?: string
     shippingProfileId?: string
   }
@@ -201,15 +193,12 @@ function productInput(
       manage_inventory: false,
       allow_backorder: false,
       options: variant.options,
-      prices:
-        config.currency && config.multiplier
-          ? [
-              {
-                currency_code: config.currency.toLowerCase(),
-                amount: Math.round(variant.source_price * config.multiplier),
-              },
-            ]
-          : [],
+      prices: [
+        {
+          currency_code: "irr",
+          amount: variant.source_price,
+        },
+      ],
       metadata: {
         legacy_variant_ids: variant.legacy_variant_ids,
         source_stock: variant.source_stock,
@@ -229,8 +218,6 @@ async function createMissingProducts(
   refs: ExistingRefs,
   plan: ImportPlan,
   config: {
-    currency?: string
-    multiplier?: number
     salesChannelId?: string
     shippingProfileId?: string
   }
@@ -274,18 +261,11 @@ export default async function importMouherCatalog({ container }: ExecArgs) {
     process.cwd(),
     argValue("input") || process.env.MOUHER_CATALOG_PATH
   )
-  const priceCurrency =
-    argValue("price-currency") || process.env.MOUHER_PRICE_CURRENCY
-  const priceMultiplier = parseMultiplier(
-    argValue("price-multiplier") || process.env.MOUHER_PRICE_MULTIPLIER
-  )
   const mediaBaseUrl =
     argValue("media-base-url") || process.env.MOUHER_MEDIA_BASE_URL
 
   const plan = buildImportPlan(readCatalog(catalogPath), {
     mediaBaseUrl,
-    priceCurrency,
-    priceMultiplier,
   })
 
   logPlan(logger, plan, catalogPath, apply)
@@ -301,18 +281,10 @@ export default async function importMouherCatalog({ container }: ExecArgs) {
     )
   }
 
-  if (!priceCurrency || !priceMultiplier) {
-    throw new Error(
-      "Apply requires explicit price configuration: --price-currency and --price-multiplier (or MOUHER_PRICE_CURRENCY / MOUHER_PRICE_MULTIPLIER)."
-    )
-  }
-
   const refs = await existingRefs(query)
   await ensureCategories(container, refs, plan)
   await ensureCollections(container, refs, plan)
   await createMissingProducts(container, logger, refs, plan, {
-    currency: priceCurrency,
-    multiplier: priceMultiplier,
     salesChannelId:
       argValue("sales-channel-id") || process.env.MOUHER_SALES_CHANNEL_ID,
     shippingProfileId:

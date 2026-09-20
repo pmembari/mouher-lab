@@ -91,9 +91,9 @@ Dashboard features must include useful loading, empty, error, and permission-den
 Before changing dashboard code:
 
 1. Read the relevant `PLANS.md` section.
-2. Query `graphify-out/` when architecture context is needed.
-3. Identify the smallest set of relevant dashboard/backend files.
+2. Identify the smallest set of relevant dashboard/backend files.
+3. Use `graphify-out/` only when explicitly requested or when a concrete architecture question cannot be answered from targeted source/document reads.
 4. Use `.agents/skills/building-admin-dashboard-customizations/` for Medusa Admin extension details when needed.
 5. Write or update focused tests for auth, permissions, API contracts, loading, empty, error, and audit behavior.
 
-Do not read CSV, private media, environment files, generated JSON, build output, or files over 5 MB unless explicitly required.
+Follow `AGENTS.md` for canonical context exclusions and file-size limits. Do not widen them here.

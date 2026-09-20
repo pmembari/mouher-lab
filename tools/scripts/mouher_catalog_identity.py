@@ -7,13 +7,19 @@ from collections import Counter
 PRODUCT_CODE_RE = re.compile(r"^MHR-(SHT|TRS|COT|SET|ACC|TSH)-\d{6}$")
 SKU_RE = re.compile(r"^MHR-[A-Z]{3}-\d{6}-[A-Z0-9]{2,4}-[A-Z0-9]{1,4}$")
 HANDLE_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
-TARGET_IMAGE_RE = re.compile(r"^products/MHR-[A-Z]{3}-\d{6}/images/\d{2}\.webp$")
+TARGET_IMAGE_RE = re.compile(r"^products/MHR-[A-Z]{3}-\d{6}/images/\d{2}\.[a-z0-9]+$")
 
 CATEGORY_TYPE_CODES = {
     "shirts": "SHT",
     "trousers": "TRS",
     "coats": "COT",
     "sets": "SET",
+}
+
+PRODUCT_TYPE_OVERRIDES = {
+    "35": "COT",
+    "80": "ACC",
+    "81": "ACC",
 }
 
 COLOR_CODES = {
@@ -74,6 +80,14 @@ APPROVED_HANDLES: dict[str, str] = {}
 
 
 def product_code_for(legacy_id: str, categories: list[dict]) -> tuple[str | None, list[str]]:
+    if legacy_id in PRODUCT_TYPE_OVERRIDES:
+        code = PRODUCT_TYPE_OVERRIDES[legacy_id]
+        try:
+            sequence = int(legacy_id)
+        except (TypeError, ValueError):
+            return None, ["invalid_legacy_product_id"]
+        return f"MHR-{code}-{sequence:06d}", []
+
     codes = {
         CATEGORY_TYPE_CODES[category["slug"]]
         for category in categories
@@ -127,10 +141,17 @@ def sku_for(product_code: str | None, color: str | None, size: str | None) -> st
     return f"{product_code}-{color}-{size}"
 
 
-def target_image_path(product_code: str | None, position: int | None) -> str | None:
+def target_image_path(
+    product_code: str | None,
+    position: int | None,
+    source_suffix: str,
+) -> str | None:
     if not product_code or not isinstance(position, int) or position < 1:
         return None
-    return f"products/{product_code}/images/{position:02d}.webp"
+    suffix = source_suffix.lower().lstrip(".")
+    if not suffix:
+        return None
+    return f"products/{product_code}/images/{position:02d}.{suffix}"
 
 
 def validate_catalog(products: list[dict]) -> dict:
@@ -197,8 +218,14 @@ def validate_catalog(products: list[dict]) -> dict:
                         "variant_id": variant.get("legacy_id"),
                     }
                 )
-            if variant.get("is_visible") and product_code and not sku:
-                reviews.append(
+            if (
+                variant.get("is_visible")
+                and not sku
+                and product_code
+                and variant.get("color_code")
+                and variant.get("size_code")
+            ):
+                errors.append(
                     {
                         "type": "missing_sku_on_visible_variant",
                         "product_id": legacy_product_id,

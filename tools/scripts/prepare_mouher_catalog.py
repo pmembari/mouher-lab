@@ -569,6 +569,7 @@ def clean_product(
         for variant in variants_by_product.get(legacy_id, [])
     ]
     standardize_variant_identities(product_code, variants)
+    variants = collapse_duplicate_migration_variants(variants)
 
     quality_flags = handle_flags + product_code_flags
     if not images:
@@ -680,7 +681,7 @@ def build_medusa_import_variants(variants: list[dict]) -> list[dict]:
                 "inventory_quantity": variant["stock"],
                 "manage_inventory": True,
                 "allow_backorder": False,
-                "metadata": {"legacy_variant_id": variant["legacy_id"]},
+                "metadata": variant["metadata"],
             }
         )
 
@@ -712,12 +713,60 @@ def standardize_variant_identities(product_code: str | None, variants: list[dict
         )
 
 
+def collapse_duplicate_migration_variants(variants: list[dict]) -> list[dict]:
+    by_sku: dict[str, list[dict]] = defaultdict(list)
+    passthrough = []
+
+    for variant in variants:
+        sku = variant.get("sku")
+        if variant["is_visible"] and sku:
+            by_sku[sku].append(variant)
+        else:
+            passthrough.append(variant)
+
+    collapsed = []
+    for sku_variants in by_sku.values():
+        if len(sku_variants) == 1:
+            active = sku_variants[0]
+            active["metadata"] = {
+                "legacy_variant_id": active["legacy_id"],
+                "legacy_variant_ids": [active["legacy_id"]],
+            }
+            collapsed.append(active)
+            continue
+
+        active = max(
+            sku_variants,
+            key=lambda variant: (
+                variant.get("created_at") or "",
+                variant.get("updated_at") or "",
+                variant.get("legacy_id") or "",
+            ),
+        )
+        active["metadata"] = {
+            "legacy_variant_id": active["legacy_id"],
+            "legacy_variant_ids": [variant["legacy_id"] for variant in sku_variants],
+        }
+        collapsed.append(active)
+
+    return sorted(
+        passthrough + collapsed,
+        key=lambda variant: (
+            0,
+            int(variant["legacy_id"]),
+        )
+        if variant["legacy_id"].isdigit()
+        else (1, variant["legacy_id"]),
+    )
+
+
 def standardize_image_identity(image: dict, product_code: str | None) -> dict:
     standardized = dict(image)
     standardized["source_path"] = standardized["relative_path"]
     standardized["target_path"] = identity.target_image_path(
         product_code,
         standardized.get("position"),
+        Path(standardized["filename"]).suffix,
     )
     return standardized
 

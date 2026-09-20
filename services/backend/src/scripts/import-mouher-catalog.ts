@@ -235,13 +235,17 @@ async function createMissingProducts(
     shippingProfileId?: string
   }
 ) {
-  const missing = plan.products.filter(
+  const importable = plan.products.filter(
+    (product) => product.variants.length > 0 && product.options.length > 0
+  )
+  const skippedUnimportable = plan.products.length - importable.length
+  const missing = importable.filter(
     (product) => !refs.productCodes.has(product.product_code)
   )
-  const skipped = plan.products.length - missing.length
+  const skippedExisting = importable.length - missing.length
 
   logger.info(
-    `Mouher catalog apply: create=${missing.length} skip_existing=${skipped}`
+    `Mouher catalog apply: create=${missing.length} skip_existing=${skippedExisting} skip_unimportable=${skippedUnimportable}`
   )
 
   const batchSize = 25

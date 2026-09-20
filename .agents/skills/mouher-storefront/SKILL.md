@@ -492,18 +492,6 @@ Prefer:
 
 Prioritize interaction responsiveness over decorative effects.
 
-## Existing References
-
-Use `.agents/skills/vercel-commerce/` for ecommerce completeness and storefront lifecycle patterns.
-
-Use this skill for Mouher-specific UX and brand decisions.
-
-If the two conflict:
-
-* preserve Medusa compatibility
-* preserve Mouher branding
-* preserve accessibility
-* prefer the simpler architecture
 
 ## Customer Account Guardrails
 

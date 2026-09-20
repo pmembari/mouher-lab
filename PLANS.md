@@ -1073,13 +1073,13 @@ Product browsing should remain:
 
 Cards should prioritize:
 
-1\. image
+1. image
 
-2\. product name
+2. product name
 
-3\. price
+3. price
 
-4\. important availability/promotion state
+4. important availability/promotion state
 
 Avoid excessive badges and metadata.
 
@@ -1801,19 +1801,19 @@ infrastructure.
 
 Preferred decision order:
 
-1\. existing Medusa module/API
+1. existing Medusa module/API
 
-2\. configuration/provider
+2. configuration/provider
 
-3\. workflow
+3. workflow
 
-4\. subscriber
+4. subscriber
 
-5\. custom API route
+5. custom API route
 
-6\. custom module
+6. custom module
 
-7\. scheduled job
+7. scheduled job
 
 ---
 
@@ -2162,35 +2162,35 @@ Do not duplicate the referenced commerce entity.
 
 Before removing legacy backend persistence:
 
-1\. Inventory every legacy backend model.
+1. Inventory every legacy backend model.
 
-2\. Record every field.
+2. Record every field.
 
-3\. Record relationships.
+3. Record relationships.
 
-4\. Record indexes.
+4. Record indexes.
 
-5\. Record defaults.
+5. Record defaults.
 
-6\. Record enums/status values.
+6. Record enums/status values.
 
-7\. Record nullable behavior.
+7. Record nullable behavior.
 
-8\. Record uniqueness constraints.
+8. Record uniqueness constraints.
 
-9\. Map each entity to a Medusa module/model.
+9. Map each entity to a Medusa module/model.
 
-10\. Add appropriate migrations.
+10. Add appropriate migrations.
 
-11\. Preserve existing production/source data when applicable.
+11. Preserve existing production/source data when applicable.
 
-12\. Add behavioral compatibility tests.
+12. Add behavioral compatibility tests.
 
-13\. Verify dashboard queries.
+13. Verify dashboard queries.
 
-14\. Verify reporting queries.
+14. Verify reporting queries.
 
-15\. Remove legacy backend model only after its replacement is validated.
+15. Remove legacy backend model only after its replacement is validated.
 
 If an existing field appears obsolete:
 
@@ -3242,15 +3242,15 @@ Development should follow TDD.
 
 For new behavior:
 
-1\. Write failing test.
+1. Write failing test.
 
-2\. Implement smallest useful change.
+2. Implement smallest useful change.
 
-3\. Run focused test.
+3. Run focused test.
 
-4\. Refactor while green.
+4. Refactor while green.
 
-5\. Add integration/E2E coverage when behavior crosses boundaries.
+5. Add integration/E2E coverage when behavior crosses boundaries.
 
 TDD is especially important for:
 
@@ -3468,55 +3468,53 @@ Cover:
 
 # Implementation Order--
 
-1\. Keep implementation context compact.
+1. Keep implementation context compact.
 
-2\. Query `graphify-out/` before broad exploration.
+2. Inventory legacy backend responsibilities.
 
-3\. Inventory legacy backend responsibilities.
+3. Inventory legacy backend operational data model.
 
-4\. Inventory legacy backend operational data model.
+4. Correct `AGENTS.md` and `PLANS.md`.
 
-5\. Correct `AGENTS.md` and `PLANS.md`.
+5. Establish Medusa under `services/backend/`.
 
-6\. Establish Medusa under `services/backend/`.
+6. Add backend migration/compatibility tests.
 
-7\. Add backend migration/compatibility tests.
+7. Implement authentication.
 
-8\. Implement authentication.
+8. Implement authorization/permissions.
 
-9\. Implement authorization/permissions.
+9.  Connect storefront directly to Medusa Store API.
 
-10\. Connect storefront directly to Medusa Store API.
+10. Connect dashboard to Medusa Admin API.
 
-11\. Connect dashboard to Medusa Admin API.
+11. Create custom APIs only where needed.
 
-12\. Create custom APIs only where needed.
+12. Migrate analytics.
 
-13\. Migrate analytics.
+13. Migrate audit persistence.
 
-14\. Migrate audit persistence.
+14. Migrate notifications.
 
-15\. Migrate notifications.
+15. Migrate support.
 
-16\. Migrate support.
+16. Migrate product notes.
 
-17\. Migrate product notes.
+17. Migrate push subscription behavior.
 
-18\. Migrate push subscription behavior.
+18. Migrate payment orchestration.
 
-19\. Migrate payment orchestration.
+19. Verify existing operational data model compatibility.
 
-20\. Verify existing operational data model compatibility.
+20. Build read-only dashboard features.
 
-21\. Build read-only dashboard features.
+21. Add safe mutations.
 
-22\. Add safe mutations.
+22. Add higher-risk commerce operations.
 
-23\. Add higher-risk commerce operations.
+23. Remove legacy backend only after migration validation.
 
-24\. Remove legacy backend only after migration validation.
-
-25\. Update developer/operator documentation.
+24. Update developer/operator documentation.
 
 After each completed section:
 
@@ -3568,156 +3566,7 @@ Do not inspect:
 
 without explicit requirement.
 
----
-
-# Token-Efficient Codex Workflow--
-
-Use ChatGPT for:
-
-- product decisions
-
-- architecture
-
-- UX planning
-
-- UI direction
-
-- specifications
-
-- reviewing implementation summaries
-
-Use Codex for:
-
-- repository inspection
-
-- file edits
-
-- running tests
-
-- logs
-
-- commits
-
-Before reading many files:
-
-1\. Query `graphify-out/`.
-
-2\. Read `GRAPH_REPORT.md` where relevant.
-
-3\. Identify exact paths.
-
-4\. Read only required files.
-
-Prefer requests containing:
-
-```text
-
-Goal
-
-Exact paths
-
-Constraints
-
-Acceptance tests
-
-```
-
-Avoid broad prompts such as:
-
-```text
-
-improve the whole backend
-
-```
-
-Prefer:
-
-```text
-
-Migrate analytics_event persistence from the existing legacy backend
-implementation
-
-to the Medusa analytics module.
-
-Paths:
-
-\- services/backend/...
-
-\- existing legacy backend analytics model path
-
-\- relevant tests
-
-Constraints:
-
-\- preserve existing schema semantics
-
-\- do not change storefront
-
-\- do not read CSV/media/env
-
-Acceptance:
-
-\- existing analytics compatibility tests pass
-
-\- new Medusa tests pass
-
-```
-
----
-
-# Documentation Expectations--
-
-Documentation should follow Diataxis.
-
-Create:
-
-## Tutorials--
-
-First-time setup and learning-oriented flows.
-
-## How-to Guides--
-
-Daily developer/operator procedures.
-
-## Reference--
-
-- environment variables
-
-- API contracts
-
-- permissions
-
-- commands
-
-- service endpoints
-
-## Explanation--
-
-- architecture
-
-- boundaries
-
-- tradeoffs
-
-- data ownership
-
-- migration decisions
-
-Documentation audiences:
-
-- developers
-
-- site assistants/operators
-
-Languages:
-
-- English
-
-- Farsi/Persian
-
----
-
-# Definition Of Done--
+# Definition Of Done
 
 The initial Mouher system is ready when:
 

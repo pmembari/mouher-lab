@@ -38,17 +38,13 @@ MOUHER_CATALOG_PATH=/absolute/path/catalog.clean.json npm run catalog:dry-run
 
 ## Apply
 
-Apply requires explicit price-unit configuration so the importer never guesses whether legacy prices are rial/toman or another unit.
-
-Example:
+Mouher product prices are canonicalized as Iranian rial (IRR). The importer writes each cleaned `source_price` unchanged as an `irr` Medusa price.
 
 ```bash
-MOUHER_PRICE_CURRENCY=irr \
-MOUHER_PRICE_MULTIPLIER=1 \
 npx medusa exec ./src/scripts/import-mouher-catalog.ts -- --apply
 ```
 
-Use the multiplier that matches the reviewed source-price semantics. Do not guess this value.
+Do not apply a toman/rial multiplier in the catalog importer. Toman wording used in storefront copy, such as free-shipping messaging, is presentation logic and does not change the stored commerce currency.
 
 Optional:
 
@@ -92,7 +88,7 @@ Categories may remain many-to-many.
 
 Only visible variants with canonical SKUs are imported.
 
-Prices are written only when both `MOUHER_PRICE_CURRENCY` and `MOUHER_PRICE_MULTIPLIER` are explicitly provided.
+Prices are written as IRR and the cleaned `source_price` value is preserved unchanged.
 
 Inventory levels are not written in this phase. Source stock is preserved in variant metadata. A later inventory phase should create/update Medusa inventory levels against an explicit stock location.
 

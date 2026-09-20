@@ -11,6 +11,8 @@ from collections import Counter, defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 
+import mouher_catalog_identity as identity
+
 
 CATEGORY_LABELS = {
     "پیراهن": {"name": "Shirts", "name_fa": "پیراهن", "slug": "shirts"},
@@ -20,13 +22,12 @@ CATEGORY_LABELS = {
 }
 
 COLLECTION_LABELS = {
-    "زنانه": "Unisex",
-    "مردانه": "Unisex",
+    "زنانه": "Women",
+    "مردانه": "Men",
     "اکسسوری": "Accessories",
-    "بهار تابستان( unisex)": "Spring Summer Unisex",
-    "پاییز زمستان موهر": "Fall Winter Mouher",
+    "بهار تابستان( unisex)": "Spring Summer 2024",
+    "پاییز زمستان موهر": "Fall Winter 2024",
 }
-LEGACY_GENDER_COLLECTIONS = {"زنانه", "مردانه"}
 
 IMAGE_NAME_PATTERN = re.compile(
     r"^(?P<position>\d+)_(?P<year>\d{4})_(?P<month>\d{2})_(?P<day>\d{2})(?:_.+)?(?P<suffix>\.[^.]+)$"
@@ -138,15 +139,6 @@ def build_catalog(source_root: Path, include_hidden: bool = False) -> dict:
     )
     videos, video_scan_issues = scan_videos(video_root, source_root)
 
-    raw_handles = [
-        base_handle(row.get("slug") or row.get("name") or row.get("id"))
-        for row in rows["products"]
-    ]
-    duplicate_raw_handles = {
-        handle for handle, count in Counter(raw_handles).items() if count > 1
-    }
-    used_handles: set[str] = set()
-
     products = []
     for row in rows["products"]:
         product = clean_product(
@@ -157,8 +149,6 @@ def build_catalog(source_root: Path, include_hidden: bool = False) -> dict:
             variant_value_by_id,
             physical_images_by_product,
             deprecated_images_by_product,
-            duplicate_raw_handles,
-            used_handles,
         )
 
         if include_hidden or product["is_visible"]:
@@ -181,11 +171,24 @@ def build_catalog(source_root: Path, include_hidden: bool = False) -> dict:
         for product in visible_products
         if not any(variant["is_visible"] for variant in product["variants"])
     ]
-    duplicate_handles = [
-        product["handle"]
-        for product in products
-        if "handle_deduped" in product["quality_flags"]
-    ]
+    validation = identity.validate_catalog(products)
+    duplicate_handles = validation["counts"]["duplicate_handles"]
+    handle_needs_review = count_quality_flag(products, "handle_needs_review")
+    duplicate_product_codes = validation["counts"]["duplicate_product_codes"]
+    duplicate_skus = validation["counts"]["duplicate_skus"]
+    invalid_product_codes = count_validation_type(validation, "invalid_product_code")
+    invalid_skus = count_validation_type(validation, "invalid_sku")
+    invalid_handles = count_validation_type(validation, "invalid_canonical_handle")
+    normalized_collections = sum(
+        1 for product in products for collection in product["collections"]
+        if not collection["quality_flags"]
+    )
+    review_collections = sum(
+        1 for product in products for collection in product["collections"]
+        if "collection_needs_review" in collection["quality_flags"]
+    )
+    invalid_media_paths = count_validation_type(validation, "invalid_target_media_path")
+    duplicate_media_positions = count_validation_type(validation, "duplicate_media_position")
 
     media = {
         "images": [
@@ -212,11 +215,43 @@ def build_catalog(source_root: Path, include_hidden: bool = False) -> dict:
             "included": len(products),
             "included_visible": len(visible_products),
             "without_visible_variants": len(products_without_visible_variants),
-            "duplicate_handles_resolved": len(duplicate_handles),
+            "product_codes_generated": count_present(products, "product_code"),
+            "invalid_product_codes": invalid_product_codes,
+            "duplicate_product_codes": duplicate_product_codes,
+            "handles_accepted": count_present(products, "handle"),
+            "handles_needing_review": handle_needs_review,
+            "duplicate_handles": duplicate_handles,
         },
         "variants": {
             "total": len(rows["variants"]),
             "visible": count_visible(rows["variants"]),
+            "included": sum(len(product["variants"]) for product in products),
+            "skus_generated": sum(
+                1
+                for product in products
+                for variant in product["variants"]
+                if variant.get("sku")
+            ),
+            "invalid_skus": invalid_skus,
+            "duplicate_skus": duplicate_skus,
+            "known_colors_mapped": sum(
+                1
+                for product in products
+                for variant in product["variants"]
+                if variant.get("color_code")
+            ),
+            "unknown_colors_requiring_review": count_variant_flag(
+                products, "unknown_color_code"
+            ),
+            "known_sizes_mapped": sum(
+                1
+                for product in products
+                for variant in product["variants"]
+                if variant.get("size_code")
+            ),
+            "unknown_sizes_requiring_review": count_variant_flag(
+                products, "unknown_size_code"
+            ),
             "missing_size_lookup": count_missing_variant_lookup(
                 rows["variants"], "size", variant_value_by_id
             ),
@@ -228,19 +263,37 @@ def build_catalog(source_root: Path, include_hidden: bool = False) -> dict:
             "matched_product_dirs": len(image_product_ids & product_ids),
             "matched_images": len(media["images"]),
             "included_product_images": included_physical_images,
+            "items_mapped": sum(
+                1
+                for product in products
+                for image in product["media"]["images"]
+                if image.get("target_path")
+            ),
             "image_dirs_without_product": sorted(image_product_ids - product_ids),
             "products_without_physical_images": len(products_without_physical_images),
+            "invalid_target_paths": invalid_media_paths,
+            "duplicate_positions": duplicate_media_positions,
             "deprecated_csv_image_rows_ignored": len(rows["product_images"]),
             "videos_total": len(videos),
             "unmatched_videos": len(videos),
             "scan_issues": len(media["scan_issues"]),
         },
         "categories": summarize_links(products, "categories"),
-        "collections": summarize_links(products, "collections"),
+        "collections": {
+            **summarize_links(products, "collections"),
+            "_normalized": normalized_collections,
+            "_requiring_review": review_collections,
+        },
+        "validation": validation,
         "issues": {
             "products_without_physical_images": products_without_physical_images,
             "products_without_visible_variants": products_without_visible_variants,
-            "duplicate_handles_resolved": duplicate_handles,
+            "handle_needs_review": [
+                product["legacy_id"]
+                for product in products
+                if "handle_needs_review" in product["quality_flags"]
+            ],
+            "invalid_handles": invalid_handles,
             "image_scan_issues": image_scan_issues,
             "video_scan_issues": video_scan_issues,
         },
@@ -500,43 +553,63 @@ def clean_product(
     variant_value_by_id: dict[str, dict],
     physical_images_by_product: dict[str, list[dict]],
     deprecated_images_by_product: dict[str, list[dict]],
-    duplicate_raw_handles: set[str],
-    used_handles: set[str],
 ) -> dict:
     legacy_id = clean_text(row.get("id"))
-    raw_handle = base_handle(row.get("slug") or row.get("name") or legacy_id)
-    handle = unique_handle(raw_handle, legacy_id, duplicate_raw_handles, used_handles)
+    legacy_slug = clean_text(row.get("slug"))
+    handle, handle_flags = identity.canonical_handle(legacy_slug)
     is_visible = as_bool(row.get("is_visible"))
-    images = physical_images_by_product.get(legacy_id, [])
+    categories = categories_by_product.get(legacy_id, [])
+    product_code, product_code_flags = identity.product_code_for(legacy_id, categories)
+    images = [
+        standardize_image_identity(image, product_code)
+        for image in physical_images_by_product.get(legacy_id, [])
+    ]
     variants = [
         clean_variant(variant, variant_value_by_id)
         for variant in variants_by_product.get(legacy_id, [])
     ]
+    standardize_variant_identities(product_code, variants)
 
-    quality_flags = []
+    quality_flags = handle_flags + product_code_flags
     if not images:
         quality_flags.append("no_physical_images")
     if not variants:
         quality_flags.append("no_variants")
     if variants and not any(variant["is_visible"] for variant in variants):
         quality_flags.append("no_visible_variants")
-    if handle != raw_handle:
-        quality_flags.append("handle_deduped")
+    quality_flags.extend(
+        unique_option_values(
+            flag
+            for collection in collections_by_product.get(legacy_id, [])
+            for flag in collection.get("quality_flags", [])
+        )
+    )
+    quality_flags.extend(
+        unique_option_values(
+            flag
+            for variant in variants
+            for flag in variant.get("quality_flags", [])
+            if flag in {"unknown_color_code", "unknown_size_code"}
+        )
+    )
 
     options = build_medusa_options(variants)
     medusa_import_variants = build_medusa_import_variants(variants)
 
     return {
         "legacy_id": legacy_id,
+        "product_code": product_code,
         "upc": clean_text(row.get("upc")),
         "title_fa": clean_text(row.get("name")),
+        "title_en": None,
         "handle": handle,
         "description_fa": clean_text(row.get("description")),
+        "description_en": None,
         "is_visible": is_visible,
         "is_promotion": as_bool(row.get("is_promotion")),
         "created_at": clean_text(row.get("created_at")),
         "updated_at": clean_text(row.get("updated_at")),
-        "categories": categories_by_product.get(legacy_id, []),
+        "categories": categories,
         "collections": collections_by_product.get(legacy_id, []),
         "variants": variants,
         "options": options,
@@ -556,11 +629,11 @@ def clean_product(
         },
         "metadata": {
             "legacy_product_id": legacy_id,
-            "legacy_slug": clean_text(row.get("slug")),
+            "legacy_slug": legacy_slug,
             "legacy_upc": clean_text(row.get("upc")),
             "legacy_is_visible": is_visible,
         },
-        "quality_flags": quality_flags,
+        "quality_flags": unique_option_values(quality_flags),
     }
 
 
@@ -627,6 +700,28 @@ def unique_option_values(values: object) -> list[str]:
     return unique
 
 
+def standardize_variant_identities(product_code: str | None, variants: list[dict]) -> None:
+    for variant in variants:
+        if not variant["is_visible"]:
+            variant["sku"] = None
+            continue
+        variant["sku"] = identity.sku_for(
+            product_code,
+            variant.get("color_code"),
+            variant.get("size_code"),
+        )
+
+
+def standardize_image_identity(image: dict, product_code: str | None) -> dict:
+    standardized = dict(image)
+    standardized["source_path"] = standardized["relative_path"]
+    standardized["target_path"] = identity.target_image_path(
+        product_code,
+        standardized.get("position"),
+    )
+    return standardized
+
+
 def clean_variant(row: dict, variant_value_by_id: dict[str, dict]) -> dict:
     size = variant_value_by_id.get(clean_text(row.get("size")), {})
     color = variant_value_by_id.get(clean_text(row.get("color")), {})
@@ -634,14 +729,20 @@ def clean_variant(row: dict, variant_value_by_id: dict[str, dict]) -> dict:
     size_label_fa = size.get("name") or size_label
     color_label = color.get("name") or clean_text(row.get("color"))
 
+    color_code, color_flags = identity.color_code(color_label)
+    size_code, size_flags = identity.size_code(size_label)
+
     return {
         "legacy_id": clean_text(row.get("id")),
         "sku": clean_text(row.get("sku")),
+        "legacy_sku": clean_text(row.get("sku")),
         "description": clean_text(row.get("description")),
         "is_visible": as_bool(row.get("is_visible")),
         "stock": as_int(row.get("stock"), default=0),
         "source_price": as_int(row.get("price")),
         "source_discount": as_int(row.get("discount"), default=0),
+        "color_code": color_code,
+        "size_code": size_code,
         "size": {
             "id": clean_text(row.get("size")),
             "name": size_label,
@@ -655,6 +756,8 @@ def clean_variant(row: dict, variant_value_by_id: dict[str, dict]) -> dict:
         },
         "created_at": clean_text(row.get("created_at")),
         "updated_at": clean_text(row.get("updated_at")),
+        "metadata": {"legacy_variant_id": clean_text(row.get("id"))},
+        "quality_flags": color_flags + size_flags,
     }
 
 
@@ -674,19 +777,20 @@ def clean_category(row: dict) -> dict:
 
 def clean_collection(row: dict) -> dict:
     title_fa = clean_text(row.get("title"))
-    is_legacy_gender_collection = title_fa in LEGACY_GENDER_COLLECTIONS
+    raw_slug = base_handle(row.get("slug") or title_fa or row.get("id"))
+    slug, quality_flags = identity.collection_slug(raw_slug)
 
     return {
         "legacy_id": clean_text(row.get("id")),
-        "slug": "unisex"
-        if is_legacy_gender_collection
-        else base_handle(row.get("slug") or title_fa or row.get("id")),
+        "slug": slug,
         "title": COLLECTION_LABELS.get(title_fa, title_fa),
-        "title_fa": "یونیسکس" if is_legacy_gender_collection else title_fa,
+        "title_fa": title_fa,
         "description": clean_text(row.get("description")),
         "position": as_int(row.get("position"), default=0),
         "is_visible": as_bool(row.get("is_visible")),
         "thumbnail_source": "legacy_csv_path_ignored",
+        "metadata": {"legacy_slug": clean_text(row.get("slug"))},
+        "quality_flags": quality_flags,
     }
 
 
@@ -863,6 +967,31 @@ def count_missing_variant_lookup(
         1
         for row in rows
         if clean_text(row.get(key)) and clean_text(row.get(key)) not in variant_value_by_id
+    )
+
+
+def count_present(items: list[dict], key: str) -> int:
+    return sum(1 for item in items if item.get(key))
+
+
+def count_quality_flag(products: list[dict], flag: str) -> int:
+    return sum(1 for product in products if flag in product.get("quality_flags", []))
+
+
+def count_variant_flag(products: list[dict], flag: str) -> int:
+    return sum(
+        1
+        for product in products
+        for variant in product.get("variants", [])
+        if flag in variant.get("quality_flags", [])
+    )
+
+
+def count_validation_type(validation: dict, issue_type: str) -> int:
+    return sum(
+        1
+        for issue in validation["errors"] + validation["reviews"]
+        if issue.get("type") == issue_type
     )
 
 

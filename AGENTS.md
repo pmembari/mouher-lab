@@ -4,7 +4,7 @@ Use this brief when continuing work on Mouher's ecommerce website and owner dash
 
 ## Primary References
 
-- `.agents/skills/vercel-commerce/`: It is a simple and complete ecosystem for WebApplication that agent can leverage to implement the logic of how the lifecycle of my website should be. Agent uses it as the e-commerce completeness reference. It shows expected Medusa storefront concepts: product detail routes, search/collection routes, cart mutations, product type reshaping, SEO metadata, sitemap, robots, Open Graph images, and cache/revalidation patterns.
+
 - `.agents/skills/hitkeep/`: Use this as the dashboard reference for role-aware layout, analytics/reporting, permissions, exports, audit-friendly operations, loading/empty/error states, and self-hostable dashboard patterns. Do not copy HitKeep branding or optional AI/MCP features.
 - `data/Mouher_Data`: Is the history transactions, users, images, glary of our shop. This might be needed for test and building test for our Admin Dashboard.
 - `https://mouher.com/` this is our current (old website) you can know it as the old website that needs to be refine.
@@ -224,11 +224,26 @@ Cover scenarios that can harm the dashboard:
 - Do not revert unrelated user changes.
 - Verify changes with focused tests when code is modified.
 
-## Token-Efficient Codex Workflow
+## Token-Efficient Codex Prefix
 
-- Use ChatGPT app for product discussion and planning that does not require repository inspection. Use Codex planning when repository files must be inspected.
-- Use Codex only when repository access is needed: reading files, editing code, running tests, checking logs.
-- Prefer targeted Codex requests with exact paths, constraints, and acceptance tests over broad project exploration.
-- Follow the canonical context exclusions in `System Boundaries`; do not widen them in domain skills.
-- For every implementation, load only the directly applicable local skill first, then inspect the smallest necessary code surface. Do not recursively inspect cloned/reference repositories under `.agents/skills/`; open a specific referenced file only when the task requires it.
-- Prefer targeted repository reads and exact paths. Before any broad read, identify the concrete unanswered question it will resolve.
+For every Codex task:
+
+- Start with the token-optimizer skill/plugin if available.
+- Determine the smallest exact file set required before opening implementation files.
+- Do not broadly explore the repository.
+- Do not recursively inspect `.agents/skills/`, reference repositories, generated data, build output, media, or environment files unless the current task explicitly requires them.
+- Do not reread files already available in the current context unless they changed or the required section was not loaded.
+- Prefer exact paths, targeted searches, and narrow reads over directory-wide inspection.
+- Do not run exploratory commands unless they answer a concrete unresolved question required for the task.
+- Do not inspect unrelated files merely because they are nearby or imported.
+- Run only focused tests relevant to the changed behavior. Do not run full builds/test suites unless explicitly required.
+- Keep changes limited to the requested phase and smallest coherent change surface.
+- Do not continue into the next logical phase, refactor unrelated code, or add optional improvements unless explicitly requested.
+- If ambiguity prevents deterministic implementation, report it instead of exploring broadly or guessing.
+- Stop immediately after completing and reporting the requested phase.
+
+Before any additional broad read or command, ask:
+
+> What concrete unanswered question will this action resolve?
+
+If there is no specific answer, do not perform it.

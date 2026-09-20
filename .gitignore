@@ -13,7 +13,6 @@ mouher-preview/public/
 
 # Distribution / packaging
 .Python
-graphify-out/
 build/
 develop-eggs/
 dist/

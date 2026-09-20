@@ -14,6 +14,9 @@ export type ImportPlan = {
   issues: ImportIssue[]
   summary: {
     products: number
+    planned_products: number
+    importable_products: number
+    skipped_products: number
     variants: number
     categories: number
     collections: number
@@ -181,8 +184,11 @@ export function buildImportPlan(rawProducts: any[], config: BridgeConfig = {}): 
       })
     }
 
+    const rawVariants = Array.isArray(raw.variants) ? raw.variants : []
+    const visibleRawVariants = rawVariants.filter((variant: any) => variant?.is_visible)
+
     const variants: PlannedVariant[] = []
-    for (const rawVariant of Array.isArray(raw.variants) ? raw.variants : []) {
+    for (const rawVariant of rawVariants) {
       if (!rawVariant?.is_visible) continue
       const sku = text(rawVariant.sku)
       if (!sku) {
@@ -211,6 +217,15 @@ export function buildImportPlan(rawProducts: any[], config: BridgeConfig = {}): 
 
     if (!variants.length) {
       issues.push({ level: "review", code: "product_without_importable_variants", product_code: productCode })
+      if (!rawVariants.length) {
+        issues.push({ level: "review", code: "legacy_product_without_variants", product_code: productCode })
+      } else if (!visibleRawVariants.length) {
+        issues.push({
+          level: "review",
+          code: "legacy_visible_without_sellable_variant",
+          product_code: productCode,
+        })
+      }
     }
 
     const canonicalHandle = text(raw.handle)
@@ -270,6 +285,10 @@ export function buildImportPlan(rawProducts: any[], config: BridgeConfig = {}): 
     if (count > 1) issues.push({ level: "error", code: "duplicate_import_handle", detail: handle })
   }
 
+  const importableProducts = products.filter(
+    (product) => product.variants.length > 0 && product.options.length > 0
+  )
+
   return {
     products,
     categories: [...categoryMap.values()],
@@ -277,6 +296,9 @@ export function buildImportPlan(rawProducts: any[], config: BridgeConfig = {}): 
     issues,
     summary: {
       products: products.length,
+      planned_products: products.length,
+      importable_products: importableProducts.length,
+      skipped_products: products.length - importableProducts.length,
       variants: products.reduce((sum, product) => sum + product.variants.length, 0),
       categories: categoryMap.size,
       collections: collectionMap.size,

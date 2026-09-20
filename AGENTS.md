@@ -15,14 +15,34 @@ Use this brief when continuing work on Mouher's ecommerce website and owner dash
 - Medusa is the source of truth for commerce data.
 - `services/backend/` is the Mouher backend service boundary, implemented with Medusa.
 - The public storefront lives in `apps/storefront/`.
-- Role dashboards live under `apps/dashboards/`: roles and access are developer, owner, and staff.
+- Role dashboards live under `apps/dashboards/`: canonical roles are owner, assistant, and developer. Use staff/operator only as generic prose, not persisted role names.
 - The payment adapter stays isolated in `services/payment/`. In future we will push it into a separate git repo so we can follow the SaaS best practices.
 - PostgreSQL must remain a separated, independent component. Do not embed database state in an app component. In future we will push it into a separate git repo so we can follow the SaaS best practices.
 - Heavy components must be loosely coupled and independently runnable: storefront, shared dashboards, Medusa backend, payment service, database, cache, and media storage.
 - The legacy Python backend is deprecated and must not be reintroduced. New backend behavior belongs in the Medusa backend ecosystem under `services/backend/`.
 - Private catalog/media data under `data/Mouher_Data` must not be committed.
-- Agents must not read CSV files, media files, build outputs, generated data JSON, or files larger than 1 MB unless a task explicitly requires them.
+- Agents must not read CSV files, media files, build outputs, generated data JSON, nested reference repositories, or files larger than 1 MB unless the current task explicitly requires them.
 - Agents must not read environment files such as `.env`, `.venv` , `.env.*`, or `*.env` unless explicitly told to do so.
+
+
+## Current Auth And Hosting Guardrails
+
+- Keycloak is removed and must not be reintroduced unless the user explicitly requests a new auth architecture.
+- Customer authentication uses Medusa email/password authentication.
+- Customer mobile phone is required during account creation.
+- CAPTCHA is not currently required; do not add it unless explicitly requested.
+- GitHub Pages remains the public development storefront host.
+- Do not assume localhost is the primary user-facing integration topology.
+- Do not create a second backend or BFF solely to make GitHub Pages work.
+
+## File Size And Modularity
+
+- Prefer human-authored source files under 400 lines.
+- Treat 400 lines as a refactoring signal, not an automatic split requirement.
+- Split only along cohesive responsibility boundaries.
+- Do not create wrapper files, artificial abstractions, or tiny modules solely to satisfy the line limit.
+- Do not refactor unrelated files just because they exceed 400 lines.
+- Generated files, lockfiles, migrations, fixtures, vendored/reference code, and large focused test suites are exempt.
 
 ## Software Engineering Rules
 
@@ -36,7 +56,7 @@ Use this brief when continuing work on Mouher's ecommerce website and owner dash
 
 ## Development DevOps Rules
 
-- For this milestone, focus on development-time operability, not Kubernetes or deployment.
+- For this milestone, focus on development-time operability, not Kubernetes or production orchestration. The public development storefront is hosted on GitHub Pages at `https://pmembari.github.io/mouher-lab/`; real customer accounts therefore require a separately reachable Medusa backend and database.
 - Do not use mamba/conda for virtual envs. Use the service's native toolchain; `services/backend/` is Node/Medusa.
 - Services should be stateless where practical so they can be restarted and later scaled independently.
 - Keep secrets out of Git and out of browser bundles.
@@ -52,7 +72,7 @@ Use this brief when continuing work on Mouher's ecommerce website and owner dash
 - Use the same design tokens across storefront and owner dashboard.
 - Public storefront should feel premium, visual, and product-led.
 - Owner dashboard should feel denser, operational, and easy to scan while still using Mouher brand tokens.
-- For Client dashboard stick to the Medusa style dashboard. Keep it easy.
+- Customer account UX belongs in `apps/storefront/`. Internal owner/assistant/developer operations UX belongs in `apps/dashboards/`. Use Medusa Admin styling only for Medusa Admin/admin-extension surfaces.
 - Support Persian/RTL and English/LTR layouts carefully.
 - Preserve accessibility contrast and avoid text overlap on mobile and desktop.
 - For purpose of Dashboard we want to add an e-commerce model dashboard that inherit the features in `.agents/skills/hitkeep/`; At the end we are going to provide the dashboard just using the free feature of hitkeep implementations. use the AGENT skills in that standalone repo (e.g. `.agents/skills/hitkeep/hitkeep/.agents/skills`).
@@ -206,9 +226,9 @@ Cover scenarios that can harm the dashboard:
 
 ## Token-Efficient Codex Workflow
 
-- Use ChatGPT app for planning, product decisions, writing specs, UI direction, architecture discussion, and reviewing summaries.
+- Use ChatGPT app for product discussion and planning that does not require repository inspection. Use Codex planning when repository files must be inspected.
 - Use Codex only when repository access is needed: reading files, editing code, running tests, checking logs.
 - Prefer targeted Codex requests with exact paths, constraints, and acceptance tests over broad project exploration.
-- Keep exclusions strict: do not read CSV files, media files, environment files, generated JSON, build outputs, or files larger than 2 MB unless explicitly required.
-- For every implementation first try to find if any agent skills are provided. and then only after that check codebase and other files. This is for such skills that I clone a repository under my .agents/skills for example .agents/skills/hitkeep/hitkeep could progressively use you tokens. therefore you should be careful about that repo.
-- When a task is still product or architecture planning, tell the user to use ChatGPT; when repo access is needed, tell the user to use Codex.
+- Follow the canonical context exclusions in `System Boundaries`; do not widen them in domain skills.
+- For every implementation, load only the directly applicable local skill first, then inspect the smallest necessary code surface. Do not recursively inspect cloned/reference repositories under `.agents/skills/`; open a specific referenced file only when the task requires it.
+- Prefer targeted repository reads and exact paths. Before any broad read, identify the concrete unanswered question it will resolve.

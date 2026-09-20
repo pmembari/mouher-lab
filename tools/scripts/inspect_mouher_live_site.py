@@ -5,13 +5,18 @@ import argparse
 import html
 import json
 import re
+import sys
 import time
 import urllib.request
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import urlparse
 
-from tools.scripts.prepare_mouher_catalog import base_handle, build_catalog, clean_text, write_json
+SCRIPT_DIR = Path(__file__).resolve().parent
+if str(SCRIPT_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPT_DIR))
+
+from prepare_mouher_catalog import base_handle, build_catalog, clean_text, write_json
 
 
 DEFAULT_BASE_URL = "https://mouher.com"

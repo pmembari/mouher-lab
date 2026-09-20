@@ -26,6 +26,7 @@ lib/
 !mouher-preview/src/lib/
 !mouher-preview/src/lib/*.js
 data
+!services/backend/src/lib/
 !mouher-preview/src/data/
 !mouher-preview/src/data/*.js
 *.csv

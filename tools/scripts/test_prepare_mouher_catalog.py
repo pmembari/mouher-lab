@@ -437,8 +437,8 @@ line two",0,1,2025-01-01,2025-01-02,,
             write(
                 db_dir / "variant_values.csv",
                 """id,variant_attribute_id,name,category,value
-30,1,زرد,زرد,#ffff00
-300,2,SIZE 3,,SIZE 3
+30,1,نامشخص,نامشخص,#ffff00
+300,2,SIZE 99,,SIZE 99
 """,
             )
             write(db_dir / "variant_attributes.csv", "id,name\n1,رنگ\n2,سایز\n")

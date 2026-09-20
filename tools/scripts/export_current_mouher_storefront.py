@@ -4,10 +4,15 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import sys
 from decimal import Decimal, InvalidOperation
 from pathlib import Path
 
-from tools.scripts.prepare_mouher_catalog import base_handle, clean_text, write_json
+SCRIPT_DIR = Path(__file__).resolve().parent
+if str(SCRIPT_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPT_DIR))
+
+from prepare_mouher_catalog import base_handle, clean_text, write_json
 
 
 DEFAULT_INPUT_DIR = Path("data/Mouher_Data/current-site")

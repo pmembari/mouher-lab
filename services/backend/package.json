@@ -7,7 +7,10 @@
     "build": "medusa build",
     "dev": "medusa develop",
     "test": "vitest run src",
-    "test:analytics": "vitest run src/modules/analytics src/api/store/analytics src/api/admin/analytics"
+    "test:analytics": "vitest run src/modules/analytics src/api/store/analytics src/api/admin/analytics",
+    "catalog:dry-run": "medusa exec ./src/scripts/import-mouher-catalog.ts",
+    "catalog:import": "medusa exec ./src/scripts/import-mouher-catalog.ts -- --apply",
+    "test:catalog-import": "vitest run src/lib/catalog-import.test.ts"
   },
   "dependencies": {
     "@medusajs/framework": "^2.16.0",

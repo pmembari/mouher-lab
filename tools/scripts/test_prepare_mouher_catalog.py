@@ -13,8 +13,99 @@ SPEC = importlib.util.spec_from_file_location("prepare_mouher_catalog", MODULE_P
 prepare_mouher_catalog = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(prepare_mouher_catalog)
 
+LOCALIZATION_PATH = Path(__file__).with_name("mouher_catalog_localization.py")
+LOCALIZATION_SPEC = importlib.util.spec_from_file_location(
+    "mouher_catalog_localization",
+    LOCALIZATION_PATH,
+)
+mouher_catalog_localization = importlib.util.module_from_spec(LOCALIZATION_SPEC)
+LOCALIZATION_SPEC.loader.exec_module(mouher_catalog_localization)
+
 
 class PrepareMouherCatalogTest(unittest.TestCase):
+    def test_localization_audit_uses_deterministic_script_checks(self):
+        products = [
+            {
+                "legacy_id": "1",
+                "product_code": "MHR-SHT-000001",
+                "title_fa": "پیراهن Oversize مشکی",
+                "title_en": "Black Shirt",
+                "description_fa": "جنس لینن و سایزبندی Free Size",
+                "description_en": "Light linen shirt",
+            },
+            {
+                "legacy_id": "2",
+                "product_code": "MHR-SHT-000002",
+                "title_fa": "Black Shirt",
+                "title_en": "پیراهن مشکی",
+                "description_fa": "Persian text only",
+                "description_en": "متن فارسی",
+            },
+            {
+                "legacy_id": "3",
+                "product_code": "MHR-SHT-000003",
+                "title_fa": "پیراهن black casual",
+                "title_en": "Black پیراهن شیک",
+                "description_fa": "پارچه linen premium برای روزمره",
+                "description_en": "Soft cotton پارچه لطیف",
+            },
+            {
+                "legacy_id": "4",
+                "product_code": "MHR-SHT-000004",
+                "title_fa": "",
+                "title_en": None,
+                "description_fa": "کد MHR-SHT-000004 سایز XL عدد 42",
+                "description_en": "SKU MHR-SHT-000004-BLK-XL size XL 42",
+            },
+        ]
+
+        reviews = mouher_catalog_localization.audit_catalog_localization(
+            products,
+            categories=[],
+            collections=[],
+        )
+        issues = {(review["legacy_id"], review["field"], review["issue_code"]) for review in reviews}
+
+        self.assertNotIn(("1", "title_fa", "mixed_language_title_fa"), issues)
+        self.assertNotIn(("1", "description_fa", "mixed_language_description_fa"), issues)
+        self.assertIn(("2", "title_fa", "title_fa_wrong_script"), issues)
+        self.assertIn(("2", "title_en", "title_en_wrong_script"), issues)
+        self.assertIn(("2", "description_fa", "description_fa_wrong_script"), issues)
+        self.assertIn(("2", "description_en", "description_en_wrong_script"), issues)
+        self.assertIn(("3", "title_fa", "mixed_language_title_fa"), issues)
+        self.assertIn(("3", "title_en", "mixed_language_title_en"), issues)
+        self.assertIn(("3", "description_fa", "mixed_language_description_fa"), issues)
+        self.assertIn(("3", "description_en", "mixed_language_description_en"), issues)
+        self.assertIn(("4", "title_fa", "missing_title_fa"), issues)
+        self.assertIn(("4", "title_en", "missing_title_en"), issues)
+        self.assertNotIn(("4", "description_fa", "mixed_language_description_fa"), issues)
+        self.assertNotIn(("4", "description_en", "mixed_language_description_en"), issues)
+
+    def test_localization_audit_checks_category_and_collection_names(self):
+        reviews = mouher_catalog_localization.audit_catalog_localization(
+            products=[],
+            categories=[
+                {"legacy_id": "1", "name_fa": "پیراهن", "name": "Shirts"},
+                {"legacy_id": "2", "name_fa": "", "name": "شلوار"},
+                {"legacy_id": "3", "name_fa": "کت premium", "name": "Coats کت بلند"},
+            ],
+            collections=[
+                {"legacy_id": "1", "title_fa": "زنانه", "title": "Women"},
+                {"legacy_id": "2", "title_fa": None, "title": "مردانه"},
+                {"legacy_id": "3", "title_fa": "بهار premium", "title": "Spring بهار"},
+            ],
+        )
+        issues = {(review["legacy_id"], review["field"], review["issue_code"]) for review in reviews}
+
+        self.assertIn(("2", "name_fa", "missing_category_fa"), issues)
+        self.assertIn(("2", "name", "mixed_language_category"), issues)
+        self.assertIn(("3", "name_fa", "mixed_language_category"), issues)
+        self.assertIn(("3", "name", "mixed_language_category"), issues)
+        self.assertIn(("2", "title_fa", "missing_collection_fa"), issues)
+        self.assertIn(("2", "title", "mixed_language_collection"), issues)
+        self.assertIn(("3", "title_fa", "mixed_language_collection"), issues)
+        self.assertIn(("3", "title", "mixed_language_collection"), issues)
+
     def test_catalog_uses_physical_images_and_resolves_variant_values(self):
         with TemporaryDirectory() as tmp:
             source_root = Path(tmp) / "Mouher_Data"

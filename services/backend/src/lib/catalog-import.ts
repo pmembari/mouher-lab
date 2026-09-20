@@ -142,8 +142,10 @@ export function buildImportPlan(rawProducts: any[], config: BridgeConfig = {}): 
     }
 
     const categories = Array.isArray(raw.categories) ? raw.categories : []
-    const categorySlugs = unique(
-      categories.map((category: any) => text(category.slug)).filter((slug: string) => SLUG_RE.test(slug))
+    const categorySlugs: string[] = unique<string>(
+      categories
+        .map((category: any): string => text(category.slug))
+        .filter((slug: string) => SLUG_RE.test(slug))
     )
     for (const category of categories) {
       const slug = text(category.slug)
@@ -157,8 +159,10 @@ export function buildImportPlan(rawProducts: any[], config: BridgeConfig = {}): 
     }
 
     const collections = Array.isArray(raw.collections) ? raw.collections : []
-    const usableCollections = collections.filter(usableCollection)
-    const collectionSlugs = unique(usableCollections.map((collection: any) => text(collection.slug)))
+    const usableCollections: any[] = collections.filter(usableCollection)
+    const collectionSlugs: string[] = unique<string>(
+      usableCollections.map((collection: any): string => text(collection.slug))
+    )
     for (const collection of usableCollections) {
       const slug = text(collection.slug)
       collectionMap.set(slug, {

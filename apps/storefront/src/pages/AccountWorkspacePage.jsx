@@ -41,8 +41,8 @@ export function AccountWorkspacePage({ language, labels, dashboardLabels }) {
         setAuthError(
           error?.message ||
           (isFarsi
-            ? "بازیابی نشست مدوسا ممکن نشد."
-            : "Could not restore your Medusa session.")
+            ? "بازیابی نشست حساب ممکن نشد."
+            : "Could not restore your account session.")
         );
       });
 
@@ -210,8 +210,8 @@ export function AccountWorkspacePage({ language, labels, dashboardLabels }) {
               </h2>
               <p>
                 {isFarsi
-                  ? "پس از راه‌اندازی بک‌اند مدوسا، ورود و ساخت حساب واقعی در همین صفحه فعال می‌شود."
-                  : "Real sign in and account creation will activate here when the Medusa backend is configured."}
+                  ? "ورود و ساخت حساب در حال حاضر در دسترس نیست."
+                  : "Sign in and account creation are currently unavailable."}
               </p>
             </div>
             <a href="#/shop" className="button button-dark">
@@ -365,8 +365,8 @@ export function AccountWorkspacePage({ language, labels, dashboardLabels }) {
 
               <p>
                 {isFarsi
-                  ? "احراز هویت مستقیماً توسط مدوسا انجام می‌شود. رمز عبور در فرانت‌اند ذخیره نمی‌شود."
-                  : "Authentication is handled directly by Medusa. Your password is not stored by the storefront."}
+                  ? "رمز عبور شما در فروشگاه ذخیره نمی‌شود."
+                  : "Your password is not stored by the storefront."}
               </p>
             </form>
           </section>
@@ -427,8 +427,8 @@ export function AccountWorkspacePage({ language, labels, dashboardLabels }) {
               <div className="account-app-panel">
                 <strong>
                   {isFarsi
-                    ? "حساب شما به مدوسا متصل است."
-                    : "Your account is connected to Medusa."}
+                    ? "حساب شما فعال است."
+                    : "Your account is active."}
                 </strong>
                 <a href="#/shop" className="button button-light">
                   {dashboardLabels.viewStore}

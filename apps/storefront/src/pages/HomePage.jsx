@@ -1,89 +1,22 @@
-import { useState } from "react";
-
 import { ArrowRight } from "../components/icons";
 import { ProductImage } from "../components/ProductImage";
-import ProductCard from "../components/storefront/ProductCard";
-import {
-  productDisplayName,
-  productPageHref,
-} from "../utils/product";
-
-const DISCOVERY_PAGE_SIZE = 30;
 
 export default function HomePage({
-  catalog,
-  catalogState,
   language,
   t,
   heroImage,
-  sourceLabel,
   homepageProducts = [],
   homepageCategories = [],
-  addingProductId,
-  email,
-  onSetEmail,
-  onAddToCart,
-  onNewsletterSubmit,
 }) {
   const isFarsi = language === "farsi";
-  const [discoveryPage, setDiscoveryPage] = useState(1);
-
-  const featuredProducts = homepageProducts.slice(0, 8);
-  const trendingProducts = homepageProducts.slice(0, 3);
-  const visibleCategories = homepageCategories.slice(0, 4);
-  const allDiscoveryProducts = catalog.products || [];
-
-  const discoveryTotalPages = Math.max(
-    1,
-    Math.ceil(allDiscoveryProducts.length / DISCOVERY_PAGE_SIZE)
-  );
-
-  const currentDiscoveryPage = Math.min(
-    discoveryPage,
-    discoveryTotalPages
-  );
-
-  const discoveryStart =
-    (currentDiscoveryPage - 1) * DISCOVERY_PAGE_SIZE;
-
-  const discoveryProducts = allDiscoveryProducts.slice(
-    discoveryStart,
-    discoveryStart + DISCOVERY_PAGE_SIZE
-  );
-
-  const discoveryPaginationItems = buildPaginationItems(
-    currentDiscoveryPage,
-    discoveryTotalPages
-  );
-
-  const editorialImage =
+  const categories = homepageCategories.slice(0, 4);
+  const storyImage =
     homepageProducts[1]?.imageUrls ||
     homepageProducts[0]?.imageUrls ||
     heroImage;
 
-  function changeDiscoveryPage(page) {
-    if (
-      page < 1 ||
-      page > discoveryTotalPages ||
-      page === currentDiscoveryPage
-    ) {
-      return;
-    }
-
-    setDiscoveryPage(page);
-
-    window.requestAnimationFrame(() => {
-      document
-        .getElementById("discover")
-        ?.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
-    });
-  }
-
   return (
-    <>
+    <main className="mouher-reference-home">
       <section className="mouher-hero" id="new">
         <div className="mouher-hero-media">
           <ProductImage
@@ -100,393 +33,88 @@ export default function HomePage({
             {isFarsi ? "بیش از لباس" : "More than clothes"}
           </span>
 
-          <h1>
-            {t.hero.title.split("\n").map((line, index, lines) => (
-              <span key={`${line}-${index}`}>
-                {line}
-                {index < lines.length - 1 && <br />}
-              </span>
-            ))}
-          </h1>
-
+          <h1>{t.hero.title}</h1>
           <p>{t.hero.description}</p>
 
           <div className="mouher-hero-actions">
             <a href="#/shop" className="mouher-hero-button mouher-hero-button-light">
-              {t.hero.button}
-              <ArrowRight />
+              {isFarsi ? "خرید کنید" : "Shop now"} <ArrowRight />
             </a>
-
             <a href="#categories" className="mouher-hero-button mouher-hero-button-ghost">
-              {isFarsi ? "کالکشن‌ها" : "Explore collections"}
+              {isFarsi ? "مشاهده کالکشن‌ها" : "Explore collections"}
             </a>
           </div>
 
           <div className="mouher-hero-index" aria-hidden="true">
-            <span>01</span>
-            <span className="is-active" />
-            <span>02</span>
-            <span />
+            <span>01</span><i className="active" />
+            <span>02</span><i />
             <span>03</span>
           </div>
+
+          <span className="mouher-hero-rooted">
+            {isFarsi ? "استایل ریشه‌دار در تو" : "Style rooted in you"}
+          </span>
         </div>
 
+        <div className="mouher-hero-script" aria-hidden="true">
+          Same You<br />A Brighter<br />Tomorrow
+        </div>
         <div className="mouher-hero-side-note" aria-hidden="true">
-          {isFarsi ? "استایل ریشه‌دار در تو" : "Style rooted in you"}
+          Configure · Inspire · Detail
         </div>
       </section>
 
-      {visibleCategories.length > 0 && (
-        <section className="mouher-category-strip" id="categories">
-          <div className="mouher-category-strip-heading">
-            <span>{isFarsi ? "خرید بر اساس دسته‌بندی" : "Shop by category"}</span>
-            <a href="#/shop">
-              {isFarsi ? "مشاهده همه" : "View all"}
-              <ArrowRight />
-            </a>
-          </div>
-
-          <div className="mouher-category-strip-grid">
-            {visibleCategories.map((category) => {
-              const name = isFarsi
-                ? category.nameFa || category.name
-                : category.name;
-
-              const categoryImage =
-                category.imageUrl ||
-                getCategoryImage({
-                  category,
-                  products: homepageProducts,
-                  fallback: heroImage,
-                });
-
-              return (
-                <a
-                  key={category.slug}
-                  href={`#/categories/${encodeURIComponent(category.slug)}`}
-                  className="mouher-category-tile"
-                >
-                  <ProductImage
-                    image={categoryImage}
-                    alt={name}
-                    className="mouher-category-tile-image"
-                  />
-                  <div className="mouher-category-tile-overlay" />
-                  <div className="mouher-category-tile-copy">
-                    <div>
-                      <h3>{name}</h3>
-                      <span>
-                        {category.count > 0
-                          ? isFarsi
-                            ? `${category.count} محصول`
-                            : `${category.count} ${category.count === 1 ? "style" : "styles"}`
-                          : isFarsi
-                            ? "کشف کنید"
-                            : "Discover"}
-                      </span>
-                    </div>
-                    <span className="mouher-category-tile-arrow" aria-hidden="true">
-                      <ArrowRight />
-                    </span>
-                  </div>
-                </a>
-              );
-            })}
-          </div>
-        </section>
-      )}
-
-      <section
-        className="trust-strip"
-        aria-label={isFarsi ? "مزایای فروشگاه" : "Store benefits"}
-      >
-        <span>{t.trust.shipping}</span>
-        <span>{t.trust.returns}</span>
-        <span>{t.trust.support}</span>
-      </section>
-
-      <section className="section products-section" id="products">
-        <div className="section-heading catalog-heading">
-          <div>
-            <span className="eyebrow">{t.products.eyebrow}</span>
-            <h2>{t.products.title}</h2>
-          </div>
-
-          <div className="catalog-actions">
-            <span className={`catalog-pill catalog-pill-${catalog.source}`}>
-              {sourceLabel}
-            </span>
-
-            <a href="#/shop" className="text-link">
-              {t.products.shopAll}
-              <ArrowRight />
-            </a>
-          </div>
+      <section className="mouher-category-strip" id="categories">
+        <div className="mouher-category-strip-heading">
+          <span>{isFarsi ? "خرید بر اساس دسته‌بندی" : "Shop by category"}</span>
+          <a href="#/shop">{isFarsi ? "مشاهده همه" : "View all"} <ArrowRight /></a>
         </div>
 
-        {catalog.notice && <p className="catalog-notice">{catalog.notice}</p>}
+        <div className="mouher-category-strip-grid">
+          {categories.map((category) => {
+            const name = isFarsi
+              ? category.nameFa || category.name
+              : category.name;
+            const image =
+              category.imageUrl ||
+              homepageProducts.find((product) => product.categorySlug === category.slug)?.imageUrls ||
+              heroImage;
 
-        {catalogState === "loading" ? (
-          <p className="empty-state">{t.products.loading}</p>
-        ) : featuredProducts.length > 0 ? (
-          <div className="products-grid">
-            {featuredProducts.map((product) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                language={language}
-                labels={t.cart}
-                onAdd={onAddToCart}
-                isAdding={addingProductId === product.id}
-              />
-            ))}
-          </div>
-        ) : (
-          <p className="empty-state">{t.products.empty}</p>
-        )}
-      </section>
-
-      {trendingProducts.length > 0 && (
-        <section className="section home-trending" id="trending">
-          <div className="section-heading home-merch-heading">
-            <div>
-              <span className="eyebrow">
-                {isFarsi ? "در حال توجه" : "Trending now"}
-              </span>
-              <h2>{isFarsi ? "انتخاب‌های این لحظه" : "What we’re watching"}</h2>
-            </div>
-
-            <a href="#/shop" className="text-link">
-              {isFarsi ? "مشاهده فروشگاه" : "Shop all"}
-              <ArrowRight />
-            </a>
-          </div>
-
-          <div className="home-trending-grid">
-            {trendingProducts.map((product) => {
-              const name = productDisplayName(product, isFarsi);
-
-              return (
-                <a
-                  key={product.id}
-                  href={productPageHref(product)}
-                  className="home-trending-card"
-                >
-                  <div className="home-trending-media">
-                    <ProductImage
-                      image={product.imageUrls}
-                      alt={name}
-                      className="home-trending-image"
-                    />
-                  </div>
-
-                  <div className="home-trending-copy">
-                    <div>
-                      <span className="home-merch-kicker">
-                        {isFarsi ? "منتخب موهر" : "Mouher pick"}
-                      </span>
-                      <h3>{name}</h3>
-                      {product.price && <p>{product.price}</p>}
-                    </div>
-
-                    <span className="home-merch-arrow" aria-hidden="true">
-                      <ArrowRight />
-                    </span>
-                  </div>
-                </a>
-              );
-            })}
-          </div>
-        </section>
-      )}
-
-      <section className="philosophy">
-        <div className="philosophy-image">
-          <ProductImage
-            image={editorialImage}
-            alt={isFarsi ? "داستان موهر" : "Mouher editorial story"}
-            className=""
-          />
-        </div>
-
-        <div className="philosophy-content">
-          <span className="eyebrow">{t.philosophy.eyebrow}</span>
-          <h2>{t.philosophy.title}</h2>
-          <p>{t.philosophy.description}</p>
-
-          <a href="#/shop" className="button button-dark">
-            {t.philosophy.button}
-            <ArrowRight />
-          </a>
-        </div>
-      </section>
-
-      {allDiscoveryProducts.length > 0 && (
-        <section
-          className="section products-section home-discovery"
-          id="discover"
-        >
-          <div className="section-heading home-discovery-heading">
-            <div>
-              <span className="eyebrow">
-                {isFarsi ? "تمام محصولات" : "The full catalog"}
-              </span>
-              <h2>{isFarsi ? "برای کشف بیشتر" : "More to discover"}</h2>
-              <p className="home-discovery-summary">
-                {isFarsi
-                  ? `${allDiscoveryProducts.length} محصول، ${DISCOVERY_PAGE_SIZE} محصول در هر صفحه`
-                  : `${allDiscoveryProducts.length} products · ${DISCOVERY_PAGE_SIZE} per page`}
-              </p>
-            </div>
-
-            <a href="#/shop" className="text-link">
-              {isFarsi ? "فروشگاه و فیلترها" : "Shop & filters"}
-              <ArrowRight />
-            </a>
-          </div>
-
-          <div className="products-grid">
-            {discoveryProducts.map((product) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                language={language}
-                labels={t.cart}
-                onAdd={onAddToCart}
-                isAdding={addingProductId === product.id}
-              />
-            ))}
-          </div>
-
-          {discoveryTotalPages > 1 && (
-            <nav
-              className="home-discovery-pagination"
-              aria-label={
-                isFarsi
-                  ? "صفحه‌بندی محصولات بیشتر"
-                  : "More to discover pagination"
-              }
-            >
-              <button
-                type="button"
-                className="home-discovery-pagination-nav"
-                disabled={currentDiscoveryPage === 1}
-                onClick={() =>
-                  changeDiscoveryPage(currentDiscoveryPage - 1)
-                }
+            return (
+              <a
+                key={category.slug}
+                href={`#/categories/${encodeURIComponent(category.slug)}`}
+                className="mouher-category-tile"
               >
-                {isFarsi ? "قبلی" : "Previous"}
-              </button>
-
-              <div className="home-discovery-pagination-pages">
-                {discoveryPaginationItems.map((item, index) =>
-                  item === "ellipsis" ? (
-                    <span
-                      key={`ellipsis-${index}`}
-                      className="home-discovery-pagination-ellipsis"
-                      aria-hidden="true"
-                    >
-                      …
-                    </span>
-                  ) : (
-                    <button
-                      key={item}
-                      type="button"
-                      className={
-                        item === currentDiscoveryPage
-                          ? "home-discovery-pagination-page is-active"
-                          : "home-discovery-pagination-page"
-                      }
-                      aria-current={
-                        item === currentDiscoveryPage ? "page" : undefined
-                      }
-                      onClick={() => changeDiscoveryPage(item)}
-                    >
-                      {item}
-                    </button>
-                  )
-                )}
-              </div>
-
-              <button
-                type="button"
-                className="home-discovery-pagination-nav"
-                disabled={currentDiscoveryPage === discoveryTotalPages}
-                onClick={() =>
-                  changeDiscoveryPage(currentDiscoveryPage + 1)
-                }
-              >
-                {isFarsi ? "بعدی" : "Next"}
-              </button>
-            </nav>
-          )}
-        </section>
-      )}
-
-      <section className="newsletter" id="newsletter">
-        <div className="newsletter-inner">
-          <span className="eyebrow">{t.newsletter.eyebrow}</span>
-          <h2>{t.newsletter.title}</h2>
-          <p>{t.newsletter.description}</p>
-
-          <form className="newsletter-form" onSubmit={onNewsletterSubmit}>
-            <input
-              type="email"
-              placeholder={t.newsletter.placeholder}
-              value={email}
-              onChange={(event) => onSetEmail(event.target.value)}
-              aria-label={t.newsletter.placeholder}
-              autoComplete="email"
-              required
-            />
-
-            <button type="submit">
-              {t.newsletter.button}
-              <ArrowRight />
-            </button>
-          </form>
+                <ProductImage image={image} alt={name} className="mouher-category-tile-image" />
+                <div className="mouher-category-tile-overlay" />
+                <div className="mouher-category-tile-copy">
+                  <div>
+                    <h3>{name}</h3>
+                    <span>{isFarsi ? "استایل خود را کشف کنید" : "Discover your style"}</span>
+                  </div>
+                  <span className="mouher-category-tile-arrow"><ArrowRight /></span>
+                </div>
+              </a>
+            );
+          })}
         </div>
       </section>
-    </>
+
+      <section className="mouher-reference-benefits" aria-label="Store benefits">
+        <div><b>▱</b><span><strong>{isFarsi ? "ارسال رایگان" : "Free shipping"}</strong><small>{t.trust.shipping}</small></span></div>
+        <div><b>◇</b><span><strong>{isFarsi ? "بازگشت آسان" : "Easy returns"}</strong><small>{t.trust.returns}</small></span></div>
+        <div><b>♙</b><span><strong>{isFarsi ? "پرداخت امن" : "Secure payment"}</strong><small>{isFarsi ? "با اطمینان خرید کنید" : "Shop with confidence"}</small></span></div>
+        <div><b>♧</b><span><strong>{isFarsi ? "انتخاب پایدار" : "Sustainable choices"}</strong><small>{isFarsi ? "آینده‌ای مهربان‌تر" : "A kinder future"}</small></span></div>
+        <div><b>♡</b><span><strong>{isFarsi ? "مراقبت از مشتری" : "Customer care"}</strong><small>{t.trust.support}</small></span></div>
+      </section>
+
+      <section className="mouher-reference-story" id="story">
+        <ProductImage image={storyImage} alt="Mouher story" className="mouher-reference-story-image" />
+        <div className="mouher-reference-story-overlay" />
+        <blockquote>“ MOUHER — WHAT YOU WEAR,<br />A BRIGHTER TOMORROW ”</blockquote>
+        <a href="#/shop">{isFarsi ? "داستان ما" : "Our story"} <ArrowRight /></a>
+      </section>
+    </main>
   );
-}
-
-function getCategoryImage({ category, products, fallback }) {
-  const match = products.find(
-    (product) => product.categorySlug === category.slug
-  );
-
-  return match?.imageUrls || fallback || "";
-}
-
-function buildPaginationItems(currentPage, totalPages) {
-  if (totalPages <= 7) {
-    return Array.from({ length: totalPages }, (_, index) => index + 1);
-  }
-
-  if (currentPage <= 4) {
-    return [1, 2, 3, 4, 5, "ellipsis", totalPages];
-  }
-
-  if (currentPage >= totalPages - 3) {
-    return [
-      1,
-      "ellipsis",
-      totalPages - 4,
-      totalPages - 3,
-      totalPages - 2,
-      totalPages - 1,
-      totalPages,
-    ];
-  }
-
-  return [
-    1,
-    "ellipsis",
-    currentPage - 1,
-    currentPage,
-    currentPage + 1,
-    "ellipsis",
-    totalPages,
-  ];
 }

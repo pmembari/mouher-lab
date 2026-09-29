@@ -5774,3 +5774,311 @@ img {
     flex: 1 1 100%;
   }
 }
+
+
+/* =========================================================
+   REFERENCE-FAITHFUL FIRST PAGE OVERRIDES
+========================================================= */
+
+.mouher-reference-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 40;
+  background: rgba(7,7,7,.5);
+  color: #fff;
+  border-bottom: 1px solid rgba(255,255,255,.12);
+  backdrop-filter: blur(5px);
+}
+
+.mouher-reference-header-inner {
+  display: grid;
+  grid-template-columns: 235px minmax(430px,1fr) auto;
+  min-height: 76px;
+  padding: 0 6.5vw;
+  gap: 32px;
+}
+
+.mouher-reference-logo {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  justify-self: start;
+}
+
+.mouher-mark {
+  font-family: Georgia,serif;
+  font-size: 33px;
+  line-height: 1;
+  letter-spacing: -.25em;
+  transform: scaleX(.85);
+}
+
+.mouher-reference-logo > span:last-child {
+  display: grid;
+  gap: 5px;
+}
+
+.mouher-reference-logo strong {
+  font-size: 18px;
+  font-weight: 400;
+  letter-spacing: .28em;
+  line-height: 1;
+}
+
+.mouher-reference-logo small {
+  font-size: 5px;
+  letter-spacing: .58em;
+  color: rgba(255,255,255,.68);
+}
+
+.mouher-reference-nav {
+  justify-content: center;
+  gap: 30px;
+}
+
+.mouher-reference-nav a {
+  color: #fff;
+  font-size: 10px;
+  font-weight: 400;
+}
+
+.mouher-reference-tools {
+  gap: 15px;
+  justify-content: flex-end;
+}
+
+.mouher-header-search {
+  width: 195px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 0 13px;
+  border: 1px solid rgba(255,255,255,.5);
+  border-radius: 999px;
+  background: rgba(0,0,0,.18);
+  color: #fff;
+}
+
+.mouher-header-search span {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: rgba(255,255,255,.62);
+  font-size: 8px;
+}
+
+.mouher-header-icon {
+  position: relative;
+  width: 27px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: transparent;
+  color: #fff;
+}
+
+.mouher-header-count {
+  position: absolute;
+  top: 1px;
+  right: -2px;
+  width: 14px;
+  height: 14px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #eee;
+  color: #111;
+  font-size: 7px;
+}
+
+.mouher-reference-home {
+  background: #0b0b0b;
+}
+
+.mouher-reference-home .mouher-hero {
+  height: 710px;
+  min-height: 710px;
+}
+
+.mouher-reference-home .mouher-hero-copy {
+  padding-top: 130px;
+  padding-bottom: 48px;
+}
+
+.mouher-reference-home .mouher-hero h1 {
+  white-space: pre-line;
+  font-size: clamp(58px,6vw,88px);
+}
+
+.mouher-hero-script {
+  position: absolute;
+  z-index: 4;
+  right: 8vw;
+  top: 44%;
+  transform: rotate(-8deg);
+  color: rgba(255,255,255,.72);
+  font-family: "Brush Script MT","Segoe Script",cursive;
+  font-size: clamp(26px,3vw,46px);
+  line-height: 1.05;
+  text-align: right;
+}
+
+.mouher-hero-rooted {
+  margin-top: 56px;
+  color: rgba(255,255,255,.5);
+  font-size: 8px;
+  letter-spacing: .55em;
+  text-transform: uppercase;
+}
+
+.mouher-reference-home .mouher-hero-index {
+  position: absolute;
+  left: 20px;
+  top: 285px;
+  margin: 0;
+  grid-template-columns: 16px;
+  grid-template-rows: auto 48px auto 48px auto;
+  gap: 8px;
+  justify-items: center;
+}
+
+.mouher-reference-home .mouher-hero-index i {
+  width: 1px;
+  height: 48px;
+  background: rgba(255,255,255,.45);
+}
+
+.mouher-reference-home .mouher-hero-index i.active {
+  background: #fff;
+}
+
+.mouher-reference-home .mouher-category-strip {
+  padding-top: 25px;
+}
+
+.mouher-reference-home .mouher-category-tile {
+  min-height: 166px;
+  border: 1px solid rgba(255,255,255,.08);
+}
+
+.mouher-reference-benefits {
+  min-height: 88px;
+  padding: 0 4vw;
+  display: grid;
+  grid-template-columns: repeat(5,1fr);
+  align-items: center;
+  background: #0b0b0b;
+  color: #fff;
+  border-top: 1px solid rgba(255,255,255,.1);
+  border-bottom: 1px solid rgba(255,255,255,.1);
+}
+
+.mouher-reference-benefits > div {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 18px;
+}
+
+.mouher-reference-benefits b {
+  font-size: 26px;
+  font-weight: 300;
+}
+
+.mouher-reference-benefits span {
+  display: grid;
+  gap: 5px;
+}
+
+.mouher-reference-benefits strong {
+  font-size: 8px;
+  font-weight: 500;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+.mouher-reference-benefits small {
+  color: rgba(255,255,255,.58);
+  font-size: 8px;
+}
+
+.mouher-reference-story {
+  position: relative;
+  min-height: 210px;
+  overflow: hidden;
+  color: #fff;
+}
+
+.mouher-reference-story-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mouher-reference-story-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(7,7,7,.68);
+}
+
+.mouher-reference-story blockquote {
+  position: relative;
+  z-index: 2;
+  margin: 0;
+  padding-top: 72px;
+  text-align: center;
+  font-family: Georgia,serif;
+  font-size: 12px;
+  line-height: 1.8;
+  letter-spacing: .32em;
+}
+
+.mouher-reference-story > a {
+  position: absolute;
+  z-index: 3;
+  right: 5vw;
+  top: 78px;
+  width: 170px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  border: 1px solid rgba(255,255,255,.65);
+  font-size: 8px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 1100px) {
+  .mouher-reference-header-inner {
+    grid-template-columns: auto 1fr;
+    padding: 0 24px;
+  }
+  .mouher-reference-nav { display:none; }
+  .mouher-reference-tools { justify-self:end; }
+  .mobile-menu-button { display:inline-flex; position:absolute; left:16px; }
+  .mouher-reference-logo { margin-left:36px; }
+  .mouher-reference-benefits { grid-template-columns: repeat(2,1fr); padding:18px; gap:18px; }
+}
+
+@media (max-width: 700px) {
+  .mouher-header-search { width:42px; padding:0; justify-content:center; }
+  .mouher-header-search span { display:none; }
+  .mouher-reference-logo strong { font-size:14px; }
+  .mouher-reference-logo small { display:none; }
+  .mouher-reference-home .mouher-hero { min-height:680px; height:680px; }
+  .mouher-hero-script { display:none; }
+  .mouher-reference-home .mouher-hero-index { display:none; }
+  .mouher-reference-benefits { grid-template-columns:1fr; }
+  .mouher-reference-story blockquote { padding:48px 20px 100px; }
+  .mouher-reference-story > a { top:auto; bottom:28px; right:50%; transform:translateX(50%); }
+}

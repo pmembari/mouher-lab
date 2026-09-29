@@ -13,7 +13,7 @@ export const content = {
       eyebrow: "Mouher Studio",
       title: "Mouher\nWhat you wear",
       description:
-        "Modern clothing for daily movement, built as a commerce storefront with Medusa catalog, cart and checkout foundations.",
+        "Modern clothing made for everyday style, movement and self-expression.",
       button: "Shop collection",
     },
     products: {
@@ -254,7 +254,7 @@ export const content = {
       eyebrow: "Mouher",
       title: "Made for daily rhythm.",
       description:
-        "The storefront keeps the visual language minimal and lets Medusa own the catalog, inventory, cart and pricing logic.",
+        "A minimal visual language that keeps the focus on the clothes, the details and your personal style.",
       button: "About Mouher",
     },
     newsletter: {
@@ -298,7 +298,7 @@ export const content = {
       eyebrow: "استودیو موهر",
       title: "موهر\nآنچه می‌پوشی",
       description:
-        "فروشگاه پوشاک مدرن با پایه مدوسا برای کاتالوگ، سبد خرید و مسیر پرداخت واقعی.",
+        "پوشاک مدرن برای استایل روزمره، حرکت و بیان شخصیت شما.",
       button: "دیدن کالکشن",
     },
     products: {
@@ -539,7 +539,7 @@ export const content = {
       eyebrow: "موهر",
       title: "برای ریتم روزمره.",
       description:
-        "ظاهر سایت ساده می‌ماند و مدوسا مسئول کاتالوگ، موجودی، قیمت‌گذاری و سبد خرید است.",
+        "زبان بصری ساده و مینیمال است تا تمرکز روی لباس‌ها، جزئیات و استایل شخصی شما بماند.",
       button: "درباره موهر",
     },
     newsletter: {

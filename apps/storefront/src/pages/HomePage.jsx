@@ -8,14 +8,7 @@ import {
   productPageHref,
 } from "../utils/product";
 
-const BASE_URL = import.meta.env.BASE_URL;
 const DISCOVERY_PAGE_SIZE = 30;
-
-const HERO_VIDEOS = [
-  { id: "hero-1", src: `${BASE_URL}media/home/hero-1.webm` },
-  { id: "hero-2", src: `${BASE_URL}media/home/hero-2.webm` },
-  { id: "hero-3", src: `${BASE_URL}media/home/hero-3.webm` },
-];
 
 export default function HomePage({
   catalog,
@@ -37,7 +30,7 @@ export default function HomePage({
 
   const featuredProducts = homepageProducts.slice(0, 8);
   const trendingProducts = homepageProducts.slice(0, 3);
-  const visibleCategories = homepageCategories.slice(0, 3);
+  const visibleCategories = homepageCategories.slice(0, 4);
   const allDiscoveryProducts = catalog.products || [];
 
   const discoveryTotalPages = Math.max(
@@ -91,32 +84,21 @@ export default function HomePage({
 
   return (
     <>
-      <section
-        className="hero-video-story"
-        aria-label={isFarsi ? "داستان تصویری موهر" : "Mouher visual story"}
-      >
-        <div className="hero-video-grid">
-          {HERO_VIDEOS.map((video) => (
-            <div className="hero-video-panel" key={video.id}>
-              <video
-                className="hero-video"
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="metadata"
-                aria-hidden="true"
-              >
-                <source src={video.src} type="video/webm" />
-              </video>
-            </div>
-          ))}
+      <section className="mouher-hero" id="new">
+        <div className="mouher-hero-media">
+          <ProductImage
+            image={heroImage}
+            alt={isFarsi ? "تصویر اصلی موهر" : "Mouher hero"}
+            className="mouher-hero-image"
+          />
+          <div className="mouher-hero-overlay" />
+          <div className="mouher-hero-sheen" aria-hidden="true" />
         </div>
-      </section>
 
-      <section className="home-intro" id="new">
-        <div className="home-intro-copy">
-          <p className="eyebrow">{t.hero.eyebrow}</p>
+        <div className="mouher-hero-copy">
+          <span className="mouher-hero-kicker">
+            {isFarsi ? "بیش از لباس" : "More than clothes"}
+          </span>
 
           <h1>
             {t.hero.title.split("\n").map((line, index, lines) => (
@@ -127,9 +109,92 @@ export default function HomePage({
             ))}
           </h1>
 
-          <p className="hero-description">{t.hero.description}</p>
+          <p>{t.hero.description}</p>
+
+          <div className="mouher-hero-actions">
+            <a href="#/shop" className="mouher-hero-button mouher-hero-button-light">
+              {t.hero.button}
+              <ArrowRight />
+            </a>
+
+            <a href="#categories" className="mouher-hero-button mouher-hero-button-ghost">
+              {isFarsi ? "کالکشن‌ها" : "Explore collections"}
+            </a>
+          </div>
+
+          <div className="mouher-hero-index" aria-hidden="true">
+            <span>01</span>
+            <span className="is-active" />
+            <span>02</span>
+            <span />
+            <span>03</span>
+          </div>
+        </div>
+
+        <div className="mouher-hero-side-note" aria-hidden="true">
+          {isFarsi ? "استایل ریشه‌دار در تو" : "Style rooted in you"}
         </div>
       </section>
+
+      {visibleCategories.length > 0 && (
+        <section className="mouher-category-strip" id="categories">
+          <div className="mouher-category-strip-heading">
+            <span>{isFarsi ? "خرید بر اساس دسته‌بندی" : "Shop by category"}</span>
+            <a href="#/shop">
+              {isFarsi ? "مشاهده همه" : "View all"}
+              <ArrowRight />
+            </a>
+          </div>
+
+          <div className="mouher-category-strip-grid">
+            {visibleCategories.map((category) => {
+              const name = isFarsi
+                ? category.nameFa || category.name
+                : category.name;
+
+              const categoryImage =
+                category.imageUrl ||
+                getCategoryImage({
+                  category,
+                  products: homepageProducts,
+                  fallback: heroImage,
+                });
+
+              return (
+                <a
+                  key={category.slug}
+                  href={`#/categories/${encodeURIComponent(category.slug)}`}
+                  className="mouher-category-tile"
+                >
+                  <ProductImage
+                    image={categoryImage}
+                    alt={name}
+                    className="mouher-category-tile-image"
+                  />
+                  <div className="mouher-category-tile-overlay" />
+                  <div className="mouher-category-tile-copy">
+                    <div>
+                      <h3>{name}</h3>
+                      <span>
+                        {category.count > 0
+                          ? isFarsi
+                            ? `${category.count} محصول`
+                            : `${category.count} ${category.count === 1 ? "style" : "styles"}`
+                          : isFarsi
+                            ? "کشف کنید"
+                            : "Discover"}
+                      </span>
+                    </div>
+                    <span className="mouher-category-tile-arrow" aria-hidden="true">
+                      <ArrowRight />
+                    </span>
+                  </div>
+                </a>
+              );
+            })}
+          </div>
+        </section>
+      )}
 
       <section
         className="trust-strip"
@@ -222,73 +287,6 @@ export default function HomePage({
                       </span>
                       <h3>{name}</h3>
                       {product.price && <p>{product.price}</p>}
-                    </div>
-
-                    <span className="home-merch-arrow" aria-hidden="true">
-                      <ArrowRight />
-                    </span>
-                  </div>
-                </a>
-              );
-            })}
-          </div>
-        </section>
-      )}
-
-      {visibleCategories.length > 0 && (
-        <section className="section categories-section" id="categories">
-          <div className="section-heading home-merch-heading">
-            <div>
-              <span className="eyebrow">
-                {isFarsi ? "خرید بر اساس دسته‌بندی" : "Shop by category"}
-              </span>
-              <h2>{isFarsi ? "موهر را کشف کنید" : "Explore Mouher"}</h2>
-            </div>
-
-            <a href="#/shop" className="text-link">
-              {isFarsi ? "همه محصولات" : "Shop all"}
-              <ArrowRight />
-            </a>
-          </div>
-
-          <div className="home-categories-grid">
-            {visibleCategories.map((category) => {
-              const name = isFarsi
-                ? category.nameFa || category.name
-                : category.name;
-
-              const categoryImage =
-                category.imageUrl ||
-                getCategoryImage({
-                  category,
-                  products: homepageProducts,
-                  fallback: heroImage,
-                });
-
-              return (
-                <a
-                  key={category.slug}
-                  href={`#/categories/${encodeURIComponent(category.slug)}`}
-                  className="home-category-card"
-                >
-                  <div className="home-category-media">
-                    <ProductImage
-                      image={categoryImage}
-                      alt={name}
-                      className="home-category-image"
-                    />
-                  </div>
-
-                  <div className="home-category-copy">
-                    <div>
-                      <h3>{name}</h3>
-                      {category.count > 0 && (
-                        <span>
-                          {isFarsi
-                            ? `${category.count} محصول`
-                            : `${category.count} ${category.count === 1 ? "style" : "styles"}`}
-                        </span>
-                      )}
                     </div>
 
                     <span className="home-merch-arrow" aria-hidden="true">

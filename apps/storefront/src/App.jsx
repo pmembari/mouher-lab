@@ -137,14 +137,6 @@ export default function App() {
       className={siteClassName}
       dir={direction}
     >
-      <div className="announcement">
-        <p>
-          {
-            storefrontText.announcement
-          }
-        </p>
-      </div>
-
       <Header
         t={storefrontText}
         isFarsi={isFarsi}

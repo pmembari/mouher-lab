@@ -6082,3 +6082,214 @@ img {
   .mouher-reference-story blockquote { padding:48px 20px 100px; }
   .mouher-reference-story > a { top:auto; bottom:28px; right:50%; transform:translateX(50%); }
 }
+
+
+/* =========================================================
+   FARSI / RTL — REFERENCE HOME COMPOSITION
+   Keep the editorial design, but give RTL its own geometry.
+========================================================= */
+
+.site-farsi .mouher-reference-header-inner {
+  direction: rtl;
+  grid-template-columns: 235px minmax(430px, 1fr) auto;
+}
+
+.site-farsi .mouher-reference-logo {
+  justify-self: start;
+  direction: ltr;
+}
+
+.site-farsi .mouher-reference-nav {
+  direction: rtl;
+}
+
+.site-farsi .mouher-reference-tools {
+  direction: ltr;
+  justify-content: flex-end;
+}
+
+.site-farsi .mouher-header-search {
+  direction: rtl;
+}
+
+.site-farsi .mouher-reference-home .mouher-hero {
+  direction: rtl;
+}
+
+.site-farsi .mouher-reference-home .mouher-hero-copy {
+  position: absolute;
+  inset: 0 0 0 auto;
+  width: min(650px, 48vw);
+  min-height: 100%;
+  padding: 130px 7vw 48px 48px;
+  align-items: flex-start;
+  justify-content: center;
+  text-align: right;
+  direction: rtl;
+}
+
+.site-farsi .mouher-reference-home .mouher-hero-kicker {
+  margin-bottom: 22px;
+  letter-spacing: 0;
+  font-size: 14px;
+}
+
+.site-farsi .mouher-reference-home .mouher-hero h1 {
+  width: 100%;
+  max-width: 560px;
+  font-family: var(--farsi);
+  font-size: clamp(54px, 5vw, 78px);
+  line-height: 1.16;
+  letter-spacing: 0;
+  white-space: normal;
+}
+
+.site-farsi .mouher-reference-home .mouher-hero-copy > p {
+  width: 100%;
+  max-width: 520px;
+  margin: 22px 0 0;
+  font-family: var(--farsi);
+  font-size: 16px;
+  line-height: 1.9;
+}
+
+.site-farsi .mouher-reference-home .mouher-hero-actions {
+  width: 100%;
+  justify-content: flex-start;
+  direction: rtl;
+}
+
+.site-farsi .mouher-reference-home .mouher-hero-button {
+  direction: rtl;
+  letter-spacing: 0;
+  font-family: var(--farsi);
+  font-size: 13px;
+}
+
+.site-farsi .mouher-reference-home .mouher-hero-button svg,
+.site-farsi .mouher-category-strip-heading a svg,
+.site-farsi .mouher-category-tile-arrow svg,
+.site-farsi .mouher-reference-story > a svg {
+  transform: scaleX(-1);
+}
+
+.site-farsi .mouher-reference-home .mouher-hero-script,
+.site-farsi .mouher-reference-home .mouher-hero-side-note {
+  display: none;
+}
+
+.site-farsi .mouher-reference-home .mouher-hero-index {
+  left: 4vw;
+  right: auto;
+  direction: ltr;
+}
+
+.site-farsi .mouher-reference-home .mouher-hero-rooted {
+  margin-top: 42px;
+  letter-spacing: 0;
+  font-family: var(--farsi);
+  font-size: 12px;
+}
+
+.site-farsi .mouher-category-strip,
+.site-farsi .mouher-reference-benefits {
+  direction: rtl;
+}
+
+.site-farsi .mouher-category-strip-heading {
+  letter-spacing: 0;
+  font-family: var(--farsi);
+  font-size: 13px;
+}
+
+.site-farsi .mouher-category-strip-heading a {
+  direction: rtl;
+  letter-spacing: 0;
+  font-size: 11px;
+}
+
+.site-farsi .mouher-category-tile-copy {
+  direction: rtl;
+  text-align: right;
+}
+
+.site-farsi .mouher-category-tile-copy h3 {
+  font-family: var(--farsi);
+  font-size: 18px;
+  letter-spacing: 0;
+}
+
+.site-farsi .mouher-reference-benefits > div {
+  direction: rtl;
+  text-align: right;
+}
+
+.site-farsi .mouher-reference-benefits strong {
+  font-family: var(--farsi);
+  font-size: 12px;
+  letter-spacing: 0;
+}
+
+.site-farsi .mouher-reference-benefits small {
+  font-family: var(--farsi);
+  font-size: 11px;
+}
+
+.site-farsi .mouher-reference-story {
+  direction: rtl;
+}
+
+.site-farsi .mouher-reference-story > a {
+  left: 5vw;
+  right: auto;
+  direction: rtl;
+  font-family: var(--farsi);
+  font-size: 11px;
+  letter-spacing: 0;
+}
+
+@media (max-width: 1100px) {
+  .site-farsi .mouher-reference-header-inner {
+    grid-template-columns: auto 1fr;
+  }
+
+  .site-farsi .mobile-menu-button {
+    right: 16px;
+    left: auto;
+  }
+
+  .site-farsi .mouher-reference-logo {
+    margin-right: 36px;
+    margin-left: 0;
+  }
+
+  .site-farsi .mouher-reference-home .mouher-hero-copy {
+    width: min(680px, 66vw);
+    padding-right: 7vw;
+  }
+}
+
+@media (max-width: 700px) {
+  .site-farsi .mouher-reference-home .mouher-hero-copy {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    min-height: 680px;
+    padding: 130px 24px 54px;
+    justify-content: flex-end;
+  }
+
+  .site-farsi .mouher-reference-home .mouher-hero h1 {
+    font-size: clamp(46px, 14vw, 68px);
+  }
+
+  .site-farsi .mouher-reference-home .mouher-hero-copy > p {
+    font-size: 15px;
+  }
+
+  .site-farsi .mouher-reference-story > a {
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+  }
+}

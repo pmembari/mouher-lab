@@ -31,6 +31,8 @@ Each product has its own title, description, canonical URL, Open Graph metadata,
 3. Click a product that is outside the homepage's first catalog batch. Its detail is fetched by handle, independent of that batch. Until current Medusa data arrives, the build snapshot is readable but cannot authorize a live cart addition.
 4. Check a Persian product name and switch language. The document language/direction follows the toggle. This does not create separately indexed language translations; localized URLs are a later task.
 
-Rebuild and redeploy when products, handles, prices or inventory change. New products need a build before their URLs can be refreshed on GitHub Pages. The browser refreshes product data from Medusa, but crawlers still see the last successful build. A scheduled catalog rebuild can be added separately.
+The Pages workflow rebuilds and redeploys every six hours, at 00:17, 06:17, 12:17 and 18:17 UTC. GitHub may delay scheduled runs. Pushes to main and manual workflow runs also rebuild immediately. A `repository_dispatch` event with type `catalog-updated` is available for a future backend publication hook; that hook is not wired yet. Keep any GitHub dispatch credential on the backend, never in the storefront.
+
+New products need a successful build before their URLs can be refreshed on GitHub Pages. The browser refreshes product data from Medusa, but crawlers see the last successful build. Scheduled builds fetch fresh data when Medusa is configured; without Medusa, they republish the existing committed public snapshot, which must itself be updated to change the catalog. An unsuccessful refresh leaves the previously deployed website available.
 
 This change adds discoverable pages; it does not establish backend concurrency capacity or complete the payment integration.

@@ -8,7 +8,9 @@ RUN npm ci
 COPY index.html vite.config.js ./
 COPY public-safe ./public-safe
 COPY src ./src
+COPY scripts ./scripts
 
+ARG VITE_ALLOW_STATIC_CATALOG_FALLBACK=true
 RUN npm run build
 
 FROM nginx:1.29-alpine AS runtime

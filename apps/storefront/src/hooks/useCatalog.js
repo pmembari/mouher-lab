@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { loadCatalog } from "../lib/catalog";
+import { readPrerenderData } from "../lib/seo.js";
 
 const EMPTY_CATALOG = {
   products: [],
@@ -14,7 +15,10 @@ export function useCatalog({
   productLabels,
 }) {
   const [catalog, setCatalog] = useState(
-    EMPTY_CATALOG
+    () => {
+      const product = readPrerenderData()?.product;
+      return product ? { ...EMPTY_CATALOG, products: [product], source: product.source } : EMPTY_CATALOG;
+    }
   );
 
   const [

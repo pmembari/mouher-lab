@@ -1,6 +1,7 @@
 import { ArrowRight } from "../icons";
 import { ProductImage } from "../ProductImage";
 import { trackEvent } from "../../lib/analytics";
+import { navigateStorefront } from "../../lib/seo.js";
 import {
   productCategoryName,
   productDisplayName,
@@ -144,8 +145,7 @@ export default function ProductCard({
       }
     );
 
-    window.location.hash =
-      href.replace(/^#/, "");
+    navigateStorefront(href);
   }
 
   return (
@@ -270,7 +270,15 @@ export default function ProductCard({
 
       <div className="product-info">
         <div>
-          <h3>{name}</h3>
+          <h3><a href={href} onClick={(event) => {
+            if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+              event.stopPropagation();
+              return;
+            }
+            event.preventDefault();
+            event.stopPropagation();
+            openProductPage("mouse");
+          }}>{name}</a></h3>
 
           {category && (
             <p>

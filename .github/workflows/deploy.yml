@@ -44,6 +44,9 @@ jobs:
       - name: Install dependencies
         run: npm install --no-audit --no-fund
 
+      - name: Verify prerendering
+        run: npm run test:prerender
+
       - name: Build storefront
         run: npm run build
 

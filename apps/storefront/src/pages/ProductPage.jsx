@@ -17,6 +17,7 @@ export default function ProductPage({
   cartLabels,
   onAdd,
   isAdding,
+  staticMode = false,
 }) {
   const isFarsi = language === "farsi";
 
@@ -33,7 +34,7 @@ export default function ProductPage({
   if (!product) {
     return (
       <div className="product-page product-page-empty">
-        <a href="#products" className="text-link product-back-link">
+        <a href={`${import.meta.env.BASE_URL}#/shop`} className="text-link product-back-link">
           <ArrowRight />
           {labels.back}
         </a>
@@ -77,7 +78,7 @@ export default function ProductPage({
     <div className="product-page">
       <div className="product-page-topbar">
         <a
-          href="#products"
+          href={`${import.meta.env.BASE_URL}#/shop`}
           className="product-back-link"
         >
           <ArrowRight />
@@ -107,6 +108,8 @@ export default function ProductPage({
               }
               alt={name}
               className="pdp-main-image"
+              loading="eager"
+              fetchPriority="high"
             />
 
             <button
@@ -171,6 +174,12 @@ export default function ProductPage({
               {description}
             </p>
           )}
+
+          {product.source !== "medusa" && <p className="pdp-description">
+            {isFarsi
+              ? "این اطلاعات از نسخه ذخیره‌شده کاتالوگ است. قیمت و موجودی را پیش از خرید بررسی کنید."
+              : "Catalog snapshot. Confirm current price and availability before ordering."}
+          </p>}
 
           {Array.isArray(product.colors) &&
             product.colors.length > 0 && (
@@ -256,7 +265,7 @@ export default function ProductPage({
             type="button"
             className="pdp-add-button"
             onClick={() => onAdd(product)}
-            disabled={!canAdd || isAdding}
+            disabled={staticMode || !canAdd || isAdding || product.inStock === false}
           >
             <span>
               {isAdding
@@ -270,6 +279,8 @@ export default function ProductPage({
 
             <BagIcon />
           </button>
+
+          {staticMode && <noscript><p>Enable JavaScript for shopping interactions. Product details remain available here.</p></noscript>}
 
           <div className="pdp-stock">
             <span

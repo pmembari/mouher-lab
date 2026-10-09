@@ -1,3 +1,5 @@
+import { productPath } from "../lib/seo.js";
+
 export function slugify(value) {
   const slug = String(value || "")
     .trim()
@@ -9,9 +11,7 @@ export function slugify(value) {
 }
 
 export function productPageHref(product) {
-  return `#/products/${encodeURIComponent(
-    product.handle || product.id
-  )}`;
+  return productPath(product);
 }
 
 export function productDisplayName(product, isFarsi) {

@@ -177,6 +177,8 @@ export function normalizeMedusaProduct(
       selectedPrice?.amount ??
       null,
 
+    currencyCode: selectedPrice?.currencyCode || "",
+
     compareAtPrice:
       compareAtPrice &&
         selectedPrice &&

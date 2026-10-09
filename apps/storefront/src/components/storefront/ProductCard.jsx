@@ -2,6 +2,7 @@ import { ArrowRight } from "../icons";
 import { ProductImage } from "../ProductImage";
 import { trackEvent } from "../../lib/analytics";
 import { navigateStorefront } from "../../lib/seo.js";
+import { colorDisplayName } from "../../utils/colors.js";
 import {
   productCategoryName,
   productDisplayName,
@@ -37,10 +38,7 @@ function ColorSwatches({
           key={`${color.label}-${color.hex}`}
           className="color-swatch"
           title={
-            isFarsi
-              ? color.labelFa ||
-              color.label
-              : color.label
+            colorDisplayName(color, language)
           }
           style={{
             background:

@@ -7,6 +7,7 @@ import {
 import ProductCard from "../components/storefront/ProductCard";
 import { useCatalogBrowse } from "../hooks/useCatalogBrowse";
 import { useCatalogPage } from "../hooks/useCatalogPage";
+import { colorDisplayName } from "../utils/colors.js";
 
 export default function ShopPage({
   route,
@@ -785,9 +786,7 @@ export default function ShopPage({
                               color.value
                             }
                           >
-                            {isFarsi
-                              ? color.labelFa
-                              : color.label}
+                            {colorDisplayName(color, language)}
                           </option>
                         )
                       )}

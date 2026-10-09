@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build && node scripts/prerender.mjs",
     "test:prerender": "node --test src/lib/seo.test.js scripts/prerender.test.mjs",
-    "test:catalog-pages": "node --test scripts/catalog-page.test.mjs",
+    "test:catalog-pages": "node --test scripts/catalog-page.test.mjs src/utils/colors.test.js",
     "preview": "vite preview",
     "test": "node --test src/lib/*.test.js",
     "test:catalog": "node --test src/lib/*.test.js"

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { ArrowRight, BagIcon } from "../components/icons";
 import { ProductImage } from "../components/ProductImage";
 import ProductCard from "../components/storefront/ProductCard";
+import { colorDisplayName } from "../utils/colors.js";
 import {
   productCategoryName,
   productDisplayName,
@@ -188,15 +189,13 @@ export default function ProductPage({
                   <strong>{labels.colors}</strong>
 
                   {selectedColor && (
-                    <span>{selectedColor}</span>
+                    <span>{colorDisplayName(product.colors.find(color => color.label === selectedColor) || selectedColor, language)}</span>
                   )}
                 </div>
 
                 <div className="pdp-color-list">
                   {product.colors.map((color) => {
-                    const colorName = isFarsi
-                      ? color.labelFa || color.label
-                      : color.label;
+                    const colorName = colorDisplayName(color, language);
 
                     return (
                       <button

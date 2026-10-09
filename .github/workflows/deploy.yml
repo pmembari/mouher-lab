@@ -5,6 +5,11 @@ on:
     branches:
       - main
   workflow_dispatch:
+  schedule:
+    # Refresh the public catalog every six hours (UTC), away from the hour boundary.
+    - cron: '17 0,6,12,18 * * *'
+  repository_dispatch:
+    types: [catalog-updated]
 
 permissions:
   contents: read
@@ -42,7 +47,10 @@ jobs:
           cache-dependency-path: apps/storefront/package-lock.json
 
       - name: Install dependencies
-        run: npm install --no-audit --no-fund
+        run: npm ci --no-audit --no-fund
+
+      - name: Verify prerendering
+        run: npm run test:prerender
 
       - name: Build storefront
         run: npm run build

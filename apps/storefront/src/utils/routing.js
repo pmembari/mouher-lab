@@ -1,8 +1,15 @@
+import { routeFromPath } from "../lib/seo.js";
+
 export function getRouteFromHash() {
   const hash =
     typeof window === "undefined"
       ? ""
       : window.location.hash;
+
+  if (!hash && typeof window !== "undefined") {
+    const pathRoute = routeFromPath(window.location.pathname);
+    if (pathRoute) return pathRoute;
+  }
 
   const rawValue = hash.replace(/^#\/?/, "");
 

@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { content } from "../content/siteContent";
 
@@ -13,6 +13,11 @@ export function useLocale() {
 
   const direction =
     isFarsi ? "rtl" : "ltr";
+
+  useEffect(() => {
+    document.documentElement.lang = isFarsi ? "fa" : "en";
+    document.documentElement.dir = direction;
+  }, [isFarsi, direction]);
 
   const siteClassName = useMemo(
     () =>

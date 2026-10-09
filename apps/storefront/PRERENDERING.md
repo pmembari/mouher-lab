@@ -36,3 +36,13 @@ The Pages workflow rebuilds and redeploys every six hours, at 00:17, 06:17, 12:1
 New products need a successful build before their URLs can be refreshed on GitHub Pages. The browser refreshes product data from Medusa, but crawlers see the last successful build. Scheduled builds fetch fresh data when Medusa is configured; without Medusa, they republish the existing committed public snapshot, which must itself be updated to change the catalog. An unsuccessful refresh leaves the previously deployed website available.
 
 This change adds discoverable pages; it does not establish backend concurrency capacity or complete the payment integration.
+
+## Hero loading
+
+The homepage now renders its existing hero, header and layout into the initial HTML. The build chooses `merchandising.heroImage`, then `featuredImage`, then the first available product image, and places one high-priority image preload in the head. The hero uses eager loading, while category and story images remain lazy. Its existing CSS reserves the hero's space before the image arrives.
+
+The same hero URL is embedded in the homepage bootstrap data and kept stable while Medusa refreshes the catalog. This removes the JavaScript → catalog request → image request dependency and prevents a second hero download after the catalog arrives. A rebuild can update the curated hero.
+
+The current hero host returned byte-identical original and `?width=360` files (66,300 bytes, 1086 × 1448) during verification. The hero therefore uses the original URL for both preload and display; other image components retain their existing responsive behavior. This does not establish that the host resizes other assets.
+
+To measure the result, disable cache in DevTools and use the same slow-network profile for three runs before and after. Check the hero request's initiator, request start, transfer size and LCP. Its request should now start from the HTML preload, independently of the catalog request. The implementation checks prove discovery order and loading attributes; they do not measure a browser LCP improvement.

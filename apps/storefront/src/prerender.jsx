@@ -1,6 +1,10 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import Medusa from "@medusajs/js-sdk";
 import ProductPage from "./pages/ProductPage";
+import HomePage from "./pages/HomePage";
+import Header from "./components/layout/Header";
+import Footer from "./components/layout/Footer";
+import LanguageSwitch from "./components/layout/LanguageSwitch";
 import { content } from "./content/siteContent";
 import { currentMouherCatalog } from "./data/currentMouherCatalog";
 import { normalizeMedusaProductsResponse } from "./lib/catalog/normalize";
@@ -43,10 +47,15 @@ function publicProduct(product) {
   return Object.fromEntries(fields.filter((field) => product[field] !== undefined).map((field) => [field, product[field]]));
 }
 
-function Shell({ children, base }) {
+function Shell({ children, base, homepage = false }) {
+  const t = content.pinglish;
   return <div className="site" dir="ltr">
-    <header className="product-page-topbar"><a href={base}>Mouher</a><a href={`${base}products/`}>All products</a></header>
+    {homepage ? <>
+      <Header t={t} isFarsi={false} menuOpen={false} cartCount={0} />
+      <LanguageSwitch language="pinglish" isFarsi={false} />
+    </> : <header className="product-page-topbar"><a href={base}>Mouher</a><a href={`${base}products/`}>All products</a></header>}
     <main>{children}</main>
+    {homepage && <Footer t={t} isFarsi={false} />}
   </div>;
 }
 
@@ -71,15 +80,23 @@ export function generatePages(shell, catalog, { base, siteUrl }) {
   const pages = new Map();
   const urls = [];
   const t = content.pinglish;
-  function add(path, title, description, element, bootstrap, schema) {
+  function add(path, title, description, element, bootstrap, schema, heroImage) {
     if (pages.has(path)) throw new Error(`Duplicate public URL: ${path}`);
     const canonical = new URL(path, siteUrl).href;
-    const body = renderToStaticMarkup(<Shell base={base}>{element}</Shell>);
-    pages.set(path, renderDocument(shell, { title, description, canonical, base, body, bootstrap, schema }));
+    const body = renderToStaticMarkup(<Shell base={base} homepage={path === base}>{element}</Shell>);
+    pages.set(path, renderDocument(shell, { title, description, canonical, base, body, bootstrap, schema, heroImage }));
     urls.push(canonical);
   }
+  const heroImage = catalog.merchandising?.heroImage || catalog.featuredImage ||
+    products.find((product) => product.imageUrls?.length)?.imageUrls[0] || "";
+  const homepageCatalog = { products: products.slice(0, 30), categories: categories.slice(0, 6),
+    source: catalog.source, featuredImage: heroImage };
   add(base, "Mouher — Contemporary Clothing", "Discover Mouher clothing and browse the product catalog.",
-    <CatalogLinks title="Mouher clothing" products={products.slice(0, 4)} categories={categories} base={base} />);
+    <>
+      <HomePage language="pinglish" t={t} heroImage={heroImage}
+        homepageProducts={homepageCatalog.products} homepageCategories={homepageCatalog.categories} />
+      <noscript><CatalogLinks title="Browse products" products={products.slice(0, 4)} categories={categories} base={base} /></noscript>
+    </>, { heroImage, catalog: homepageCatalog }, undefined, heroImage);
   add(`${base}products/`, "All products | Mouher", "Explore the Mouher product catalog.",
     <CatalogLinks title="All products" products={products} categories={categories} base={base} />);
   for (const product of products) {

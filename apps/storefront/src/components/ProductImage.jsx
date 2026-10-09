@@ -12,6 +12,7 @@ export function ProductImage({
   sizes,
   loading = "lazy",
   fetchPriority = "auto",
+  responsive = true,
 }) {
   const sources = Array.isArray(image)
     ? image.filter(Boolean)
@@ -24,12 +25,12 @@ export function ProductImage({
   const src = sources[sourceIndex] || "";
 
   const srcSet = useMemo(() => {
-    if (!src || responsiveDisabled) {
+    if (!src || responsiveDisabled || !responsive) {
       return "";
     }
 
     return buildResponsiveSrcSet(src);
-  }, [src, responsiveDisabled]);
+  }, [src, responsiveDisabled, responsive]);
 
   const resolvedSizes =
     sizes ||

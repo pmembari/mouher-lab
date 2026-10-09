@@ -76,11 +76,19 @@ export function productSchema(product, canonical) {
   return schema;
 }
 
-export function renderDocument(shell, { title, description, canonical, base, body, bootstrap, schema }) {
+export function renderDocument(shell, { title, description, canonical, base, body, bootstrap, schema, heroImage }) {
+  // React also emits an image preload during static rendering; promote it to
+  // the document head rather than leaving a duplicate in the body.
+  if (heroImage) {
+    body = body.replace(/<link\b[^>]*>/g, (tag) =>
+      tag.includes('rel="preload"') && tag.includes('as="image"') &&
+      tag.includes(`href="${escapeHtml(heroImage)}"`) ? "" : tag);
+  }
   const cleanShell = shell
     .replace(/<title>[\s\S]*?<\/title>/i, "")
     .replace(/<meta\s+name="description"[^>]*>/i, "");
   const head = `<base href="${escapeHtml(base)}" />
+${heroImage ? `<link rel="preload" as="image" href="${escapeHtml(heroImage)}" fetchpriority="high" />` : ""}
 <title>${escapeHtml(title)}</title>
 <meta name="description" content="${escapeHtml(description)}" />
 <link rel="canonical" href="${escapeHtml(canonical)}" />

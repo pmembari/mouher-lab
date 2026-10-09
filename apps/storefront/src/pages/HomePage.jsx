@@ -16,13 +16,16 @@ export default function HomePage({
     heroImage;
 
   return (
-    <main className="mouher-reference-home">
+    <div className="mouher-reference-home">
       <section className="mouher-hero" id="new">
         <div className="mouher-hero-media">
           <ProductImage
             image={heroImage}
             alt={isFarsi ? "تصویر اصلی موهر" : "Mouher hero"}
             className="mouher-hero-image"
+            loading="eager"
+            fetchPriority="high"
+            responsive={false}
           />
           <div className="mouher-hero-overlay" />
           <div className="mouher-hero-sheen" aria-hidden="true" />
@@ -115,6 +118,6 @@ export default function HomePage({
         <blockquote>“ MOUHER — WHAT YOU WEAR,<br />A BRIGHTER TOMORROW ”</blockquote>
         <a href="#/shop">{isFarsi ? "داستان ما" : "Our story"} <ArrowRight /></a>
       </section>
-    </main>
+    </div>
   );
 }

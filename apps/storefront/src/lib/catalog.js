@@ -13,11 +13,6 @@ import {
 } from "./catalog/fallback";
 
 import {
-  applyClientFilters,
-  sortProducts,
-} from "./catalog/filters";
-
-import {
   fetchMedusaProducts,
   fetchMedusaProductsPage,
 } from "./catalog/medusa";
@@ -30,10 +25,6 @@ import {
   getPaginationInput,
   buildPagination,
 } from "./catalog/pagination";
-
-import {
-  finiteNumber,
-} from "./catalog/helpers";
 
 import {
   addProductToCart as addProductToCartInternal,
@@ -167,6 +158,7 @@ export async function loadCatalogPage(
           offset,
           query,
           sort,
+          filters,
         });
 
       const normalized =
@@ -176,33 +168,20 @@ export async function loadCatalogPage(
           config.currencyCode
         );
 
-      const filteredProducts =
-        applyClientFilters(
-          normalized.products,
-          filters
-        );
-
-      const products =
-        sortProducts(
-          filteredProducts,
-          sort
-        );
-
-      const responseCount =
-        finiteNumber(
-          response?.count
-        );
-
-      const total =
-        responseCount !== null
-          ? responseCount
-          : offset +
-          normalized.products.length;
+      if (response?.contract_version !== 1 || !Number.isInteger(response.count) || response.count < 0 ||
+          !Number.isInteger(response.offset) || response.offset < 0 || response.limit !== limit || !response.facets ||
+          !Array.isArray(response.facets.availableCategories) || !Array.isArray(response.facets.availableSizes) ||
+          !Array.isArray(response.facets.availableCollections) || !Array.isArray(response.facets.availableColors) ||
+          !response.facets.priceBounds) {
+        throw new Error("Invalid catalog search response.");
+      }
+      const products = normalized.products;
+      const total = response.count;
 
       const pagination =
         buildPagination({
           page:
-            normalizedPage,
+            Math.floor(response.offset / limit) + 1,
 
           pageSize:
             normalizedPageSize,
@@ -217,6 +196,7 @@ export async function loadCatalogPage(
         ...normalized,
 
         products,
+        facets: response.facets,
 
         source: "medusa",
 
@@ -253,28 +233,7 @@ export async function loadCatalogPage(
     });
   }
 
-  return {
-    ...EMPTY_CATALOG,
-
-    notice:
-      "Unable to load the catalog.",
-
-    pagination:
-      buildPagination({
-        page:
-          normalizedPage,
-
-        pageSize:
-          normalizedPageSize,
-
-        total: 0,
-        count: 0,
-      }),
-
-    filters: {
-      ...filters,
-    },
-  };
+  throw new Error("Unable to load the catalog.");
 }
 
 export function addProductToCart(

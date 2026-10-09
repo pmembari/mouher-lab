@@ -52,6 +52,9 @@ jobs:
       - name: Verify prerendering
         run: npm run test:prerender
 
+      - name: Verify catalog paging
+        run: npm run test:catalog-pages
+
       - name: Build storefront
         run: npm run build
 

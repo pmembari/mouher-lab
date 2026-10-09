@@ -15,6 +15,7 @@ import {
 import {
   paginateItems,
 } from "./pagination";
+import { catalogFacets } from "./facets";
 
 export function loadStaticFallbackCatalog(
   notice = ""
@@ -65,6 +66,7 @@ export function loadStaticFallbackPage({
     ...FALLBACK_CATALOG,
 
     products,
+    facets: catalogFacets(allProducts),
 
     categories:
       buildCategories(

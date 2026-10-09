@@ -10,10 +10,12 @@
     "test:analytics": "vitest run src/modules/analytics src/api/store/analytics src/api/admin/analytics",
     "catalog:dry-run": "medusa exec ./src/scripts/import-mouher-catalog.ts",
     "catalog:import": "medusa exec ./src/scripts/import-mouher-catalog.ts -- --apply",
-    "test:catalog-import": "vitest run src/lib/catalog-import.test.ts"
+    "test:catalog-import": "vitest run src/lib/catalog-import.test.ts",
+    "test:catalog-search": "vitest run src/api/store/catalog/search.test.ts src/api/store/catalog/service.test.ts src/api/store/catalog/route.test.ts"
   },
   "dependencies": {
     "@medusajs/framework": "^2.16.0",
+    "@medusajs/js-sdk": "2.16.0",
     "@medusajs/medusa": "^2.16.0"
   },
   "devDependencies": {

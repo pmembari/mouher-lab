@@ -6,6 +6,7 @@ import {
 
 import ProductCard from "../components/storefront/ProductCard";
 import { useCatalogBrowse } from "../hooks/useCatalogBrowse";
+import { useCatalogPage } from "../hooks/useCatalogPage";
 
 export default function ShopPage({
   route,
@@ -134,10 +135,15 @@ export default function ShopPage({
     catalog.products,
   ]);
 
-  const browse =
+  const catalogPage = useCatalogPage({ route });
+  const controls =
     useCatalogBrowse(
-      browseInput
+      { ...browseInput, products: [] }
     );
+  // The server (or complete snapshot fallback) already filtered and sorted.
+  // Never filter the returned page again or derive global counts from it.
+  const browse = { ...controls, ...catalogPage.catalogPage.facets,
+    products: catalogPage.products, filteredCount: catalogPage.pagination.total };
 
   const pageTitle =
     getPageTitle({
@@ -431,8 +437,10 @@ export default function ShopPage({
         </label>
       </div>
 
-      {catalogState ===
-        "loading" ? (
+      {catalogPage.notice && <p role="status">{catalogPage.notice}</p>}
+      {catalogPage.isError ? <p className="empty-state" role="alert">
+        {isFarsi ? "بارگذاری کاتالوگ ناموفق بود. دوباره تلاش کنید." : "Unable to load the catalog. Please retry."}
+      </p> : catalogPage.isLoading ? (
         <p className="empty-state">
           {t.products.loading}
         </p>
@@ -484,6 +492,14 @@ export default function ShopPage({
           </button>
         </div>
       )}
+
+      {catalogPage.pagination.totalPages > 1 && <nav className="shop-pagination" aria-label={isFarsi ? "صفحه‌بندی محصولات" : "Product pages"}>
+        <button type="button" className="button button-dark" disabled={catalogPage.isLoading || !catalogPage.pagination.hasPrevious}
+          onClick={() => updateRoute({ page: catalogPage.pagination.page - 1 })}>{isFarsi ? "قبلی" : "Previous"}</button>
+        <span aria-live="polite">{catalogPage.pagination.page} / {catalogPage.pagination.totalPages}</span>
+        <button type="button" className="button button-dark" disabled={catalogPage.isLoading || !catalogPage.pagination.hasNext}
+          onClick={() => updateRoute({ page: catalogPage.pagination.page + 1 })}>{isFarsi ? "بعدی" : "Next"}</button>
+      </nav>}
 
       {filtersOpen && (
         <div
@@ -1025,6 +1041,8 @@ function buildNextRoute({
   changes,
 }) {
   const current = {
+    page: changes.page ?? 1,
+    pageSize: route.pageSize || 30,
     query:
       route.query || "",
 
@@ -1087,6 +1105,8 @@ function buildNextRoute({
 
   const params =
     new URLSearchParams();
+  if (current.page > 1) params.set("page", current.page);
+  if (current.pageSize !== 30) params.set("pageSize", current.pageSize);
 
   if (current.query) {
     params.set(

@@ -43,59 +43,18 @@ export async function fetchMedusaProductsPage({
   offset,
   query = "",
   sort = "featured",
+  filters = {},
 }) {
-  const params =
-    new URLSearchParams({
-      limit:
-        String(limit),
-
-      offset:
-        String(offset),
-
-      fields:
-        getProductFields(
-          config
-        ),
-    });
-
-  if (query.trim()) {
-    params.set(
-      "q",
-      query.trim()
-    );
+  const input = { limit, offset, sort };
+  if (query.trim()) input.q = query.trim();
+  for (const key of ["category", "collection", "minPrice", "maxPrice", "size", "color"]) {
+    if (filters[key] !== undefined && filters[key] !== "" && filters[key] !== "all") input[key] = filters[key];
   }
-
-  /*
-   * Newest can be represented directly
-   * by Medusa product ordering.
-   *
-   * Price sorting and best-selling need
-   * backend support based on calculated
-   * prices / sales aggregation before
-   * they are globally correct across
-   * thousands of products.
-   */
-  if (
-    sort === "newest"
-  ) {
-    params.set(
-      "order",
-      "-created_at"
-    );
-  }
-
-  appendRegionContext(
-    params,
-    config
-  );
-
-  return medusaRequest(
-    `/store/products?${params.toString()}`,
-    {
-      method: "GET",
-      config,
-    }
-  );
+  for (const key of ["inStock", "sale"]) if (filters[key]) input[key] = true;
+  if (config.regionId) input.region_id = config.regionId;
+  if (config.countryCode) input.country_code = config.countryCode;
+  const { getMedusaSdk } = await import("../medusaSdk.js");
+  return getMedusaSdk(config).client.fetch("/store/catalog", { query: input });
 }
 
 export async function medusaRequest(

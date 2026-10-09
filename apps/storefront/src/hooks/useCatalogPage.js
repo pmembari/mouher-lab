@@ -11,6 +11,7 @@ import {
 
 const INITIAL_STATE = {
   products: [],
+  facets: {},
   categories: [],
   collections: [],
 
@@ -291,6 +292,8 @@ function normalizeCatalogPageResult(
       )
         ? result.products
         : [],
+
+    facets: result?.facets || {},
 
     categories:
       Array.isArray(

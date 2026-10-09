@@ -68,3 +68,22 @@ test("snapshot publishing is explicit and partial Medusa configuration fails", a
   const catalog = await renderer.loadBuildCatalog({ VITE_ALLOW_STATIC_CATALOG_FALLBACK: "true" });
   assert.equal(catalog.source, "mouher-live-snapshot");
 });
+
+test("homepage hero is discovered in HTML before JavaScript or catalog fetching", () => {
+  const catalog = { source: "medusa", products: [product], categories: [{ slug: "shirts", name: "Shirts" }],
+    merchandising: { heroImage: "https://cdn.test/curated-hero.webp" } };
+  const { pages } = renderer.generatePages(shell, catalog, { base: "/mouher-lab/", siteUrl: "https://pmembari.github.io/mouher-lab/" });
+  const home = pages.get("/mouher-lab/");
+  const hero = home.match(/<img[^>]*class="mouher-hero-image"[^>]*>/)?.[0];
+  assert.ok(hero, "The existing homepage hero must be rendered into HTML");
+  assert.ok(hero.includes('src="https://cdn.test/curated-hero.webp"'));
+  assert.ok(hero.includes('loading="eager"'));
+  assert.ok(hero.includes('fetchPriority="high"') || hero.includes('fetchpriority="high"'));
+  assert.ok(home.includes('rel="preload" as="image" href="https://cdn.test/curated-hero.webp"'));
+  assert.ok(home.indexOf('rel="preload"') < home.indexOf('<script src='));
+  assert.ok(home.includes('"heroImage":"https://cdn.test/curated-hero.webp"'));
+  assert.ok(home.match(/<img[^>]*class="mouher-reference-story-image"[^>]*loading="lazy"/));
+  assert.equal((home.match(/<main(?:\s|>)/g) || []).length, 1);
+  assert.ok(!hero.includes("srcSet="));
+  assert.ok(!pages.get("/mouher-lab/products/shirt/").includes("curated-hero.webp"));
+});

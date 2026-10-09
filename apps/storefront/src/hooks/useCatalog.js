@@ -14,9 +14,13 @@ const EMPTY_CATALOG = {
 export function useCatalog({
   productLabels,
 }) {
+  // The build's curated hero remains stable while the live catalog refreshes.
+  const [initialHeroImage] = useState(() => readPrerenderData()?.heroImage || "");
   const [catalog, setCatalog] = useState(
     () => {
-      const product = readPrerenderData()?.product;
+      const initial = readPrerenderData();
+      if (initial?.catalog) return { ...EMPTY_CATALOG, ...initial.catalog };
+      const product = initial?.product;
       return product ? { ...EMPTY_CATALOG, products: [product], source: product.source } : EMPTY_CATALOG;
     }
   );
@@ -73,6 +77,8 @@ export function useCatalog({
 
   const heroImage = useMemo(
     () =>
+      initialHeroImage ||
+      catalog.merchandising?.heroImage ||
       catalog.featuredImage ||
       catalog.products.find(
         (product) =>
@@ -80,6 +86,8 @@ export function useCatalog({
       )?.imageUrls?.[0] ||
       "",
     [
+      initialHeroImage,
+      catalog.merchandising?.heroImage,
       catalog.featuredImage,
       catalog.products,
     ]
